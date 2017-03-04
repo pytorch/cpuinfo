@@ -23,7 +23,11 @@ void report_cache(
 	if (count != 1) {
 		printf("%"PRIu32" x ", count);
 	}
-	printf("%"PRIu32" %s (%s), ", size, units, (cache->flags & CPUINFO_CACHE_INCLUSIVE) ? "inclusive" : "exclusive");
+	if (level == 1) {
+		printf("%"PRIu32" %s, ", size, units);
+	} else {
+		printf("%"PRIu32" %s (%s), ", size, units, (cache->flags & CPUINFO_CACHE_INCLUSIVE) ? "inclusive" : "exclusive");
+	}
 
 	if (cache->associativity * cache->line_size == cache->size) {
 		printf("fully associative");
