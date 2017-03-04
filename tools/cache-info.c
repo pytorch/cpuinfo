@@ -4,20 +4,26 @@
 #include <cpuinfo.h>
 
 
-void report_cache(const struct cpuinfo_cache cache[restrict static 1], uint32_t level, const char* nonunified_type) {
+void report_cache(
+	uint32_t count, const struct cpuinfo_cache cache[restrict static 1],
+	uint32_t level, const char* nonunified_type)
+{
 	const char* type = (cache->flags & CPUINFO_CACHE_UNIFIED) ? "unified" : nonunified_type;
 	printf("L%"PRIu32" %s cache: ", level, type);
 
-	uint32_t count = cache->size;
+	uint32_t size = cache->size;
 	const char* units = "bytes";
-	if (count % UINT32_C(1048576) == 0) {
-		count /= UINT32_C(1048576);
+	if (size % UINT32_C(1048576) == 0) {
+		size /= UINT32_C(1048576);
 		units = "MB";
-	} else if (count % UINT32_C(1024) == 0) {
-		count /= UINT32_C(1024);
+	} else if (size % UINT32_C(1024) == 0) {
+		size /= UINT32_C(1024);
 		units = "KB";
 	}
-	printf("%"PRIu32" %s (%s), ", count, units, (cache->flags & CPUINFO_CACHE_INCLUSIVE) ? "inclusive" : "exclusive");
+	if (count != 1) {
+		printf("%"PRIu32" x ", count);
+	}
+	printf("%"PRIu32" %s (%s), ", size, units, (cache->flags & CPUINFO_CACHE_INCLUSIVE) ? "inclusive" : "exclusive");
 
 	if (cache->associativity * cache->line_size == cache->size) {
 		printf("fully associative");
@@ -46,17 +52,19 @@ void report_cache(const struct cpuinfo_cache cache[restrict static 1], uint32_t 
 
 int main(int argc, char** argv) {
 	cpuinfo_initialize();
-	if ((cpuinfo_processors->cache.l1i->flags & CPUINFO_CACHE_UNIFIED) == 0) {
-		report_cache(cpuinfo_processors->cache.l1i, 1, "instruction");
+	if ((cpuinfo_get_l1i_cache().count != 0 && cpuinfo_get_l1i_cache().instances->flags & CPUINFO_CACHE_UNIFIED) == 0) {
+		report_cache(cpuinfo_get_l1i_cache().count, cpuinfo_get_l1i_cache().instances, 1, "instruction");
 	}
-	report_cache(cpuinfo_processors->cache.l1d, 1, "data");
-	if (cpuinfo_processors->cache.l2 != NULL) {
-		report_cache(cpuinfo_processors->cache.l2, 2, "data");
+	if (cpuinfo_get_l1d_cache().count != 0) {
+		report_cache(cpuinfo_get_l1d_cache().count, cpuinfo_get_l1d_cache().instances, 1, "data");
 	}
-	if (cpuinfo_processors->cache.l3 != NULL) {
-		report_cache(cpuinfo_processors->cache.l3, 3, "data");
+	if (cpuinfo_get_l2_cache().count != 0) {
+		report_cache(cpuinfo_get_l2_cache().count, cpuinfo_get_l2_cache().instances, 2, "data");
 	}
-	if (cpuinfo_processors->cache.l4 != NULL) {
-		report_cache(cpuinfo_processors->cache.l4, 4, "data");
+	if (cpuinfo_get_l3_cache().count != 0) {
+		report_cache(cpuinfo_get_l3_cache().count, cpuinfo_get_l3_cache().instances, 3, "data");
+	}
+	if (cpuinfo_get_l4_cache().count != 0) {
+		report_cache(cpuinfo_get_l4_cache().count, cpuinfo_get_l4_cache().instances, 4, "data");
 	}
 }
