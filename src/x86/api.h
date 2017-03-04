@@ -34,9 +34,12 @@ struct cpuinfo_x86_caches {
 };
 
 struct cpuinfo_x86_topology {
+	#ifdef __linux__
+		int linux_id;
+	#endif
 	uint32_t apic_id;
-	uint32_t smt_bits_offset;
-	uint32_t smt_bits_length;
+	uint32_t thread_bits_offset;
+	uint32_t thread_bits_length;
 	uint32_t core_bits_offset;
 	uint32_t core_bits_length;
 };

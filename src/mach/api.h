@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <stdint.h>
 
 #define CPUINFO_MACH_MAX_CACHE_LEVELS 8

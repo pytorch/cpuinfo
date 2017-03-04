@@ -10,13 +10,17 @@ parser.add_argument("--log", dest="log_level",
 def main(args):
     options = parser.parse_args(args)
     build = confu.Build.from_options(options)
-    build.add_macro("CPUINFO_LOG_LEVEL",
-        value={"none": 0, "error": 1, "warning": 2, "info": 3, "debug": 4}[options.log_level])
+
+    macros = {
+        "CPUINFO_LOG_LEVEL": {"none": 0, "error": 1, "warning": 2, "info": 3, "debug": 4}[options.log_level]
+    }
+    if build.target.is_linux:
+        macros["_GNU_SOURCE"] = 1
 
     build.export_cpath("include", ["cpuinfo.h"])
 
-    with build.options(source_dir="src", extra_include_dirs="src"):
-        sources = ["init.c", "log.c"]
+    with build.options(source_dir="src", macros=macros, extra_include_dirs="src"):
+        sources = ["init.c", "cache.c", "log.c"]
         if build.target.is_x86_64:
             sources += [
                 "x86/init.c", "x86/info.c", "x86/vendor.c", "x86/uarch.c", "x86/topology.c",
@@ -24,9 +28,13 @@ def main(args):
             ]
             if build.target.is_macos:
                 sources += ["x86/mach/init.c"]
+            elif build.target.is_linux:
+                sources += ["x86/linux/init.c"]
             sources.append("x86/isa.c" if not build.target.is_nacl else "x86/nacl/isa.c")
         if build.target.is_macos:
             sources += ["mach/topology.c"]
+        if build.target.is_linux:
+            sources += ["linux/cpuset.c"]
         build.static_library("cpuinfo", map(build.cc, sources))
 
     with build.options(source_dir="tools", deps=build):

@@ -31,11 +31,12 @@ void cpuinfo_x86_mach_init(void) {
 		processors[t].uarch = x86_processor.uarch;
 
 		/* Reconstruct APIC IDs from topology components */
+		const uint32_t thread_bits_mask = (UINT32_C(1) << x86_processor.topology.thread_bits_length) - UINT32_C(1);
+		const uint32_t core_bits_mask   = (UINT32_C(1) << x86_processor.topology.core_bits_length)   - UINT32_C(1);
+
 		const uint32_t smt_id = t % threads_per_core;
 		const uint32_t core_id = t / threads_per_core;
 		const uint32_t package_id = t / threads_per_package;
-		const uint32_t smt_bits_mask = (UINT32_C(1) << x86_processor.topology.smt_bits_length) - UINT32_C(1);
-		const uint32_t core_bits_mask = (UINT32_C(1) << x86_processor.topology.core_bits_length) - UINT32_C(1);
 		const uint32_t package_bits_offset = max(
 			x86_processor.topology.smt_bits_offset + x86_processor.topology.smt_bits_length,
 			x86_processor.topology.core_bits_offset + x86_processor.topology.core_bits_length);
@@ -44,6 +45,11 @@ void cpuinfo_x86_mach_init(void) {
 			((smt_id & smt_bits_mask) << x86_processor.topology.smt_bits_offset) |
 			((core_id & core_bits_mask) << x86_processor.topology.core_bits_offset) |
 			(package_id << package_bits_offset);
+		processors[t].topology = (cpuinfo_topology) {
+			.thread_id  = smt_id,
+			.core_id    = core_id,
+			.package_id = package_id
+		};
 		cpuinfo_log_info("reconstructed APIC ID 0x%08"PRIx32" for thread %"PRIu32, apic_id, t);
 	}
 

@@ -7,18 +7,21 @@
 struct cpuinfo_processor* cpuinfo_processors;
 struct cpuinfo_cores* cpuinfo_cores;
 struct cpuinfo_package* cpuinfo_packages;
-struct cpuinfo_cache* cpuinfo_l1i_cache;
-struct cpuinfo_cache* cpuinfo_l1d_cache;
-struct cpuinfo_cache* cpuinfo_l2_cache;
-struct cpuinfo_cache* cpuinfo_l3_cache;
-struct cpuinfo_cache* cpuinfo_l4_cache;
+
+uint32_t cpuinfo_processors_count;
 
 
 static pthread_once_t init_guard = PTHREAD_ONCE_INIT;
 
 void CPUINFO_ABI cpuinfo_initialize(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
-	pthread_once(&init_guard, &cpuinfo_x86_mach_init);
+	#if defined(__MACH__) && defined(__APPLE__)
+		pthread_once(&init_guard, &cpuinfo_x86_mach_init);
+	#elif defined(__linux__)
+		pthread_once(&init_guard, &cpuinfo_x86_linux_init);
+	#else
+		#error Unsupported target OS
+	#endif
 #else
 	#error Unsupported target architecture
 #endif
