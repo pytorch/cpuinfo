@@ -106,7 +106,9 @@
 		#if CPUINFO_ARCH_X86
 			bool three_d_now_geode;
 		#endif
-		bool three_d_now_prefetch;
+		bool prefetch;
+		bool prefetchw;
+		bool prefetchwt1;
 		#if CPUINFO_ARCH_X86
 			bool sse;
 			bool sse2;
@@ -127,8 +129,10 @@
 		bool avx512pf;
 		bool avx512er;
 		bool avx512cd;
+		bool avx512dq;
 		bool avx512bw;
 		bool avx512vl;
+		bool avx512ifma;
 		bool avx512vbmi;
 		bool avx512vpopcntdq;
 		bool avx512_4vnniw;
@@ -137,7 +141,7 @@
 		bool rtm;
 		bool xtest;
 		bool mpx;
-		#if CPUINFO_ARCH_X86		
+		#if CPUINFO_ARCH_X86
 			bool cmov;
 			bool cmpxchg8b;
 		#endif

@@ -201,13 +201,55 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 #endif
 
 	/*
-	 * 3dnow! Prefetch instructions:
-	 * - AMD, Intel: ecx[bit 8] of extended info (called PREFETCHW in Intel manuals).
-	 * - AMD: edx[bit 31] of extended info (implied by 3dnow! support)
-	 * - AMD: edx[bit 30] of extended info (implied by 3dnow!+ support)
+	 * PREFETCH instruction:
+	 * - AMD: ecx[bit 8] of extended info (one of 3dnow! prefetch instructions).
+	 *        On Intel this bit indicates PREFETCHW, but not PREFETCH support.
+	 * - AMD: edx[bit 31] of extended info (implied by 3dnow! support). Reserved bit on Intel CPUs.
+	 * - AMD: edx[bit 30] of extended info (implied by 3dnow!+ support). Reserved bit on Intel CPUs.
+	 * - AMD: edx[bit 29] of extended info (x86-64 support). Does not imply PREFETCH support on non-AMD CPUs!!!
 	 */
-	isa.three_d_now_prefetch =
-		!!((extended_info.ecx & UINT32_C(0x00000100)) | (extended_info.edx & UINT32_C(0xC0000000)));
+	switch (vendor) {
+		case cpuinfo_vendor_intel:
+			/*
+			 * Instruction is not documented in the manual,
+			 * and the 3dnow! prefetch CPUID bit indicates PREFETCHW instruction.
+			 */
+			break;
+		case cpuinfo_vendor_amd:
+			isa.prefetch = !!((extended_info.ecx & UINT32_C(0x00000100)) | (extended_info.edx & UINT32_C(0xE0000000)));
+			break;
+		default:
+			/*
+			 * Conservatively assume, that 3dnow!/3dnow!+ support implies PREFETCH support, but
+			 * 3dnow! prefetch CPUID bit follows Intel spec (PREFETCHW, but not PREFETCH).
+			 */
+			isa.prefetch = !!(extended_info.edx & UINT32_C(0xC0000000));
+			break;
+	}
+
+	/*
+	 * PREFETCHW instruction:
+	 * - AMD: ecx[bit 8] of extended info (one of 3dnow! prefetch instructions).
+	 * - Intel: ecx[bit 8] of extended info (PREFETCHW instruction only).
+	 * - AMD: edx[bit 31] of extended info (implied by 3dnow! support). Reserved bit on Intel CPUs.
+	 * - AMD: edx[bit 30] of extended info (implied by 3dnow!+ support). Reserved bit on Intel CPUs.
+	 * - AMD: edx[bit 29] of extended info (x86-64 support). Does not imply PREFETCHW support on non-AMD CPUs!!!
+	 */
+	switch (vendor) {
+		case cpuinfo_vendor_amd:
+			isa.prefetchw = !!((extended_info.ecx & UINT32_C(0x00000100)) | (extended_info.edx & UINT32_C(0xE0000000)));
+			break;
+		default:
+			/* Assume, that 3dnow!/3dnow!+ support implies PREFETCHW support, not implications from x86-64 support */
+			isa.prefetchw = !!((extended_info.ecx & UINT32_C(0x00000100)) | (extended_info.edx & UINT32_C(0xC0000000)));
+			break;
+	}
+
+	/*
+	 * PREFETCHWT1 instruction:
+	 * - Intel: ecx[bit 0] of structured feature info. Reserved bit on AMD.
+	 */
+	isa.prefetchwt1 = !!(structured_feature_info.ecx & UINT32_C(0x00000001));
 
 #if CPUINFO_ARCH_X86
 	/*
@@ -321,6 +363,12 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 	isa.avx512cd = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x10000000));
 
 	/*
+	 * AVX512DQ instructions:
+	 * - Intel: ebx[bit 17] in structured feature info.
+	 */
+	isa.avx512dq = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x00020000));
+
+	/*
 	 * AVX512BW instructions:
 	 * - Intel: ebx[bit 30] in structured feature info.
 	 */
@@ -331,6 +379,12 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 	 * - Intel: ebx[bit 31] in structured feature info.
 	 */
 	isa.avx512vl = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x80000000));
+
+	/*
+	 * AVX512IFMA instructions:
+	 * - Intel: ebx[bit 21] in structured feature info.
+	 */
+	isa.avx512ifma = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x00200000));
 
 	/*
 	 * AVX512VBMI instructions:
@@ -380,7 +434,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 	 */
 	isa.mpx = mpx_regs && !!(structured_feature_info.ebx & UINT32_C(0x00004000));
 
-#if CPUINFO_ARCH_X86		
+#if CPUINFO_ARCH_X86
 	/*
 	 * CMOV instructions:
 	 * - Intel, AMD: edx[bit 15] in basic info.
@@ -554,7 +608,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 	 * RDTSCP instruction:
 	 * - Intel, AMD: edx[bit 27] in extended info.
 	 */
-	isa.rdtscp = !!(extended_info.ecx & UINT32_C(0x08000000));
+	isa.rdtscp = !!(extended_info.edx & UINT32_C(0x08000000));
 
 	/*
 	 * RDPID instruction:
