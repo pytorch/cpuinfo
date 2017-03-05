@@ -12,6 +12,10 @@ static inline uint32_t max(uint32_t a, uint32_t b) {
 	return a > b ? a : b;
 }
 
+static inline uint32_t bit_mask(uint32_t bits) {
+	return (UINT32_C(1) << bits) - UINT32_C(1);
+}
+
 void cpuinfo_x86_mach_init(void) {
 	struct cpuinfo_mach_topology mach_topology = cpuinfo_mach_detect_topology();
 	struct cpuinfo_processor* processors = calloc(mach_topology.threads, sizeof(struct cpuinfo_processor));
@@ -31,21 +35,21 @@ void cpuinfo_x86_mach_init(void) {
 		processors[t].uarch = x86_processor.uarch;
 
 		/* Reconstruct APIC IDs from topology components */
-		const uint32_t thread_bits_mask = (UINT32_C(1) << x86_processor.topology.thread_bits_length) - UINT32_C(1);
-		const uint32_t core_bits_mask   = (UINT32_C(1) << x86_processor.topology.core_bits_length)   - UINT32_C(1);
+		const uint32_t thread_bits_mask = bit_mask(x86_processor.topology.thread_bits_length);
+		const uint32_t core_bits_mask   = bit_mask(x86_processor.topology.core_bits_length);
 
 		const uint32_t smt_id = t % threads_per_core;
 		const uint32_t core_id = t / threads_per_core;
 		const uint32_t package_id = t / threads_per_package;
 		const uint32_t package_bits_offset = max(
-			x86_processor.topology.smt_bits_offset + x86_processor.topology.smt_bits_length,
+			x86_processor.topology.thread_bits_offset + x86_processor.topology.thread_bits_length,
 			x86_processor.topology.core_bits_offset + x86_processor.topology.core_bits_length);
 
 		const uint32_t apic_id =
-			((smt_id & smt_bits_mask) << x86_processor.topology.smt_bits_offset) |
+			((smt_id & thread_bits_mask) << x86_processor.topology.thread_bits_offset) |
 			((core_id & core_bits_mask) << x86_processor.topology.core_bits_offset) |
 			(package_id << package_bits_offset);
-		processors[t].topology = (cpuinfo_topology) {
+		processors[t].topology = (struct cpuinfo_topology) {
 			.thread_id  = smt_id,
 			.core_id    = core_id,
 			.package_id = package_id
@@ -244,10 +248,19 @@ void cpuinfo_x86_mach_init(void) {
 	}
 
 	/* Commit changes */
+	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
+	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
+	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
+	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
+	cpuinfo_cache[cpuinfo_cache_level_4]  = l4;
+
 	cpuinfo_processors = processors;
-	cpuinfo_l1i_cache = l1i;
-	cpuinfo_l1d_cache = l1d;
-	cpuinfo_l2_cache = l2;
-	cpuinfo_l3_cache = l3;
-	cpuinfo_l4_cache = l4;
+
+	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
+
+	cpuinfo_processors_count = mach_topology.threads;
 }

@@ -1,9 +1,11 @@
+#include <stddef.h>
+
 #include <cpuinfo.h>
 #include <api.h>
 
 
-struct cpuinfo_cache* cpuinfo_cache[cpuinfo_cache_level_max];
-uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
+struct cpuinfo_cache* cpuinfo_cache[cpuinfo_cache_level_max] = { NULL };
+uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max] = { 0 };
 
 struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l1i_cache(void) {
 	return (struct cpuinfo_caches) {

@@ -17,6 +17,10 @@ static inline uint32_t max(uint32_t a, uint32_t b) {
 	return a > b ? a : b;
 }
 
+static inline uint32_t bit_mask(uint32_t bits) {
+	return (UINT32_C(1) << bits) - UINT32_C(1);
+}
+
 static int cmp_x86_processor_by_apic_id(const void* processor_a, const void* processor_b) {
 	const uint32_t id_a = ((const struct cpuinfo_x86_processor*) processor_a)->topology.apic_id;
 	const uint32_t id_b = ((const struct cpuinfo_x86_processor*) processor_b)->topology.apic_id;
@@ -26,10 +30,6 @@ static int cmp_x86_processor_by_apic_id(const void* processor_a, const void* pro
 	} else {
 		return id_a > id_b;
 	}
-}
-
-static uint32_t bit_mask(uint32_t bits) {
-	return (UINT32_C(1) << bits) - UINT32_C(1);
 }
 
 static uint32_t cpuinfo_x86_count_caches(
