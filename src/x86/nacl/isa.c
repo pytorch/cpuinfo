@@ -217,68 +217,89 @@ struct cpuinfo_x86_isa cpuinfo_x86_nacl_detect_isa(void) {
 		goto finish;
 	}
 
-	isa.cmpxchg16b = !nacl_irt_dyncode.dyncode_create((void*) code_segment, cmpxchg16b_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.cmpxchg16b = !nacl_irt_dyncode.dyncode_create((void*) code_segment, cmpxchg16b_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.lzcnt = !nacl_irt_dyncode.dyncode_create((void*) code_segment, lzcnt_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.lzcnt = !nacl_irt_dyncode.dyncode_create((void*) code_segment, lzcnt_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.popcnt = !nacl_irt_dyncode.dyncode_create((void*) code_segment, popcnt_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.popcnt = !nacl_irt_dyncode.dyncode_create((void*) code_segment, popcnt_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.movbe = !nacl_irt_dyncode.dyncode_create((void*) code_segment, movbe_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.movbe = !nacl_irt_dyncode.dyncode_create((void*) code_segment, movbe_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.bmi = !nacl_irt_dyncode.dyncode_create((void*) code_segment, bmi_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.bmi = !nacl_irt_dyncode.dyncode_create((void*) code_segment, bmi_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.tbm = !nacl_irt_dyncode.dyncode_create((void*) code_segment, tbm_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.tbm = !nacl_irt_dyncode.dyncode_create((void*) code_segment, tbm_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.three_d_now = !nacl_irt_dyncode.dyncode_create((void*) code_segment, three_d_now_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.three_d_now = !nacl_irt_dyncode.dyncode_create((void*) code_segment, three_d_now_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
 	isa.three_d_now_plus =
-		!nacl_irt_dyncode.dyncode_create((void*) code_segment, three_d_now_plus_bundle, NACL_CODE_BUNDLE_SIZE);
+		!nacl_irt_dyncode.dyncode_create((void*) code_segment, three_d_now_plus_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.sse3 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse3_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.sse3 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse3_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.ssse3 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, ssse3_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.ssse3 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, ssse3_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.sse4_1 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse4_1_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.sse4_1 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse4_1_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.sse4_2 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse4_2_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.sse4_2 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse4_2_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.sse4a = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse4a_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.sse4a = !nacl_irt_dyncode.dyncode_create((void*) code_segment, sse4a_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.aes = !nacl_irt_dyncode.dyncode_create((void*) code_segment, aes_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.aes = !nacl_irt_dyncode.dyncode_create((void*) code_segment, aes_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.pclmulqdq = !nacl_irt_dyncode.dyncode_create((void*) code_segment, pclmulqdq_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.pclmulqdq = !nacl_irt_dyncode.dyncode_create((void*) code_segment, pclmulqdq_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.avx = !nacl_irt_dyncode.dyncode_create((void*) code_segment, avx_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.avx = !nacl_irt_dyncode.dyncode_create((void*) code_segment, avx_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.fma3 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, fma3_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.fma3 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, fma3_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.fma4 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, fma4_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.fma4 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, fma4_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.xop = !nacl_irt_dyncode.dyncode_create((void*) code_segment, xop_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.xop = !nacl_irt_dyncode.dyncode_create((void*) code_segment, xop_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.f16c = !nacl_irt_dyncode.dyncode_create((void*) code_segment, f16c_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.f16c = !nacl_irt_dyncode.dyncode_create((void*) code_segment, f16c_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 	code_segment += NACL_CODE_BUNDLE_SIZE;
 
-	isa.avx2 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, avx2_bundle, NACL_CODE_BUNDLE_SIZE);
+	isa.avx2 = !nacl_irt_dyncode.dyncode_create((void*) code_segment, avx2_bundle, NACL_CODE_BUNDLE_SIZE) &&
+		(*((const uint8_t*) code_segment) != 0xF4);
 
 finish:
 	return isa;
