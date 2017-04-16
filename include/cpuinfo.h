@@ -110,6 +110,7 @@
 		bool prefetchw;
 		bool prefetchwt1;
 		#if CPUINFO_ARCH_X86
+			bool daz;
 			bool sse;
 			bool sse2;
 		#endif

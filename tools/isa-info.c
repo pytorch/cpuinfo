@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
 		printf("\t3dnow!+: %s\n", cpuinfo_isa.three_d_now_plus ? "yes" : "no");
 #if CPUINFO_ARCH_X86
 		printf("\t3dnow! Geode: %s\n", cpuinfo_isa.three_d_now_geode ? "yes" : "no");
+		printf("\tDAZ: %s\n", cpuinfo_isa.daz ? "yes" : "no");
 		printf("\tSSE: %s\n", cpuinfo_isa.sse ? "yes" : "no");
 		printf("\tSSE2: %s\n", cpuinfo_isa.sse2 ? "yes" : "no");
 #endif

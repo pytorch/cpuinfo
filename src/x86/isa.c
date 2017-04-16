@@ -6,6 +6,25 @@
 #include <cpuinfo.h>
 
 
+#if CPUINFO_ARCH_X86
+	struct fxsave_region {
+		uint16_t fpu_control_word;
+		uint16_t fpu_status_word;
+		uint16_t fpu_tag_word;
+		uint16_t fpu_opcode;
+		uint32_t fpu_instruction_pointer_offset;
+		uint32_t fpu_instruction_pointer_selector;
+		uint32_t fpu_operand_pointer_offset;
+		uint32_t fpu_operand_pointer_selector;
+		uint32_t mxcsr_state;
+		uint32_t mxcsr_mask;
+		uint64_t fpu_registers[8 * 2];
+		uint64_t xmm_registers[8 * 2];
+		uint64_t padding[28];
+	} __attribute__((__aligned__(16), __packed__));
+#endif
+
+
 struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info,
 	uint32_t max_base_index, uint32_t max_extended_index, enum cpuinfo_vendor vendor)
 {
@@ -270,6 +289,28 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 	 * - Intel, AMD: ecx[bit 0] in basic info.
 	 */
 	isa.sse3 = !!(basic_info.ecx & UINT32_C(0x00000001));
+
+#if CPUINFO_ARCH_X86
+	/*
+	 * CPUs with x86-64 or SSE3 always support DAZ (denormals-as-zero) mode.
+	 * Only early Pentium 4 models may not support it.
+	 */
+	if (isa.sse3) {
+		isa.daz = true;
+	} else {
+		/* Detect DAZ support from masked MXCSR bits */
+		if (isa.sse && isa.fxsave) {
+			struct fxsave_region region = { 0 };
+			__asm__ __volatile__ ("fxsave %[region];" : [region] "+m" (region));
+
+			/*
+			 * Denormals-as-zero (DAZ) flag:
+			 * - Intel, AMD: MXCSR[bit 6]
+			 */
+			isa.daz = !!(region.mxcsr_mask & UINT32_C(0x00000040));
+		}
+	}
+#endif
 
 	/*
 	 * SSSE3 instructions:
