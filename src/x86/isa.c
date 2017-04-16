@@ -26,7 +26,8 @@
 
 
 struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info,
-	uint32_t max_base_index, uint32_t max_extended_index, enum cpuinfo_vendor vendor)
+	uint32_t max_base_index, uint32_t max_extended_index,
+	enum cpuinfo_vendor vendor, enum cpuinfo_uarch uarch)
 {
 	struct cpuinfo_x86_isa isa = { 0 };
 
@@ -99,7 +100,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 	 * - Intel, AMD: edx[bit 4] in basic info.
 	 * - AMD: edx[bit 4] in extended info (reserved bit on Intel CPUs).
 	 */
-	isa.rdtsc = !!((basic_info.edx[3] | extended_info.edx[3]) & UINT32_C(0x00000010));
+	isa.rdtsc = !!((basic_info.edx | extended_info.edx) & UINT32_C(0x00000010));
 #endif
 
 	/*
@@ -196,7 +197,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 	 * - Intel, AMD: edx[bit 25] in basic info (SSE feature flag).
 	 * - Pre-SSE AMD: edx[bit 22] in extended info (zero bit on Intel CPUs).
 	 */
-	isa.mmx_plus = !!(basic_info.edx & UINT32_C(0x02000000) | extended_info.edx & UINT32_C(0x00400000));
+	isa.mmx_plus = !!((basic_info.edx & UINT32_C(0x02000000)) | (extended_info.edx & UINT32_C(0x00400000)));
 #endif
 
 	/*

@@ -18,9 +18,9 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x02: // Pentium (75, 90, 100, 120, 133, 150, 166, 200)
 						case 0x03: // Pentium OverDrive for Intel486-based systems
 						case 0x04: // Pentium MMX
-							return cpuinfo_arch_p5;
+							return cpuinfo_uarch_p5;
 						case 0x09:
-							return cpuinfo_arch_quark;
+							return cpuinfo_uarch_quark;
 					}
 					break;
 #endif /* CPUINFO_ARCH_X86 */

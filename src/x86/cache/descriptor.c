@@ -891,7 +891,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 #if CPUINFO_ARCH_X86
 				case cpuinfo_vendor_cyrix:
 				case cpuinfo_vendor_nsc:
-					*dtlb_4KB = itlb_4KB = (struct cpuinfo_tlb) {
+					*dtlb_4KB = *itlb_4KB = (struct cpuinfo_tlb) {
 						.entries = 32,
 						.associativity = 4,
 						.pages = CPUINFO_PAGE_SIZE_4KB

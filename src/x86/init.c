@@ -50,7 +50,7 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor processor[restrict 
 		#ifdef __native_client__
 			cpuinfo_isa = cpuinfo_x86_nacl_detect_isa();			
 		#else
-			cpuinfo_isa = cpuinfo_x86_detect_isa(leaf1, max_base_index, max_extended_index, vendor);
+			cpuinfo_isa = cpuinfo_x86_detect_isa(leaf1, max_base_index, max_extended_index, vendor, uarch);
 		#endif
 	}
 }
