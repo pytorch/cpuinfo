@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
 		case cpuinfo_uarch_zen:
 			printf("uArch: Zen\n");
 			break;
-		case cpuinco_uarch_geode:
+		case cpuinfo_uarch_geode:
 			printf("uArch: Geode\n");
 			break;
 		case cpuinfo_uarch_bobcat:

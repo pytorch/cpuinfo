@@ -445,7 +445,7 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_zen         = 0x00200109,
 
 	/** NSC Geode and AMD Geode GX and LX. */
-	cpuinco_uarch_geode  = 0x00200200,
+	cpuinfo_uarch_geode  = 0x00200200,
 	/** AMD Bobcat mobile microarchitecture. */
 	cpuinfo_uarch_bobcat = 0x00200201,
 	/** AMD Jaguar mobile microarchitecture. */
