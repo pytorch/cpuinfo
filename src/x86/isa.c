@@ -25,7 +25,8 @@
 #endif
 
 
-struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info,
+struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
+	const struct cpuid_regs basic_info, const struct cpuid_regs extended_info,
 	uint32_t max_base_index, uint32_t max_extended_index,
 	enum cpuinfo_vendor vendor, enum cpuinfo_uarch uarch)
 {
@@ -33,11 +34,6 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info
 
 	const struct cpuid_regs structured_feature_info =
 		(max_base_index >= 7) ? cpuidex(7, 0) : (struct cpuid_regs) { 0, 0, 0, 0};
-
-	const uint32_t extended_info_index = UINT32_C(0x80000001);
-	const struct cpuid_regs extended_info =
-		max_extended_index >= extended_info_index ?
-			cpuid(extended_info_index) : (struct cpuid_regs) { 0, 0, 0, 0 };
 
 	const uint32_t processor_capacity_info_index = UINT32_C(0x80000008);
 	const struct cpuid_regs processor_capacity_info =

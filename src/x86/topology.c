@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 #include <cpuinfo.h>
+#include <utils.h>
 #include <log.h>
 #include <x86/api.h>
 #include <x86/cpuid.h>
@@ -30,7 +31,7 @@ void cpuinfo_x86_detect_topology(
 		apic_id = leaf1.ebx >> 24;
 		const uint32_t logical_processors = (leaf1.ebx >> 16) & UINT32_C(0x000000FF);
 		if (logical_processors != 0) {
-			const uint32_t log2_max_logical_processors = 32 - __builtin_clz(logical_processors - 1);
+			const uint32_t log2_max_logical_processors = bit_length(logical_processors);
 			const uint32_t log2_max_threads_per_core = log2_max_logical_processors - topology->core_bits_length;
 			topology->core_bits_offset = log2_max_threads_per_core;
 			topology->thread_bits_length = log2_max_threads_per_core;

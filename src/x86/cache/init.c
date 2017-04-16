@@ -1,6 +1,8 @@
 #include <stdint.h>
 
 #include <cpuinfo.h>
+#include <utils.h>
+#include <log.h>
 #include <x86/cpuid.h>
 #include <x86/api.h>
 
@@ -10,8 +12,16 @@ union cpuinfo_x86_cache_descriptors {
 	uint8_t as_bytes[16];
 };
 
+enum cache_type {
+	cache_type_none = 0,
+	cache_type_data = 1,
+	cache_type_instruction = 2,
+	cache_type_unified = 3,
+};
+
 void cpuinfo_x86_detect_cache(
 	uint32_t max_base_index, uint32_t max_extended_index,
+	bool amd_topology_extensions,
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info model_info[restrict static 1],
 	struct cpuinfo_x86_caches cache[restrict static 1],
@@ -64,8 +74,15 @@ iterate_descriptors:
 			} while (cpuinfo_x86_decode_deterministic_cache_parameters(
 				leaf4, cache, &package_cores_max));
 			if (package_cores_max != 0) {
-				*log2_package_cores_max = 32 - __builtin_clz(package_cores_max - 1);
+				*log2_package_cores_max = bit_length(package_cores_max);
 			}
 		}
+	}
+	if (amd_topology_extensions && max_extended_index >= UINT32_C(0x8000001D)) {
+		struct cpuid_regs leaf0x8000001D;
+		uint32_t input_ecx = 0;
+		do {
+			leaf0x8000001D = cpuidex(UINT32_C(0x8000001D), input_ecx++);
+		} while (cpuinfo_x86_decode_cache_properties(leaf0x8000001D, cache));
 	}
 }

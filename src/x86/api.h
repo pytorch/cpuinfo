@@ -75,7 +75,8 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info model_info[restrict static 1]);
 
-struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(const struct cpuid_regs basic_info,
+struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
+	const struct cpuid_regs basic_info, const struct cpuid_regs extended_info,
 	uint32_t max_base_index, uint32_t max_extended_index,
 	enum cpuinfo_vendor vendor, enum cpuinfo_uarch uarch);
 struct cpuinfo_x86_isa cpuinfo_x86_nacl_detect_isa(void);
@@ -88,6 +89,7 @@ void cpuinfo_x86_detect_topology(
 
 void cpuinfo_x86_detect_cache(
 	uint32_t max_base_index, uint32_t max_extended_index,
+	bool amd_topology_extensions,
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info model_info[restrict static 1],
 	struct cpuinfo_x86_caches cache[restrict static 1],
@@ -129,3 +131,7 @@ bool cpuinfo_x86_decode_deterministic_cache_parameters(
 	struct cpuid_regs regs,
 	struct cpuinfo_x86_caches cache[restrict static 1],
 	uint32_t package_cores_max[restrict static 1]);
+
+bool cpuinfo_x86_decode_cache_properties(
+	struct cpuid_regs regs,
+	struct cpuinfo_x86_caches cache[restrict static 1]);
