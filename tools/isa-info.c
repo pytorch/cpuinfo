@@ -95,8 +95,6 @@ int main(int argc, char** argv) {
 		printf("\tPadlock ACE 2: %s\n", cpuinfo_isa.ace2 ? "yes" : "no");
 		printf("\tPadlock PHE: %s\n", cpuinfo_isa.phe ? "yes" : "no");
 		printf("\tPadlock PMM: %s\n", cpuinfo_isa.pmm ? "yes" : "no");
-		printf("\tPadlock LWP: %s\n", cpuinfo_isa.lwp ? "yes" : "no");
-		printf("\tPadlock RDTSCP: %s\n", cpuinfo_isa.rdtscp ? "yes" : "no");
 
 
 	printf("Profiling instructions:\n");
