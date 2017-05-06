@@ -1,0 +1,14 @@
+Processor	: NVIDIA Denver 1.0 rev 0 (aarch64)
+processor	: 0
+processor	: 1
+Features	: fp asimd aes pmull sha1 sha2 crc32 
+CPU implementer	: 0x4e
+CPU architecture: AArch64
+CPU variant	: 0x0
+CPU part	: 0x000
+CPU revision	: 0
+
+Hardware	: Flounder
+Revision	: 0000
+Serial		: 0000000000000000
+MTS version	: 33410787
