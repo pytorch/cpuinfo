@@ -2,11 +2,23 @@
 
 cpuinfo is a library to detect essential for performance optimization information about host CPU. Planned features:
 
-- Processor name detection
+- Processor (SoC) name detection
   - [ ] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
   - [ ] Using `/proc/cpuinfo` on ARM
   - [ ] Using kernel log (`dmesg`) on ARM
   - [ ] Using `ro.chipname`, `ro.board.platform`, `ro.product.board` properties (Android)
+- Vendor and microarchitecture detection
+  - [x] Intel-designed x86/x86-64 cores (up to Kaby Lake, Airmont, and Knights Mill)
+  - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen)
+  - [ ] VIA-designed x86/x86-64 cores
+  - [ ] Other x86 cores (DM&P, RDC, Transmeta, Cyrix, Rise)
+  - [x] ARM-designed ARM cores (up to Cortex-A17, Cortex-73)
+  - [x] Qualcomm-designed ARM cores (up to Kryo and Kryo-280)
+  - [x] nVidia-designed ARM cores (Denver)
+  - [x] Samsung-designed ARM cores (Mongoose)
+  - [x] Intel-designed ARM cores (XScale up to 3rd-gen)
+  - [ ] Apple-designed ARM cores (up to Hurricane)
+  - [ ] Server ARM cores
 - Instruction set detection
   - [x] Using CPUID on x86/x86-64 (Linux, Mach)
   - [x] Using dynamic code generation validator on x86-64 (Native Client)
