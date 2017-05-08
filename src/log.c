@@ -9,9 +9,16 @@
 		va_list args;
 		va_start(args, format);
 
-		dprintf(STDERR_FILENO, "Error: ");
-		vdprintf(STDERR_FILENO, format, args);
-		dprintf(STDERR_FILENO, "\n");
+		#ifdef __ANDROID__
+			fprintf(stderr, "Error: ");
+			vfprintf(stderr, format, args);
+			fprintf(stderr, "\n");
+			fflush(stderr);
+		#else
+			dprintf(STDERR_FILENO, "Error: ");
+			vdprintf(STDERR_FILENO, format, args);
+			dprintf(STDERR_FILENO, "\n");
+		#endif
 
 		va_end(args);
 	}
@@ -22,9 +29,16 @@
 		va_list args;
 		va_start(args, format);
 
-		dprintf(STDERR_FILENO, "Warning: ");
-		vdprintf(STDERR_FILENO, format, args);
-		dprintf(STDERR_FILENO, "\n");
+		#ifdef __ANDROID__
+			fprintf(stderr, "Warning: ");
+			vfprintf(stderr, format, args);
+			fprintf(stderr, "\n");
+			fflush(stderr);
+		#else
+			dprintf(STDERR_FILENO, "Warning: ");
+			vdprintf(STDERR_FILENO, format, args);
+			dprintf(STDERR_FILENO, "\n");
+		#endif
 
 		va_end(args);
 	}
@@ -35,8 +49,14 @@
 		va_list args;
 		va_start(args, format);
 
-		vdprintf(STDOUT_FILENO, format, args);
-		dprintf(STDOUT_FILENO, "\n");
+		#ifdef __ANDROID__
+			vprintf(format, args);
+			printf("\n");
+			fflush(stdout);
+		#else
+			vdprintf(STDOUT_FILENO, format, args);
+			dprintf(STDOUT_FILENO, "\n");
+		#endif
 
 		va_end(args);
 	}
@@ -47,8 +67,14 @@
 		va_list args;
 		va_start(args, format);
 
-		vdprintf(STDOUT_FILENO, format, args);
-		dprintf(STDOUT_FILENO, "\n");
+		#ifdef __ANDROID__
+			vprintf(format, args);
+			printf("\n");
+			fflush(stdout);
+		#else
+			vdprintf(STDOUT_FILENO, format, args);
+			dprintf(STDOUT_FILENO, "\n");
+		#endif
 
 		va_end(args);
 	}

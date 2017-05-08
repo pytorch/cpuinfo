@@ -6,6 +6,8 @@ deps/
 build/
 bin/
 lib/
+libs/
+obj/
 *.pyc
 *.pyo
 
