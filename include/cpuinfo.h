@@ -621,6 +621,10 @@ extern struct cpuinfo_processor* cpuinfo_processors;
 extern struct cpuinfo_cores* cpuinfo_cores;
 extern struct cpuinfo_package* cpuinfo_packages;
 
+extern uint32_t cpuinfo_processors_count;
+extern uint32_t cpuinfo_cores_count;
+extern uint32_t cpuinfo_packages_count;
+
 
 #ifdef __cplusplus
 } /* extern "C" */

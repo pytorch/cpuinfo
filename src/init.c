@@ -4,11 +4,13 @@
 #include <api.h>
 
 
-struct cpuinfo_processor* cpuinfo_processors;
-struct cpuinfo_cores* cpuinfo_cores;
-struct cpuinfo_package* cpuinfo_packages;
+struct cpuinfo_processor* cpuinfo_processors = NULL;
+struct cpuinfo_cores* cpuinfo_cores = NULL;
+struct cpuinfo_package* cpuinfo_packages = NULL;
 
-uint32_t cpuinfo_processors_count;
+uint32_t cpuinfo_processors_count = 0;
+uint32_t cpuinfo_cores_count = 0;
+uint32_t cpuinfo_packages_count = 0;
 
 
 static pthread_once_t init_guard = PTHREAD_ONCE_INIT;

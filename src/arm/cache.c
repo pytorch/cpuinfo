@@ -507,7 +507,7 @@ void cpuinfo_arm_decode_cache(
 	l1d->sets = l1d->size / (l1d->associativity * l1d->line_size);
 	l1d->partitions = 1;
 	if (l2->size != 0) {
-		l2->sets = l1d->size / (l1d->associativity * l1d->line_size);
+		l2->sets = l2->size / (l2->associativity * l2->line_size);
 		l2->partitions = 1;
 	}
 }

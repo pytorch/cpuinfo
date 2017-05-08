@@ -356,13 +356,12 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
 	cpuinfo_cache[cpuinfo_cache_level_4]  = l4;
 
+	cpuinfo_processors_count = processors_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
-
-	cpuinfo_processors_count = processors_count;
 
 	processors = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
