@@ -6,7 +6,7 @@ cpuinfo is a library to detect essential for performance optimization informatio
   - [ ] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
   - [ ] Using `/proc/cpuinfo` on ARM
   - [ ] Using kernel log (`dmesg`) on ARM
-  - [ ] Using `ro.chipname`, 'ro.board.platform', 'ro.product.board' properties (Android)
+  - [ ] Using `ro.chipname`, `ro.board.platform`, `ro.product.board` properties (Android)
 - Instruction set detection
   - [x] Using CPUID on x86/x86-64 (Linux, Mach)
   - [x] Using dynamic code generation validator on x86-64 (Native Client)
