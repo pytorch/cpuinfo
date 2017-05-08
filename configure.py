@@ -60,6 +60,8 @@ def main(args):
                     build.unittest("raspberry-pi2-test", build.cxx("raspberry-pi2.cc"))
                     build.unittest("raspberry-pi3-test", build.cxx("raspberry-pi3.cc"))
                     build.unittest("pandaboard-es-test", build.cxx("pandaboard-es.cc"))
+                    build.unittest("odroid-u2-test", build.cxx("odroid-u2.cc"))
+                    build.unittest("arndaleboard-test", build.cxx("arndaleboard.cc"))
 
     return build
 
