@@ -62,6 +62,7 @@ def main(args):
                     build.unittest("pandaboard-es-test", build.cxx("pandaboard-es.cc"))
                     build.unittest("odroid-u2-test", build.cxx("odroid-u2.cc"))
                     build.unittest("arndaleboard-test", build.cxx("arndaleboard.cc"))
+                    build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
 
     return build
 

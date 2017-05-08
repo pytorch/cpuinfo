@@ -335,7 +335,7 @@ void cpuinfo_arm_decode_cache(
 			/*
 			 * ARM Cortex-A53 MPCore Processor Technical Reference Manual:
 			 * 6.1. About the L1 memory system
-			 *   he L1 memory system consists of separate instruction and data caches. The implementer configures the
+			 *   The L1 memory system consists of separate instruction and data caches. The implementer configures the
 			 *   instruction and data caches independently during implementation, to sizes of 8KB, 16KB, 32KB, or 64KB.
 			 *
 			 *   The L1 Instruction memory system has the following key features:
@@ -375,6 +375,52 @@ void cpuinfo_arm_decode_cache(
 				.size = uarch_cores * 128 * 1024,
 				.associativity = 16,
 				.line_size = 64
+			};
+			break;
+		case cpuinfo_uarch_cortex_a57:
+			/*
+			 * ARM Cortex-A57 MPCore Processor Technical Reference Manual:
+			 * 6.1. About the L1 memory system
+			 *   The L1 memory system consists of separate instruction and data caches.
+			 *
+			 *   The L1 instruction memory system has the following features:
+			 *    - 48KB 3-way set-associative instruction cache.
+			 *    - Fixed line length of 64 bytes.
+			 *
+			 *   The L1 data memory system has the following features:
+			 *    - 32KB 2-way set-associative data cache.
+			 *    - Fixed line length of 64 bytes.
+			 *
+			 * 7.1 About the L2 memory system
+			 *   The features of the L2 memory system include:
+			 *    - Configurable L2 cache size of 512KB, 1MB, and 2MB.
+			 *    - Fixed line length of 64 bytes.
+			 *    - 16-way set-associative cache structure.
+			 *    - Inclusion property with L1 data caches.
+			 *
+			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
+			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | Reference |
+			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
+			 *  | Jetson TX1         |   4   |    32K    |    48K    |    2M     |    [1]    |
+			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
+			 *
+			 * [1] https://devblogs.nvidia.com/parallelforall/jetson-tx2-delivers-twice-intelligence-edge/
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 48 * 1024,
+				.associativity = 3,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 32 * 1024,
+				.associativity = 2,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = uarch_cores * 512 * 1024,
+				.associativity = 16,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_INCLUSIVE
 			};
 			break;
 		case cpuinfo_uarch_scorpion:
@@ -505,7 +551,6 @@ void cpuinfo_arm_decode_cache(
 		case cpuinfo_uarch_cortex_a17:
 		case cpuinfo_uarch_cortex_a32:
 		case cpuinfo_uarch_cortex_a35:
-		case cpuinfo_uarch_cortex_a57:
 		case cpuinfo_uarch_cortex_a72:
 		case cpuinfo_uarch_cortex_a73:
 		default:
