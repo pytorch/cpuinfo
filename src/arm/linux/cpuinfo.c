@@ -245,6 +245,15 @@ static void parse_cpu_architecture(
 	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
 {
 	const size_t cpu_architecture_length = (size_t) (cpu_architecture_end - cpu_architecture_start);
+	/* Early AArch64 kernels report "CPU architecture: AArch64" instead of a numeric value 8 */
+	if (cpu_architecture_length == 7) {
+		if (memcmp(cpu_architecture_start, "AArch64", cpu_architecture_length) == 0) {
+			proc_cpuinfo->architecture.version = 8;
+			proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_ARCHITECTURE;
+			return;
+		}
+	}
+
 
 	uint32_t architecture = 0;
 	const char* cpu_architecture_ptr = cpu_architecture_start;
@@ -259,31 +268,39 @@ static void parse_cpu_architecture(
 		architecture = architecture * 10 + digit;
 	}
 
-	if (architecture != 0) {
-		proc_cpuinfo->architecture.version = architecture;
-		proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_ARCHITECTURE;
+	if (cpu_architecture_ptr == cpu_architecture_start) {
+		cpuinfo_log_warning("CPU architecture %.*s in /proc/cpuinfo is ignored due to non-digit at the beginning of the string",
+			(int) cpu_architecture_length, cpu_architecture_start);
+	} else {
+		if (architecture != 0) {
+			proc_cpuinfo->architecture.version = architecture;
+			proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_ARCHITECTURE;
 
-		for (; cpu_architecture_ptr != cpu_architecture_end; cpu_architecture_ptr++) {
-			const char feature = *cpu_architecture_ptr;
-			switch (feature) {
-				case 'T':
-					proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_T;
-					break;
-				case 'E':
-					proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_E;
-					break;
-				case 'J':
-					proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_J;
-					break;
-				case ' ':
-				case '\t':
-					/* Ignore whitespace at the end */
-					break;
-				default:
-					cpuinfo_log_warning("skipped unknown architectural feature '%c' for ARMv%"PRIu32,
-						feature, architecture);
-					break;
+			for (; cpu_architecture_ptr != cpu_architecture_end; cpu_architecture_ptr++) {
+				const char feature = *cpu_architecture_ptr;
+				switch (feature) {
+					case 'T':
+						proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_T;
+						break;
+					case 'E':
+						proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_E;
+						break;
+					case 'J':
+						proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_J;
+						break;
+					case ' ':
+					case '\t':
+						/* Ignore whitespace at the end */
+						break;
+					default:
+						cpuinfo_log_warning("skipped unknown architectural feature '%c' for ARMv%"PRIu32,
+							feature, architecture);
+						break;
+				}
 			}
+		} else {
+			cpuinfo_log_warning("CPU architecture %.*s in /proc/cpuinfo is ignored due to invalid value (0)",
+				(int) cpu_architecture_length, cpu_architecture_start);
 		}
 	}
 }
@@ -543,12 +560,12 @@ static void parse_cache_number(
 static uint32_t parse_line(
 	const char* line_start,
 	const char* line_end,
-	uint32_t processor_number,
+	uint32_t processor_count,
 	struct proc_cpuinfo* proc_cpuinfo)
 {
 	/* Empty line. Skip. */
 	if (line_start == line_end) {
-		return processor_number;
+		return processor_count;
 	}
 	
 	/* Search for ':' on the line. */
@@ -562,7 +579,7 @@ static uint32_t parse_line(
 	if (separator == line_end) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
 			(int) (line_end - line_start), line_start);
-		return processor_number;
+		return processor_count;
 	}
 
 	/* Skip trailing spaces in key part. */
@@ -576,7 +593,7 @@ static uint32_t parse_line(
 	if (key_end == line_start) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key contains only spaces",
 			(int) (line_end - line_start), line_start);
-		return processor_number;
+		return processor_count;
 	}
 
 	/* Skip leading spaces in value part. */
@@ -590,7 +607,7 @@ static uint32_t parse_line(
 	if (value_start == line_end) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: value contains only spaces",
 			(int) (line_end - line_start), line_start);
-		return processor_number;
+		return processor_count;
 	}
 
 	/* Skip trailing spaces in value part (if any) */
@@ -659,13 +676,13 @@ static uint32_t parse_line(
 				const uint32_t new_processor_number =
 					parse_processor_number(value_start, value_end, proc_cpuinfo);
 				const uint32_t new_processors_count = new_processor_number + 1;
-				if (new_processors_count <= processor_number && processor_number != 0) {
+				if (new_processor_number < processor_count && new_processor_number != 0) {
 					cpuinfo_log_warning("ignored unexpectedly low processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
-						new_processor_number, processor_number);
+						new_processor_number, processor_count - 1);
 				} else {
-					if (new_processors_count > processor_number + 1) {
+					if (new_processor_number > processor_count) {
 						cpuinfo_log_info("unexpectedly high processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
-							new_processor_number, processor_number);
+							new_processor_number, processor_count - 1);
 						return new_processors_count;
 					}
 					return new_processors_count;
@@ -724,7 +741,7 @@ static uint32_t parse_line(
 			cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int) key_length, line_start);
 
 	}
-	return processor_number;
+	return processor_count;
 }
 
 struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_count_ptr[restrict static 1]) {

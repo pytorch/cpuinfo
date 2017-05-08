@@ -114,7 +114,17 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 
 		if ((features & PROC_CPUINFO_FEATURE_IDIV) == PROC_CPUINFO_FEATURE_IDIV) {
 			cpuinfo_isa.idiv = true;
+		} else {
+			/* Qualcomm Krait may have buggy kernel configuration that doesn't report IDIV */
+			if (cpu_implementer == 'Q') {
+				switch (cpu_part) {
+					case 0x04D: /* Dual-core Krait */
+					case 0x06F: /* Quad-core Krait */
+						cpuinfo_isa.idiv = true;
+				}
+			}
 		}
+
 		const uint32_t vfp_mask = \
 			PROC_CPUINFO_FEATURE_VFP | PROC_CPUINFO_FEATURE_VFPV3 | PROC_CPUINFO_FEATURE_VFPV3D16 | \
 			PROC_CPUINFO_FEATURE_VFPD32 | PROC_CPUINFO_FEATURE_VFPV4 | PROC_CPUINFO_FEATURE_NEON;

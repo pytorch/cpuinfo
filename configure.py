@@ -68,6 +68,10 @@ def main(args):
                     build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
 
                     build.unittest("nexus-s-test", build.cxx("nexus-s.cc"))
+                    build.unittest("galaxy-nexus-test", build.cxx("galaxy-nexus.cc"))
+                    build.unittest("nexus4-test", build.cxx("nexus4.cc"))
+                    build.unittest("nexus5-test", build.cxx("nexus5.cc"))
+                    build.unittest("nexus9-test", build.cxx("nexus9.cc"))
 
     return build
 

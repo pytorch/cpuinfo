@@ -524,6 +524,32 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64 /* assume same as Krait */
 			};
 			break;
+		case cpuinfo_uarch_denver:
+			/*
+			 * The Denver chip includes a 128KB, 4-way level 1 instruction cache, a 64KB, 4-way level 2 data cache,
+			 * and a 2MB, 16-way level 2 cache, all of which can service both cores. [1]
+			 *
+			 * All the caches have 64-byte lines. [2]
+			 *
+			 * [1] http://www.pcworld.com/article/2463900/nvidia-reveals-pc-like-performance-for-denver-tegra-k1.html
+			 * [2] http://linleygroup.com/newsletters/newsletter_detail.php?num=5205&year=2014
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 128 * 1024,
+				.associativity = 4,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = 2 * 1024 * 1024,
+				.associativity = 16,
+				.line_size = 64
+			};
+			break;
 		case cpuinfo_uarch_mongoose:
 			/*
 			 * - "Moving past branch prediction we can see some elements of how the cache is set up for the L1 I$,
