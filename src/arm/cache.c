@@ -278,7 +278,8 @@ void cpuinfo_arm_decode_cache(
 			};
 			*l2 = (struct cpuinfo_cache) {
 				.size = 1024 * 1024,
-				.associativity = 8,
+				/* OMAP4460 in Pandaboard ES has 16-way set-associative L2 cache */
+				.associativity = 16,
 				.line_size = 32
 			};
 			break;
