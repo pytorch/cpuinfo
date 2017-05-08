@@ -175,9 +175,9 @@ bool cpuinfo_linux_parse_cpuset(const char* filename, cpu_set_t* cpuset) {
 				}
 			} while (entry_end != data_end);
 
-			/* Copy remaining partial entry data at the end to the beginning of the buffer */
+			/* Move remaining partial entry data at the end to the beginning of the buffer */
 			const size_t entry_length = (size_t) (entry_end - entry_start);
-			memcpy(buffer, entry_start, entry_length);
+			memmove(buffer, entry_start, entry_length);
 			data_start = &buffer[entry_length];
 		}
 	} while (bytes_read != 0);

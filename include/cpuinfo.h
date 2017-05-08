@@ -187,6 +187,44 @@
 	};
 #endif
 
+#if CPUINFO_ARCH_ARM
+	struct cpuinfo_arm_isa {
+		bool thumb;
+		bool thumb2;
+		bool thumbee;
+		bool jazelle;
+		bool armv5e;
+		bool armv6;
+		bool armv6k;
+		bool armv7;
+		bool armv7mp;
+		bool idiv;
+
+		bool vfpv2;
+		bool vfpv3;
+		bool d32;
+		bool fp16;
+		bool fma;
+
+		bool wmmx;
+		bool wmmx2;
+		bool neon;
+
+		bool aes;
+		bool sha1;
+		bool sha2;
+		bool pmull;
+		bool crc32;
+	};
+
+	struct cpuinfo_arm_model_info {
+		uint16_t implementer;
+		uint16_t variant;
+		uint16_t part;
+		uint16_t revision;
+	};
+#endif
+
 #define CPUINFO_CACHE_UNIFIED          0x00000001
 #define CPUINFO_CACHE_INCLUSIVE        0x00000002
 #define CPUINFO_CACHE_COMPLEX_INDEXING 0x00000004
@@ -417,6 +455,9 @@ enum cpuinfo_uarch {
 	/** Intel Knights Mill Xeon Phi. */
 	cpuinfo_uarch_knights_mill    = 0x00100504,
 
+	/** Intel/Marvell XScale series. */
+	cpuinfo_uarch_xscale = 0x00100600,
+
 	/** AMD K5. */
 	cpuinfo_uarch_k5        = 0x00200100,
 	/** AMD K6 and alike. */
@@ -493,19 +534,22 @@ enum cpuinfo_uarch {
 	/** Qualcomm Kryo. */
 	cpuinfo_uarch_kryo     = 0x00400102,
 
+	/** nVidia Denver. */
+	cpuinfo_uarch_denver   = 0x00500100,
+
 	/** Samsung Mongoose. */
-	cpuinfo_uarch_mongoose = 0x00500100,
+	cpuinfo_uarch_mongoose = 0x00600100,
 
 	/** Apple A6 and A6X processors. */
-	cpuinfo_uarch_swift     = 0x00600100,
+	cpuinfo_uarch_swift     = 0x00700100,
 	/** Apple A7 processor. */
-	cpuinfo_uarch_cyclone   = 0x00600101,
+	cpuinfo_uarch_cyclone   = 0x00700101,
 	/** Apple A8 processor. */
-	cpuinfo_uarch_typhoon   = 0x00600102,
+	cpuinfo_uarch_typhoon   = 0x00700102,
 	/** Apple A9 processor. */
-	cpuinfo_uarch_twister   = 0x00600103,
+	cpuinfo_uarch_twister   = 0x00700103,
 	/** Apple A10 processor. */
-	cpuinfo_uarch_hurricane = 0x00600104,
+	cpuinfo_uarch_hurricane = 0x00700104,
 };
 
 struct cpuinfo_topology {
@@ -516,7 +560,6 @@ struct cpuinfo_topology {
 	/* Package (socket) ID */
 	uint32_t package_id;
 	#if defined(__linux__)
-
 		int linux_id;
 	#endif
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
@@ -562,6 +605,10 @@ void CPUINFO_ABI cpuinfo_deinitialize(void);
 
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	extern struct cpuinfo_x86_isa cpuinfo_isa;
+#endif
+
+#if CPUINFO_ARCH_ARM
+	extern struct cpuinfo_arm_isa cpuinfo_isa;
 #endif
 
 struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l1i_cache(void);

@@ -162,6 +162,9 @@ int main(int argc, char** argv) {
 		case cpuinfo_uarch_jaguar:
 			printf("uArch: Jaguar/Puma\n");
 			break;
+		case cpuinfo_uarch_xscale:
+			printf("uArch: XScale\n");
+			break;
 		case cpuinfo_uarch_arm7:
 			printf("uArch: ARM7\n");
 			break;
@@ -218,6 +221,9 @@ int main(int argc, char** argv) {
 			break;
 		case cpuinfo_uarch_kryo:
 			printf("uArch: Kryo\n");
+			break;
+		case cpuinfo_uarch_denver:
+			printf("uArch: Denver\n");
 			break;
 		case cpuinfo_uarch_mongoose:
 			printf("uArch: Mongoose\n");

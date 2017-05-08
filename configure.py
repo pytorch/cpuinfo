@@ -31,6 +31,14 @@ def main(args):
             elif build.target.is_linux:
                 sources += ["x86/linux/init.c"]
             sources.append("x86/isa.c" if not build.target.is_nacl else "x86/nacl/isa.c")
+        if build.target.is_arm:
+            sources += ["arm/uarch.c", "arm/cache.c"]
+            if build.target.is_linux:
+                sources += [
+                    "arm/linux/init.c",
+                    "arm/linux/isa.c",
+                    "arm/linux/cpuinfo.c"
+                ]
         if build.target.is_macos:
             sources += ["mach/topology.c"]
         if build.target.is_linux:

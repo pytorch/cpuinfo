@@ -121,4 +121,37 @@ int main(int argc, char** argv) {
 
 #endif /* CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64 */
 
+#if CPUINFO_ARCH_ARM
+	printf("Instruction sets:\n");
+		printf("\tThumb: %s\n", cpuinfo_isa.thumb ? "yes" : "no");
+		printf("\tThumb 2: %s\n", cpuinfo_isa.thumb2 ? "yes" : "no");
+		printf("\tThumb EE: %s\n", cpuinfo_isa.thumbee ? "yes" : "no");
+		printf("\tJazelle: %s\n", cpuinfo_isa.jazelle ? "yes" : "no");
+		printf("\tARMv5E: %s\n", cpuinfo_isa.armv5e ? "yes" : "no");
+		printf("\tARMv6: %s\n", cpuinfo_isa.armv6 ? "yes" : "no");
+		printf("\tARMv6-K: %s\n", cpuinfo_isa.armv6k ? "yes" : "no");
+		printf("\tARMv7: %s\n", cpuinfo_isa.armv7 ? "yes" : "no");
+		printf("\tARMv7 MP: %s\n", cpuinfo_isa.armv7mp ? "yes" : "no");
+		printf("\tIDIV: %s\n", cpuinfo_isa.idiv ? "yes" : "no");
+
+	printf("Floating-Point support:\n");
+		printf("\tVFPv2: %s\n", cpuinfo_isa.vfpv2 ? "yes" : "no");
+		printf("\tVFPv3: %s\n", cpuinfo_isa.vfpv3 ? "yes" : "no");
+		printf("\tD32: %s\n", cpuinfo_isa.d32 ? "yes" : "no");
+		printf("\tFP16: %s\n", cpuinfo_isa.fp16 ? "yes" : "no");
+		printf("\tFMA: %s\n", cpuinfo_isa.fma ? "yes" : "no");
+
+	printf("SIMD extensions:\n");
+		printf("\tWMMX: %s\n", cpuinfo_isa.wmmx ? "yes" : "no");
+		printf("\tWMMX 2: %s\n", cpuinfo_isa.wmmx2 ? "yes" : "no");
+		printf("\tNEON: %s\n", cpuinfo_isa.neon ? "yes" : "no");
+
+	printf("Cryptography extensions:\n");
+		printf("\tAES: %s\n", cpuinfo_isa.aes ? "yes" : "no");
+		printf("\tSHA1: %s\n", cpuinfo_isa.sha1 ? "yes" : "no");
+		printf("\tSHA2: %s\n", cpuinfo_isa.sha2 ? "yes" : "no");
+		printf("\tPMULL: %s\n", cpuinfo_isa.pmull ? "yes" : "no");
+		printf("\tCRC32: %s\n", cpuinfo_isa.crc32 ? "yes" : "no");
+#endif /* CPUINFO_ARCH_ARM */
+
 }
