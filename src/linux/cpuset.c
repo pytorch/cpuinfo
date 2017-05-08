@@ -47,6 +47,7 @@ inline static const char* parse_number(const char* string, const char* end, uint
 		string += 1;
 	}
 	*number_ptr = number;
+	return end;
 }
 
 inline static bool parse_entry(const char* entry_start, const char* entry_end, cpu_set_t* cpuset) {

@@ -32,7 +32,7 @@ static int cmp_x86_processor_by_apic_id(const void* processor_a, const void* pro
 	}
 }
 
-static uint32_t cpuinfo_x86_count_caches(
+static void cpuinfo_x86_count_caches(
 	const struct cpuinfo_x86_processor* processors,
 	uint32_t processors_count,
 	uint32_t l1i_count_ptr[restrict static 1],

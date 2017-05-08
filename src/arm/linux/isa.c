@@ -44,7 +44,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		}
 
 		const uint32_t features = proc_cpuinfo->features;
-		if (architecture >= 6 || (features & PROC_CPUINFO_FEATURE_EDSP) || (proc_cpuinfo->architecture.flags & PROC_CPUINFO_ARCH_E)) {
+		if ((architecture >= 6) || (features & PROC_CPUINFO_FEATURE_EDSP) || (proc_cpuinfo->architecture.flags & PROC_CPUINFO_ARCH_E)) {
 			cpuinfo_isa.armv5e = true;
 		}
 		if (architecture >= 6) {
@@ -101,7 +101,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		if (features & vfp_mask) {
 			const uint32_t vfpv3_mask = PROC_CPUINFO_FEATURE_VFPV3 | PROC_CPUINFO_FEATURE_VFPV3D16 | \
 				PROC_CPUINFO_FEATURE_VFPD32 | PROC_CPUINFO_FEATURE_VFPV4 | PROC_CPUINFO_FEATURE_NEON;
-			if (architecture >= 7 | (features & vfpv3_mask)) {
+			if ((architecture >= 7) | (features & vfpv3_mask)) {
 				cpuinfo_isa.vfpv3 = true;
 			
 				const uint32_t d32_mask = PROC_CPUINFO_FEATURE_VFPD32 | PROC_CPUINFO_FEATURE_NEON;
