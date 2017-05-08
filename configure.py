@@ -59,6 +59,7 @@ def main(args):
                 if build.target.is_arm and build.target.is_linux:
                     build.unittest("raspberry-pi2-test", build.cxx("raspberry-pi2.cc"))
                     build.unittest("raspberry-pi3-test", build.cxx("raspberry-pi3.cc"))
+                    build.unittest("beagleboard-xm-test", build.cxx("beagleboard-xm.cc"))
                     build.unittest("pandaboard-es-test", build.cxx("pandaboard-es.cc"))
                     build.unittest("odroid-u2-test", build.cxx("odroid-u2.cc"))
                     build.unittest("arndaleboard-test", build.cxx("arndaleboard.cc"))

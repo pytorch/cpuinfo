@@ -220,19 +220,27 @@ void cpuinfo_arm_decode_cache(
 			 *     - configurable cache size of 0KB, 128KB, 256KB, 512KB, and 1MB
 			 *     - fixed line length of 64 bytes
 			 *     - 8-way set associative cache structure
+			 *
+			 *  +--------------------+-----------+-----------+-----------+-----------+
+			 *  | Processor model    | L1D cache | L1I cache | L2 cache  | Reference |
+			 *  +--------------------+-----------+-----------+-----------+-----------+
+			 *  | TI DM 3730         |    32K    |    32K    |   256I    |    [1]    |
+			 *  +--------------------+-----------+-----------+-----------+-----------+
+			 *
+			 * [1] https://www.ti.com/lit/ds/symlink/dm3725.pdf
 			 */
 			*l1i = (struct cpuinfo_cache) {
-				.size = 16 * 1024,
+				.size = 32 * 1024,
 				.associativity = 4,
 				.line_size = 64
 			};
 			*l1d = (struct cpuinfo_cache) {
-				.size = 16 * 1024,
+				.size = 32 * 1024,
 				.associativity = 4,
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = 128 * 1024,
+				.size = 256 * 1024,
 				.associativity = 8,
 				.line_size = 64
 			};
