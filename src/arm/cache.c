@@ -221,13 +221,16 @@ void cpuinfo_arm_decode_cache(
 			 *     - fixed line length of 64 bytes
 			 *     - 8-way set associative cache structure
 			 *
-			 *  +--------------------+-----------+-----------+-----------+-----------+
-			 *  | Processor model    | L1D cache | L1I cache | L2 cache  | Reference |
-			 *  +--------------------+-----------+-----------+-----------+-----------+
-			 *  | TI DM 3730         |    32K    |    32K    |   256I    |    [1]    |
-			 *  +--------------------+-----------+-----------+-----------+-----------+
+			 *  +----------------------+-----------+-----------+-----------+-----------+
+			 *  | Processor model      | L1D cache | L1I cache | L2 cache  | Reference |
+			 *  +----------------------+-----------+-----------+-----------+-----------+
+			 *  | Exynos 3 Single 3110 |    32K    |    32K    |   512K    |    [1]    |
+			 *  +----------------------+-----------+-----------+-----------+-----------+
+			 *  | TI DM 3730           |    32K    |    32K    |   256K    |    [2]    |
+			 *  +----------------------+-----------+-----------+-----------+-----------+
 			 *
-			 * [1] https://www.ti.com/lit/ds/symlink/dm3725.pdf
+			 * [1] https://en.wikichip.org/w/images/0/04/Exynos_3110.pdf
+			 * [2] https://www.ti.com/lit/ds/symlink/dm3725.pdf
 			 */
 			*l1i = (struct cpuinfo_cache) {
 				.size = 32 * 1024,

@@ -67,6 +67,8 @@ def main(args):
                     build.unittest("arndaleboard-test", build.cxx("arndaleboard.cc"))
                     build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
 
+                    build.unittest("nexus-s-test", build.cxx("nexus-s.cc"))
+
     return build
 
 
