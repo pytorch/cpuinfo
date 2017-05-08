@@ -57,6 +57,8 @@ def main(args):
         if options.mock:
             with build.options(macros={"CPUINFO_MOCK": int(options.mock)}):
                 if build.target.is_arm and build.target.is_linux:
+                    build.unittest("raspberry-pi-test", build.cxx("raspberry-pi.cc"))
+                    build.unittest("raspberry-pi-zero-test", build.cxx("raspberry-pi-zero.cc"))
                     build.unittest("raspberry-pi2-test", build.cxx("raspberry-pi2.cc"))
                     build.unittest("raspberry-pi3-test", build.cxx("raspberry-pi3.cc"))
                     build.unittest("beagleboard-xm-test", build.cxx("beagleboard-xm.cc"))

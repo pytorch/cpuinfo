@@ -1,8 +1,26 @@
 #include <stdint.h>
 
+#if CPUINFO_MOCK
+	#include <cpuinfo-mock.h>
+#endif
 #include <arm/linux/api.h>
 #include <arm/linux/cp.h>
 #include <log.h>
+
+
+#if CPUINFO_MOCK
+	uint32_t cpuinfo_arm_fpsid = 0;
+	uint32_t cpuinfo_arm_mvfr0 = 0;
+	uint32_t cpuinfo_arm_wcid = 0;
+
+	void cpuinfo_set_fpsid(uint32_t fpsid) {
+		cpuinfo_arm_fpsid = fpsid;
+	}
+
+	void cpuinfo_set_wcid(uint32_t wcid) {
+		cpuinfo_arm_wcid = wcid;
+	}
+#endif
 
 
 void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
@@ -62,6 +80,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 
 		if (features & PROC_CPUINFO_FEATURE_IWMMXT) {
 			const uint32_t wcid = read_wcid();
+			cpuinfo_log_debug("WCID = 0x%08"PRIx32, wcid);
 			const uint32_t coprocessor_type = (wcid >> 8) & UINT32_C(0xFF);
 			if (coprocessor_type >= 0x10) {
 				cpuinfo_isa.wmmx = true;
@@ -111,6 +130,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				}
 			} else {
 				const uint32_t fpsid = read_fpsid();
+				cpuinfo_log_debug("FPSID = 0x%08"PRIx32, fpsid);
 				const uint32_t subarchitecture = (fpsid >> 16) & UINT32_C(0x7F);
 				if (subarchitecture >= 0x01) {
 					cpuinfo_isa.vfpv2 = true;

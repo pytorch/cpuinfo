@@ -732,10 +732,10 @@ struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_co
 	struct proc_cpuinfo* processors = NULL;
 	struct proc_cpuinfo* result = NULL;
 	uint32_t processors_capacity = 8;
-	uint32_t processors_count = 0;
+	uint32_t processors_count = 1;
 	char buffer[BUFFER_SIZE];
 
-	processors = malloc(processors_capacity * sizeof(struct proc_cpuinfo));
+	processors = calloc(processors_capacity, sizeof(struct proc_cpuinfo));
 	if (processors == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for /proc/cpuinfo data",
 			processors_capacity * sizeof(struct proc_cpuinfo));

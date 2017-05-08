@@ -5,7 +5,7 @@
 
 
 TEST(PROCESSORS, count) {
-	ASSERT_EQ(4, cpuinfo_processors_count);
+	ASSERT_EQ(1, cpuinfo_processors_count);
 }
 
 TEST(PROCESSORS, non_null) {
@@ -18,9 +18,9 @@ TEST(PROCESSORS, vendor_arm) {
 	}
 }
 
-TEST(PROCESSORS, uarch_cortex_a57) {
+TEST(PROCESSORS, uarch_arm11) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(cpuinfo_uarch_cortex_a57, cpuinfo_processors[i].uarch);
+		ASSERT_EQ(cpuinfo_uarch_arm11, cpuinfo_processors[i].uarch);
 	}
 }
 
@@ -29,7 +29,7 @@ TEST(ISA, thumb) {
 }
 
 TEST(ISA, thumb2) {
-	ASSERT_TRUE(cpuinfo_isa.thumb2);
+	ASSERT_FALSE(cpuinfo_isa.thumb2);
 }
 
 TEST(ISA, thumbee) {
@@ -37,7 +37,7 @@ TEST(ISA, thumbee) {
 }
 
 TEST(ISA, jazelle) {
-	ASSERT_FALSE(cpuinfo_isa.jazelle);
+	ASSERT_TRUE(cpuinfo_isa.jazelle);
 }
 
 TEST(ISA, armv5e) {
@@ -48,40 +48,40 @@ TEST(ISA, armv6) {
 	ASSERT_TRUE(cpuinfo_isa.armv6);
 }
 
-TEST(ISA, armv6k) {
+TEST(ISA, DISABLED_armv6k) {
 	ASSERT_TRUE(cpuinfo_isa.armv6k);
 }
 
 TEST(ISA, armv7) {
-	ASSERT_TRUE(cpuinfo_isa.armv7);
+	ASSERT_FALSE(cpuinfo_isa.armv7);
 }
 
 TEST(ISA, armv7mp) {
-	ASSERT_TRUE(cpuinfo_isa.armv7mp);
+	ASSERT_FALSE(cpuinfo_isa.armv7mp);
 }
 
 TEST(ISA, idiv) {
-	ASSERT_TRUE(cpuinfo_isa.idiv);
+	ASSERT_FALSE(cpuinfo_isa.idiv);
 }
 
 TEST(ISA, vfpv2) {
-	ASSERT_FALSE(cpuinfo_isa.vfpv2);
+	ASSERT_TRUE(cpuinfo_isa.vfpv2);
 }
 
 TEST(ISA, vfpv3) {
-	ASSERT_TRUE(cpuinfo_isa.vfpv3);
+	ASSERT_FALSE(cpuinfo_isa.vfpv3);
 }
 
 TEST(ISA, d32) {
-	ASSERT_TRUE(cpuinfo_isa.d32);
+	ASSERT_FALSE(cpuinfo_isa.d32);
 }
 
 TEST(ISA, fp16) {
-	ASSERT_TRUE(cpuinfo_isa.fp16);
+	ASSERT_FALSE(cpuinfo_isa.fp16);
 }
 
 TEST(ISA, fma) {
-	ASSERT_TRUE(cpuinfo_isa.fma);
+	ASSERT_FALSE(cpuinfo_isa.fma);
 }
 
 TEST(ISA, wmmx) {
@@ -93,32 +93,32 @@ TEST(ISA, wmmx2) {
 }
 
 TEST(ISA, neon) {
-	ASSERT_TRUE(cpuinfo_isa.neon);
+	ASSERT_FALSE(cpuinfo_isa.neon);
 }
 
 TEST(ISA, aes) {
-	ASSERT_TRUE(cpuinfo_isa.aes);
+	ASSERT_FALSE(cpuinfo_isa.aes);
 }
 
 TEST(ISA, sha1) {
-	ASSERT_TRUE(cpuinfo_isa.sha1);
+	ASSERT_FALSE(cpuinfo_isa.sha1);
 }
 
 TEST(ISA, sha2) {
-	ASSERT_TRUE(cpuinfo_isa.sha2);
+	ASSERT_FALSE(cpuinfo_isa.sha2);
 }
 
 TEST(ISA, pmull) {
-	ASSERT_TRUE(cpuinfo_isa.pmull);
+	ASSERT_FALSE(cpuinfo_isa.pmull);
 }
 
 TEST(ISA, crc32) {
-	ASSERT_TRUE(cpuinfo_isa.crc32);
+	ASSERT_FALSE(cpuinfo_isa.crc32);
 }
 
 TEST(L1I, count) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	ASSERT_EQ(4, l1i.count);
+	ASSERT_EQ(1, l1i.count);
 }
 
 TEST(L1I, non_null) {
@@ -129,21 +129,21 @@ TEST(L1I, non_null) {
 TEST(L1I, size) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(48 * 1024, l1i.instances[k].size);
+		ASSERT_EQ(16 * 1024, l1i.instances[k].size);
 	}
 }
 
 TEST(L1I, associativity) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(3, l1i.instances[k].associativity);
+		ASSERT_EQ(4, l1i.instances[k].associativity);
 	}
 }
 
 TEST(L1I, sets) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(256, l1i.instances[k].sets);
+		ASSERT_EQ(128, l1i.instances[k].sets);
 	}
 }
 
@@ -157,7 +157,7 @@ TEST(L1I, partitions) {
 TEST(L1I, line_size) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(64, l1i.instances[k].line_size);
+		ASSERT_EQ(32, l1i.instances[k].line_size);
 	}
 }
 
@@ -178,7 +178,7 @@ TEST(L1I, processors) {
 
 TEST(L1D, count) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	ASSERT_EQ(4, l1d.count);
+	ASSERT_EQ(1, l1d.count);
 }
 
 TEST(L1D, non_null) {
@@ -189,21 +189,21 @@ TEST(L1D, non_null) {
 TEST(L1D, size) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(32 * 1024, l1d.instances[k].size);
+		ASSERT_EQ(16 * 1024, l1d.instances[k].size);
 	}
 }
 
 TEST(L1D, associativity) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(2, l1d.instances[k].associativity);
+		ASSERT_EQ(4, l1d.instances[k].associativity);
 	}
 }
 
 TEST(L1D, sets) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(256, l1d.instances[k].sets);
+		ASSERT_EQ(128, l1d.instances[k].sets);
 	}
 }
 
@@ -217,7 +217,7 @@ TEST(L1D, partitions) {
 TEST(L1D, line_size) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(64, l1d.instances[k].line_size);
+		ASSERT_EQ(32, l1d.instances[k].line_size);
 	}
 }
 
@@ -236,64 +236,10 @@ TEST(L1D, processors) {
 	}
 }
 
-TEST(L2, count) {
+TEST(L2, none) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	ASSERT_EQ(1, l2.count);
-}
-
-TEST(L2, non_null) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	ASSERT_TRUE(l2.instances);
-}
-
-TEST(L2, size) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(2 * 1024 * 1024, l2.instances[k].size);
-	}
-}
-
-TEST(L2, associativity) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(16, l2.instances[k].associativity);
-	}
-}
-
-TEST(L2, sets) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(2048, l2.instances[k].sets);
-	}
-}
-
-TEST(L2, partitions) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(1, l2.instances[k].partitions);
-	}
-}
-
-TEST(L2, line_size) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(64, l2.instances[k].line_size);
-	}
-}
-
-TEST(L2, flags) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(CPUINFO_CACHE_INCLUSIVE, l2.instances[k].flags);
-	}
-}
-
-TEST(L2, processors) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(0, l2.instances[k].thread_start);
-		ASSERT_EQ(4, l2.instances[k].thread_count);
-	}
+	ASSERT_EQ(0, l2.count);
+	ASSERT_FALSE(l2.instances);
 }
 
 TEST(L3, none) {
@@ -310,7 +256,7 @@ TEST(L4, none) {
 
 int main(int argc, char* argv[]) {
 	cpuinfo_set_fpsid(0x410120B5);
-	cpuinfo_set_proc_cpuinfo_path("test/cpuinfo/jetson-tx1.log");
+	cpuinfo_set_proc_cpuinfo_path("test/cpuinfo/raspberrypi.log");
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
