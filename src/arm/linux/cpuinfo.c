@@ -11,8 +11,21 @@
 #include <fcntl.h>
 #include <sched.h>
 
+#if CPUINFO_MOCK
+	#include <cpuinfo-mock.h>
+#endif
 #include <arm/linux/api.h>
 #include <log.h>
+
+
+static const char* proc_cpuinfo_path = "/proc/cpuinfo";
+
+#if CPUINFO_MOCK
+	void cpuinfo_set_proc_cpuinfo_path(const char* path) {
+		/* Note: this leaks memory */
+		proc_cpuinfo_path = strdup(path);
+	}
+#endif
 
 
 /*
@@ -714,7 +727,7 @@ static uint32_t parse_line(
 	return processor_number;
 }
 
-struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(const char* filename, uint32_t processors_count_ptr[restrict static 1]) {
+struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_count_ptr[restrict static 1]) {
 	int file = -1;
 	struct proc_cpuinfo* processors = NULL;
 	struct proc_cpuinfo* result = NULL;
@@ -729,10 +742,10 @@ struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(const char* filename, 
 		goto cleanup;
 	}
 
-	cpuinfo_log_debug("parsing cpu info from file %s", filename);
-	file = open(filename, O_RDONLY);
+	cpuinfo_log_debug("parsing cpu info from file %s", proc_cpuinfo_path);
+	file = open(proc_cpuinfo_path, O_RDONLY);
 	if (file == -1) {
-		cpuinfo_log_error("failed to open %s: %s", filename, strerror(errno));
+		cpuinfo_log_error("failed to open %s: %s", proc_cpuinfo_path, strerror(errno));
 		goto cleanup;
 	}
 
@@ -743,7 +756,7 @@ struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(const char* filename, 
 	do {
 		bytes_read = read(file, data_start, (size_t) (buffer_end - data_start));
 		if (bytes_read < 0) {
-			cpuinfo_log_error("failed to read file %s at position %zu: %s", filename, position, strerror(errno));
+			cpuinfo_log_error("failed to read file %s at position %zu: %s", proc_cpuinfo_path, position, strerror(errno));
 			goto cleanup;
 		}
 

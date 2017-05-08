@@ -5,6 +5,7 @@ import confu
 parser = confu.standard_parser("cpuinfo configuration script")
 parser.add_argument("--log", dest="log_level",
     choices=("none", "error", "warning", "info", "debug"), default="error")
+parser.add_argument("--mock", dest="mock", action="store_true")
 
 
 def main(args):
@@ -12,7 +13,8 @@ def main(args):
     build = confu.Build.from_options(options)
 
     macros = {
-        "CPUINFO_LOG_LEVEL": {"none": 0, "error": 1, "warning": 2, "info": 3, "debug": 4}[options.log_level]
+        "CPUINFO_LOG_LEVEL": {"none": 0, "error": 1, "warning": 2, "info": 3, "debug": 4}[options.log_level],
+        "CPUINFO_MOCK": int(options.mock)
     }
     if build.target.is_linux:
         macros["_GNU_SOURCE"] = 1
@@ -52,6 +54,10 @@ def main(args):
 
     with build.options(source_dir="test", deps=[build, build.deps.googletest]):
         build.unittest("init-test", build.cxx("init.cc"))
+        if options.mock:
+            with build.options(macros={"CPUINFO_MOCK": int(options.mock)}):
+                if build.target.is_arm and build.target.is_linux:
+                    build.unittest("raspberry-pi2-test", build.cxx("raspberry-pi2.cc"))
 
     return build
 

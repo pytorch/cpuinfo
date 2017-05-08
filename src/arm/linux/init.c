@@ -25,7 +25,7 @@ void cpuinfo_arm_linux_init(void) {
 	uint32_t l1d_count = 0;
 	uint32_t l2_count = 0;
 
-	struct proc_cpuinfo* proc_cpuinfo_entries = cpuinfo_arm_linux_parse_proc_cpuinfo("/proc/cpuinfo", &proc_cpuinfo_count);
+	struct proc_cpuinfo* proc_cpuinfo_entries = cpuinfo_arm_linux_parse_proc_cpuinfo(&proc_cpuinfo_count);
 
 	if (proc_cpuinfo_count != 0) {
 		cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(

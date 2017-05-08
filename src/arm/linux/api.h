@@ -94,7 +94,6 @@ struct proc_cpuinfo {
 };
 
 struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(
-	const char* filename,
 	uint32_t processors_count[restrict static 1]);
 
 void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
