@@ -50,6 +50,9 @@ def main(args):
         build.executable("isa-info", build.cc("isa-info.c"))
         build.executable("cache-info", build.cc("cache-info.c"))
 
+    with build.options(source_dir="test", deps=[build, build.deps.googletest]):
+        build.unittest("init-test", build.cxx("init.cc"))
+
     return build
 
 
