@@ -330,6 +330,52 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
+		case cpuinfo_uarch_cortex_a53:
+			/*
+			 * ARM Cortex-A53 MPCore Processor Technical Reference Manual:
+			 * 6.1. About the L1 memory system
+			 *   he L1 memory system consists of separate instruction and data caches. The implementer configures the
+			 *   instruction and data caches independently during implementation, to sizes of 8KB, 16KB, 32KB, or 64KB.
+			 *
+			 *   The L1 Instruction memory system has the following key features:
+			 *    - Instruction side cache line length of 64 bytes.
+			 *    - 2-way set associative L1 Instruction cache.
+			 *
+			 *   The L1 Data memory system has the following features:
+			 *    - Data side cache line length of 64 bytes.
+			 *    - 4-way set associative L1 Data cache.
+			 *
+			 * 7.1. About the L2 memory system
+			 *   The L2 memory system consists of an:
+			 *    - Optional tightly-coupled L2 cache that includes:
+			 *      - Configurable L2 cache size of 128KB, 256KB, 512KB, 1MB and 2MB.
+			 *      - Fixed line length of 64 bytes.
+			 *      - 16-way set-associative cache structure.
+			 *
+			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
+			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | Reference |
+			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
+			 *  | Broadcom BCM2837   |   4   |    16K    |    16K    |    512K   |    [1]    |
+			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
+			 *
+			 * [1] https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=145766
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 16 * 1024,
+				.associativity = 2,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 16 * 1024,
+				.associativity = 4,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = uarch_cores * 128 * 1024,
+				.associativity = 16,
+				.line_size = 64
+			};
+			break;
 		case cpuinfo_uarch_scorpion:
 			/*
 			 * - "The CPU includes 32KB instruction and data caches as
@@ -458,7 +504,6 @@ void cpuinfo_arm_decode_cache(
 		case cpuinfo_uarch_cortex_a17:
 		case cpuinfo_uarch_cortex_a32:
 		case cpuinfo_uarch_cortex_a35:
-		case cpuinfo_uarch_cortex_a53:
 		case cpuinfo_uarch_cortex_a57:
 		case cpuinfo_uarch_cortex_a72:
 		case cpuinfo_uarch_cortex_a73:

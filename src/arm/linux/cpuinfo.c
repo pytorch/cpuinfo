@@ -189,7 +189,7 @@ static void parse_features(
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_IDIVT;
 				} else if (memcmp(feature_start, "pmull", feature_length) == 0) {
 					proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_PMULL;
-				} else if (memcmp(feature_start, "idivt", feature_length) == 0) {
+				} else if (memcmp(feature_start, "crc32", feature_length) == 0) {
 					proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_CRC32;
 				} else {
 					goto unexpected;

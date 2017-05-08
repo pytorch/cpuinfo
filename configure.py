@@ -53,11 +53,12 @@ def main(args):
         build.executable("cache-info", build.cc("cache-info.c"))
 
     with build.options(source_dir="test", deps=[build, build.deps.googletest]):
-        build.unittest("init-test", build.cxx("init.cc"))
+        build.smoketest("init-test", build.cxx("init.cc"))
         if options.mock:
             with build.options(macros={"CPUINFO_MOCK": int(options.mock)}):
                 if build.target.is_arm and build.target.is_linux:
                     build.unittest("raspberry-pi2-test", build.cxx("raspberry-pi2.cc"))
+                    build.unittest("raspberry-pi3-test", build.cxx("raspberry-pi3.cc"))
 
     return build
 
