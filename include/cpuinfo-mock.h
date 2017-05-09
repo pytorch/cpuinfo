@@ -17,9 +17,10 @@ extern "C" {
 #if CPUINFO_ARCH_ARM
 	void CPUINFO_ABI cpuinfo_set_fpsid(uint32_t fpsid);
 	void CPUINFO_ABI cpuinfo_set_wcid(uint32_t wcid);
-	#if defined(__linux__)
-		void CPUINFO_ABI cpuinfo_set_proc_cpuinfo_path(const char* path);
-	#endif
+#endif /* CPUINFO_ARCH_ARM */
+
+#if (CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64) && defined(__linux__)
+	void CPUINFO_ABI cpuinfo_set_proc_cpuinfo_path(const char* path);
 #endif
 
 

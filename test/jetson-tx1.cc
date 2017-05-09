@@ -24,6 +24,7 @@ TEST(PROCESSORS, uarch_cortex_a57) {
 	}
 }
 
+#if CPUINFO_ARCH_ARM
 TEST(ISA, thumb) {
 	ASSERT_TRUE(cpuinfo_isa.thumb);
 }
@@ -95,6 +96,7 @@ TEST(ISA, wmmx2) {
 TEST(ISA, neon) {
 	ASSERT_TRUE(cpuinfo_isa.neon);
 }
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(ISA, aes) {
 	ASSERT_TRUE(cpuinfo_isa.aes);
@@ -120,6 +122,28 @@ TEST(L1I, count) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	ASSERT_EQ(4, l1i.count);
 }
+
+#if CPUINFO_ARCH_ARM64
+TEST(ISA, atomics) {
+	ASSERT_FALSE(cpuinfo_isa.atomics);
+}
+
+TEST(ISA, rdm) {
+	ASSERT_FALSE(cpuinfo_isa.rdm);
+}
+
+TEST(ISA, fp16arith) {
+	ASSERT_FALSE(cpuinfo_isa.fp16arith);
+}
+
+TEST(ISA, jscvt) {
+	ASSERT_FALSE(cpuinfo_isa.jscvt);
+}
+
+TEST(ISA, fcma) {
+	ASSERT_FALSE(cpuinfo_isa.fcma);
+}
+#endif /* CPUINFO_ARCH_ARM64 */
 
 TEST(L1I, non_null) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
@@ -309,7 +333,6 @@ TEST(L4, none) {
 }
 
 int main(int argc, char* argv[]) {
-	cpuinfo_set_fpsid(0x410120B5);
 	cpuinfo_set_proc_cpuinfo_path("test/cpuinfo/jetson-tx1.log");
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);

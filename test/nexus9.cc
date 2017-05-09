@@ -24,6 +24,7 @@ TEST(PROCESSORS, uarch_denver) {
 	}
 }
 
+#if CPUINFO_ARCH_ARM
 TEST(ISA, thumb) {
 	ASSERT_TRUE(cpuinfo_isa.thumb);
 }
@@ -95,6 +96,7 @@ TEST(ISA, wmmx2) {
 TEST(ISA, neon) {
 	ASSERT_TRUE(cpuinfo_isa.neon);
 }
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(ISA, aes) {
 	ASSERT_TRUE(cpuinfo_isa.aes);
@@ -115,6 +117,28 @@ TEST(ISA, pmull) {
 TEST(ISA, crc32) {
 	ASSERT_TRUE(cpuinfo_isa.crc32);
 }
+
+#if CPUINFO_ARCH_ARM64
+TEST(ISA, atomics) {
+	ASSERT_FALSE(cpuinfo_isa.atomics);
+}
+
+TEST(ISA, rdm) {
+	ASSERT_FALSE(cpuinfo_isa.rdm);
+}
+
+TEST(ISA, fp16arith) {
+	ASSERT_FALSE(cpuinfo_isa.fp16arith);
+}
+
+TEST(ISA, jscvt) {
+	ASSERT_FALSE(cpuinfo_isa.jscvt);
+}
+
+TEST(ISA, fcma) {
+	ASSERT_FALSE(cpuinfo_isa.fcma);
+}
+#endif /* CPUINFO_ARCH_ARM64 */
 
 TEST(L1I, count) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
