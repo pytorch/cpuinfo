@@ -9,7 +9,9 @@
 void cpuinfo_arm_decode_vendor_uarch(
 	uint32_t cpu_implementer,
 	uint32_t cpu_part,
+#if CPUINFO_ARCH_ARM
 	bool has_vfpv4,
+#endif
 	enum cpuinfo_vendor vendor[restrict static 1],
 	enum cpuinfo_uarch uarch[restrict static 1]);
 

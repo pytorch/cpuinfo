@@ -187,28 +187,37 @@
 	};
 #endif
 
-#if CPUINFO_ARCH_ARM
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	struct cpuinfo_arm_isa {
-		bool thumb;
-		bool thumb2;
-		bool thumbee;
-		bool jazelle;
-		bool armv5e;
-		bool armv6;
-		bool armv6k;
-		bool armv7;
-		bool armv7mp;
-		bool idiv;
+		#if CPUINFO_ARCH_ARM
+			bool thumb;
+			bool thumb2;
+			bool thumbee;
+			bool jazelle;
+			bool armv5e;
+			bool armv6;
+			bool armv6k;
+			bool armv7;
+			bool armv7mp;
+			bool idiv;
 
-		bool vfpv2;
-		bool vfpv3;
-		bool d32;
-		bool fp16;
-		bool fma;
+			bool vfpv2;
+			bool vfpv3;
+			bool d32;
+			bool fp16;
+			bool fma;
 
-		bool wmmx;
-		bool wmmx2;
-		bool neon;
+			bool wmmx;
+			bool wmmx2;
+			bool neon;
+		#endif
+		#if CPUINFO_ARCH_ARM64
+			bool atomics;
+			bool rdm;
+			bool fp16arith;
+			bool jscvt;
+			bool fcma;
+		#endif
 
 		bool aes;
 		bool sha1;
@@ -607,7 +616,7 @@ void CPUINFO_ABI cpuinfo_deinitialize(void);
 	extern struct cpuinfo_x86_isa cpuinfo_isa;
 #endif
 
-#if CPUINFO_ARCH_ARM
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	extern struct cpuinfo_arm_isa cpuinfo_isa;
 #endif
 

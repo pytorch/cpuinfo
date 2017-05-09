@@ -64,17 +64,17 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 
 		const uint32_t features = proc_cpuinfo->features;
 		if ((architecture >= 6) || (features & PROC_CPUINFO_FEATURE_EDSP) || (proc_cpuinfo->architecture.flags & PROC_CPUINFO_ARCH_E)) {
-			cpuinfo_isa.armv5e = true;
+			isa->armv5e = true;
 		}
 		if (architecture >= 6) {
-			cpuinfo_isa.armv6 = true;
+			isa->armv6 = true;
 		}
 		if (architecture >= 7) {
-			cpuinfo_isa.armv6k = true;
-			cpuinfo_isa.armv7 = true;
+			isa->armv6k = true;
+			isa->armv7 = true;
 
 			if (proc_cpuinfo_count > 1) {
-				cpuinfo_isa.armv7mp = true;
+				isa->armv7mp = true;
 			}
 		}
 
@@ -83,9 +83,9 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 			cpuinfo_log_debug("WCID = 0x%08"PRIx32, wcid);
 			const uint32_t coprocessor_type = (wcid >> 8) & UINT32_C(0xFF);
 			if (coprocessor_type >= 0x10) {
-				cpuinfo_isa.wmmx = true;
+				isa->wmmx = true;
 				if (coprocessor_type >= 0x20) {
-					cpuinfo_isa.wmmx2 = true;
+					isa->wmmx2 = true;
 				}
 			} else {
 				cpuinfo_log_warning("WMMX ISA disabled: OS reported iwmmxt feature, "
@@ -95,32 +95,32 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		}
 
 		if ((features & PROC_CPUINFO_FEATURE_THUMB) || (proc_cpuinfo->architecture.flags & PROC_CPUINFO_ARCH_T)) {
-			cpuinfo_isa.thumb = true;
+			isa->thumb = true;
 
 			/*
 			 * There is no separate feature flag for Thumb 2.
 			 * All ARMv7 processors and ARM 1156 (CPU part 0xB56) support Thumb 2.
 			 */
 			if (architecture >= 7 || (cpu_implementer == 'A' && cpu_part == 0xB56)) {
-				cpuinfo_isa.thumb2 = true;
+				isa->thumb2 = true;
 			}
 		}
 		if (features & PROC_CPUINFO_FEATURE_THUMBEE) {
-			cpuinfo_isa.thumbee = true;
+			isa->thumbee = true;
 		}
 		if ((features & PROC_CPUINFO_FEATURE_JAVA) || (proc_cpuinfo->architecture.flags & PROC_CPUINFO_ARCH_J)) {
-			cpuinfo_isa.jazelle = true;
+			isa->jazelle = true;
 		}
 
 		if ((features & PROC_CPUINFO_FEATURE_IDIV) == PROC_CPUINFO_FEATURE_IDIV) {
-			cpuinfo_isa.idiv = true;
+			isa->idiv = true;
 		} else {
 			/* Qualcomm Krait may have buggy kernel configuration that doesn't report IDIV */
 			if (cpu_implementer == 'Q') {
 				switch (cpu_part) {
 					case 0x04D: /* Dual-core Krait */
 					case 0x06F: /* Quad-core Krait */
-						cpuinfo_isa.idiv = true;
+						isa->idiv = true;
 				}
 			}
 		}
@@ -132,23 +132,23 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 			const uint32_t vfpv3_mask = PROC_CPUINFO_FEATURE_VFPV3 | PROC_CPUINFO_FEATURE_VFPV3D16 | \
 				PROC_CPUINFO_FEATURE_VFPD32 | PROC_CPUINFO_FEATURE_VFPV4 | PROC_CPUINFO_FEATURE_NEON;
 			if ((architecture >= 7) | (features & vfpv3_mask)) {
-				cpuinfo_isa.vfpv3 = true;
+				isa->vfpv3 = true;
 			
 				const uint32_t d32_mask = PROC_CPUINFO_FEATURE_VFPD32 | PROC_CPUINFO_FEATURE_NEON;
 				if (features & d32_mask) {
-					cpuinfo_isa.d32 = true;
+					isa->d32 = true;
 				}
 			} else {
 				const uint32_t fpsid = read_fpsid();
 				cpuinfo_log_debug("FPSID = 0x%08"PRIx32, fpsid);
 				const uint32_t subarchitecture = (fpsid >> 16) & UINT32_C(0x7F);
 				if (subarchitecture >= 0x01) {
-					cpuinfo_isa.vfpv2 = true;
+					isa->vfpv2 = true;
 				}
 			}
 		}
 		if (features & PROC_CPUINFO_FEATURE_NEON) {
-			cpuinfo_isa.neon = true;
+			isa->neon = true;
 		}
 
 		/*
@@ -157,28 +157,28 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * Additionally, ARM Cortex-A9 (CPU part 0xC09) supports FP16.
 		 */
 		if ((features & PROC_CPUINFO_FEATURE_VFPV4) || (cpu_implementer == 'A' && cpu_part == 0xC09)) {
-			cpuinfo_isa.fp16 = true;
+			isa->fp16 = true;
 		}
 
 		if (features & PROC_CPUINFO_FEATURE_VFPV4) {
-			cpuinfo_isa.fma = true;
+			isa->fma = true;
 		}
 	}
 
 	const uint32_t features2 = proc_cpuinfo->features2;
 	if (features2 & PROC_CPUINFO_FEATURE2_AES) {
-		cpuinfo_isa.aes = true;
+		isa->aes = true;
 	}
 	if (features2 & PROC_CPUINFO_FEATURE2_PMULL) {
-		cpuinfo_isa.pmull = true;
+		isa->pmull = true;
 	}
 	if (features2 & PROC_CPUINFO_FEATURE2_SHA1) {
-		cpuinfo_isa.sha1 = true;
+		isa->sha1 = true;
 	}
 	if (features2 & PROC_CPUINFO_FEATURE2_SHA2) {
-		cpuinfo_isa.sha2 = true;
+		isa->sha2 = true;
 	}
 	if (features2 & PROC_CPUINFO_FEATURE2_CRC32) {
-		cpuinfo_isa.crc32 = true;
+		isa->crc32 = true;
 	}
 }

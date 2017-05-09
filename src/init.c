@@ -24,7 +24,7 @@ void CPUINFO_ABI cpuinfo_initialize(void) {
 	#else
 		#error Unsupported target OS
 	#endif
-#elif CPUINFO_ARCH_ARM
+#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	#if defined(__linux__)
 		pthread_once(&init_guard, &cpuinfo_arm_linux_init);
 	#else

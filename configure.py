@@ -33,14 +33,18 @@ def main(args):
             elif build.target.is_linux:
                 sources += ["x86/linux/init.c"]
             sources.append("x86/isa.c" if not build.target.is_nacl else "x86/nacl/isa.c")
-        if build.target.is_arm:
+        if build.target.is_arm or build.target.is_arm64:
             sources += ["arm/uarch.c", "arm/cache.c"]
             if build.target.is_linux:
                 sources += [
                     "arm/linux/init.c",
-                    "arm/linux/isa.c",
                     "arm/linux/cpuinfo.c"
                 ]
+                if build.target.is_arm:
+                    sources.append("arm/linux/isa.c")
+                elif build.target.is_arm64:
+                    sources.append("arm/linux/isa64.c")
+
         if build.target.is_macos:
             sources += ["mach/topology.c"]
         if build.target.is_linux:
@@ -65,12 +69,14 @@ def main(args):
                     build.unittest("pandaboard-es-test", build.cxx("pandaboard-es.cc"))
                     build.unittest("odroid-u2-test", build.cxx("odroid-u2.cc"))
                     build.unittest("arndaleboard-test", build.cxx("arndaleboard.cc"))
-                    build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
 
                     build.unittest("nexus-s-test", build.cxx("nexus-s.cc"))
                     build.unittest("galaxy-nexus-test", build.cxx("galaxy-nexus.cc"))
                     build.unittest("nexus4-test", build.cxx("nexus4.cc"))
                     build.unittest("nexus5-test", build.cxx("nexus5.cc"))
+
+                if (build.target.is_arm or build.target.is_arm64) and build.target.is_linux:
+                    build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
                     build.unittest("nexus9-test", build.cxx("nexus9.cc"))
 
     return build

@@ -7,7 +7,9 @@
 void cpuinfo_arm_decode_vendor_uarch(
 	uint32_t cpu_implementer,
 	uint32_t cpu_part,
+#if CPUINFO_ARCH_ARM
 	bool has_vfpv4,
+#endif /* CPUINFO_ARCH_ARM */
 	enum cpuinfo_vendor vendor[restrict static 1],
 	enum cpuinfo_uarch uarch[restrict static 1])
 {
@@ -15,6 +17,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 		case 'A':
 			*vendor = cpuinfo_vendor_arm;
 			switch (cpu_part) {
+#if CPUINFO_ARCH_ARM
 				case 0xC05:
 					*uarch = cpuinfo_uarch_cortex_a5;
 					break;
@@ -36,6 +39,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xC0F:
 					*uarch = cpuinfo_uarch_cortex_a15;
 					break;
+#endif /* CPUINFO_ARCH_ARM */
 				case 0xD01:
 					*uarch = cpuinfo_uarch_cortex_a32;
 					break;
@@ -70,6 +74,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 					}
 			}
 			break;
+#if CPUINFO_ARCH_ARM
 		case 'i':
 			*vendor = cpuinfo_vendor_intel;
 			switch (cpu_part >> 8) {
@@ -82,6 +87,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Intel CPU part 0x%03"PRIx32" ignored", cpu_part);
 			}
 			break;
+#endif /* CPUINFO_ARCH_ARM */
 		case 'N':
 			*vendor = cpuinfo_vendor_nvidia;
 			switch (cpu_part) {
@@ -95,6 +101,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 		case 'Q':
 			*vendor = cpuinfo_vendor_qualcomm;
 			switch (cpu_part) {
+#if CPUINFO_ARCH_ARM
 				case 0x00F:
 					/* Mostly Scorpions, but some Cortex A5 may report this value as well */
 					if (has_vfpv4) {
@@ -112,6 +119,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x06F: /* Quad-core Krait */
 					*uarch = cpuinfo_uarch_krait;
 					break;
+#endif /* CPUINFO_ARCH_ARM */
 				case 0x205: /* Low-power Kryo "Silver" */
 				case 0x211: /* High-performance Kryo "Gold" */
 				case 0x800: /* Low-power Kryo 800 */
@@ -132,10 +140,12 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Samsung CPU part 0x%03"PRIx32" ignored", cpu_part);
 			}
 			break;
+#if CPUINFO_ARCH_ARM
 		case 'V':
 			*vendor = cpuinfo_vendor_marvell;
 			cpuinfo_log_warning("unknown Marvell CPU part 0x%03"PRIx32" ignored", cpu_part);
 			break;
+#endif /* CPUINFO_ARCH_ARM */
 		default:
 			cpuinfo_log_warning("unknown CPU implementer '%c' (0x%02"PRIx32") with CPU part 0x%03"PRIx32" ignored",
 				(char) cpu_implementer, cpu_implementer, cpu_part);

@@ -153,5 +153,20 @@ int main(int argc, char** argv) {
 		printf("\tPMULL: %s\n", cpuinfo_isa.pmull ? "yes" : "no");
 		printf("\tCRC32: %s\n", cpuinfo_isa.crc32 ? "yes" : "no");
 #endif /* CPUINFO_ARCH_ARM */
+#if CPUINFO_ARCH_ARM64
+	printf("Instruction sets:\n");
+		printf("\tARM v8.1 atomics: %s\n", cpuinfo_isa.atomics ? "yes" : "no");
+		printf("\tARM v8.1 SQRDMLxH: %s\n", cpuinfo_isa.rdm ? "yes" : "no");
+		printf("\tARM v8.2 FP16 arithmetics: %s\n", cpuinfo_isa.fp16arith ? "yes" : "no");
+		printf("\tARM v8.3 JS conversion: %s\n", cpuinfo_isa.jscvt ? "yes" : "no");
+		printf("\tARM v8.3 complex FMA: %s\n", cpuinfo_isa.fcma ? "yes" : "no");
+
+	printf("Cryptography extensions:\n");
+		printf("\tAES: %s\n", cpuinfo_isa.aes ? "yes" : "no");
+		printf("\tSHA1: %s\n", cpuinfo_isa.sha1 ? "yes" : "no");
+		printf("\tSHA2: %s\n", cpuinfo_isa.sha2 ? "yes" : "no");
+		printf("\tPMULL: %s\n", cpuinfo_isa.pmull ? "yes" : "no");
+		printf("\tCRC32: %s\n", cpuinfo_isa.crc32 ? "yes" : "no");
+#endif
 
 }

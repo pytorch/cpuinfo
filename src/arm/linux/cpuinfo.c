@@ -138,10 +138,17 @@ static void parse_features(
 			}
 		}
 		const size_t feature_length = (size_t) (feature_end - feature_start);
-		
+
 		switch (feature_length) {
 			case 3:
-				if (memcmp(feature_start, "swp", feature_length) == 0) {
+				if (memcmp(feature_start, "aes", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM
+						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_AES;
+					#elif CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_AES;
+					#endif
+#if CPUINFO_ARCH_ARM
+				} else if (memcmp(feature_start, "swp", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_SWP;
 				} else if (memcmp(feature_start, "fpa", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FPA;
@@ -149,14 +156,26 @@ static void parse_features(
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_VFP;
 				} else if (memcmp(feature_start, "tls", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_TLS;
-				} else if (memcmp(feature_start, "aes", feature_length) == 0) {
-					proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_AES;
+#endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
 				}
 				break;
 			case 4:
-				if (memcmp(feature_start, "half", feature_length) == 0) {
+				if (memcmp(feature_start, "sha1", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM
+						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_SHA1;
+					#elif CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_SHA1;
+					#endif
+				} else if (memcmp(feature_start, "sha2", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM
+						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_SHA2;
+					#elif CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_SHA2;
+					#endif
+#if CPUINFO_ARCH_ARM
+				} else if (memcmp(feature_start, "half", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_HALF;
 				} else if (memcmp(feature_start, "edsp", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_EDSP;
@@ -166,16 +185,26 @@ static void parse_features(
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_NEON;
 				} else if (memcmp(feature_start, "lpae", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_LPAE;
-				} else if (memcmp(feature_start, "sha1", feature_length) == 0) {
-					proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_SHA1;
-				} else if (memcmp(feature_start, "sha2", feature_length) == 0) {
-					proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_SHA2;
+#endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
 				}
 				break;
 			case 5:
-				if (memcmp(feature_start, "thumb", feature_length) == 0) {
+				if (memcmp(feature_start, "pmull", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM
+						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_PMULL;
+					#elif CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_PMULL;
+					#endif
+				} else if (memcmp(feature_start, "crc32", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM
+						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_CRC32;
+					#elif CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_CRC32;
+					#endif
+#if CPUINFO_ARCH_ARM
+				} else if (memcmp(feature_start, "thumb", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_THUMB;
 				} else if (memcmp(feature_start, "26bit", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_26BIT;
@@ -187,14 +216,12 @@ static void parse_features(
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_IDIVA;
 				} else if (memcmp(feature_start, "idivt", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_IDIVT;
-				} else if (memcmp(feature_start, "pmull", feature_length) == 0) {
-					proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_PMULL;
-				} else if (memcmp(feature_start, "crc32", feature_length) == 0) {
-					proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_CRC32;
+#endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
 				}
  				break;
+#if CPUINFO_ARCH_ARM
 			case 6:
 				if (memcmp(feature_start, "iwmmxt", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_IWMMXT;
@@ -206,15 +233,19 @@ static void parse_features(
 					goto unexpected;
 				}
 				break;
+#endif /* CPUINFO_ARCH_ARM */
 			case 7:
-				if (memcmp(feature_start, "thumbee", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_THUMBEE;
-				} else if (memcmp(feature_start, "evtstrm", feature_length) == 0) {
+				if (memcmp(feature_start, "evtstrm", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_EVTSTRM;
+#if CPUINFO_ARCH_ARM
+				} else if (memcmp(feature_start, "thumbee", feature_length) == 0) {
+					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_THUMBEE;
+#endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
 				}
 				break;
+#if CPUINFO_ARCH_ARM
 			case 8:
 				if (memcmp(feature_start, "fastmult", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FASTMULT;
@@ -224,6 +255,7 @@ static void parse_features(
 					goto unexpected;
 				}
 				break;
+#endif /* CPUINFO_ARCH_ARM */
 			default:
 			unexpected:
 				cpuinfo_log_warning("unexpected /proc/cpuinfo features %.*s is ignored",
@@ -475,6 +507,7 @@ static void parse_cpu_revision(
 	proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_REVISION;
 }
 
+#if CPUINFO_ARCH_ARM
 /*
  * Decode one of the cache-related numbers reported by Linux kernel
  * for pre-ARMv7 architecture.
@@ -533,6 +566,7 @@ static void parse_cache_number(
 	*number_ptr = number;
 	*valid_mask |= number_mask;
 }
+#endif /* CPUINFO_ARCH_ARM */
 
 /*
  *	Decode a single line of /proc/cpuinfo information.
@@ -621,7 +655,10 @@ static uint32_t parse_line(
 	const size_t key_length = key_end - line_start;
 	switch (key_length) {
 		case 6:
-			if (memcmp(line_start, "I size", key_length) == 0) {
+			if (memcmp(line_start, "Serial", key_length) == 0) {
+				/* Usually contains just zeros, useless */
+#if CPUINFO_ARCH_ARM
+			} else if (memcmp(line_start, "I size", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
 					"instruction cache size", &proc_cpuinfo->cache.i_size,
 					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_ICACHE_SIZE);
@@ -637,12 +674,12 @@ static uint32_t parse_line(
 				parse_cache_number(value_start, value_end,
 					"data cache sets", &proc_cpuinfo->cache.d_sets,
 					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_DCACHE_SETS);
-			} else if (memcmp(line_start, "Serial", key_length) == 0) {
-				/* Usually contains just zeros, useless */
+#endif /* CPUINFO_ARCH_ARM */
 			} else {
 				goto unknown;
 			}
 			break;
+#if CPUINFO_ARCH_ARM
 		case 7:
 			if (memcmp(line_start, "I assoc", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
@@ -656,6 +693,7 @@ static uint32_t parse_line(
 				goto unknown;
 			}
 			break;
+#endif /* CPUINFO_ARCH_ARM */
 		case 8:
 			if (memcmp(line_start, "CPU part", key_length) == 0) {
 				parse_cpu_part(value_start, value_end, proc_cpuinfo);
@@ -707,6 +745,7 @@ static uint32_t parse_line(
 				goto unknown;
 			}
 			break;
+#if CPUINFO_ARCH_ARM
 		case 13:
 			if (memcmp(line_start, "I line length", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
@@ -720,6 +759,7 @@ static uint32_t parse_line(
 				goto unknown;
 			}
 			break;
+#endif /* CPUINFO_ARCH_ARM */
 		case 15:
 			if (memcmp(line_start, "CPU implementer", key_length) == 0) {
 				parse_cpu_implementer(value_start, value_end, proc_cpuinfo);

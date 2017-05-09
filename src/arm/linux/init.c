@@ -28,8 +28,13 @@ void cpuinfo_arm_linux_init(void) {
 	struct proc_cpuinfo* proc_cpuinfo_entries = cpuinfo_arm_linux_parse_proc_cpuinfo(&proc_cpuinfo_count);
 
 	if (proc_cpuinfo_count != 0) {
-		cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
-			proc_cpuinfo_entries, proc_cpuinfo_count, &cpuinfo_isa);
+		#if CPUINFO_ARCH_ARM
+			cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
+				proc_cpuinfo_entries, proc_cpuinfo_count, &cpuinfo_isa);
+		#elif CPUINFO_ARCH_ARM64
+			cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
+				proc_cpuinfo_entries, &cpuinfo_isa);
+		#endif
 		processors_count = proc_cpuinfo_count;
 
 		processors = calloc(processors_count, sizeof(struct cpuinfo_processor));
@@ -42,7 +47,9 @@ void cpuinfo_arm_linux_init(void) {
 			cpuinfo_arm_decode_vendor_uarch(
 				proc_cpuinfo_entries[i].implementer,
 				proc_cpuinfo_entries[i].part,
+#if CPUINFO_ARCH_ARM
 				!!(proc_cpuinfo_entries[i].features & PROC_CPUINFO_FEATURE_VFPV4),
+#endif
 				&processors[i].vendor, &processors[i].uarch);
 			processors[i].topology = (struct cpuinfo_topology) {
 				.thread_id = 0,
@@ -91,22 +98,31 @@ void cpuinfo_arm_linux_init(void) {
 			}
 			for (uint32_t i = 0; i < l1i_count; i++) {
 				/* L1I reported in /proc/cpuinfo overrides defaults */
-				if ((proc_cpuinfo_entries[i].valid_mask & PROC_CPUINFO_VALID_ICACHE) == PROC_CPUINFO_VALID_ICACHE) {
-					l1i[i] = (struct cpuinfo_cache) {
-						.size = proc_cpuinfo_entries[i].cache.i_size,
-						.associativity = proc_cpuinfo_entries[i].cache.i_assoc,
-						.sets = proc_cpuinfo_entries[i].cache.i_sets,
-						.partitions = 1,
-						.line_size = proc_cpuinfo_entries[i].cache.i_line_length
-					};
-				} else {
+				#if CPUINFO_ARCH_ARM
+					if ((proc_cpuinfo_entries[i].valid_mask & PROC_CPUINFO_VALID_ICACHE) == PROC_CPUINFO_VALID_ICACHE) {
+						l1i[i] = (struct cpuinfo_cache) {
+							.size = proc_cpuinfo_entries[i].cache.i_size,
+							.associativity = proc_cpuinfo_entries[i].cache.i_assoc,
+							.sets = proc_cpuinfo_entries[i].cache.i_sets,
+							.partitions = 1,
+							.line_size = proc_cpuinfo_entries[i].cache.i_line_length
+						};
+					} else {
+						cpuinfo_arm_decode_cache(
+							processors[i].uarch,
+							proc_cpuinfo_count,
+							proc_cpuinfo_entries[i].part,
+							proc_cpuinfo_entries[i].architecture.version,
+							&l1i[i], &private_l1d, &shared_l2);
+					}
+				#elif CPUINFO_ARCH_ARM64
 					cpuinfo_arm_decode_cache(
 						processors[i].uarch,
 						proc_cpuinfo_count,
 						proc_cpuinfo_entries[i].part,
 						proc_cpuinfo_entries[i].architecture.version,
 						&l1i[i], &private_l1d, &shared_l2);
-				}
+				#endif
 				l1i[i].thread_start = i;
 				l1i[i].thread_count = 1;
 			}
@@ -119,23 +135,32 @@ void cpuinfo_arm_linux_init(void) {
 				goto cleanup;
 			}
 			for (uint32_t i = 0; i < l1d_count; i++) {
-				/* L1D reported in /proc/cpuinfo overrides defaults */
-				if ((proc_cpuinfo_entries[i].valid_mask & PROC_CPUINFO_VALID_DCACHE) == PROC_CPUINFO_VALID_DCACHE) {
-					l1d[i] = (struct cpuinfo_cache) {
-						.size = proc_cpuinfo_entries[i].cache.d_size,
-						.associativity = proc_cpuinfo_entries[i].cache.d_assoc,
-						.sets = proc_cpuinfo_entries[i].cache.d_sets,
-						.partitions = 1,
-						.line_size = proc_cpuinfo_entries[i].cache.d_line_length
-					};
-				} else {
+				#if CPUINFO_ARCH_ARM
+					/* L1D reported in /proc/cpuinfo overrides defaults */
+					if ((proc_cpuinfo_entries[i].valid_mask & PROC_CPUINFO_VALID_DCACHE) == PROC_CPUINFO_VALID_DCACHE) {
+						l1d[i] = (struct cpuinfo_cache) {
+							.size = proc_cpuinfo_entries[i].cache.d_size,
+							.associativity = proc_cpuinfo_entries[i].cache.d_assoc,
+							.sets = proc_cpuinfo_entries[i].cache.d_sets,
+							.partitions = 1,
+							.line_size = proc_cpuinfo_entries[i].cache.d_line_length
+						};
+					} else {
+						cpuinfo_arm_decode_cache(
+							processors[i].uarch,
+							proc_cpuinfo_count,
+							proc_cpuinfo_entries[i].part,
+							proc_cpuinfo_entries[i].architecture.version,
+							&private_l1i, &l1d[i], &shared_l2);
+					}
+				#elif CPUINFO_ARCH_ARM64
 					cpuinfo_arm_decode_cache(
 						processors[i].uarch,
 						proc_cpuinfo_count,
 						proc_cpuinfo_entries[i].part,
 						proc_cpuinfo_entries[i].architecture.version,
 						&private_l1i, &l1d[i], &shared_l2);
-				}
+				#endif
 				l1d[i].thread_start = i;
 				l1d[i].thread_count = 1;
 			}
