@@ -28,7 +28,7 @@ Supported environments:
   - [x] x86
   - [x] x86-64
   - [x] 32-bit ARM (ARMv5T and later)
-  - [ ] ARM64
+  - [x] ARM64
   - [ ] PowerPC
 - [x] OS X
   - [x] x86
@@ -41,7 +41,7 @@ Supported environments:
   - [x] x86_64 ABI
   - [x] armeabi ABI
   - [x] armeabiv7-a ABI
-  - [ ] arm64-v8a ABI
+  - [x] arm64-v8a ABI
   - [ ] mips ABI
   - [ ] mips64 ABI
 - [ ] Native Client
@@ -69,7 +69,8 @@ Planned features:
   - [x] Samsung-designed ARM cores (Mongoose)
   - [x] Intel-designed ARM cores (XScale up to 3rd-gen)
   - [ ] Apple-designed ARM cores (up to Hurricane)
-  - [ ] Server ARM cores
+  - [x] Cavium-designed ARM cores (ThunderX)
+  - [ ] AppliedMicro-designed ARM cores
 - Instruction set detection
   - [x] Using CPUID on x86/x86-64 (Linux, Mach)
   - [x] Using dynamic code generation validator on x86-64 (Native Client)
@@ -78,6 +79,7 @@ Planned features:
   - [x] Using `FPSID` and `WCID` registers on 32-bit ARM
   - [ ] Using `getauxval` or `/proc/self/auxv` (Linux)
   - [ ] Using instruction probing on ARM (Linux)
+  - [ ] Using CPUID registers on ARM64 (Linux)
 - Cache detection
   - [x] Using CPUID leaf 0x00000002 on x86/x86-64
   - [x] Using CPUID leaf 0x00000004 on non-AMD x86/x86-64
