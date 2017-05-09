@@ -1,7 +1,6 @@
 #include <stdint.h>
 
 #include <arm/linux/api.h>
-#include <arm/linux/cp.h>
 #include <log.h>
 
 

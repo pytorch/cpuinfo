@@ -6,18 +6,22 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
     $(LOCAL_PATH)/src/cache.c \
     $(LOCAL_PATH)/src/log.c \
     $(LOCAL_PATH)/src/linux/cpuset.c
-ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a))
+ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v8a))
 LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/uarch.c \
 	$(LOCAL_PATH)/src/arm/cache.c \
 	$(LOCAL_PATH)/src/arm/linux/init.c \
 	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/isa.c.arm
-else
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/isa.c
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c.arm
 endif # armeabi
-endif # armeabi or armeabi-v7a
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c
+endif # armeabi-v7a
+ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm64-isa.c
+endif # arm64-v8a
+endif # armeabi, armeabi-v7a, or arm64-v8a
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
 LOCAL_SRC_FILES += \
     $(LOCAL_PATH)/src/x86/init.c \
