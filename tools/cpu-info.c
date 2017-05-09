@@ -41,6 +41,9 @@ int main(int argc, char** argv) {
 		case cpuinfo_vendor_via:
 			printf("Vendor: VIA\n");
 			break;
+		case cpuinfo_vendor_cavium:
+			printf("Vendor: Cavium\n");
+			break;
 		default:
 			printf("Vendor: other (%d)\n", cpuinfo_processors[0].vendor);
 	}
@@ -242,6 +245,9 @@ int main(int argc, char** argv) {
 			break;
 		case cpuinfo_uarch_hurricane:
 			printf("uArch: Hurricane\n");
+			break;
+		case cpuinfo_uarch_thunderx:
+			printf("uArch: ThunderX\n");
 			break;
 		default:
 			printf("uArch: other (0x%08X)\n", cpuinfo_processors[0].uarch);

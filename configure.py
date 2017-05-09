@@ -78,6 +78,7 @@ def main(args):
                 if (build.target.is_arm or build.target.is_arm64) and build.target.is_linux:
                     build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
                     build.unittest("nexus9-test", build.cxx("nexus9.cc"))
+                    build.unittest("scaleway-test", build.cxx("scaleway.cc"))
 
     return build
 

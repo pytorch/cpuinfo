@@ -330,6 +330,8 @@ enum cpuinfo_vendor {
 	 * Processors are designed by Centaur Technology, a subsidiary of VIA Technologies.
 	 */
 	cpuinfo_vendor_via      = 11,
+	/** Cavium, Inc. Vendor of ARM64 processor microarchitectures. */
+	cpuinfo_vendor_cavium   = 12,
 
 	/* Active vendors of embedded CPUs */
 
@@ -559,6 +561,9 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_twister   = 0x00700103,
 	/** Apple A10 processor. */
 	cpuinfo_uarch_hurricane = 0x00700104,
+
+	/** Cavium ThunderX. */
+	cpuinfo_uarch_thunderx = 0x00800100,
 };
 
 struct cpuinfo_topology {

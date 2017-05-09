@@ -174,6 +174,14 @@ static void parse_features(
 					#elif CPUINFO_ARCH_ARM64
 						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_SHA2;
 					#endif
+				} else if (memcmp(feature_start, "fphp", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FPHP;
+					#endif
+				} else if (memcmp(feature_start, "fcma", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FCMA;
+					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "half", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_HALF;
@@ -202,6 +210,18 @@ static void parse_features(
 						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_CRC32;
 					#elif CPUINFO_ARCH_ARM64
 						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_CRC32;
+					#endif
+				} else if (memcmp(feature_start, "cpuid", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_CPUID;
+					#endif
+				} else if (memcmp(feature_start, "jscvt", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_JSCVT;
+					#endif
+				} else if (memcmp(feature_start, "lrcpc", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_LRCPC;
 					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "thumb", feature_length) == 0) {
@@ -237,6 +257,14 @@ static void parse_features(
 			case 7:
 				if (memcmp(feature_start, "evtstrm", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_EVTSTRM;
+				} else if (memcmp(feature_start, "atomics", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_ATOMICS;
+					#endif
+				} else if (memcmp(feature_start, "asimdhp", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_ASIMDHP;
+					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "thumbee", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_THUMBEE;
@@ -245,17 +273,21 @@ static void parse_features(
 					goto unexpected;
 				}
 				break;
-#if CPUINFO_ARCH_ARM
 			case 8:
-				if (memcmp(feature_start, "fastmult", feature_length) == 0) {
+				if (memcmp(feature_start, "asimdrdm", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_ASIMDRDM;
+					#endif
+#if CPUINFO_ARCH_ARM
+				} else if (memcmp(feature_start, "fastmult", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FASTMULT;
 				} else if (memcmp(feature_start, "vfpv3d16", feature_length) == 0) {
 					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_VFPV3D16;
+#endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
 				}
 				break;
-#endif /* CPUINFO_ARCH_ARM */
 			default:
 			unexpected:
 				cpuinfo_log_warning("unexpected /proc/cpuinfo features %.*s is ignored",

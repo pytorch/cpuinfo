@@ -74,6 +74,16 @@ void cpuinfo_arm_decode_vendor_uarch(
 					}
 			}
 			break;
+		case 'C':
+			*vendor = cpuinfo_vendor_cavium;
+			switch (cpu_part) {
+				case 0x0A1:
+					*uarch = cpuinfo_uarch_thunderx;
+					break;
+				default:
+					cpuinfo_log_warning("unknown Cavium CPU part 0x%03"PRIx32" ignored", cpu_part);
+			}
+			break;
 #if CPUINFO_ARCH_ARM
 		case 'i':
 			*vendor = cpuinfo_vendor_intel;

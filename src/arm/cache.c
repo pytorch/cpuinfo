@@ -584,6 +584,28 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
+		case cpuinfo_uarch_thunderx:
+			/*
+			 * "78K-Icache and 32K-D cache per core, 16 MB shared L2 cache" [1]
+			 *
+			 * [1] https://www.cavium.com/pdfFiles/ThunderX_CP_PB_Rev1.pdf
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 78 * 1024,
+				.associativity = 4 /* assumption */,
+				.line_size = 64 /* assumption */
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 32 * 1024,
+				.associativity = 4 /* assumption */,
+				.line_size = 64 /* assumption */
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = 16 * 1024 * 1024,
+				.associativity = 8 /* assumption */,
+				.line_size = 64 /* assumption */
+			};
+			break;
 		case cpuinfo_uarch_cortex_a12:
 		case cpuinfo_uarch_cortex_a17:
 		case cpuinfo_uarch_cortex_a32:
