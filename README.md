@@ -1,6 +1,57 @@
 # CPU INFOrmation library
 
-cpuinfo is a library to detect essential for performance optimization information about host CPU. Planned features:
+cpuinfo is a library to detect essential for performance optimization information about host CPU.
+
+Exposed information:
+- [ ] Processor (SoC) name
+- [x] Microarchitecture
+- [x] Usable instruction sets
+- [x] Cache
+  - [x] Size
+  - [x] Associativity
+  - [x] Line size
+  - [x] Number of partitions
+  - [x] Flags (unified, inclusive, complex hash function)
+  - [x] Topology (logical processors that share this cache level)
+- [ ] TLB
+  - [ ] Number of entries
+  - [ ] Associativity
+  - [ ] Covered page types (instruction, data)
+  - [ ] Covered page sizes
+- [ ] Topology information
+  - [ ] Logical processors
+  - [ ] Cores
+  - [ ] Packages (sockets)
+
+Supported environments:
+- [x] Linux
+  - [x] x86
+  - [x] x86-64
+  - [x] 32-bit ARM (ARMv5T and later)
+  - [ ] ARM64
+  - [ ] PowerPC
+- [x] OS X
+  - [x] x86
+  - [x] x86-64
+- [ ] Windows
+  - [ ] x86
+  - [ ] x86-64
+- [x] Android
+  - [x] x86 ABI
+  - [x] x86_64 ABI
+  - [x] armeabi ABI
+  - [x] armeabiv7-a ABI
+  - [ ] arm64-v8a ABI
+  - [ ] mips ABI
+  - [ ] mips64 ABI
+- [ ] Native Client
+  - [ ] x86
+  - [x] x86-64
+  - [ ] ARMv7-A
+- [ ] Portable Native Client
+- [ ] Emscripten
+
+Planned features:
 
 - Processor (SoC) name detection
   - [ ] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
