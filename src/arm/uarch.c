@@ -132,9 +132,15 @@ void cpuinfo_arm_decode_vendor_uarch(
 #endif /* CPUINFO_ARCH_ARM */
 				case 0x205: /* Low-power Kryo "Silver" */
 				case 0x211: /* High-performance Kryo "Gold" */
-				case 0x800: /* Low-power Kryo 800 */
-				case 0x801: /* High-performance Kryo 800 */
 					*uarch = cpuinfo_uarch_kryo;
+					break;
+				case 0x800: /* Low-power Kryo 280 -> Cortex-A53 */
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a53;
+					break;
+				case 0x801: /* High-performance Kryo 280 -> Cortex-A73 */
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a73;
 					break;
 				default:
 					cpuinfo_log_warning("unknown Qualcomm CPU part 0x%03"PRIx32" ignored", cpu_part);
