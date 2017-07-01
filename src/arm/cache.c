@@ -368,7 +368,7 @@ void cpuinfo_arm_decode_cache(
 			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Broadcom BCM2837   |   4   |    16K    |    16K    |    512K   |    [1]    |
-			 *  | Snapdragon 835     | 4(+4) |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
+			 *  | Snapdragon 835     | 4(+4) |  32K+64K  |  32K+64K  |  1M(+2M)  |   sysfs   |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=145766
@@ -446,6 +446,62 @@ void cpuinfo_arm_decode_cache(
 			*l1d = (struct cpuinfo_cache) {
 				.size = 32 * 1024,
 				.associativity = 2,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = uarch_cores * 512 * 1024,
+				.associativity = 16,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_INCLUSIVE
+			};
+			break;
+		case cpuinfo_uarch_cortex_a73:
+			/*
+			 * ARM Cortex‑A73 MPCore Processor Technical Reference Manual
+			 * 6.1. About the L1 memory system
+			 *   The L1 memory system consists of separate instruction and data caches.
+			 *   The size of the instruction cache is 64KB.
+			 *   The size of the data cache is configurable to either 32KB or 64KB.
+			 *
+			 *   The L1 instruction memory system has the following key features:
+			 *    - Virtually Indexed, Physically Tagged (VIPT), four-way set-associative instruction cache.
+			 *    - Fixed cache line length of 64 bytes.
+			 *
+			 *   The L1 data memory system has the following features:
+			 *    - ...the data cache behaves like an eight-way set associative PIPT cache (for 32KB configurations)
+			 *      and a 16-way set associative PIPT cache (for 64KB configurations).
+			 *    - Fixed cache line length of 64 bytes.
+			 *
+			 * 7.1 About the L2 memory system
+			 *   The L2 memory system consists of:
+			 *    - A tightly-integrated L2 cache with:
+			 *      - A configurable size of 256KB, 512KB, 1MB, 2MB, 4MB, or 8MB.
+			 *      - A 16-way, set-associative structure.
+			 *      - A fixed line length of 64 bytes.
+			 *
+			 * The ARM Cortex A73 - Artemis Unveiled [1]
+			 *   "ARM still envisions that most vendors will choose to use configurations of 1 to
+			 *    2MB in consumer products. The L2 cache is inclusive of the L1 cache. "
+			 *
+			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
+			 *  | Processor model     | Cores   | L1D cache | L1I cache | L2 cache  | Reference |
+			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
+			 *  | HiSilicon Kirin 960 | 4(+4)   |  64K+32K  |  64K+32K  |     ?     |    [2]    |
+			 *  | MediaTek Helio X30  | 2(+4+4) |     ?     |     ?     |     ?     |           |
+			 *  | Snapdragon 835      | 4(+4)   |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
+			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
+			 *
+			 * [1] http://www.anandtech.com/show/10347/arm-cortex-a73-artemis-unveiled/2
+			 * [2] http://www.anandtech.com/show/11088/hisilicon-kirin-960-performance-and-power/3
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 16,
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
