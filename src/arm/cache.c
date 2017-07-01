@@ -455,6 +455,67 @@ void cpuinfo_arm_decode_cache(
 				.flags = CPUINFO_CACHE_INCLUSIVE
 			};
 			break;
+		case cpuinfo_uarch_cortex_a72:
+			/*
+			 * ARM® Cortex-A72 MPCore Processor Technical Reference Manual
+			 * 6.1. About the L1 memory system
+			 *   The L1 memory system consists of separate instruction and data caches.
+			 *
+			 *   The L1 instruction memory system has the following features:
+			 *    - 48KB 3-way set-associative instruction cache.
+			 *    - Fixed line length of 64 bytes.
+			 *
+			 *   The L1 data memory system has the following features:
+			 *    - 32KB 2-way set-associative data cache.
+			 *    - Fixed cache line length of 64 bytes.
+			 *
+			 * 7.1 About the L2 memory system
+			 *   The features of the L2 memory system include:
+			 *    - Configurable L2 cache size of 512KB, 1MB, 2MB and 4MB.
+			 *    - Fixed line length of 64 bytes.
+			 *    - Banked pipeline structures.
+			 *    - Inclusion property with L1 data caches.
+			 *    - 16-way set-associative cache structure.
+			 *
+			 * The ARM Cortex A73 - Artemis Unveiled [1]
+			 *   "ARM still envisions that most vendors will choose to use configurations of 1 to
+			 *    2MB in consumer products. The L2 cache is inclusive of the L1 cache. "
+			 *
+			 *  +---------------------+---------+-----------+-----------+------------+-----------+
+			 *  | Processor model     | Cores   | L1D cache | L1I cache | L2 cache   | Reference |
+			 *  +---------------------+---------+-----------+-----------+------------+-----------+
+			 *  | Snapdragon 650      | 2(+4)   |  32K+32K  |  48K+32K  | 1M(+512K)? |    [1]    |
+			 *  | Snapdragon 652      | 4(+4)   |  32K+32K  |  48K+32K  | 1M(+512K)? |    [2]    |
+			 *  | Snapdragon 653      | 4(+4)   |  32K+32K  |  48K+32K  | 1M(+512K)? |    [3]    |
+			 *  | HiSilicon Kirin 950 | 4(+4)   |  32K+32K  |  48K+32K  |     ?      |           |
+			 *  | HiSilicon Kirin 955 | 4(+4)   |  32K+32K  |  48K+32K  |     ?      |           |
+			 *  | MediaTek Helio X20  | 2(+4+4) |     ?     |     ?     |     ?      |           |
+			 *  | MediaTek Helio X23  | 2(+4+4) |     ?     |     ?     |     ?      |           |
+			 *  | MediaTek Helio X25  | 2(+4+4) |     ?     |     ?     |     ?      |           |
+			 *  | MediaTek Helio X27  | 2(+4+4) |     ?     |     ?     |     ?      |           |
+			 *  +---------------------+---------+-----------+-----------+------------+-----------+
+			 *
+			 * [1] http://pdadb.net/index.php?m=processor&id=578&c=qualcomm_snapdragon_618_msm8956__snapdragon_650
+			 * [2] http://pdadb.net/index.php?m=processor&id=667&c=qualcomm_snapdragon_620_apq8076__snapdragon_652
+			 * [3] http://pdadb.net/index.php?m=processor&id=692&c=qualcomm_snapdragon_653_msm8976sg__msm8976_pro
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 48 * 1024,
+				.associativity = 3,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 32 * 1024,
+				.associativity = 2,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = 1024 * 1024,
+				.associativity = 16,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_INCLUSIVE
+			};
+			break;
 		case cpuinfo_uarch_cortex_a73:
 			/*
 			 * ARM Cortex‑A73 MPCore Processor Technical Reference Manual
@@ -487,7 +548,7 @@ void cpuinfo_arm_decode_cache(
 			 *  | Processor model     | Cores   | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
 			 *  | HiSilicon Kirin 960 | 4(+4)   |  64K+32K  |  64K+32K  |     ?     |    [2]    |
-			 *  | MediaTek Helio X30  | 2(+4+4) |     ?     |     ?     |     ?     |           |
+			 *  | MediaTek Helio X30  | 2(+4+4) |     ?     |  64K+ ?   |     ?     |           |
 			 *  | Snapdragon 835      | 4(+4)   |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
 			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
 			 *
