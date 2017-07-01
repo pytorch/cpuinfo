@@ -659,14 +659,14 @@ void cpuinfo_arm_decode_cache(
 				/* Kryo "Silver" */
 				*l2 = (struct cpuinfo_cache) {
 					.size = uarch_cores * 256 * 1024,
-					.associativity = 8 /* assume same as Krait */
+					.associativity = 8, /* assume same as Krait */
 					.line_size = 64 /* assume same as Krait */
 				};
 			} else {
 				/* Kryo "Gold" */
 				*l2 = (struct cpuinfo_cache) {
 					.size = uarch_cores * 512 * 1024,
-					.associativity = 8 /* assume same as Krait */
+					.associativity = 8, /* assume same as Krait */
 					.line_size = 64 /* assume same as Krait */
 				};
 			}
@@ -757,8 +757,6 @@ void cpuinfo_arm_decode_cache(
 		case cpuinfo_uarch_cortex_a17:
 		case cpuinfo_uarch_cortex_a32:
 		case cpuinfo_uarch_cortex_a35:
-		case cpuinfo_uarch_cortex_a72:
-		case cpuinfo_uarch_cortex_a73:
 		default:
 			cpuinfo_log_warning("target uarch not recognized; using generic cache parameters");
 			/* Follow OpenBLAS */
