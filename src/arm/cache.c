@@ -368,25 +368,46 @@ void cpuinfo_arm_decode_cache(
 			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Broadcom BCM2837   |   4   |    16K    |    16K    |    512K   |    [1]    |
+			 *  | Snapdragon 835     | 4(+4) |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=145766
 			 */
-			*l1i = (struct cpuinfo_cache) {
-				.size = 16 * 1024,
-				.associativity = 2,
-				.line_size = 64
-			};
-			*l1d = (struct cpuinfo_cache) {
-				.size = 16 * 1024,
-				.associativity = 4,
-				.line_size = 64
-			};
-			*l2 = (struct cpuinfo_cache) {
-				.size = uarch_cores * 128 * 1024,
-				.associativity = 16,
-				.line_size = 64
-			};
+			if (cpu_part == 0x800) {
+				/* Little cores of Snapdragon 835 */
+				*l1i = (struct cpuinfo_cache) {
+					.size = 32 * 1024,
+					.associativity = 2,
+					.line_size = 64
+				};
+				*l1d = (struct cpuinfo_cache) {
+					.size = 32 * 1024,
+					.associativity = 4,
+					.line_size = 64
+				};
+				*l2 = (struct cpuinfo_cache) {
+					.size = uarch_cores * 256 * 1024,
+					.associativity = 16,
+					.line_size = 64
+				};
+			} else {
+				/* Standard Cortex-A53 */
+				*l1i = (struct cpuinfo_cache) {
+					.size = 16 * 1024,
+					.associativity = 2,
+					.line_size = 64
+				};
+				*l1d = (struct cpuinfo_cache) {
+					.size = 16 * 1024,
+					.associativity = 4,
+					.line_size = 64
+				};
+				*l2 = (struct cpuinfo_cache) {
+					.size = uarch_cores * 128 * 1024,
+					.associativity = 16,
+					.line_size = 64
+				};
+			}
 			break;
 		case cpuinfo_uarch_cortex_a57:
 			/*
@@ -503,7 +524,6 @@ void cpuinfo_arm_decode_cache(
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Snapdragon 820  |  2+2  |    32K    |    32K    |  1M+512K  |    [1]    |
 			 *  | Snapdragon 821  |  2+2  |    32K    |    32K    |  1M+512K  |    [1]    |
-			 *  | Snapdragon 835  | 4(+4) |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] http://www.anandtech.com/show/9837/snapdragon-820-preview/2
@@ -518,11 +538,21 @@ void cpuinfo_arm_decode_cache(
 				.associativity = 4 /* assume same as Krait */,
 				.line_size = 64 /* assume same as Krait */
 			};
-			*l2 = (struct cpuinfo_cache) {
-				.size = uarch_cores * 512 * 1024,
-				.associativity = 16 /* sysfs-reported on Snapdragon 835 */,
-				.line_size = 64 /* assume same as Krait */
-			};
+			if (cpu_part == 0x205) {
+				/* Kryo "Silver" */
+				*l2 = (struct cpuinfo_cache) {
+					.size = uarch_cores * 256 * 1024,
+					.associativity = 8 /* assume same as Krait */
+					.line_size = 64 /* assume same as Krait */
+				};
+			} else {
+				/* Kryo "Gold" */
+				*l2 = (struct cpuinfo_cache) {
+					.size = uarch_cores * 512 * 1024,
+					.associativity = 8 /* assume same as Krait */
+					.line_size = 64 /* assume same as Krait */
+				};
+			}
 			break;
 		case cpuinfo_uarch_denver:
 			/*
