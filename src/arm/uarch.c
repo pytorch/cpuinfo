@@ -104,6 +104,14 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x000:
 					*uarch = cpuinfo_uarch_denver;
 					break;
+				case 0x003:
+					/*
+					 * nVidia Denver 2.
+					 * Few details are known about Denver 2, and known details are no different that Denver 1,
+					 * so consider them the same microarchitecture.
+					 */
+					*uarch = cpuinfo_uarch_denver;
+					break;
 				default:
 					cpuinfo_log_warning("unknown nVidia CPU part 0x%03"PRIx32" ignored", cpu_part);
 			}
