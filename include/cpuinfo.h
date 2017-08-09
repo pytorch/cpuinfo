@@ -531,12 +531,16 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_cortex_a35 = 0x00300335,
 	/** ARM Cortex-A53. */
 	cpuinfo_uarch_cortex_a53 = 0x00300353,
+	/** ARM Cortex-A55. */
+	cpuinfo_uarch_cortex_a55 = 0x00300355,
 	/** ARM Cortex-A57. */
 	cpuinfo_uarch_cortex_a57 = 0x00300357,
 	/** ARM Cortex-A72. */
 	cpuinfo_uarch_cortex_a72 = 0x00300372,
 	/** ARM Cortex-A73. */
 	cpuinfo_uarch_cortex_a73 = 0x00300373,
+	/** ARM Cortex-A75. */
+	cpuinfo_uarch_cortex_a75 = 0x00300375,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,

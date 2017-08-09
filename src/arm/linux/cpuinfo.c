@@ -15,6 +15,7 @@
 	#include <cpuinfo-mock.h>
 #endif
 #include <arm/linux/api.h>
+#include <arm/midr.h>
 #include <log.h>
 
 
@@ -29,18 +30,16 @@ static const char* proc_cpuinfo_path = "/proc/cpuinfo";
 
 
 /*
- * Size, in chars, of the on-stack buffer used for parsing cpu lists.
- * This is also the limit on the length of a single entry
- * (<cpu-number> or <cpu-number-start>-<cpu-number-end>)
- * in the cpu list.
+ * Size, in chars, of the on-stack buffer used for parsing lines of /proc/cpuinfo.
+ * This is also the limit on the length of a single line.
  */
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 1024
 
 
 static uint32_t parse_processor_number(
 	const char* processor_start,
 	const char* processor_end,
-	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
+	struct cpuinfo_arm_linux_processor processor[restrict static 1])
 {
 	const size_t processor_length = (size_t) (processor_end - processor_start);
 
@@ -122,13 +121,13 @@ static uint32_t parse_processor_number(
 static void parse_features(
 	const char* features_start,
 	const char* features_end,
-	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
+	struct cpuinfo_arm_linux_processor processor[restrict static 1])
 {
 	const char* feature_start = features_start;
 	const char* feature_end;
 
 	/* Mark the features as valid */
-	proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_FEATURES;
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_FEATURES;
 
 	do {
 		feature_end = feature_start + 1;
@@ -140,22 +139,39 @@ static void parse_features(
 		const size_t feature_length = (size_t) (feature_end - feature_start);
 
 		switch (feature_length) {
+			case 2:
+				if (memcmp(feature_start, "fp", feature_length) == 0) {
+#if CPUINFO_ARCH_ARM64
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_FP;
+#endif
+#if CPUINFO_ARCH_ARM
+				} else if (memcmp(feature_start, "wp", feature_length) == 0) {
+					/*
+					 * Some AArch64 kernels, including the one on Nexus 5X,
+					 * erroneously report "swp" as "wp" to AArch32 programs
+					 */
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_SWP;
+#endif
+				} else {
+					goto unexpected;
+				}
+				break;
 			case 3:
 				if (memcmp(feature_start, "aes", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM
-						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_AES;
+						processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_AES;
 					#elif CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_AES;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_AES;
 					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "swp", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_SWP;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_SWP;
 				} else if (memcmp(feature_start, "fpa", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FPA;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_FPA;
 				} else if (memcmp(feature_start, "vfp", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_VFP;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_VFP;
 				} else if (memcmp(feature_start, "tls", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_TLS;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_TLS;
 #endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
@@ -164,35 +180,41 @@ static void parse_features(
 			case 4:
 				if (memcmp(feature_start, "sha1", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM
-						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_SHA1;
+						processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_SHA1;
 					#elif CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_SHA1;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_SHA1;
 					#endif
 				} else if (memcmp(feature_start, "sha2", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM
-						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_SHA2;
+						processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_SHA2;
 					#elif CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_SHA2;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_SHA2;
 					#endif
 				} else if (memcmp(feature_start, "fphp", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FPHP;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_FPHP;
 					#endif
 				} else if (memcmp(feature_start, "fcma", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FCMA;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_FCMA;
 					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "half", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_HALF;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_HALF;
 				} else if (memcmp(feature_start, "edsp", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_EDSP;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_EDSP;
 				} else if (memcmp(feature_start, "java", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_JAVA;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_JAVA;
 				} else if (memcmp(feature_start, "neon", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_NEON;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_NEON;
 				} else if (memcmp(feature_start, "lpae", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_LPAE;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_LPAE;
+				} else if (memcmp(feature_start, "tlsi", feature_length) == 0) {
+					/*
+					 * Some AArch64 kernels, including the one on Nexus 5X,
+					 * erroneously report "tls" as "tlsi" to AArch32 programs
+					 */
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_TLS;
 #endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
@@ -201,41 +223,45 @@ static void parse_features(
 			case 5:
 				if (memcmp(feature_start, "pmull", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM
-						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_PMULL;
+						processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_PMULL;
 					#elif CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_PMULL;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_PMULL;
 					#endif
 				} else if (memcmp(feature_start, "crc32", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM
-						proc_cpuinfo->features2 |= PROC_CPUINFO_FEATURE2_CRC32;
+						processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_CRC32;
 					#elif CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_CRC32;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_CRC32;
+					#endif
+				} else if (memcmp(feature_start, "asimd", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_ASIMD;
 					#endif
 				} else if (memcmp(feature_start, "cpuid", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_CPUID;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_CPUID;
 					#endif
 				} else if (memcmp(feature_start, "jscvt", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_JSCVT;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_JSCVT;
 					#endif
 				} else if (memcmp(feature_start, "lrcpc", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_LRCPC;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_LRCPC;
 					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "thumb", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_THUMB;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_THUMB;
 				} else if (memcmp(feature_start, "26bit", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_26BIT;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_26BIT;
 				} else if (memcmp(feature_start, "vfpv3", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_VFPV3;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_VFPV3;
 				} else if (memcmp(feature_start, "vfpv4", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_VFPV4;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_VFPV4;
 				} else if (memcmp(feature_start, "idiva", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_IDIVA;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_IDIVA;
 				} else if (memcmp(feature_start, "idivt", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_IDIVT;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_IDIVT;
 #endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
@@ -244,11 +270,11 @@ static void parse_features(
 #if CPUINFO_ARCH_ARM
 			case 6:
 				if (memcmp(feature_start, "iwmmxt", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_IWMMXT;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_IWMMXT;
 				} else if (memcmp(feature_start, "crunch", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_CRUNCH;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_CRUNCH;
 				} else if (memcmp(feature_start, "vfpd32", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_VFPD32;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_VFPD32;
 				} else {
 					goto unexpected;
 				}
@@ -256,18 +282,18 @@ static void parse_features(
 #endif /* CPUINFO_ARCH_ARM */
 			case 7:
 				if (memcmp(feature_start, "evtstrm", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_EVTSTRM;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_EVTSTRM;
 				} else if (memcmp(feature_start, "atomics", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_ATOMICS;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_ATOMICS;
 					#endif
 				} else if (memcmp(feature_start, "asimdhp", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_ASIMDHP;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_ASIMDHP;
 					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "thumbee", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_THUMBEE;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_THUMBEE;
 #endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
@@ -276,13 +302,13 @@ static void parse_features(
 			case 8:
 				if (memcmp(feature_start, "asimdrdm", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-						proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_ASIMDRDM;
+						processor->features |= CPUINFO_ARM_LINUX_FEATURE_ASIMDRDM;
 					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "fastmult", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_FASTMULT;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_FASTMULT;
 				} else if (memcmp(feature_start, "vfpv3d16", feature_length) == 0) {
-					proc_cpuinfo->features |= PROC_CPUINFO_FEATURE_VFPV3D16;
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_VFPV3D16;
 #endif /* CPUINFO_ARCH_ARM */
 				} else {
 					goto unexpected;
@@ -290,7 +316,7 @@ static void parse_features(
 				break;
 			default:
 			unexpected:
-				cpuinfo_log_warning("unexpected /proc/cpuinfo features %.*s is ignored",
+				cpuinfo_log_warning("unexpected /proc/cpuinfo feature \"%.*s\" is ignored",
 					(int) feature_length, feature_start);
 				break;
 		}
@@ -306,14 +332,15 @@ static void parse_features(
 static void parse_cpu_architecture(
 	const char* cpu_architecture_start,
 	const char* cpu_architecture_end,
-	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
+	struct cpuinfo_arm_linux_processor processor[restrict static 1])
 {
 	const size_t cpu_architecture_length = (size_t) (cpu_architecture_end - cpu_architecture_start);
 	/* Early AArch64 kernels report "CPU architecture: AArch64" instead of a numeric value 8 */
 	if (cpu_architecture_length == 7) {
 		if (memcmp(cpu_architecture_start, "AArch64", cpu_architecture_length) == 0) {
-			proc_cpuinfo->architecture.version = 8;
-			proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_ARCHITECTURE;
+			processor->midr = midr_set_architecture(processor->midr, UINT32_C(0xF));
+			processor->architecture_version = 8;
+			processor->flags |= CPUINFO_ARM_LINUX_VALID_ARCHITECTURE;
 			return;
 		}
 	}
@@ -337,21 +364,23 @@ static void parse_cpu_architecture(
 			(int) cpu_architecture_length, cpu_architecture_start);
 	} else {
 		if (architecture != 0) {
-			proc_cpuinfo->architecture.version = architecture;
-			proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_ARCHITECTURE;
+			processor->architecture_version = architecture;
+			processor->flags |= CPUINFO_ARM_LINUX_VALID_ARCHITECTURE;
 
 			for (; cpu_architecture_ptr != cpu_architecture_end; cpu_architecture_ptr++) {
 				const char feature = *cpu_architecture_ptr;
 				switch (feature) {
+#if CPUINFO_ARCH_ARM
 					case 'T':
-						proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_T;
+						processor->architecture_flags |= CPUINFO_ARM_LINUX_ARCH_T;
 						break;
 					case 'E':
-						proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_E;
+						processor->architecture_flags |= CPUINFO_ARM_LINUX_ARCH_E;
 						break;
 					case 'J':
-						proc_cpuinfo->architecture.flags |= PROC_CPUINFO_ARCH_J;
+						processor->architecture_flags |= CPUINFO_ARM_LINUX_ARCH_J;
 						break;
+#endif /* CPUINFO_ARCH_ARM */
 					case ' ':
 					case '\t':
 						/* Ignore whitespace at the end */
@@ -367,12 +396,31 @@ static void parse_cpu_architecture(
 				(int) cpu_architecture_length, cpu_architecture_start);
 		}
 	}
+
+	uint32_t midr_architecture = UINT32_C(0xF);
+#if CPUINFO_ARCH_ARM
+	switch (processor->architecture_version) {
+		case 6:
+			midr_architecture = UINT32_C(0x7); /* ARMv6 */
+			break;
+		case 5:
+			if ((processor->architecture_flags & CPUINFO_ARM_LINUX_ARCH_TEJ) == CPUINFO_ARM_LINUX_ARCH_TEJ) {
+				midr_architecture = UINT32_C(0x6); /* ARMv5TEJ */
+			} else if ((processor->architecture_flags & CPUINFO_ARM_LINUX_ARCH_TE) == CPUINFO_ARM_LINUX_ARCH_TE) {
+				midr_architecture = UINT32_C(0x5); /* ARMv5TE */
+			} else {
+				midr_architecture = UINT32_C(0x4); /* ARMv5T */
+			}
+			break;
+	}
+#endif
+	processor->midr = midr_set_architecture(processor->midr, midr_architecture);
 }
 
 static void parse_cpu_part(
 	const char* cpu_part_start,
 	const char* cpu_part_end,
-	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
+	struct cpuinfo_arm_linux_processor processor[restrict static 1])
 {
 	const size_t cpu_part_length = (size_t) (cpu_part_end - cpu_part_start);
 
@@ -415,14 +463,14 @@ static void parse_cpu_part(
 		cpu_part = cpu_part * 16 + digit;
 	}
 
-	proc_cpuinfo->part = cpu_part;
-	proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_PART;
+	processor->midr = midr_set_part(processor->midr, cpu_part);
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_PART;
 }
 
 static void parse_cpu_implementer(
 	const char* cpu_implementer_start,
 	const char* cpu_implementer_end,
-	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
+	struct cpuinfo_arm_linux_processor processor[restrict static 1])
 {
 	const size_t cpu_implementer_length = cpu_implementer_end - cpu_implementer_start;
 
@@ -469,14 +517,14 @@ static void parse_cpu_implementer(
 		cpu_implementer = cpu_implementer * 16 + digit;
 	}
 
-	proc_cpuinfo->implementer = cpu_implementer;
-	proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_IMPLEMENTER;
+	processor->midr = midr_set_implementer(processor->midr, cpu_implementer);
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_IMPLEMENTER;
 }
 
 static void parse_cpu_variant(
 	const char* cpu_variant_start,
 	const char* cpu_variant_end,
-	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
+	struct cpuinfo_arm_linux_processor processor[restrict static 1])
 {
 	const size_t cpu_variant_length = cpu_variant_end - cpu_variant_start;
 
@@ -500,25 +548,27 @@ static void parse_cpu_variant(
 
 	/* Check if the value after hex prefix is indeed a hex digit and decode it. */
 	const char digit_char = cpu_variant_start[2];
+	uint32_t cpu_variant;
 	if ((uint32_t) (digit_char - '0') < 10) {
-		proc_cpuinfo->variant = (uint32_t) (digit_char - '0');
+		cpu_variant = (uint32_t) (digit_char - '0');
 	} else if ((uint32_t) (digit_char - 'A') < 6) {
-		proc_cpuinfo->variant = 10 + (uint32_t) (digit_char - 'A');
+		cpu_variant = 10 + (uint32_t) (digit_char - 'A');
 	} else if ((uint32_t) (digit_char - 'a') < 6) {
-		proc_cpuinfo->variant = 10 + (uint32_t) (digit_char - 'a');
+		cpu_variant = 10 + (uint32_t) (digit_char - 'a');
 	} else {
 		cpuinfo_log_warning("CPU variant %.*s in /proc/cpuinfo is ignored due to unexpected non-hex character '%c'",
 			(int) cpu_variant_length, cpu_variant_start, digit_char);
 		return;
 	}
 
-	proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_VARIANT;
+	processor->midr = midr_set_variant(processor->midr, cpu_variant);
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_VARIANT;
 }
 
 static void parse_cpu_revision(
 	const char* cpu_revision_start,
 	const char* cpu_revision_end,
-	struct proc_cpuinfo proc_cpuinfo[restrict static 1])
+	struct cpuinfo_arm_linux_processor processor[restrict static 1])
 {
 	uint32_t cpu_revision = 0;
 	for (const char* digit_ptr = cpu_revision_start; digit_ptr != cpu_revision_end; digit_ptr++) {
@@ -535,8 +585,8 @@ static void parse_cpu_revision(
 		cpu_revision = cpu_revision * 10 + digit;
 	}
 
-	proc_cpuinfo->revision = cpu_revision;
-	proc_cpuinfo->valid_mask |= PROC_CPUINFO_VALID_REVISION;
+	processor->midr = midr_set_revision(processor->midr, cpu_revision);
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_REVISION;
 }
 
 #if CPUINFO_ARCH_ARM
@@ -560,7 +610,7 @@ static void parse_cache_number(
 	const char* number_end,
 	const char* number_name,
 	uint32_t number_ptr[restrict static 1],
-	uint32_t valid_mask[restrict static 1],
+	uint32_t flags[restrict static 1],
 	uint32_t number_mask)
 {
 	uint32_t number = 0;
@@ -582,7 +632,7 @@ static void parse_cache_number(
 	}
 
 	/* If the number specifies a cache line size, verify that is a reasonable power of 2 */
-	if (number_mask & PROC_CPUINFO_VALID_CACHE_LINE) {
+	if (number_mask & CPUINFO_ARM_LINUX_VALID_CACHE_LINE) {
 		switch (number) {
 			case 16:
 			case 32:
@@ -596,7 +646,7 @@ static void parse_cache_number(
 	}
 
 	*number_ptr = number;
-	*valid_mask |= number_mask;
+	*flags |= number_mask;
 }
 #endif /* CPUINFO_ARCH_ARM */
 
@@ -626,12 +676,12 @@ static void parse_cache_number(
 static uint32_t parse_line(
 	const char* line_start,
 	const char* line_end,
-	uint32_t processor_count,
-	struct proc_cpuinfo* proc_cpuinfo)
+	uint32_t processor_index,
+	struct cpuinfo_arm_linux_processor* processor)
 {
 	/* Empty line. Skip. */
 	if (line_start == line_end) {
-		return processor_count;
+		return processor_index;
 	}
 	
 	/* Search for ':' on the line. */
@@ -645,7 +695,7 @@ static uint32_t parse_line(
 	if (separator == line_end) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
 			(int) (line_end - line_start), line_start);
-		return processor_count;
+		return processor_index;
 	}
 
 	/* Skip trailing spaces in key part. */
@@ -659,7 +709,7 @@ static uint32_t parse_line(
 	if (key_end == line_start) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key contains only spaces",
 			(int) (line_end - line_start), line_start);
-		return processor_count;
+		return processor_index;
 	}
 
 	/* Skip leading spaces in value part. */
@@ -673,7 +723,7 @@ static uint32_t parse_line(
 	if (value_start == line_end) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: value contains only spaces",
 			(int) (line_end - line_start), line_start);
-		return processor_count;
+		return processor_index;
 	}
 
 	/* Skip trailing spaces in value part (if any) */
@@ -692,20 +742,20 @@ static uint32_t parse_line(
 #if CPUINFO_ARCH_ARM
 			} else if (memcmp(line_start, "I size", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"instruction cache size", &proc_cpuinfo->cache.i_size,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_ICACHE_SIZE);
+					"instruction cache size", &processor->proc_cpuinfo_cache.i_size,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_ICACHE_SIZE);
 			} else if (memcmp(line_start, "I sets", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"instruction cache sets", &proc_cpuinfo->cache.i_sets,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_ICACHE_SETS);
+					"instruction cache sets", &processor->proc_cpuinfo_cache.i_sets,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_ICACHE_SETS);
 			} else if (memcmp(line_start, "D size", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"data cache size", &proc_cpuinfo->cache.d_size,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_DCACHE_SIZE);
+					"data cache size", &processor->proc_cpuinfo_cache.d_size,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_DCACHE_SIZE);
 			} else if (memcmp(line_start, "D sets", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"data cache sets", &proc_cpuinfo->cache.d_sets,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_DCACHE_SETS);
+					"data cache sets", &processor->proc_cpuinfo_cache.d_sets,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_DCACHE_SETS);
 #endif /* CPUINFO_ARCH_ARM */
 			} else {
 				goto unknown;
@@ -715,12 +765,12 @@ static uint32_t parse_line(
 		case 7:
 			if (memcmp(line_start, "I assoc", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"instruction cache associativity", &proc_cpuinfo->cache.i_assoc,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_ICACHE_WAYS);
+					"instruction cache associativity", &processor->proc_cpuinfo_cache.i_assoc,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_ICACHE_WAYS);
 			} else if (memcmp(line_start, "D assoc", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"data cache associativity", &proc_cpuinfo->cache.d_assoc,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_DCACHE_WAYS);
+					"data cache associativity", &processor->proc_cpuinfo_cache.d_assoc,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_DCACHE_WAYS);
 			} else {
 				goto unknown;
 			}
@@ -728,9 +778,9 @@ static uint32_t parse_line(
 #endif /* CPUINFO_ARCH_ARM */
 		case 8:
 			if (memcmp(line_start, "CPU part", key_length) == 0) {
-				parse_cpu_part(value_start, value_end, proc_cpuinfo);
+				parse_cpu_part(value_start, value_end, processor);
 			} else if (memcmp(line_start, "Features", key_length) == 0) {
-				parse_features(value_start, value_end, proc_cpuinfo);
+				parse_features(value_start, value_end, processor);
 			} else if (memcmp(line_start, "BogoMIPS", key_length) == 0) {
 				/* BogoMIPS is useless, don't parse */
 			} else if (memcmp(line_start, "Hardware", key_length) == 0) {
@@ -743,20 +793,19 @@ static uint32_t parse_line(
 			break;
 		case 9:
 			if (memcmp(line_start, "processor", key_length) == 0) {
-				const uint32_t new_processor_number =
-					parse_processor_number(value_start, value_end, proc_cpuinfo);
-				const uint32_t new_processors_count = new_processor_number + 1;
-				if (new_processor_number < processor_count && new_processor_number != 0) {
-					cpuinfo_log_warning("ignored unexpectedly low processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
-						new_processor_number, processor_count - 1);
-				} else {
-					if (new_processor_number > processor_count) {
-						cpuinfo_log_info("unexpectedly high processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
-							new_processor_number, processor_count - 1);
-						return new_processors_count;
-					}
-					return new_processors_count;
+				const uint32_t new_processor_index = parse_processor_number(value_start, value_end, processor);
+				if (new_processor_index < processor_index) {
+					/* Strange: decreasing processor number */
+					cpuinfo_log_warning(
+						"unexpectedly low processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
+						new_processor_index, processor_index);
+				} else if (new_processor_index > processor_index + 1) {
+					/* Strange: skipped processor $(processor_index + 1) */
+					cpuinfo_log_warning(
+						"unexpectedly high processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
+						new_processor_index, processor_index);
 				}
+				return new_processor_index;
 			} else if (memcmp(line_start, "Processor", key_length) == 0) {
 				/* TODO: parse to fix misreported architecture, similar to Android's cpufeatures */
 			} else {
@@ -765,14 +814,14 @@ static uint32_t parse_line(
 			break;
 		case 11:
 			if (memcmp(line_start, "CPU variant", key_length) == 0) {
-				parse_cpu_variant(value_start, value_end, proc_cpuinfo);
+				parse_cpu_variant(value_start, value_end, processor);
 			} else {
 				goto unknown;
 			}
 			break;
 		case 12:
 			if (memcmp(line_start, "CPU revision", key_length) == 0) {
-				parse_cpu_revision(value_start, value_end, proc_cpuinfo);
+				parse_cpu_revision(value_start, value_end, processor);
 			} else {
 				goto unknown;
 			}
@@ -781,12 +830,12 @@ static uint32_t parse_line(
 		case 13:
 			if (memcmp(line_start, "I line length", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"instruction cache line size", &proc_cpuinfo->cache.i_line_length,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_ICACHE_LINE);
+					"instruction cache line size", &processor->proc_cpuinfo_cache.i_line_length,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_ICACHE_LINE);
 			} else if (memcmp(line_start, "D line length", key_length) == 0) {
 				parse_cache_number(value_start, value_end,
-					"data cache line size", &proc_cpuinfo->cache.d_line_length,
-					&proc_cpuinfo->valid_mask, PROC_CPUINFO_VALID_DCACHE_LINE);
+					"data cache line size", &processor->proc_cpuinfo_cache.d_line_length,
+					&processor->flags, CPUINFO_ARM_LINUX_VALID_DCACHE_LINE);
 			} else {
 				goto unknown;
 			}
@@ -794,16 +843,16 @@ static uint32_t parse_line(
 #endif /* CPUINFO_ARCH_ARM */
 		case 15:
 			if (memcmp(line_start, "CPU implementer", key_length) == 0) {
-				parse_cpu_implementer(value_start, value_end, proc_cpuinfo);
+				parse_cpu_implementer(value_start, value_end, processor);
 			} else if (memcmp(line_start, "CPU implementor", key_length) == 0) {
-				parse_cpu_implementer(value_start, value_end, proc_cpuinfo);
+				parse_cpu_implementer(value_start, value_end, processor);
 			} else {
 				goto unknown;
 			}
 			break;
 		case 16:
 			if (memcmp(line_start, "CPU architecture", key_length) == 0) {
-				parse_cpu_architecture(value_start, value_end, proc_cpuinfo);
+				parse_cpu_architecture(value_start, value_end, processor);
 			} else {
 				goto unknown;
 			}
@@ -813,23 +862,18 @@ static uint32_t parse_line(
 			cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int) key_length, line_start);
 
 	}
-	return processor_count;
+	return processor_index;
 }
 
-struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_count_ptr[restrict static 1]) {
+bool cpuinfo_arm_linux_parse_proc_cpuinfo(
+	uint32_t max_processors_count,
+	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count])
+{
 	int file = -1;
-	struct proc_cpuinfo* processors = NULL;
-	struct proc_cpuinfo* result = NULL;
-	uint32_t processors_capacity = 8;
-	uint32_t processors_count = 1;
+	bool status = false;
+	uint32_t processor_index = 0;
 	char buffer[BUFFER_SIZE];
-
-	processors = calloc(processors_capacity, sizeof(struct proc_cpuinfo));
-	if (processors == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for /proc/cpuinfo data",
-			processors_capacity * sizeof(struct proc_cpuinfo));
-		goto cleanup;
-	}
+	struct cpuinfo_arm_linux_processor dummy_processor;
 
 	cpuinfo_log_debug("parsing cpu info from file %s", proc_cpuinfo_path);
 	file = open(proc_cpuinfo_path, O_RDONLY);
@@ -838,6 +882,7 @@ struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_co
 		goto cleanup;
 	}
 
+	/* Only used for error reporting */
 	size_t position = 0;
 	const char* buffer_end = &buffer[BUFFER_SIZE];
 	char* data_start = buffer;
@@ -856,13 +901,20 @@ struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_co
 		if (bytes_read == 0) {
 			/* No more data in the file: process the remaining text in the buffer as a single entry */
 			const char* line_end = data_end;
-			const uint32_t new_processors_count =
-				parse_line(line_start, line_end, processors_count, &processors[processors_count - 1]);
-			if (new_processors_count > processors_capacity) {
-				processors = realloc(processors, new_processors_count * sizeof(struct proc_cpuinfo));
+			const uint32_t new_processor_index = parse_line(line_start, line_end, processor_index,
+				processor_index < max_processors_count ? &processors[processor_index] : &dummy_processor);
+			processors[processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
+			if (new_processor_index < max_processors_count) {
+				processors[processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
+			} else {
+				/* Log and ignore processor */
+				if (new_processor_index != processor_index) {
+					/* Log only once */
+					cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
+						new_processor_index, max_processors_count - 1);
+				}
 			}
-			memset(&processors[processors_count], 0, (new_processors_count - processors_count) * sizeof(struct proc_cpuinfo));
-			processors_count = processors_capacity = new_processors_count;
+			processor_index = new_processor_index;
 		} else {
 			const char* line_end;
 			do {
@@ -878,13 +930,19 @@ struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_co
 				 * Otherwise, there may be more data at the end; read the file once again.
 				 */
 				if (line_end != data_end) {
-					const uint32_t new_processors_count =
-						parse_line(line_start, line_end, processors_count, &processors[processors_count - 1]);
-					if (new_processors_count > processors_capacity) {
-						processors = realloc(processors, new_processors_count * sizeof(struct proc_cpuinfo));
+					const uint32_t new_processor_index = parse_line(line_start, line_end, processor_index,
+						processor_index < max_processors_count ? &processors[processor_index] : &dummy_processor);
+					if (new_processor_index < max_processors_count) {
+						processors[processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
+					} else {
+						/* Log and ignore processor */
+						if (new_processor_index != processor_index) {
+							/* Log only once */
+							cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
+								new_processor_index, max_processors_count - 1);
+						}
 					}
-					memset(&processors[processors_count], 0, (new_processors_count - processors_count) * sizeof(struct proc_cpuinfo));
-					processors_count = processors_capacity = new_processors_count;
+					processor_index = new_processor_index;
 					line_start = line_end + 1;
 				}
 			} while (line_end != data_end);
@@ -894,51 +952,15 @@ struct proc_cpuinfo* cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t processors_co
 			memmove(buffer, line_start, line_length);
 			data_start = &buffer[line_length];
 		}
-
-		if (processors == NULL) {
-			cpuinfo_log_error("failed to allocate %zu bytes for /proc/cpuinfo data",
-				processors_capacity * sizeof(struct proc_cpuinfo));
-			goto cleanup;
-		}
 	} while (bytes_read != 0);
 
-
-	uint32_t last_i = 0;
-	for (uint32_t i = processors_count; i != 0; i--) {
-		if ((processors[i - 1].valid_mask & PROC_CPUINFO_VALID_INFO) == PROC_CPUINFO_VALID_INFO) {
-			last_i = i;
-			break;
-		}
-	}
-
-	if (last_i == 0) {
-		cpuinfo_log_error("none of the %"PRIu32" processors reported in /proc/cpuinfo were successfully parsed",
-			processors_count);
-		goto cleanup;
-	}
-
-	for (uint32_t i = last_i - 1; i < processors_count; i++) {
-		processors[i] = processors[last_i - 1];
-	}
-	for (uint32_t i = last_i; i != 0; i--) {
-		if ((processors[i - 1].valid_mask & PROC_CPUINFO_VALID_INFO) == PROC_CPUINFO_VALID_INFO) {
-			last_i = i;
-		} else {
-			processors[i - 1] = processors[last_i - 1];
-		}
-	}
-
 	/* Commit */
-	result = processors;
-	processors = NULL;
-	*processors_count_ptr = processors_count;
+	status = true;
 
 cleanup:
-	free(processors);
-	processors = NULL;
 	if (file != -1) {
 		close(file);
 		file = -1;
 	}
-	return result;
+	return status;
 }

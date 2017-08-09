@@ -50,7 +50,7 @@ inline static const char* parse_number(const char* string, const char* end, uint
 	return end;
 }
 
-inline static bool parse_entry(const char* entry_start, const char* entry_end, cpu_set_t* cpuset) {
+inline static bool parse_entry(const char* entry_start, const char* entry_end, cpuinfo_cpulist_callback callback, void* context) {
 	/* Skip whitespace at the beginning of an entry */
 	for (; entry_start != entry_end; entry_start++) {
 		if (!is_whitespace(*entry_start)) {
@@ -70,7 +70,9 @@ inline static bool parse_entry(const char* entry_start, const char* entry_end, c
 		return false;
 	}
 
-	cpuinfo_log_debug("parse cpu list entry \"%.*s\" (%zu chars)", (int) entry_length, entry_start, entry_length);
+	#if CPUINFO_LOG_DEBUG_PARSERS
+		cpuinfo_log_debug("parse cpu list entry \"%.*s\" (%zu chars)", (int) entry_length, entry_start, entry_length);
+	#endif
 	uint32_t first_cpu, last_cpu;
 
 	const char* number_end = parse_number(entry_start, entry_end, &first_cpu);
@@ -81,8 +83,11 @@ inline static bool parse_entry(const char* entry_start, const char* entry_end, c
 		return false;
 	} else if (number_end == entry_end) {
 		/* Completely parsed the entry */
-		CPU_SET((int) first_cpu, cpuset);
-		return true;
+		#if CPUINFO_LOG_DEBUG_PARSERS
+			cpuinfo_log_debug("cpulist: call callback with list_start = %"PRIu32", list_end = %"PRIu32,
+				first_cpu, first_cpu + 1);
+		#endif
+		return callback(first_cpu, first_cpu + 1, context);
 	}
 
 	/* Parse the second part of the entry */
@@ -114,18 +119,20 @@ inline static bool parse_entry(const char* entry_start, const char* entry_end, c
 	}
 
 	/* Parsed both parts of the entry; update CPU set */
-	for (uint32_t i = first_cpu; i <= last_cpu; i++) {
-		CPU_SET((int) i, cpuset);
-	}
-	return true;
+	#if CPUINFO_LOG_DEBUG_PARSERS
+		cpuinfo_log_debug("cpulist: call callback with list_start = %"PRIu32", list_end = %"PRIu32,
+			first_cpu, last_cpu + 1);
+	#endif
+	return callback(first_cpu, last_cpu + 1, context);
 }
 
-bool cpuinfo_linux_parse_cpuset(const char* filename, cpu_set_t* cpuset) {
+bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback callback, void* context) {
 	bool status = true;
 	int file = -1;
 	char buffer[BUFFER_SIZE];
-	CPU_ZERO(cpuset);
-	cpuinfo_log_debug("parsing cpu list from file %s", filename);
+	#if CPUINFO_LOG_DEBUG_PARSERS
+		cpuinfo_log_debug("parsing cpu list from file %s", filename);
+	#endif
 
 	file = open(filename, O_RDONLY);
 	if (file == -1) {
@@ -153,7 +160,7 @@ bool cpuinfo_linux_parse_cpuset(const char* filename, cpu_set_t* cpuset) {
 		if (bytes_read == 0) {
 			/* No more data in the file: process the remaining text in the buffer as a single entry */
 			const char* entry_end = data_end;
-			const bool entry_status = parse_entry(entry_start, entry_end, cpuset);
+			const bool entry_status = parse_entry(entry_start, entry_end, callback, context);
 			status &= entry_status;
 		} else {
 			const char* entry_end;
@@ -170,7 +177,7 @@ bool cpuinfo_linux_parse_cpuset(const char* filename, cpu_set_t* cpuset) {
 				 * Otherwise, there may be more data at the end; read the file once again.
 				 */
 				if (entry_end != data_end) {
-					const bool entry_status = parse_entry(entry_start, entry_end, cpuset);
+					const bool entry_status = parse_entry(entry_start, entry_end, callback, context);
 					status &= entry_status;
 					entry_start = entry_end + 1;
 				}

@@ -3,12 +3,13 @@
 #include <cpuinfo.h>
 #include <log.h>
 #include <arm/api.h>
+#include <arm/midr.h>
 
 
 void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
-	uint32_t uarch_cores,
-	uint32_t cpu_part,
+	uint32_t cluster_cores,
+	uint32_t midr,
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
@@ -16,7 +17,7 @@ void cpuinfo_arm_decode_cache(
 {
 	switch (uarch) {
 		case cpuinfo_uarch_xscale:
-			switch (cpu_part >> 8) {
+			switch (midr_get_part(midr) >> 8) {
 				case 2:
 					/*
 					 * PXA 210/25X/26X
@@ -200,7 +201,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = 128 * 1024 * uarch_cores,
+				.size = 128 * 1024 * cluster_cores,
 				.associativity = 8,
 				.line_size = 64
 			};
@@ -337,7 +338,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = uarch_cores * 512 * 1024,
+				.size = cluster_cores * 512 * 1024,
 				.associativity = 16,
 				.line_size = 64
 			};
@@ -373,7 +374,7 @@ void cpuinfo_arm_decode_cache(
 			 *
 			 * [1] https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=145766
 			 */
-			if (cpu_part == 0x800) {
+			if (midr_is_kryo280_silver(midr)) {
 				/* Little cores of Snapdragon 835 */
 				*l1i = (struct cpuinfo_cache) {
 					.size = 32 * 1024,
@@ -386,7 +387,7 @@ void cpuinfo_arm_decode_cache(
 					.line_size = 64
 				};
 				*l2 = (struct cpuinfo_cache) {
-					.size = uarch_cores * 256 * 1024,
+					.size = cluster_cores * 256 * 1024,
 					.associativity = 16,
 					.line_size = 64
 				};
@@ -403,7 +404,7 @@ void cpuinfo_arm_decode_cache(
 					.line_size = 64
 				};
 				*l2 = (struct cpuinfo_cache) {
-					.size = uarch_cores * 128 * 1024,
+					.size = cluster_cores * 128 * 1024,
 					.associativity = 16,
 					.line_size = 64
 				};
@@ -449,7 +450,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = uarch_cores * 512 * 1024,
+				.size = cluster_cores * 512 * 1024,
 				.associativity = 16,
 				.line_size = 64,
 				.flags = CPUINFO_CACHE_INCLUSIVE
@@ -566,7 +567,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = uarch_cores * 512 * 1024,
+				.size = cluster_cores * 512 * 1024,
 				.associativity = 16,
 				.line_size = 64,
 				.flags = CPUINFO_CACHE_INCLUSIVE
@@ -601,7 +602,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 32
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = uarch_cores * 256 * 1024,
+				.size = cluster_cores * 256 * 1024,
 				.associativity = 4,
 				.line_size = 128
 			};
@@ -629,7 +630,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = uarch_cores * 512 * 1024,
+				.size = cluster_cores * 512 * 1024,
 				.associativity = 8,
 				.line_size = 128
 			};
@@ -655,17 +656,17 @@ void cpuinfo_arm_decode_cache(
 				.associativity = 4 /* assume same as Krait */,
 				.line_size = 64 /* assume same as Krait */
 			};
-			if (cpu_part == 0x205) {
+			if (midr_is_kryo_silver(midr)) {
 				/* Kryo "Silver" */
 				*l2 = (struct cpuinfo_cache) {
-					.size = uarch_cores * 256 * 1024,
+					.size = cluster_cores * 256 * 1024,
 					.associativity = 8, /* assume same as Krait */
 					.line_size = 64 /* assume same as Krait */
 				};
 			} else {
 				/* Kryo "Gold" */
 				*l2 = (struct cpuinfo_cache) {
-					.size = uarch_cores * 512 * 1024,
+					.size = cluster_cores * 512 * 1024,
 					.associativity = 8, /* assume same as Krait */
 					.line_size = 64 /* assume same as Krait */
 				};
@@ -772,7 +773,7 @@ void cpuinfo_arm_decode_cache(
 					.line_size = 64
 				};
 				*l2 = (struct cpuinfo_cache) {
-					.size = uarch_cores * 256 * 1024,
+					.size = cluster_cores * 256 * 1024,
 					.associativity = 8,
 					.line_size = 64
 				};
@@ -789,7 +790,7 @@ void cpuinfo_arm_decode_cache(
 				};
 				if (arch_version >= 7) {
 					*l2 = (struct cpuinfo_cache) {
-						.size = uarch_cores * 128 * 1024,
+						.size = cluster_cores * 128 * 1024,
 						.associativity = 8,
 						.line_size = 32
 					};

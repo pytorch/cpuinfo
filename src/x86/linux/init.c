@@ -89,6 +89,14 @@ static void cpuinfo_x86_count_caches(
 	*l4_count_ptr  = l4_count;
 }
 
+static bool cpuinfo_x86_linux_cpulist_callback(uint32_t cpulist_start, uint32_t cpulist_end, void* context) {
+	cpu_set_t* cpuset = (cpu_set_t*) context;
+	for (uint32_t cpu = cpulist_start; cpu < cpulist_end; cpu++) {
+		CPU_SET((int) cpu, cpuset);
+	}
+	return true;
+}
+
 void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_x86_processor* x86_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
@@ -105,10 +113,12 @@ void cpuinfo_x86_linux_init(void) {
 	}
 
 	cpu_set_t present_set;
-	cpuinfo_linux_parse_cpuset("/sys/devices/system/cpu/present", &present_set);
+	CPU_ZERO(&present_set);
+	cpuinfo_linux_parse_cpulist("/sys/devices/system/cpu/present", cpuinfo_x86_linux_cpulist_callback, &present_set);
 
 	cpu_set_t possible_set;
-	cpuinfo_linux_parse_cpuset("/sys/devices/system/cpu/possible", &possible_set);
+	CPU_ZERO(&possible_set);
+	cpuinfo_linux_parse_cpulist("/sys/devices/system/cpu/possible", cpuinfo_x86_linux_cpulist_callback, &possible_set);
 
 	cpu_set_t processors_set;
 	CPU_AND(&processors_set, &present_set, &possible_set);

@@ -50,6 +50,7 @@
 		va_start(args, format);
 
 		#ifdef __ANDROID__
+			printf("Note: ");
 			vprintf(format, args);
 			printf("\n");
 			fflush(stdout);
@@ -68,6 +69,7 @@
 		va_start(args, format);
 
 		#ifdef __ANDROID__
+			printf("Debug: ");
 			vprintf(format, args);
 			printf("\n");
 			fflush(stdout);

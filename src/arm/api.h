@@ -7,8 +7,7 @@
 
 
 void cpuinfo_arm_decode_vendor_uarch(
-	uint32_t cpu_implementer,
-	uint32_t cpu_part,
+	uint32_t midr,
 #if CPUINFO_ARCH_ARM
 	bool has_vfpv4,
 #endif
@@ -17,8 +16,8 @@ void cpuinfo_arm_decode_vendor_uarch(
 
 void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
-	uint32_t uarch_cores,
-	uint32_t cpu_part,
+	uint32_t cluster_cores,
+	uint32_t midr,
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
