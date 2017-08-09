@@ -358,7 +358,7 @@ void cpuinfo_arm_linux_init(void) {
 			cluster_count += 1;
 		}
 	}
-	cpuinfo_log_debug("detected %"PRIu32" core clusters", cluster_count);
+	cpuinfo_log_info("detected %"PRIu32" core clusters", cluster_count);
 
 	/*
 	 * Two relations between reported /proc/cpuinfo information, and cores is possible:
@@ -391,9 +391,15 @@ void cpuinfo_arm_linux_init(void) {
 				continue;
 			}
 
+			if ((arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_MIDR) != CPUINFO_ARM_LINUX_VALID_MIDR) {
+				continue;
+			}
+
 			const uint32_t group_min_processor_id = arm_linux_processors[i].package_group_min;
 			if (i != group_min_processor_id) {
 				if ((arm_linux_processors[group_min_processor_id].flags & CPUINFO_ARM_LINUX_VALID_MIDR) != CPUINFO_ARM_LINUX_VALID_MIDR) {
+					cpuinfo_log_debug("copied MIDR %08"PRIx32" from processor %"PRIu32" to group min processor %"PRIu32,
+						arm_linux_processors[i].midr, i, group_min_processor_id);
 					arm_linux_processors[group_min_processor_id].midr = arm_linux_processors[i].midr;
 					arm_linux_processors[group_min_processor_id].flags |= CPUINFO_ARM_LINUX_VALID_MIDR;
 				}
@@ -443,11 +449,6 @@ void cpuinfo_arm_linux_init(void) {
 
 	qsort(arm_linux_processors, arm_linux_processors_count,
 		sizeof(struct cpuinfo_arm_linux_processor), cmp_x86_processor_by_apic_id);
-
-	uint32_t system_to_sorted[arm_linux_processors_count];
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		system_to_sorted[arm_linux_processors[i].system_processor_id] = i;
-	}
 
 	processors = calloc(usable_processors, sizeof(struct cpuinfo_processor));
 	if (processors == NULL) {
