@@ -260,7 +260,7 @@ TEST(L1D, processors) {
 	}
 }
 
-TEST(L2, count) {
+TEST(L2, DISABLED_count) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	ASSERT_EQ(1, l2.count);
 }
@@ -312,7 +312,7 @@ TEST(L2, flags) {
 	}
 }
 
-TEST(L2, processors) {
+TEST(L2, DISABLED_processors) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
 		ASSERT_EQ(0, l2.instances[k].thread_start);
@@ -332,8 +332,10 @@ TEST(L4, none) {
 	ASSERT_FALSE(l4.instances);
 }
 
+#include <nexus9.h>
+
 int main(int argc, char* argv[]) {
-	cpuinfo_set_proc_cpuinfo_path("test/cpuinfo/nexus9.log");
+	cpuinfo_mock_filesystem(filesystem);
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

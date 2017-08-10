@@ -132,6 +132,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := nexus9-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus9.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s7-us-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s7-us.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
