@@ -369,10 +369,14 @@ void cpuinfo_arm_decode_cache(
 			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Broadcom BCM2837   |   4   |    16K    |    16K    |    512K   |    [1]    |
+			 *  | Exynos 7420        | 4(+4) |    32K    |    32K    |    256K   |  [2, 3]   |
+			 *  | Snapdragon 410     |   4   |    32K    |    32K    |    512K   |    [3]    |
 			 *  | Snapdragon 835     | 4(+4) |  32K+64K  |  32K+64K  |  1M(+2M)  |   sysfs   |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=145766
+			 * [2] http://www.anandtech.com/show/9330/exynos-7420-deep-dive/2
+			 * [3] https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_lipp.pdf
 			 */
 			if (midr_is_kryo280_silver(midr)) {
 				/* Little cores of Snapdragon 835 */
@@ -434,10 +438,14 @@ void cpuinfo_arm_decode_cache(
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
-			 *  | Jetson TX1         |   4   |    32K    |    48K    |    2M     |    [1]    |
+			 *  | Snapdragon 810     | 4(+4) |    32K    |    48K    |    2M     |    [1]    |
+			 *  | Exynos 7420        | 4(+4) |    32K    |    48K    |    2M     |    [2]    |
+			 *  | Jetson TX1         |   4   |    32K    |    48K    |    2M     |    [3]    |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
-			 * [1] https://devblogs.nvidia.com/parallelforall/jetson-tx2-delivers-twice-intelligence-edge/
+			 * [1] http://www.anandtech.com/show/9837/snapdragon-820-preview
+			 * [2] http://www.anandtech.com/show/9330/exynos-7420-deep-dive/2
+			 * [3] https://devblogs.nvidia.com/parallelforall/jetson-tx2-delivers-twice-intelligence-edge/
 			 */
 			*l1i = (struct cpuinfo_cache) {
 				.size = 48 * 1024,
