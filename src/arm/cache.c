@@ -478,10 +478,6 @@ void cpuinfo_arm_decode_cache(
 			 *    - Inclusion property with L1 data caches.
 			 *    - 16-way set-associative cache structure.
 			 *
-			 * The ARM Cortex A73 - Artemis Unveiled [1]
-			 *   "ARM still envisions that most vendors will choose to use configurations of 1 to
-			 *    2MB in consumer products. The L2 cache is inclusive of the L1 cache. "
-			 *
 			 *  +---------------------+---------+-----------+-----------+------------+-----------+
 			 *  | Processor model     | Cores   | L1D cache | L1I cache | L2 cache   | Reference |
 			 *  +---------------------+---------+-----------+-----------+------------+-----------+
