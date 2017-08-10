@@ -77,10 +77,11 @@ def main(args):
                     build.unittest("nexus4-test", build.cxx("nexus4.cc"))
                     # build.unittest("nexus5-test", build.cxx("nexus5.cc"))
 
-                # if (build.target.is_arm or build.target.is_arm64) and build.target.is_linux:
+                if (build.target.is_arm or build.target.is_arm64) and build.target.is_linux:
                 #     build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
                 #     build.unittest("nexus9-test", build.cxx("nexus9.cc"))
                 #     build.unittest("scaleway-test", build.cxx("scaleway.cc"))
+                    build.unittest("galaxy-s7-us-test", build.cxx("galaxy-s7-us.cc"))
 
     return build
 
