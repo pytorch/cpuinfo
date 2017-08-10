@@ -10,6 +10,9 @@
 #include <fcntl.h>
 #include <sched.h>
 
+#if CPUINFO_MOCK
+	#include <cpuinfo-mock.h>
+#endif
 #include <linux/api.h>
 #include <log.h>
 
@@ -134,7 +137,11 @@ bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback 
 		cpuinfo_log_debug("parsing cpu list from file %s", filename);
 	#endif
 
+#if CPUINFO_MOCK
+	file = cpuinfo_mock_open(filename, O_RDONLY);
+#else
 	file = open(filename, O_RDONLY);
+#endif
 	if (file == -1) {
 		cpuinfo_log_error("failed to open %s: %s", filename, strerror(errno));
 		status = false;
@@ -146,7 +153,11 @@ bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback 
 	char* data_start = buffer;
 	ssize_t bytes_read;
 	do {
+#if CPUINFO_MOCK
+		bytes_read = cpuinfo_mock_read(file, data_start, (size_t) (buffer_end - data_start));
+#else
 		bytes_read = read(file, data_start, (size_t) (buffer_end - data_start));
+#endif
 		if (bytes_read < 0) {
 			cpuinfo_log_error("failed to read file %s at position %zu: %s", filename, position, strerror(errno));
 			status = false;
@@ -192,7 +203,11 @@ bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback 
 
 cleanup:
 	if (file != -1) {
+#if CPUINFO_MOCK
+		cpuinfo_mock_close(file);
+#else
 		close(file);
+#endif
 		file = -1;
 	}
 	return status;

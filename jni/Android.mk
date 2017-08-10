@@ -47,6 +47,7 @@ LOCAL_MODULE := cpuinfo_mock
 LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
     $(LOCAL_PATH)/src/cache.c \
     $(LOCAL_PATH)/src/log.c \
+    $(LOCAL_PATH)/src/linux/mockfile.c \
     $(LOCAL_PATH)/src/linux/processors.c \
     $(LOCAL_PATH)/src/linux/smallfile.c \
     $(LOCAL_PATH)/src/linux/cpulist.c
@@ -126,13 +127,6 @@ ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a))
 include $(CLEAR_VARS)
 LOCAL_MODULE := nexus4-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus4.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
-LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
-include $(BUILD_EXECUTABLE)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := nexus5-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus5.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)

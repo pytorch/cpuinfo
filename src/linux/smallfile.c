@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#if CPUINFO_MOCK
+	#include <cpuinfo-mock.h>
+#endif
 #include <linux/api.h>
 #include <log.h>
 
@@ -36,7 +39,11 @@ bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cp
 		cpuinfo_log_debug("parsing small file %s", filename);
 	#endif
 
+#if CPUINFO_MOCK
+	file = cpuinfo_mock_open(filename, O_RDONLY);
+#else
 	file = open(filename, O_RDONLY);
+#endif
 	if (file == -1) {
 		cpuinfo_log_error("failed to open %s: %s", filename, strerror(errno));
 		goto cleanup;
@@ -46,7 +53,11 @@ bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cp
 	size_t buffer_position = 0;
 	ssize_t bytes_read;
 	do {
+#if CPUINFO_MOCK
+		bytes_read = cpuinfo_mock_read(file, &buffer[buffer_position], buffer_size - buffer_position);
+#else
 		bytes_read = read(file, &buffer[buffer_position], buffer_size - buffer_position);
+#endif
 		if (bytes_read < 0) {
 			cpuinfo_log_error("failed to read file %s at position %zu: %s", filename, buffer_position, strerror(errno));
 			goto cleanup;
@@ -62,7 +73,11 @@ bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cp
 
 cleanup:
 	if (file != -1) {
+#if CPUINFO_MOCK
+		cpuinfo_mock_close(file);
+#else
 		close(file);
+#endif
 		file = -1;
 	}
 	return status;

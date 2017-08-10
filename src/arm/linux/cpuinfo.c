@@ -18,17 +18,6 @@
 #include <arm/midr.h>
 #include <log.h>
 
-
-static const char* proc_cpuinfo_path = "/proc/cpuinfo";
-
-#if CPUINFO_MOCK
-	void cpuinfo_set_proc_cpuinfo_path(const char* path) {
-		/* Note: this leaks memory */
-		proc_cpuinfo_path = strdup(path);
-	}
-#endif
-
-
 /*
  * Size, in chars, of the on-stack buffer used for parsing lines of /proc/cpuinfo.
  * This is also the limit on the length of a single line.
@@ -875,10 +864,13 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	char buffer[BUFFER_SIZE];
 	struct cpuinfo_arm_linux_processor dummy_processor;
 
-	cpuinfo_log_debug("parsing cpu info from file %s", proc_cpuinfo_path);
-	file = open(proc_cpuinfo_path, O_RDONLY);
+#if CPUINFO_MOCK
+	file = cpuinfo_mock_open("/proc/cpuinfo", O_RDONLY);
+#else
+	file = open("/proc/cpuinfo", O_RDONLY);
+#endif
 	if (file == -1) {
-		cpuinfo_log_error("failed to open %s: %s", proc_cpuinfo_path, strerror(errno));
+		cpuinfo_log_error("failed to open /proc/cpuinfo: %s", strerror(errno));
 		goto cleanup;
 	}
 
@@ -888,9 +880,13 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	char* data_start = buffer;
 	ssize_t bytes_read;
 	do {
+#if CPUINFO_MOCK
+		bytes_read = cpuinfo_mock_read(file, data_start, (size_t) (buffer_end - data_start));
+#else
 		bytes_read = read(file, data_start, (size_t) (buffer_end - data_start));
+#endif
 		if (bytes_read < 0) {
-			cpuinfo_log_error("failed to read file %s at position %zu: %s", proc_cpuinfo_path, position, strerror(errno));
+			cpuinfo_log_error("failed to read file /proc/cpuinfo at position %zu: %s", position, strerror(errno));
 			goto cleanup;
 		}
 
@@ -959,7 +955,11 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 
 cleanup:
 	if (file != -1) {
+#if CPUINFO_MOCK
+		cpuinfo_mock_close(file);
+#else
 		close(file);
+#endif
 		file = -1;
 	}
 	return status;
