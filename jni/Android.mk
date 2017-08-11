@@ -160,6 +160,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := nexus5x-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus5x.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := nexus6-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus6.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
