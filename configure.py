@@ -63,7 +63,7 @@ def main(args):
         build.executable("isa-info", build.cc("isa-info.c"))
         build.executable("cache-info", build.cc("cache-info.c"))
 
-    with build.options(source_dir="test", deps=[build, build.deps.googletest]):
+    with build.options(source_dir="test", include_dirs="test", deps=[build, build.deps.googletest]):
         build.smoketest("init-test", build.cxx("init.cc"))
         if options.mock:
             with build.options(macros={"CPUINFO_MOCK": int(options.mock)}):
