@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
+#include <stddef.h>
 
 
 #define CPUINFO_LINUX_FLAG_PRESENT            UINT32_C(0x00000001)

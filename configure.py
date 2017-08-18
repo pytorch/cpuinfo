@@ -38,7 +38,9 @@ def main(args):
             if build.target.is_linux:
                 sources += [
                     "arm/linux/init.c",
-                    "arm/linux/cpuinfo.c"
+                    "arm/linux/cpuinfo.c",
+                    "linux/smallfile.c",
+                    "linux/multiline.c",
                 ]
                 if build.target.is_arm:
                     sources.append("arm/linux/arm32-isa.c")
@@ -48,7 +50,10 @@ def main(args):
         if build.target.is_macos:
             sources += ["mach/topology.c"]
         if build.target.is_linux:
-            sources += ["linux/cpuset.c"]
+            sources += [
+                "linux/cpulist.c",
+                "linux/processors.c",
+            ]
             if options.mock:
                 sources += ["linux/mockfile.c"]
         build.static_library("cpuinfo", map(build.cc, sources))
