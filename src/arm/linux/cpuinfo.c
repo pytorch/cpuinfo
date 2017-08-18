@@ -868,33 +868,6 @@ static bool parse_line(
 	return true;
 }
 
-// static bool parse_proc_cpuinfo_line(
-// 	const char* line_start,
-// 	const char* line_end,
-// 	struct proc_cpuinfo_parser_state state[restrict static 1],
-// 	uint64_t line_number)
-// {
-// 	const uint32_t processor_index = state->processor_index;
-// 	const uint32_t max_processors_count = state->max_processors_count;
-// 	struct cpuinfo_arm_linux_processor* processors = state->processors;
-
-// 	uint32_t new_processor_index;
-// 	if (parse_line(line_start, line_end, processor_index, &new_processor_index,
-// 		processor_index < max_processors_count ? &processors[processor_index] : &state->dummy_processor))
-// 	{
-// 		if (new_processor_index < max_processors_count) {
-// 			/* Record that the processor was mentioned in /proc/cpuinfo */
-// 			processors[new_processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
-// 		} else {
-// 			/* Log and ignore processor */
-// 			cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
-// 				new_processor_index, max_processors_count - 1);
-// 		}
-// 		state->processor_index = new_processor_index;
-// 	}
-// 	return true;
-// }
-
 bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count])

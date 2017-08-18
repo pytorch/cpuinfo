@@ -16,20 +16,6 @@
 #include <log.h>
 
 
-inline static const char* parse_number(const char* string, const char* end, uint32_t number_ptr[restrict static 1]) {
-	uint32_t number = 0;
-	while (string != end) {
-		const uint32_t digit = (uint32_t) (*string) - (uint32_t) '0';
-		if (digit >= 10) {
-			return string;
-		}
-		number = number * UINT32_C(10) + digit;
-		string += 1;
-	}
-	*number_ptr = number;
-	return end;
-}
-
 bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cpuinfo_smallfile_callback callback, void* context) {
 	int file = -1;
 	bool status = false;
