@@ -19,6 +19,8 @@ typedef bool (*cpuinfo_cpulist_callback)(uint32_t, uint32_t, void*);
 bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback callback, void* context);
 typedef bool (*cpuinfo_smallfile_callback)(const char*, const char*, void*);
 bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cpuinfo_smallfile_callback, void* context);
+typedef bool (*cpuinfo_line_callback)(const char*, const char*, void*, uint64_t);
+bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size, cpuinfo_line_callback, void* context);
 
 uint32_t cpuinfo_linux_get_max_processors_count(void);
 uint32_t cpuinfo_linux_get_max_possible_processor(uint32_t max_processors_count);

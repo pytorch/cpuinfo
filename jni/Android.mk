@@ -7,6 +7,7 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
     $(LOCAL_PATH)/src/log.c \
     $(LOCAL_PATH)/src/linux/processors.c \
     $(LOCAL_PATH)/src/linux/smallfile.c \
+    $(LOCAL_PATH)/src/linux/multiline.c \
     $(LOCAL_PATH)/src/linux/cpulist.c
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v8a))
 LOCAL_SRC_FILES += \
@@ -50,6 +51,7 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
     $(LOCAL_PATH)/src/linux/mockfile.c \
     $(LOCAL_PATH)/src/linux/processors.c \
     $(LOCAL_PATH)/src/linux/smallfile.c \
+    $(LOCAL_PATH)/src/linux/multiline.c \
     $(LOCAL_PATH)/src/linux/cpulist.c
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v8a))
 LOCAL_SRC_FILES += \

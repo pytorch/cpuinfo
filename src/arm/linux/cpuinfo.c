@@ -3,17 +3,8 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
-#include <errno.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sched.h>
-
-#if CPUINFO_MOCK
-	#include <cpuinfo-mock.h>
-#endif
+#include <linux/api.h>
 #include <arm/linux/api.h>
 #include <arm/midr.h>
 #include <log.h>
@@ -27,8 +18,7 @@
 
 static uint32_t parse_processor_number(
 	const char* processor_start,
-	const char* processor_end,
-	struct cpuinfo_arm_linux_processor processor[restrict static 1])
+	const char* processor_end)
 {
 	const size_t processor_length = (size_t) (processor_end - processor_start);
 
@@ -116,7 +106,7 @@ static void parse_features(
 	const char* feature_end;
 
 	/* Mark the features as valid */
-	processor->flags |= CPUINFO_ARM_LINUX_VALID_FEATURES;
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_FEATURES | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 
 	do {
 		feature_end = feature_start + 1;
@@ -329,7 +319,7 @@ static void parse_cpu_architecture(
 		if (memcmp(cpu_architecture_start, "AArch64", cpu_architecture_length) == 0) {
 			processor->midr = midr_set_architecture(processor->midr, UINT32_C(0xF));
 			processor->architecture_version = 8;
-			processor->flags |= CPUINFO_ARM_LINUX_VALID_ARCHITECTURE;
+			processor->flags |= CPUINFO_ARM_LINUX_VALID_ARCHITECTURE | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 			return;
 		}
 	}
@@ -354,7 +344,7 @@ static void parse_cpu_architecture(
 	} else {
 		if (architecture != 0) {
 			processor->architecture_version = architecture;
-			processor->flags |= CPUINFO_ARM_LINUX_VALID_ARCHITECTURE;
+			processor->flags |= CPUINFO_ARM_LINUX_VALID_ARCHITECTURE | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 
 			for (; cpu_architecture_ptr != cpu_architecture_end; cpu_architecture_ptr++) {
 				const char feature = *cpu_architecture_ptr;
@@ -453,7 +443,7 @@ static void parse_cpu_part(
 	}
 
 	processor->midr = midr_set_part(processor->midr, cpu_part);
-	processor->flags |= CPUINFO_ARM_LINUX_VALID_PART;
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_PART | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 }
 
 static void parse_cpu_implementer(
@@ -507,7 +497,7 @@ static void parse_cpu_implementer(
 	}
 
 	processor->midr = midr_set_implementer(processor->midr, cpu_implementer);
-	processor->flags |= CPUINFO_ARM_LINUX_VALID_IMPLEMENTER;
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_IMPLEMENTER | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 }
 
 static void parse_cpu_variant(
@@ -551,7 +541,7 @@ static void parse_cpu_variant(
 	}
 
 	processor->midr = midr_set_variant(processor->midr, cpu_variant);
-	processor->flags |= CPUINFO_ARM_LINUX_VALID_VARIANT;
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_VARIANT | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 }
 
 static void parse_cpu_revision(
@@ -575,7 +565,7 @@ static void parse_cpu_revision(
 	}
 
 	processor->midr = midr_set_revision(processor->midr, cpu_revision);
-	processor->flags |= CPUINFO_ARM_LINUX_VALID_REVISION;
+	processor->flags |= CPUINFO_ARM_LINUX_VALID_REVISION | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 }
 
 #if CPUINFO_ARCH_ARM
@@ -635,9 +625,16 @@ static void parse_cache_number(
 	}
 
 	*number_ptr = number;
-	*flags |= number_mask;
+	*flags |= number_mask | CPUINFO_ARM_LINUX_VALID_PROCESSOR;
 }
 #endif /* CPUINFO_ARCH_ARM */
+
+struct proc_cpuinfo_parser_state {
+	uint32_t processor_index;
+	uint32_t max_processors_count;
+	struct cpuinfo_arm_linux_processor* processors;
+	struct cpuinfo_arm_linux_processor dummy_processor;
+};
 
 /*
  *	Decode a single line of /proc/cpuinfo information.
@@ -662,15 +659,15 @@ static void parse_cache_number(
  *		Revision        : 0020
  *		Serial          : 0000000000000000
  */
-static uint32_t parse_line(
+static bool parse_line(
 	const char* line_start,
 	const char* line_end,
-	uint32_t processor_index,
-	struct cpuinfo_arm_linux_processor* processor)
+	struct proc_cpuinfo_parser_state state[restrict static 1],
+	uint64_t line_number)
 {
 	/* Empty line. Skip. */
 	if (line_start == line_end) {
-		return processor_index;
+		return true;
 	}
 	
 	/* Search for ':' on the line. */
@@ -684,7 +681,7 @@ static uint32_t parse_line(
 	if (separator == line_end) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
 			(int) (line_end - line_start), line_start);
-		return processor_index;
+		return true;
 	}
 
 	/* Skip trailing spaces in key part. */
@@ -698,7 +695,7 @@ static uint32_t parse_line(
 	if (key_end == line_start) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key contains only spaces",
 			(int) (line_end - line_start), line_start);
-		return processor_index;
+		return true;
 	}
 
 	/* Skip leading spaces in value part. */
@@ -712,7 +709,7 @@ static uint32_t parse_line(
 	if (value_start == line_end) {
 		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: value contains only spaces",
 			(int) (line_end - line_start), line_start);
-		return processor_index;
+		return true;
 	}
 
 	/* Skip trailing spaces in value part (if any) */
@@ -721,6 +718,14 @@ static uint32_t parse_line(
 		if (value_end[-1] != ' ') {
 			break;
 		}
+	}
+
+	const uint32_t processor_index      = state->processor_index;
+	const uint32_t max_processors_count = state->max_processors_count;
+	struct cpuinfo_arm_linux_processor* processors = state->processors;
+	struct cpuinfo_arm_linux_processor* processor  = &state->dummy_processor;
+	if (processor_index < max_processors_count) {
+		processor = &processors[processor_index];
 	}
 
 	const size_t key_length = key_end - line_start;
@@ -782,19 +787,28 @@ static uint32_t parse_line(
 			break;
 		case 9:
 			if (memcmp(line_start, "processor", key_length) == 0) {
-				const uint32_t new_processor_index = parse_processor_number(value_start, value_end, processor);
+				const uint32_t new_processor_index = parse_processor_number(value_start, value_end);
 				if (new_processor_index < processor_index) {
 					/* Strange: decreasing processor number */
 					cpuinfo_log_warning(
 						"unexpectedly low processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
 						new_processor_index, processor_index);
 				} else if (new_processor_index > processor_index + 1) {
-					/* Strange: skipped processor $(processor_index + 1) */
-					cpuinfo_log_warning(
+					/* Strange, but common: skipped processor $(processor_index + 1) */
+					cpuinfo_log_info(
 						"unexpectedly high processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
 						new_processor_index, processor_index);
 				}
-				return new_processor_index;
+				if (new_processor_index < max_processors_count) {
+					/* Record that the processor was mentioned in /proc/cpuinfo */
+					processors[new_processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
+				} else {
+					/* Log and ignore processor */
+					cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
+						new_processor_index, max_processors_count - 1);
+				}
+				state->processor_index = new_processor_index;
+				return true;
 			} else if (memcmp(line_start, "Processor", key_length) == 0) {
 				/* TODO: parse to fix misreported architecture, similar to Android's cpufeatures */
 			} else {
@@ -851,116 +865,45 @@ static uint32_t parse_line(
 			cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int) key_length, line_start);
 
 	}
-	return processor_index;
+	return true;
 }
+
+// static bool parse_proc_cpuinfo_line(
+// 	const char* line_start,
+// 	const char* line_end,
+// 	struct proc_cpuinfo_parser_state state[restrict static 1],
+// 	uint64_t line_number)
+// {
+// 	const uint32_t processor_index = state->processor_index;
+// 	const uint32_t max_processors_count = state->max_processors_count;
+// 	struct cpuinfo_arm_linux_processor* processors = state->processors;
+
+// 	uint32_t new_processor_index;
+// 	if (parse_line(line_start, line_end, processor_index, &new_processor_index,
+// 		processor_index < max_processors_count ? &processors[processor_index] : &state->dummy_processor))
+// 	{
+// 		if (new_processor_index < max_processors_count) {
+// 			/* Record that the processor was mentioned in /proc/cpuinfo */
+// 			processors[new_processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
+// 		} else {
+// 			/* Log and ignore processor */
+// 			cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
+// 				new_processor_index, max_processors_count - 1);
+// 		}
+// 		state->processor_index = new_processor_index;
+// 	}
+// 	return true;
+// }
 
 bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count])
 {
-	int file = -1;
-	bool status = false;
-	uint32_t processor_index = 0;
-	char buffer[BUFFER_SIZE];
-	struct cpuinfo_arm_linux_processor dummy_processor;
-
-#if CPUINFO_MOCK
-	file = cpuinfo_mock_open("/proc/cpuinfo", O_RDONLY);
-#else
-	file = open("/proc/cpuinfo", O_RDONLY);
-#endif
-	if (file == -1) {
-		cpuinfo_log_error("failed to open /proc/cpuinfo: %s", strerror(errno));
-		goto cleanup;
-	}
-
-	/* Only used for error reporting */
-	size_t position = 0;
-	const char* buffer_end = &buffer[BUFFER_SIZE];
-	char* data_start = buffer;
-	ssize_t bytes_read;
-	do {
-#if CPUINFO_MOCK
-		bytes_read = cpuinfo_mock_read(file, data_start, (size_t) (buffer_end - data_start));
-#else
-		bytes_read = read(file, data_start, (size_t) (buffer_end - data_start));
-#endif
-		if (bytes_read < 0) {
-			cpuinfo_log_error("failed to read file /proc/cpuinfo at position %zu: %s", position, strerror(errno));
-			goto cleanup;
-		}
-
-		position += (size_t) bytes_read;
-		const char* data_end = data_start + (size_t) bytes_read;
-		const char* line_start = buffer;
-
-		if (bytes_read == 0) {
-			/* No more data in the file: process the remaining text in the buffer as a single entry */
-			const char* line_end = data_end;
-			const uint32_t new_processor_index = parse_line(line_start, line_end, processor_index,
-				processor_index < max_processors_count ? &processors[processor_index] : &dummy_processor);
-			processors[processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
-			if (new_processor_index < max_processors_count) {
-				processors[processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
-			} else {
-				/* Log and ignore processor */
-				if (new_processor_index != processor_index) {
-					/* Log only once */
-					cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
-						new_processor_index, max_processors_count - 1);
-				}
-			}
-			processor_index = new_processor_index;
-		} else {
-			const char* line_end;
-			do {
-				/* Find the end of the entry, as indicated by a comma (',') */
-				for (line_end = line_start; line_end != data_end; line_end++) {
-					if (*line_end == '\n') {
-						break;
-					}
-				}
-
-				/*
-				 * If we located separator at the end of the entry, parse it.
-				 * Otherwise, there may be more data at the end; read the file once again.
-				 */
-				if (line_end != data_end) {
-					const uint32_t new_processor_index = parse_line(line_start, line_end, processor_index,
-						processor_index < max_processors_count ? &processors[processor_index] : &dummy_processor);
-					if (new_processor_index < max_processors_count) {
-						processors[processor_index].flags |= CPUINFO_ARM_LINUX_VALID_PROCESSOR;
-					} else {
-						/* Log and ignore processor */
-						if (new_processor_index != processor_index) {
-							/* Log only once */
-							cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
-								new_processor_index, max_processors_count - 1);
-						}
-					}
-					processor_index = new_processor_index;
-					line_start = line_end + 1;
-				}
-			} while (line_end != data_end);
-
-			/* Move remaining partial line data at the end to the beginning of the buffer */
-			const size_t line_length = (size_t) (line_end - line_start);
-			memmove(buffer, line_start, line_length);
-			data_start = &buffer[line_length];
-		}
-	} while (bytes_read != 0);
-
-	/* Commit */
-	status = true;
-
-cleanup:
-	if (file != -1) {
-#if CPUINFO_MOCK
-		cpuinfo_mock_close(file);
-#else
-		close(file);
-#endif
-		file = -1;
-	}
-	return status;
+	struct proc_cpuinfo_parser_state state = {
+		.processor_index = 0,
+		.max_processors_count = max_processors_count,
+		.processors = processors,
+	};
+	return cpuinfo_linux_parse_multiline_file("/proc/cpuinfo", BUFFER_SIZE,
+		(cpuinfo_line_callback) parse_line, &state);
 }
