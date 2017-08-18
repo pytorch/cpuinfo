@@ -332,8 +332,10 @@ TEST(L4, none) {
 	ASSERT_FALSE(l4.instances);
 }
 
+#include <scaleway.h>
+
 int main(int argc, char* argv[]) {
-	cpuinfo_set_proc_cpuinfo_path("test/cpuinfo/scaleway.log");
+	cpuinfo_mock_filesystem(filesystem);
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
