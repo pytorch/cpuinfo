@@ -714,7 +714,7 @@ static bool parse_line(
 
 	/* Skip trailing spaces in value part (if any) */
 	const char* value_end = line_end;
-	for (; value_end != separator; value_end--) {
+	for (; value_end != value_start; value_end--) {
 		if (value_end[-1] != ' ') {
 			break;
 		}
