@@ -25,7 +25,8 @@ def main(args):
         sources = ["init.c", "cache.c", "log.c"]
         if build.target.is_x86_64:
             sources += [
-                "x86/init.c", "x86/info.c", "x86/vendor.c", "x86/uarch.c", "x86/topology.c",
+                "x86/init.c", "x86/info.c", "x86/vendor.c", "x86/uarch.c", "x86/name.c",
+                "x86/topology.c",
                 "x86/cache/init.c", "x86/cache/descriptor.c", "x86/cache/deterministic.c",
             ]
             if build.target.is_macos:
@@ -65,6 +66,8 @@ def main(args):
 
     with build.options(source_dir="test", include_dirs="test", deps=[build, build.deps.googletest]):
         build.smoketest("init-test", build.cxx("init.cc"))
+        if build.target.is_x86_64:
+            build.smoketest("brand-string-test", build.cxx("name/brand-string.cc"))
         if options.mock:
             with build.options(macros={"CPUINFO_MOCK": int(options.mock)}):
                 if build.target.is_arm and build.target.is_linux:
