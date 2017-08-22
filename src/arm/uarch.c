@@ -36,6 +36,14 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xC0E:
 					*uarch = cpuinfo_uarch_cortex_a17;
 					break;
+				case 0xC0D:
+					/*
+					 * Rockchip RK3288 only.
+					 * Core information is ambiguous: some sources specify Cortex-A12, others - Cortex-A17.
+					 * Assume it is Cortex-A12.
+					 */
+					*uarch = cpuinfo_uarch_cortex_a12;
+					break;
 				case 0xC0F:
 					*uarch = cpuinfo_uarch_cortex_a15;
 					break;
