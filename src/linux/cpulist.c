@@ -143,7 +143,7 @@ bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback 
 	file = open(filename, O_RDONLY);
 #endif
 	if (file == -1) {
-		cpuinfo_log_error("failed to open %s: %s", filename, strerror(errno));
+		cpuinfo_log_info("failed to open %s: %s", filename, strerror(errno));
 		status = false;
 		goto cleanup;
 	}
@@ -159,7 +159,7 @@ bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback 
 		bytes_read = read(file, data_start, (size_t) (buffer_end - data_start));
 #endif
 		if (bytes_read < 0) {
-			cpuinfo_log_error("failed to read file %s at position %zu: %s", filename, position, strerror(errno));
+			cpuinfo_log_info("failed to read file %s at position %zu: %s", filename, position, strerror(errno));
 			status = false;
 			goto cleanup;
 		}

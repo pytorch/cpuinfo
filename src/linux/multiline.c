@@ -29,7 +29,7 @@ bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size
 	file = open(filename, O_RDONLY);
 #endif
 	if (file == -1) {
-		cpuinfo_log_error("failed to open %s: %s", filename, strerror(errno));
+		cpuinfo_log_info("failed to open %s: %s", filename, strerror(errno));
 		goto cleanup;
 	}
 
@@ -46,7 +46,7 @@ bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size
 		bytes_read = read(file, data_start, (size_t) (buffer_end - data_start));
 #endif
 		if (bytes_read < 0) {
-			cpuinfo_log_error("failed to read file %s at position %zu: %s",
+			cpuinfo_log_info("failed to read file %s at position %zu: %s",
 				filename, position, strerror(errno));
 			goto cleanup;
 		}

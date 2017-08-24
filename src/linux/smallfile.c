@@ -31,7 +31,7 @@ bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cp
 	file = open(filename, O_RDONLY);
 #endif
 	if (file == -1) {
-		cpuinfo_log_error("failed to open %s: %s", filename, strerror(errno));
+		cpuinfo_log_info("failed to open %s: %s", filename, strerror(errno));
 		goto cleanup;
 	}
 
@@ -45,7 +45,7 @@ bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cp
 		bytes_read = read(file, &buffer[buffer_position], buffer_size - buffer_position);
 #endif
 		if (bytes_read < 0) {
-			cpuinfo_log_error("failed to read file %s at position %zu: %s", filename, buffer_position, strerror(errno));
+			cpuinfo_log_info("failed to read file %s at position %zu: %s", filename, buffer_position, strerror(errno));
 			goto cleanup;
 		}
 		buffer_position += (size_t) bytes_read;
