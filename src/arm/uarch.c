@@ -184,7 +184,14 @@ void cpuinfo_arm_decode_vendor_uarch(
 #if CPUINFO_ARCH_ARM
 		case 'V':
 			*vendor = cpuinfo_vendor_marvell;
-			cpuinfo_log_warning("unknown Marvell CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
+			switch (midr_get_part(midr)) {
+				case 0x581: /* PJ4 / PJ4B */
+				case 0x584: /* PJ4B-MP / PJ4C */
+					*uarch = cpuinfo_uarch_pj4;
+					break;
+				default:
+					cpuinfo_log_warning("unknown Marvell CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
+			}
 			break;
 #endif /* CPUINFO_ARCH_ARM */
 		default:

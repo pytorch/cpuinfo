@@ -249,6 +249,9 @@ int main(int argc, char** argv) {
 		case cpuinfo_uarch_thunderx:
 			printf("uArch: ThunderX\n");
 			break;
+		case cpuinfo_uarch_pj4:
+			printf("uArch: PJ4\n");
+			break;
 		default:
 			printf("uArch: other (0x%08X)\n", cpuinfo_processors[0].uarch);
 	}

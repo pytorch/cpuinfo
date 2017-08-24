@@ -568,6 +568,9 @@ enum cpuinfo_uarch {
 
 	/** Cavium ThunderX. */
 	cpuinfo_uarch_thunderx = 0x00800100,
+
+	/** Marvell PJ4. */
+	cpuinfo_uarch_pj4 = 0x00900100,
 };
 
 struct cpuinfo_topology {
