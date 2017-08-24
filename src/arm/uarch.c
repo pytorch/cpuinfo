@@ -90,6 +90,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 					}
 			}
 			break;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 		case 'C':
 			*vendor = cpuinfo_vendor_cavium;
 			switch (midr_get_part(midr)) {
@@ -100,6 +101,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Cavium CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
+#endif
 #if CPUINFO_ARCH_ARM
 		case 'i':
 			*vendor = cpuinfo_vendor_intel;
