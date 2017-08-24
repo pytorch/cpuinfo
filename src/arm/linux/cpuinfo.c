@@ -630,6 +630,9 @@ static void parse_cache_number(
 #endif /* CPUINFO_ARCH_ARM */
 
 struct proc_cpuinfo_parser_state {
+#if defined(__ANDROID__)
+	char* hardware;
+#endif
 	uint32_t processor_index;
 	uint32_t max_processors_count;
 	struct cpuinfo_arm_linux_processor* processors;
@@ -778,7 +781,15 @@ static bool parse_line(
 			} else if (memcmp(line_start, "BogoMIPS", key_length) == 0) {
 				/* BogoMIPS is useless, don't parse */
 			} else if (memcmp(line_start, "Hardware", key_length) == 0) {
-				/* TODO: parse to extract SoC name */
+				size_t value_length = value_end - value_start;
+				if (value_length > CPUINFO_HARDWARE_VALUE_MAX) {
+					cpuinfo_log_info(
+						"length of Hardware value \"%.*s\" in /proc/cpuinfo exceeds limit (%d): truncating to the limit",
+						(int) value_length, value_start, CPUINFO_HARDWARE_VALUE_MAX);
+					value_length = CPUINFO_HARDWARE_VALUE_MAX;
+				}
+				memcpy(state->hardware, value_start, value_length);
+				cpuinfo_log_debug("parsed /proc/cpuinfo Hardware = \"%.*s\"", (int) value_length, value_start);
 			} else if (memcmp(line_start, "Revision", key_length) == 0) {
 				/* Board revision, no use for now */
 			} else {
@@ -869,10 +880,12 @@ static bool parse_line(
 }
 
 bool cpuinfo_arm_linux_parse_proc_cpuinfo(
+	char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
 	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count])
 {
 	struct proc_cpuinfo_parser_state state = {
+		.hardware = hardware,
 		.processor_index = 0,
 		.max_processors_count = max_processors_count,
 		.processors = processors,

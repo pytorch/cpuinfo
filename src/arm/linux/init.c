@@ -5,6 +5,9 @@
 
 #include <cpuinfo.h>
 #include <arm/linux/api.h>
+#if defined(__ANDROID__)
+	#include <arm/android/api.h>
+#endif
 #include <arm/api.h>
 #include <arm/midr.h>
 #include <linux/api.h>
@@ -99,7 +102,21 @@ void cpuinfo_arm_linux_init(void) {
 		sizeof(struct cpuinfo_arm_linux_processor),
 		CPUINFO_LINUX_FLAG_PRESENT);
 
-	if (!cpuinfo_arm_linux_parse_proc_cpuinfo(arm_linux_processors_count, arm_linux_processors)) {
+#if defined(__ANDROID__)
+	struct cpuinfo_android_properties android_properties;
+	cpuinfo_arm_android_parse_properties(&android_properties);
+#else
+	char proc_cpuinfo_hardware[CPUINFO_HARDWARE_VALUE_MAX] = { 0 };
+#endif
+
+	if (!cpuinfo_arm_linux_parse_proc_cpuinfo(
+#if defined(__ANDROID__)
+			android_properties.proc_cpuinfo_hardware,
+#else
+			proc_cpuinfo_hardware,
+#endif
+			arm_linux_processors_count,
+			arm_linux_processors)) {
 		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
 		return;
 	}
@@ -467,6 +484,11 @@ void cpuinfo_arm_linux_init(void) {
 			.linux_id = (int) arm_linux_processors[i].system_processor_id,
 		};
 	}
+
+#if defined(__ANDROID__)
+	struct cpuinfo_arm_chipset chipset = cpuinfo_arm_android_decode_chipset(
+		&android_properties, usable_processors, 0);
+#endif
 
 	/*
 	 * Assumptions:

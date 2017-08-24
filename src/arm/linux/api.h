@@ -7,6 +7,8 @@
 #include <arm/midr.h>
 #include <linux/api.h>
 
+/* No hard limit in the kernel, maximum length observed on non-rogue kernels is 64 */
+#define CPUINFO_HARDWARE_VALUE_MAX 64
 
 #define CPUINFO_ARM_LINUX_ARCH_T   UINT32_C(0x00000001)
 #define CPUINFO_ARM_LINUX_ARCH_E   UINT32_C(0x00000002)
@@ -252,7 +254,11 @@ static bool cpuinfo_arm_linux_processor_not_equals(
 	return false;
 }
 
-bool cpuinfo_arm_linux_parse_proc_cpuinfo(uint32_t max_processors_count,
+bool cpuinfo_arm_linux_parse_proc_cpuinfo(
+#if defined(__ANDROID__)
+	char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+#endif
+	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count]);
 
 #if CPUINFO_ARCH_ARM

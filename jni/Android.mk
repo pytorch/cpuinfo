@@ -14,7 +14,9 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/uarch.c \
 	$(LOCAL_PATH)/src/arm/cache.c \
 	$(LOCAL_PATH)/src/arm/linux/init.c \
-	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c
+	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c \
+	$(LOCAL_PATH)/src/arm/android/properties.c \
+	$(LOCAL_PATH)/src/arm/android/chipset.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
 LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c.arm
 endif # armeabi
@@ -58,7 +60,9 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/uarch.c \
 	$(LOCAL_PATH)/src/arm/cache.c \
 	$(LOCAL_PATH)/src/arm/linux/init.c \
-	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c
+	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c \
+	$(LOCAL_PATH)/src/arm/android/properties.c \
+	$(LOCAL_PATH)/src/arm/android/chipset.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
 LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c.arm
 endif # armeabi
@@ -114,6 +118,13 @@ LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/deps/googletest/goo
 ifeq ($(TARGET_ARCH_ABI),armeabi)
 LOCAL_EXPORT_LDLIBS := -latomic
 endif # armeabi
+include $(BUILD_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := gtest_main
+LOCAL_SRC_FILES := $(LOCAL_PATH)/deps/googletest/googletest/src/gtest_main.cc
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/deps/googletest/googletest/include
+LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/deps/googletest/googletest
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -253,3 +264,20 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 endif # armeabi, armeabi-v7a
+
+ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v8a))
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := chipset-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/name/android-properties-interface.c \
+	$(LOCAL_PATH)/test/name/proc-cpuinfo-hardware.cc \
+	$(LOCAL_PATH)/test/name/ro-product-board.cc \
+	$(LOCAL_PATH)/test/name/ro-board-platform.cc \
+	$(LOCAL_PATH)/test/name/ro-mediatek-platform.cc \
+	$(LOCAL_PATH)/test/name/ro-chipname.cc \
+	$(LOCAL_PATH)/test/name/android-properties.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/src
+LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
+include $(BUILD_EXECUTABLE)
+
+endif # armeabi, armeabi-v7a, or arm64-v8a
