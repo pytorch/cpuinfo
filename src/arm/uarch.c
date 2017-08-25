@@ -151,8 +151,23 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x02D: /* Dual-core Scorpions */
 					*uarch = cpuinfo_uarch_scorpion;
 					break;
-				case 0x04D: /* Dual-core Krait */
-				case 0x06F: /* Quad-core Krait */
+				case 0x04D:
+					/*
+					 * Dual-core Krait:
+					 * - r1p0 -> Krait 200
+					 * - r1p4 -> Krait 200
+					 * - r2p0 -> Krait 300
+					 */
+				case 0x06F:
+					/*
+					 * Quad-core Krait:
+					 * - r0p1 -> Krait 200
+					 * - r0p2 -> Krait 200
+					 * - r1p0 -> Krait 300
+					 * - r2p0 -> Krait 400 (Snapdragon 800 MSMxxxx)
+					 * - r2p1 -> Krait 400 (Snapdragon 801 MSMxxxxPRO)
+					 * - r3p1 -> Krait 450
+					 */
 					*uarch = cpuinfo_uarch_krait;
 					break;
 #endif /* CPUINFO_ARCH_ARM */
@@ -161,13 +176,13 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x211: /* Qualcomm Snapdragon 820: Low-power Kryo "Silver" */
 					*uarch = cpuinfo_uarch_kryo;
 					break;
-				case 0x800: /* Low-power Kryo 280 "Silver" -> Cortex-A53 */
-					*vendor = cpuinfo_vendor_arm;
-					*uarch = cpuinfo_uarch_cortex_a53;
-					break;
-				case 0x801: /* High-performance Kryo 280 "Gold" -> Cortex-A73 */
+				case 0x800: /* High-performance Kryo 260 (r10p2) / Kryo 280 (r10p1) "Gold" -> Cortex-A73 */
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a73;
+					break;
+				case 0x801: /* Low-power Kryo 260 / 280 "Silver" -> Cortex-A53 */
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a53;
 					break;
 				default:
 					cpuinfo_log_warning("unknown Qualcomm CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
