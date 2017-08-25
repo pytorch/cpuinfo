@@ -5,23 +5,6 @@
 
 #include <cpuinfo.h>
 
-void cpuinfo_arm_decode_vendor_uarch(
-	uint32_t midr,
-#if CPUINFO_ARCH_ARM
-	bool has_vfpv4,
-#endif
-	enum cpuinfo_vendor vendor[restrict static 1],
-	enum cpuinfo_uarch uarch[restrict static 1]);
-
-void cpuinfo_arm_decode_cache(
-	enum cpuinfo_uarch uarch,
-	uint32_t cluster_cores,
-	uint32_t midr,
-	uint32_t arch_version,
-	struct cpuinfo_cache l1i[restrict static 1],
-	struct cpuinfo_cache l1d[restrict static 1],
-	struct cpuinfo_cache l2[restrict static 1]);
-
 enum cpuinfo_arm_chipset_vendor {
 	cpuinfo_arm_chipset_vendor_unknown = 0,
 	cpuinfo_arm_chipset_vendor_qualcomm,
@@ -99,3 +82,23 @@ void cpuinfo_arm_chipset_to_string(
 
 void cpuinfo_arm_fixup_chipset(
 	struct cpuinfo_arm_chipset chipset[restrict static 1], uint32_t cores, uint32_t max_cpu_freq_max);
+
+void cpuinfo_arm_decode_vendor_uarch(
+	uint32_t midr,
+#if CPUINFO_ARCH_ARM
+	bool has_vfpv4,
+#endif
+	enum cpuinfo_vendor vendor[restrict static 1],
+	enum cpuinfo_uarch uarch[restrict static 1]);
+
+void cpuinfo_arm_decode_cache(
+	enum cpuinfo_uarch uarch,
+	uint32_t cluster_cores,
+	uint32_t midr,
+#ifdef __ANDROID__
+	const struct cpuinfo_arm_chipset chipset[restrict static 1],
+#endif
+	uint32_t arch_version,
+	struct cpuinfo_cache l1i[restrict static 1],
+	struct cpuinfo_cache l1d[restrict static 1],
+	struct cpuinfo_cache l2[restrict static 1]);

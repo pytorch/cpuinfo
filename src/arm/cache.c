@@ -10,6 +10,9 @@ void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
 	uint32_t cluster_cores,
 	uint32_t midr,
+#ifdef __ANDROID__
+	const struct cpuinfo_arm_chipset chipset[restrict static 1],
+#endif
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
@@ -370,13 +373,17 @@ void cpuinfo_arm_decode_cache(
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Broadcom BCM2837   |   4   |    16K    |    16K    |    512K   |    [1]    |
 			 *  | Exynos 7420        | 4(+4) |    32K    |    32K    |    256K   |  [2, 3]   |
+			 *  | Exynos 8890        | 4(+4) |    32K    |    32K    |    256K   |    [4]    |
 			 *  | Snapdragon 410     |   4   |    32K    |    32K    |    512K   |    [3]    |
 			 *  | Snapdragon 835     | 4(+4) |  32K+64K  |  32K+64K  |  1M(+2M)  |   sysfs   |
+			 *  | Kirin 620          |  4+4  |    32K    |    32K    |    512K   |    [5]    |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=145766
 			 * [2] http://www.anandtech.com/show/9330/exynos-7420-deep-dive/2
 			 * [3] https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_lipp.pdf
+			 * [4] http://www.boardset.com/products/products_v8890.php
+			 * [5] http://mirror.lemaker.org/Hi6220V100_Multi-Mode_Application_Processor_Function_Description.pdf
 			 */
 			if (midr_is_kryo280_silver(midr)) {
 				/* Little cores of Snapdragon 835 */
@@ -397,18 +404,38 @@ void cpuinfo_arm_decode_cache(
 				};
 			} else {
 				/* Standard Cortex-A53 */
+
+				/* Use conservative values by default */
+				size_t l1_size = 16 * 1024;
+				size_t l2_size = 256 * 1024;
+#ifdef __ANDROID__
+				switch (chipset->vendor) {
+					case cpuinfo_arm_chipset_vendor_qualcomm:
+					case cpuinfo_arm_chipset_vendor_hisilicon:
+						l1_size = 32 * 1024;
+						l2_size = 512 * 1024;
+						break;
+					case cpuinfo_arm_chipset_vendor_samsung:
+						l1_size = 32 * 1024;
+						break;
+					default:
+						/* Silence compiler warning about unhandled enum values */
+						break;
+				}
+#endif
+
 				*l1i = (struct cpuinfo_cache) {
-					.size = 16 * 1024,
+					.size = l1_size,
 					.associativity = 2,
 					.line_size = 64
 				};
 				*l1d = (struct cpuinfo_cache) {
-					.size = 16 * 1024,
+					.size = l1_size,
 					.associativity = 4,
 					.line_size = 64
 				};
 				*l2 = (struct cpuinfo_cache) {
-					.size = cluster_cores * 128 * 1024,
+					.size = l2_size,
 					.associativity = 16,
 					.line_size = 64
 				};
@@ -489,11 +516,11 @@ void cpuinfo_arm_decode_cache(
 			 *  +---------------------+---------+-----------+-----------+------------+-----------+
 			 *  | Processor model     | Cores   | L1D cache | L1I cache | L2 cache   | Reference |
 			 *  +---------------------+---------+-----------+-----------+------------+-----------+
-			 *  | Snapdragon 650      | 2(+4)   |  32K+32K  |  48K+32K  | 1M(+512K)? |    [1]    |
-			 *  | Snapdragon 652      | 4(+4)   |  32K+32K  |  48K+32K  | 1M(+512K)? |    [2]    |
-			 *  | Snapdragon 653      | 4(+4)   |  32K+32K  |  48K+32K  | 1M(+512K)? |    [3]    |
-			 *  | HiSilicon Kirin 950 | 4(+4)   |  32K+32K  |  48K+32K  |     ?      |           |
-			 *  | HiSilicon Kirin 955 | 4(+4)   |  32K+32K  |  48K+32K  |     ?      |           |
+			 *  | Snapdragon 650      |  2(+4)  | 32K(+32K) | 48K(+32K) |  1M(+512K) |    [1]    |
+			 *  | Snapdragon 652      |  4(+4)  | 32K(+32K) | 48K(+32K) |  1M(+512K) |    [2]    |
+			 *  | Snapdragon 653      |  4(+4)  | 32K(+32K) | 48K(+32K) |  1M(+512K) |    [3]    |
+			 *  | HiSilicon Kirin 950 |  4(+4)  |  32K+32K  |  48K+32K  |     ?      |           |
+			 *  | HiSilicon Kirin 955 |  4(+4)  |  32K+32K  |  48K+32K  |     ?      |           |
 			 *  | MediaTek Helio X20  | 2(+4+4) |     ?     |     ?     |     ?      |           |
 			 *  | MediaTek Helio X23  | 2(+4+4) |     ?     |     ?     |     ?      |           |
 			 *  | MediaTek Helio X25  | 2(+4+4) |     ?     |     ?     |     ?      |           |
@@ -644,35 +671,35 @@ void cpuinfo_arm_decode_cache(
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Processor model | Cores | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
-			 *  | Snapdragon 820  |  2+2  |    32K    |    32K    |  1M+512K  |    [1]    |
-			 *  | Snapdragon 821  |  2+2  |    32K    |    32K    |  1M+512K  |    [1]    |
+			 *  | Snapdragon 820  |  2+2  |     ?     |     ?     |  1M+512K  |    [1]    |
+			 *  | Snapdragon 821  |  2+2  |     ?     |     ?     |  1M+512K  |    [1]    |
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] http://www.anandtech.com/show/9837/snapdragon-820-preview/2
 			 */
 			*l1i = (struct cpuinfo_cache) {
-				.size = 32 * 1024,
-				.associativity = 4 /* assume same as Krait */,
-				.line_size = 64 /* assume same as Krait */
+				.size = 32 * 1024 /* TODO: verify */,
+				.associativity = 4,
+				.line_size = 64
 			};
 			*l1d = (struct cpuinfo_cache) {
-				.size = 32 * 1024,
-				.associativity = 4 /* assume same as Krait */,
-				.line_size = 64 /* assume same as Krait */
+				.size = 24 * 1024 /* TODO: verify */,
+				.associativity = 3,
+				.line_size = 64
 			};
 			if (midr_is_kryo_silver(midr)) {
 				/* Kryo "Silver" */
 				*l2 = (struct cpuinfo_cache) {
-					.size = cluster_cores * 256 * 1024,
-					.associativity = 8, /* assume same as Krait */
-					.line_size = 64 /* assume same as Krait */
+					.size = 1024 * 1024,
+					.associativity = 8,
+					.line_size = 128
 				};
 			} else {
 				/* Kryo "Gold" */
 				*l2 = (struct cpuinfo_cache) {
-					.size = cluster_cores * 512 * 1024,
-					.associativity = 8, /* assume same as Krait */
-					.line_size = 64 /* assume same as Krait */
+					.size = 512 * 1024,
+					.associativity = 8,
+					.line_size = 128
 				};
 			}
 			break;

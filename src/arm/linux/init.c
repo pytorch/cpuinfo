@@ -486,8 +486,8 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 #if defined(__ANDROID__)
-	struct cpuinfo_arm_chipset chipset = cpuinfo_arm_android_decode_chipset(
-		&android_properties, usable_processors, 0);
+	const struct cpuinfo_arm_chipset chipset =
+		cpuinfo_arm_android_decode_chipset(&android_properties, usable_processors, 0);
 #endif
 
 	/*
@@ -526,6 +526,9 @@ void cpuinfo_arm_linux_init(void) {
 			processors[i].uarch,
 			arm_linux_processors[i].package_processor_count,
 			arm_linux_processors[i].midr,
+#if defined(__ANDROID__)
+			&chipset,
+#endif
 			arm_linux_processors[i].architecture_version,
 			&l1i[i], &l1d[i], &shared_l2);
 		l1i[i].thread_start = l1d[i].thread_start = i;
