@@ -20,7 +20,6 @@ bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size
 {
 	int file = -1;
 	bool status = false;
-	uint32_t processor_index = 0;
 	char* buffer = (char*) alloca(buffer_size);
 
 #if CPUINFO_MOCK

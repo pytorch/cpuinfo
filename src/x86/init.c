@@ -29,7 +29,6 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor processor[restrict 
 		const enum cpuinfo_uarch uarch = processor->uarch =
 			cpuinfo_x86_decode_uarch(vendor, &model_info);
 
-		const uint32_t brand_index = leaf1.ebx & UINT32_C(0x000000FF);
 		cpuinfo_x86_clflush_size = ((leaf1.ebx >> 8) & UINT32_C(0x000000FF)) * 8;
 
 		/*

@@ -545,7 +545,6 @@ uint32_t cpuinfo_x86_normalize_brand_string(char name[restrict static 48])
 	{
 		bool inside_parentheses = false;
 		for (char* char_ptr = name; char_ptr != name_end; char_ptr++) {
-			const char character = *char_ptr;
 			switch (*char_ptr) {
 				case '(':
 					inside_parentheses = true;

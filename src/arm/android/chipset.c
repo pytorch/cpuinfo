@@ -35,10 +35,6 @@ static inline bool is_ascii_numeric(char c) {
 	return (uint8_t) (c - '0') < 10;
 }
 
-static inline bool is_ascii_alphanumeric(char c) {
-	return is_ascii_alphabetic(c) || is_ascii_numeric(c);
-}
-
 static inline uint16_t load_u16le(const void* ptr) {
 #if defined(__ARM_ARCH_7A__) || defined(__aarch64__)
     return *((const uint16_t*) ptr);
@@ -1539,7 +1535,9 @@ static bool match_tcc(
 		.vendor = cpuinfo_arm_chipset_vendor_telechips,
 		.series = cpuinfo_arm_chipset_series_telechips_tcc,
 		.model = model,
-		.suffix = 'X',
+		.suffix = {
+			[0] = 'X'
+		},
 	};
 	return true;
 }

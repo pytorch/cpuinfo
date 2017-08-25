@@ -189,7 +189,7 @@ struct cpuinfo_arm_linux_cluster {
 };
 
 /* Returns true if the two processors do belong to the same cluster */
-static bool cpuinfo_arm_linux_processor_equals(
+static inline bool cpuinfo_arm_linux_processor_equals(
 	struct cpuinfo_arm_linux_processor processor_i[restrict static 1],
 	struct cpuinfo_arm_linux_processor processor_j[restrict static 1])
 {
@@ -227,7 +227,7 @@ static bool cpuinfo_arm_linux_processor_equals(
 }
 
 /* Returns true if the two processors certainly don't belong to the same cluster */
-static bool cpuinfo_arm_linux_processor_not_equals(
+static inline bool cpuinfo_arm_linux_processor_not_equals(
 	struct cpuinfo_arm_linux_processor processor_i[restrict static 1],
 	struct cpuinfo_arm_linux_processor processor_j[restrict static 1])
 {

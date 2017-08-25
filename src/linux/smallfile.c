@@ -35,7 +35,6 @@ bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cp
 		goto cleanup;
 	}
 
-	char* buffer_end = &buffer[buffer_size];
 	size_t buffer_position = 0;
 	ssize_t bytes_read;
 	do {

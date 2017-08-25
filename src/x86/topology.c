@@ -55,7 +55,7 @@ void cpuinfo_x86_detect_topology(
 			type = (leafB.ecx >> 8) & UINT32_C(0x000000FF);
 			const uint32_t level_shift = leafB.eax & UINT32_C(0x0000001F);
 			const uint32_t x2apic_id   = leafB.edx;
-			const uint32_t logical_processors = leafB.ebx & UINT32_C(0x0000FFFF);
+			// const uint32_t logical_processors = leafB.ebx & UINT32_C(0x0000FFFF);
 			apic_id = x2apic_id;
 			switch (type) {
 				case topology_type_invalid:
