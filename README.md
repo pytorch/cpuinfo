@@ -54,10 +54,10 @@ Supported environments:
 Planned features:
 
 - Processor (SoC) name detection
-  - [ ] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
-  - [ ] Using `/proc/cpuinfo` on ARM
+  - [x] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
+  - [x] Using `/proc/cpuinfo` on ARM
   - [ ] Using kernel log (`dmesg`) on ARM
-  - [ ] Using `ro.chipname`, `ro.board.platform`, `ro.product.board` properties (Android)
+  - [x] Using `ro.chipname`, `ro.board.platform`, `ro.product.board` properties (Android)
 - Vendor and microarchitecture detection
   - [x] Intel-designed x86/x86-64 cores (up to Kaby Lake, Airmont, and Knights Mill)
   - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen)
@@ -86,7 +86,8 @@ Planned features:
   - [ ] Using CPUID leaves 0x80000005-0x80000006 on AMD x86/x86-64
   - [x] Using CPUID leaf 0x8000001D on AMD x86/x86-64
   - [x] Using `/proc/cpuinfo` on ARMv6 and earlier (Linux)
-  - [x] Using microarchitecture heuristics on 32-bit ARM
+  - [x] Using microarchitecture heuristics on ARM
+  - [x] Using chipset heuristics on ARM
   - [x] Using `sysctlbyname` (Mach)
   - [ ] Using sysfs (Linux)
   - [ ] Using `clGetDeviceInfo` with `CL_DEVICE_GLOBAL_MEM_CACHE_SIZE`/`CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE` parameters (Android)
