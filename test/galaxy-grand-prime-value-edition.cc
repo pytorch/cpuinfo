@@ -143,7 +143,8 @@ TEST(L1I, associativity) {
 TEST(L1I, sets) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(512, l1i.instances[k].sets);
+		ASSERT_EQ(l1i.instances[k].size,
+			l1i.instances[k].sets * l1i.instances[k].line_size * l1i.instances[k].partitions * l1i.instances[k].associativity);
 	}
 }
 
@@ -203,7 +204,8 @@ TEST(L1D, associativity) {
 TEST(L1D, sets) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(128, l1d.instances[k].sets);
+		ASSERT_EQ(l1d.instances[k].size,
+			l1d.instances[k].sets * l1d.instances[k].line_size * l1d.instances[k].partitions * l1d.instances[k].associativity);
 	}
 }
 
@@ -263,7 +265,8 @@ TEST(L2, associativity) {
 TEST(L2, sets) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(1024, l2.instances[k].sets);
+		ASSERT_EQ(l2.instances[k].size,
+			l2.instances[k].sets * l2.instances[k].line_size * l2.instances[k].partitions * l2.instances[k].associativity);
 	}
 }
 
