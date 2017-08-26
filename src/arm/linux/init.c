@@ -531,8 +531,8 @@ void cpuinfo_arm_linux_init(void) {
 #endif
 			arm_linux_processors[i].architecture_version,
 			&l1i[i], &l1d[i], &shared_l2);
-		l1i[i].thread_start = l1d[i].thread_start = i;
-		l1i[i].thread_count = l1d[i].thread_count = 1;
+		l1i[i].processor_start = l1d[i].processor_start = i;
+		l1i[i].processor_count = l1d[i].processor_count = 1;
 		#if CPUINFO_ARCH_ARM
 			/* L1I reported in /proc/cpuinfo overrides defaults */
 			if ((arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_ICACHE) == CPUINFO_ARM_LINUX_VALID_ICACHE) {
@@ -556,8 +556,8 @@ void cpuinfo_arm_linux_init(void) {
 			}
 		#endif
 		if (arm_linux_processors[i].package_group_min == arm_linux_processors[i].system_processor_id) {
-			shared_l2.thread_start = i;
-			shared_l2.thread_count = arm_linux_processors[i].package_processor_count;
+			shared_l2.processor_start = i;
+			shared_l2.processor_count = arm_linux_processors[i].package_processor_count;
 			l2[l2_index++] = shared_l2;
 		}
 	}

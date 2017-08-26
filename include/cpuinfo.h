@@ -265,9 +265,9 @@ struct cpuinfo_cache {
 	 */
 	uint32_t flags;
 	/** Index of the first logical processor that shares this cache */
-	uint32_t thread_start;
+	uint32_t processor_start;
 	/** Number of logical processors that share this cache */
-	uint32_t thread_count;
+	uint32_t processor_count;
 };
 
 struct cpuinfo_caches {
@@ -603,13 +603,13 @@ struct cpuinfo_processor {
 };
 
 struct cpuinfo_core {
-	uint32_t thread_start;
-	uint32_t thread_count;
+	uint32_t processor_start;
+	uint32_t processor_count;
 };
 
 struct cpuinfo_package {
-	uint32_t thread_start;
-	uint32_t thread_count;
+	uint32_t processor_start;
+	uint32_t processor_count;
 	uint32_t core_count;
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		struct cpuinfo_x86_model_info model_info;

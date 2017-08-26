@@ -166,7 +166,7 @@ TEST(L1I, size) {
 			case 5:
 			case 6:
 			case 7:
-				ASSERT_EQ(16 * 1024, l1i.instances[k].size);
+				ASSERT_EQ(32 * 1024, l1i.instances[k].size);
 				break;
 		}
 	}
@@ -237,8 +237,8 @@ TEST(L1I, flags) {
 TEST(L1I, processors) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(k, l1i.instances[k].thread_start);
-		ASSERT_EQ(1, l1i.instances[k].thread_count);
+		ASSERT_EQ(k, l1i.instances[k].processor_start);
+		ASSERT_EQ(1, l1i.instances[k].processor_count);
 	}
 }
 
@@ -255,20 +255,7 @@ TEST(L1D, non_null) {
 TEST(L1D, size) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		switch (k) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-				ASSERT_EQ(32 * 1024, l1d.instances[k].size);
-				break;
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-				ASSERT_EQ(16 * 1024, l1d.instances[k].size);
-				break;
-		}
+		ASSERT_EQ(32 * 1024, l1d.instances[k].size);
 	}
 }
 
@@ -324,8 +311,8 @@ TEST(L1D, flags) {
 TEST(L1D, processors) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(k, l1d.instances[k].thread_start);
-		ASSERT_EQ(1, l1d.instances[k].thread_count);
+		ASSERT_EQ(k, l1d.instances[k].processor_start);
+		ASSERT_EQ(1, l1d.instances[k].processor_count);
 	}
 }
 
@@ -347,7 +334,7 @@ TEST(L2, size) {
 				ASSERT_EQ(2 * 1024 * 1024, l2.instances[k].size);
 				break;
 			case 1:
-				ASSERT_EQ(512 * 1024, l2.instances[k].size);
+				ASSERT_EQ(256 * 1024, l2.instances[k].size);
 				break;
 		}
 	}
@@ -394,12 +381,12 @@ TEST(L2, processors) {
 	for (uint32_t k = 0; k < l2.count; k++) {
 		switch (k) {
 			case 0:
-				ASSERT_EQ(0, l2.instances[k].thread_start);
-				ASSERT_EQ(4, l2.instances[k].thread_count);
+				ASSERT_EQ(0, l2.instances[k].processor_start);
+				ASSERT_EQ(4, l2.instances[k].processor_count);
 				break;
 			case 1:
-				ASSERT_EQ(4, l2.instances[k].thread_start);
-				ASSERT_EQ(4, l2.instances[k].thread_count);
+				ASSERT_EQ(4, l2.instances[k].processor_start);
+				ASSERT_EQ(4, l2.instances[k].processor_count);
 				break;
 		}
 	}

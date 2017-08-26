@@ -107,15 +107,15 @@ TEST(L1I, non_inclusive) {
 TEST(L1I, non_zero_processors) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_NE(0, l1i.instances[k].thread_count);
+		ASSERT_NE(0, l1i.instances[k].processor_count);
 	}
 }
 
 TEST(L1I, valid_processors) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_LT(l1i.instances[k].thread_start, cpuinfo_processors_count);
-		ASSERT_LE(l1i.instances[k].thread_start + l1i.instances[k].thread_count, cpuinfo_processors_count);
+		ASSERT_LT(l1i.instances[k].processor_start, cpuinfo_processors_count);
+		ASSERT_LE(l1i.instances[k].processor_start + l1i.instances[k].processor_count, cpuinfo_processors_count);
 	}
 }
 
@@ -203,15 +203,15 @@ TEST(L1D, non_inclusive) {
 TEST(L1D, non_zero_processors) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_NE(0, l1d.instances[k].thread_count);
+		ASSERT_NE(0, l1d.instances[k].processor_count);
 	}
 }
 
 TEST(L1D, valid_processors) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_LT(l1d.instances[k].thread_start, cpuinfo_processors_count);
-		ASSERT_LE(l1d.instances[k].thread_start + l1d.instances[k].thread_count, cpuinfo_processors_count);
+		ASSERT_LT(l1d.instances[k].processor_start, cpuinfo_processors_count);
+		ASSERT_LE(l1d.instances[k].processor_start + l1d.instances[k].processor_count, cpuinfo_processors_count);
 	}
 }
 
@@ -289,15 +289,15 @@ TEST(L2, valid_flags) {
 TEST(L2, non_zero_processors) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_NE(0, l2.instances[k].thread_count);
+		ASSERT_NE(0, l2.instances[k].processor_count);
 	}
 }
 
 TEST(L2, valid_processors) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_LT(l2.instances[k].thread_start, cpuinfo_processors_count);
-		ASSERT_LE(l2.instances[k].thread_start + l2.instances[k].thread_count, cpuinfo_processors_count);
+		ASSERT_LT(l2.instances[k].processor_start, cpuinfo_processors_count);
+		ASSERT_LE(l2.instances[k].processor_start + l2.instances[k].processor_count, cpuinfo_processors_count);
 	}
 }
 
@@ -375,15 +375,15 @@ TEST(L3, valid_flags) {
 TEST(L3, non_zero_processors) {
 	cpuinfo_caches l3 = cpuinfo_get_l3_cache();
 	for (uint32_t k = 0; k < l3.count; k++) {
-		ASSERT_NE(0, l3.instances[k].thread_count);
+		ASSERT_NE(0, l3.instances[k].processor_count);
 	}
 }
 
 TEST(L3, valid_processors) {
 	cpuinfo_caches l3 = cpuinfo_get_l3_cache();
 	for (uint32_t k = 0; k < l3.count; k++) {
-		ASSERT_LT(l3.instances[k].thread_start, cpuinfo_processors_count);
-		ASSERT_LE(l3.instances[k].thread_start + l3.instances[k].thread_count, cpuinfo_processors_count);
+		ASSERT_LT(l3.instances[k].processor_start, cpuinfo_processors_count);
+		ASSERT_LE(l3.instances[k].processor_start + l3.instances[k].processor_count, cpuinfo_processors_count);
 	}
 }
 
@@ -461,15 +461,15 @@ TEST(L4, valid_flags) {
 TEST(L4, non_zero_processors) {
 	cpuinfo_caches l4 = cpuinfo_get_l4_cache();
 	for (uint32_t k = 0; k < l4.count; k++) {
-		ASSERT_NE(0, l4.instances[k].thread_count);
+		ASSERT_NE(0, l4.instances[k].processor_count);
 	}
 }
 
 TEST(L4, valid_processors) {
 	cpuinfo_caches l4 = cpuinfo_get_l4_cache();
 	for (uint32_t k = 0; k < l4.count; k++) {
-		ASSERT_LT(l4.instances[k].thread_start, cpuinfo_processors_count);
-		ASSERT_LE(l4.instances[k].thread_start + l4.instances[k].thread_count, cpuinfo_processors_count);
+		ASSERT_LT(l4.instances[k].processor_start, cpuinfo_processors_count);
+		ASSERT_LE(l4.instances[k].processor_start + l4.instances[k].processor_count, cpuinfo_processors_count);
 	}
 }
 

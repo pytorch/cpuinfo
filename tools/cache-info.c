@@ -47,8 +47,8 @@ void report_cache(
 	}
 
 	printf("%"PRIu32" byte lines", cache->line_size);
-	if (cache->thread_count != 0) {
-		printf(", shared by %"PRIu32" processors\n", cache->thread_count);
+	if (cache->processor_count != 0) {
+		printf(", shared by %"PRIu32" processors\n", cache->processor_count);
 	} else {
 		printf("\n");
 	}

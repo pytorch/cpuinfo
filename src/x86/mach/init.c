@@ -136,14 +136,14 @@ void cpuinfo_x86_mach_init(void) {
 		}
 		for (uint32_t c = 0; c < l1_count; c++) {
 			l1i[c] = (struct cpuinfo_cache) {
-				.size          = x86_processor.cache.l1i.size,
-				.associativity = x86_processor.cache.l1i.associativity,
-				.sets          = x86_processor.cache.l1i.sets,
-				.partitions    = x86_processor.cache.l1i.partitions,
-				.line_size     = x86_processor.cache.l1i.line_size,
-				.flags         = x86_processor.cache.l1i.flags,
-				.thread_start  = c * threads_per_l1,
-				.thread_count  = threads_per_l1
+				.size            = x86_processor.cache.l1i.size,
+				.associativity   = x86_processor.cache.l1i.associativity,
+				.sets            = x86_processor.cache.l1i.sets,
+				.partitions      = x86_processor.cache.l1i.partitions,
+				.line_size       = x86_processor.cache.l1i.line_size,
+				.flags           = x86_processor.cache.l1i.flags,
+				.processor_start = c * threads_per_l1,
+				.processor_count = threads_per_l1,
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -160,14 +160,14 @@ void cpuinfo_x86_mach_init(void) {
 		}
 		for (uint32_t c = 0; c < l1_count; c++) {
 			l1d[c] = (struct cpuinfo_cache) {
-				.size          = x86_processor.cache.l1d.size,
-				.associativity = x86_processor.cache.l1d.associativity,
-				.sets          = x86_processor.cache.l1d.sets,
-				.partitions    = x86_processor.cache.l1d.partitions,
-				.line_size     = x86_processor.cache.l1d.line_size,
-				.flags         = x86_processor.cache.l1d.flags,
-				.thread_start  = c * threads_per_l1,
-				.thread_count  = threads_per_l1
+				.size            = x86_processor.cache.l1d.size,
+				.associativity   = x86_processor.cache.l1d.associativity,
+				.sets            = x86_processor.cache.l1d.sets,
+				.partitions      = x86_processor.cache.l1d.partitions,
+				.line_size       = x86_processor.cache.l1d.line_size,
+				.flags           = x86_processor.cache.l1d.flags,
+				.processor_start = c * threads_per_l1,
+				.processor_count = threads_per_l1,
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -184,14 +184,14 @@ void cpuinfo_x86_mach_init(void) {
 		}
 		for (uint32_t c = 0; c < l2_count; c++) {
 			l2[c] = (struct cpuinfo_cache) {
-				.size          = x86_processor.cache.l2.size,
-				.associativity = x86_processor.cache.l2.associativity,
-				.sets          = x86_processor.cache.l2.sets,
-				.partitions    = x86_processor.cache.l2.partitions,
-				.line_size     = x86_processor.cache.l2.line_size,
-				.flags         = x86_processor.cache.l2.flags,
-				.thread_start  = c * threads_per_l2,
-				.thread_count  = threads_per_l2
+				.size            = x86_processor.cache.l2.size,
+				.associativity   = x86_processor.cache.l2.associativity,
+				.sets            = x86_processor.cache.l2.sets,
+				.partitions      = x86_processor.cache.l2.partitions,
+				.line_size       = x86_processor.cache.l2.line_size,
+				.flags           = x86_processor.cache.l2.flags,
+				.processor_start = c * threads_per_l2,
+				.processor_count = threads_per_l2,
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -208,14 +208,14 @@ void cpuinfo_x86_mach_init(void) {
 		}
 		for (uint32_t c = 0; c < l3_count; c++) {
 			l3[c] = (struct cpuinfo_cache) {
-				.size          = x86_processor.cache.l3.size,
-				.associativity = x86_processor.cache.l3.associativity,
-				.sets          = x86_processor.cache.l3.sets,
-				.partitions    = x86_processor.cache.l3.partitions,
-				.line_size     = x86_processor.cache.l3.line_size,
-				.flags         = x86_processor.cache.l3.flags,
-				.thread_start  = c * threads_per_l3,
-				.thread_count  = threads_per_l3
+				.size            = x86_processor.cache.l3.size,
+				.associativity   = x86_processor.cache.l3.associativity,
+				.sets            = x86_processor.cache.l3.sets,
+				.partitions      = x86_processor.cache.l3.partitions,
+				.line_size       = x86_processor.cache.l3.line_size,
+				.flags           = x86_processor.cache.l3.flags,
+				.processor_start = c * threads_per_l3,
+				.processor_count = threads_per_l3,
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -232,14 +232,14 @@ void cpuinfo_x86_mach_init(void) {
 		}
 		for (uint32_t c = 0; c < l4_count; c++) {
 			l4[c] = (struct cpuinfo_cache) {
-				.size          = x86_processor.cache.l4.size,
-				.associativity = x86_processor.cache.l4.associativity,
-				.sets          = x86_processor.cache.l4.sets,
-				.partitions    = x86_processor.cache.l4.partitions,
-				.line_size     = x86_processor.cache.l4.line_size,
-				.flags         = x86_processor.cache.l4.flags,
-				.thread_start  = c * threads_per_l4,
-				.thread_count  = threads_per_l4
+				.size            = x86_processor.cache.l4.size,
+				.associativity   = x86_processor.cache.l4.associativity,
+				.sets            = x86_processor.cache.l4.sets,
+				.partitions      = x86_processor.cache.l4.partitions,
+				.line_size       = x86_processor.cache.l4.line_size,
+				.flags           = x86_processor.cache.l4.flags,
+				.processor_start = c * threads_per_l4,
+				.processor_count = threads_per_l4,
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {

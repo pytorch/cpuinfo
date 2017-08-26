@@ -171,8 +171,8 @@ TEST(L1I, flags) {
 TEST(L1I, processors) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(k, l1i.instances[k].thread_start);
-		ASSERT_EQ(1, l1i.instances[k].thread_count);
+		ASSERT_EQ(k, l1i.instances[k].processor_start);
+		ASSERT_EQ(1, l1i.instances[k].processor_count);
 	}
 }
 
@@ -231,8 +231,8 @@ TEST(L1D, flags) {
 TEST(L1D, processors) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(k, l1d.instances[k].thread_start);
-		ASSERT_EQ(1, l1d.instances[k].thread_count);
+		ASSERT_EQ(k, l1d.instances[k].processor_start);
+		ASSERT_EQ(1, l1d.instances[k].processor_count);
 	}
 }
 

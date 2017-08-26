@@ -243,18 +243,18 @@ void cpuinfo_x86_linux_init(void) {
 				/* new cache */
 				last_l1i_id = l1i_id;
 				l1i[l1i_index++] = (struct cpuinfo_cache) {
-					.size          = x86_processors[i].cache.l1i.size,
-					.associativity = x86_processors[i].cache.l1i.associativity,
-					.sets          = x86_processors[i].cache.l1i.sets,
-					.partitions    = x86_processors[i].cache.l1i.partitions,
-					.line_size     = x86_processors[i].cache.l1i.line_size,
-					.flags         = x86_processors[i].cache.l1i.flags,
-					.thread_start  = i,
-					.thread_count  = 1
+					.size            = x86_processors[i].cache.l1i.size,
+					.associativity   = x86_processors[i].cache.l1i.associativity,
+					.sets            = x86_processors[i].cache.l1i.sets,
+					.partitions      = x86_processors[i].cache.l1i.partitions,
+					.line_size       = x86_processors[i].cache.l1i.line_size,
+					.flags           = x86_processors[i].cache.l1i.flags,
+					.processor_start = i,
+					.processor_count = 1,
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l1i[l1i_index - 1].thread_count += 1;
+				l1i[l1i_index - 1].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -267,18 +267,18 @@ void cpuinfo_x86_linux_init(void) {
 				/* new cache */
 				last_l1d_id = l1d_id;
 				l1d[l1d_index++] = (struct cpuinfo_cache) {
-					.size          = x86_processors[i].cache.l1d.size,
-					.associativity = x86_processors[i].cache.l1d.associativity,
-					.sets          = x86_processors[i].cache.l1d.sets,
-					.partitions    = x86_processors[i].cache.l1d.partitions,
-					.line_size     = x86_processors[i].cache.l1d.line_size,
-					.flags         = x86_processors[i].cache.l1d.flags,
-					.thread_start  = i,
-					.thread_count  = 1
+					.size            = x86_processors[i].cache.l1d.size,
+					.associativity   = x86_processors[i].cache.l1d.associativity,
+					.sets            = x86_processors[i].cache.l1d.sets,
+					.partitions      = x86_processors[i].cache.l1d.partitions,
+					.line_size       = x86_processors[i].cache.l1d.line_size,
+					.flags           = x86_processors[i].cache.l1d.flags,
+					.processor_start = i,
+					.processor_count = 1,
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l1d[l1d_index - 1].thread_count += 1;
+				l1d[l1d_index - 1].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -291,18 +291,18 @@ void cpuinfo_x86_linux_init(void) {
 				/* new cache */
 				last_l2_id = l2_id;
 				l2[l2_index++] = (struct cpuinfo_cache) {
-					.size          = x86_processors[i].cache.l2.size,
-					.associativity = x86_processors[i].cache.l2.associativity,
-					.sets          = x86_processors[i].cache.l2.sets,
-					.partitions    = x86_processors[i].cache.l2.partitions,
-					.line_size     = x86_processors[i].cache.l2.line_size,
-					.flags         = x86_processors[i].cache.l2.flags,
-					.thread_start  = i,
-					.thread_count  = 1
+					.size            = x86_processors[i].cache.l2.size,
+					.associativity   = x86_processors[i].cache.l2.associativity,
+					.sets            = x86_processors[i].cache.l2.sets,
+					.partitions      = x86_processors[i].cache.l2.partitions,
+					.line_size       = x86_processors[i].cache.l2.line_size,
+					.flags           = x86_processors[i].cache.l2.flags,
+					.processor_start = i,
+					.processor_count = 1,
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l2[l2_index - 1].thread_count += 1;
+				l2[l2_index - 1].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -315,18 +315,18 @@ void cpuinfo_x86_linux_init(void) {
 				/* new cache */
 				last_l3_id = l3_id;
 				l3[l3_index++] = (struct cpuinfo_cache) {
-					.size          = x86_processors[i].cache.l3.size,
-					.associativity = x86_processors[i].cache.l3.associativity,
-					.sets          = x86_processors[i].cache.l3.sets,
-					.partitions    = x86_processors[i].cache.l3.partitions,
-					.line_size     = x86_processors[i].cache.l3.line_size,
-					.flags         = x86_processors[i].cache.l3.flags,
-					.thread_start  = i,
-					.thread_count  = 1
+					.size            = x86_processors[i].cache.l3.size,
+					.associativity   = x86_processors[i].cache.l3.associativity,
+					.sets            = x86_processors[i].cache.l3.sets,
+					.partitions      = x86_processors[i].cache.l3.partitions,
+					.line_size       = x86_processors[i].cache.l3.line_size,
+					.flags           = x86_processors[i].cache.l3.flags,
+					.processor_start = i,
+					.processor_count = 1,
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l3[l3_index - 1].thread_count += 1;
+				l3[l3_index - 1].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -339,18 +339,18 @@ void cpuinfo_x86_linux_init(void) {
 				/* new cache */
 				last_l4_id = l4_id;
 				l4[l4_index++] = (struct cpuinfo_cache) {
-					.size          = x86_processors[i].cache.l4.size,
-					.associativity = x86_processors[i].cache.l4.associativity,
-					.sets          = x86_processors[i].cache.l4.sets,
-					.partitions    = x86_processors[i].cache.l4.partitions,
-					.line_size     = x86_processors[i].cache.l4.line_size,
-					.flags         = x86_processors[i].cache.l4.flags,
-					.thread_start  = i,
-					.thread_count  = 1
+					.size            = x86_processors[i].cache.l4.size,
+					.associativity   = x86_processors[i].cache.l4.associativity,
+					.sets            = x86_processors[i].cache.l4.sets,
+					.partitions      = x86_processors[i].cache.l4.partitions,
+					.line_size       = x86_processors[i].cache.l4.line_size,
+					.flags           = x86_processors[i].cache.l4.flags,
+					.processor_start = i,
+					.processor_count = 1,
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l4[l4_index - 1].thread_count += 1;
+				l4[l4_index - 1].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
