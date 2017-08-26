@@ -398,7 +398,7 @@ void cpuinfo_arm_decode_cache(
 					.line_size = 64
 				};
 				*l2 = (struct cpuinfo_cache) {
-					.size = cluster_cores * 256 * 1024,
+					.size = 1024 * 1024,
 					.associativity = 16,
 					.line_size = 64
 				};
@@ -690,14 +690,14 @@ void cpuinfo_arm_decode_cache(
 			if (midr_is_kryo_silver(midr)) {
 				/* Kryo "Silver" */
 				*l2 = (struct cpuinfo_cache) {
-					.size = 1024 * 1024,
+					.size = 512 * 1024,
 					.associativity = 8,
 					.line_size = 128
 				};
 			} else {
 				/* Kryo "Gold" */
 				*l2 = (struct cpuinfo_cache) {
-					.size = 512 * 1024,
+					.size = 1024 * 1024,
 					.associativity = 8,
 					.line_size = 128
 				};
