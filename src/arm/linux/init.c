@@ -187,10 +187,6 @@ void cpuinfo_arm_linux_init(void) {
 				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_MIN_FREQUENCY;
 			}
 
-			if (cpuinfo_linux_get_processor_core_id(i, &arm_linux_processors[i].core_id)) {
-				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_CORE_ID;
-			}
-
 			if (cpuinfo_linux_get_processor_package_id(i, &arm_linux_processors[i].package_id)) {
 				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_ID;
 			}
@@ -220,14 +216,6 @@ void cpuinfo_arm_linux_init(void) {
 			&arm_linux_processors->package_id,
 			&arm_linux_processors->package_group_min,
 			&arm_linux_processors->package_group_max,
-			sizeof(struct cpuinfo_arm_linux_processor));
-		cpuinfo_linux_detect_thread_siblings(
-			arm_linux_processors_count,
-			i,
-			&arm_linux_processors->flags,
-			&arm_linux_processors->core_id,
-			&arm_linux_processors->core_group_min,
-			&arm_linux_processors->core_group_max,
 			sizeof(struct cpuinfo_arm_linux_processor));
 	}
 
