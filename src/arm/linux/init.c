@@ -17,6 +17,9 @@
 
 struct cpuinfo_arm_isa cpuinfo_isa = { 0 };
 
+static inline bool bitmask_all(uint32_t bitfield, uint32_t mask) {
+	return (bitfield & mask) == mask;
+}
 
 static inline uint32_t min(uint32_t a, uint32_t b) {
 	return a < b ? a : b;
@@ -35,8 +38,8 @@ static int cmp_x86_processor_by_apic_id(const void* ptr_a, const void* ptr_b) {
 	const struct cpuinfo_arm_linux_processor* processor_b = (const struct cpuinfo_arm_linux_processor*) ptr_b;
 
 	/* Move usable processors towards the start of the array */
-	const bool usable_a = (processor_a->flags & CPUINFO_LINUX_MASK_USABLE) == CPUINFO_LINUX_MASK_USABLE;
-	const bool usable_b = (processor_b->flags & CPUINFO_LINUX_MASK_USABLE) == CPUINFO_LINUX_MASK_USABLE;
+	const bool usable_a = bitmask_all(processor_a->flags, CPUINFO_LINUX_MASK_USABLE);
+	const bool usable_b = bitmask_all(processor_b->flags, CPUINFO_LINUX_MASK_USABLE);
 	if (usable_a != usable_b) {
 		return (int) usable_b - (int) usable_a;
 	}
@@ -127,7 +130,7 @@ void cpuinfo_arm_linux_init(void) {
 	uint32_t last_reported_midr = 0;
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		arm_linux_processors[i].system_processor_id = i;
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) == CPUINFO_LINUX_MASK_USABLE) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			arm_linux_processors[i].processor_id = usable_processors;
 			usable_processors += 1;
 
@@ -141,7 +144,7 @@ void cpuinfo_arm_linux_init(void) {
 				cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
 			}
 
-			if ((arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_INFO) == CPUINFO_ARM_LINUX_VALID_INFO) {
+			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_INFO)) {
 				last_reported_midr = i;
 				if (known_processors == 0) {
 					/*
@@ -171,7 +174,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Detect min/max frequency, core ID, and package ID */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) == CPUINFO_LINUX_MASK_USABLE) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			const uint32_t max_frequency = cpuinfo_linux_get_processor_max_frequency(i);
 			if (max_frequency != 0) {
 				arm_linux_processors[i].max_frequency = max_frequency;
@@ -202,7 +205,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Propagate topology group IDs among siblings */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			continue;
 		}
 
@@ -241,7 +244,7 @@ void cpuinfo_arm_linux_init(void) {
 	 *   belong to the same cluster.
 	 */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			continue;
 		}
 
@@ -254,7 +257,7 @@ void cpuinfo_arm_linux_init(void) {
 				continue;
 			}
 
-			if ((arm_linux_processors[j].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+			if (!bitmask_all(arm_linux_processors[j].flags, CPUINFO_LINUX_MASK_USABLE)) {
 				/* Logical processor is not possible or not present */
 				continue;
 			}
@@ -293,7 +296,7 @@ void cpuinfo_arm_linux_init(void) {
 	uint32_t cluster_processor_id = 0;
 	bool last_processor_has_sysfs_topology = false;
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			continue;
 		}
 
@@ -335,7 +338,7 @@ void cpuinfo_arm_linux_init(void) {
 	do {
 		update = 0;
 		for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-			if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+			if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 				continue;
 			}
 
@@ -367,7 +370,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	uint32_t cluster_count = 0;
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			continue;
 		}
 
@@ -404,17 +407,17 @@ void cpuinfo_arm_linux_init(void) {
 		 */
 
 		for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-			if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+			if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 				continue;
 			}
 
-			if ((arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_MIDR) != CPUINFO_ARM_LINUX_VALID_MIDR) {
+			if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
 				continue;
 			}
 
 			const uint32_t group_min_processor_id = arm_linux_processors[i].package_group_min;
 			if (i != group_min_processor_id) {
-				if ((arm_linux_processors[group_min_processor_id].flags & CPUINFO_ARM_LINUX_VALID_MIDR) != CPUINFO_ARM_LINUX_VALID_MIDR) {
+				if (!bitmask_all(arm_linux_processors[group_min_processor_id].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
 					cpuinfo_log_debug("copied MIDR %08"PRIx32" from processor %"PRIu32" to group min processor %"PRIu32,
 						arm_linux_processors[i].midr, i, group_min_processor_id);
 					arm_linux_processors[group_min_processor_id].midr = arm_linux_processors[i].midr;
@@ -449,14 +452,14 @@ void cpuinfo_arm_linux_init(void) {
 	 * - In the second pass, copy the count from group-minimum processor.
 	 */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			continue;
 		}
 
 		arm_linux_processors[arm_linux_processors[i].package_group_min].package_processor_count += 1;
 	}	
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_MASK_USABLE) != CPUINFO_LINUX_MASK_USABLE) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			continue;
 		}
 
@@ -535,7 +538,7 @@ void cpuinfo_arm_linux_init(void) {
 		l1i[i].processor_count = l1d[i].processor_count = 1;
 		#if CPUINFO_ARCH_ARM
 			/* L1I reported in /proc/cpuinfo overrides defaults */
-			if ((arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_ICACHE) == CPUINFO_ARM_LINUX_VALID_ICACHE) {
+			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_ICACHE)) {
 				l1i[i] = (struct cpuinfo_cache) {
 					.size = arm_linux_processors[i].proc_cpuinfo_cache.i_size,
 					.associativity = arm_linux_processors[i].proc_cpuinfo_cache.i_assoc,
@@ -545,7 +548,7 @@ void cpuinfo_arm_linux_init(void) {
 				};
 			}
 			/* L1D reported in /proc/cpuinfo overrides defaults */
-			if ((arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_ICACHE) == CPUINFO_ARM_LINUX_VALID_ICACHE) {
+			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_ICACHE)) {
 				l1d[i] = (struct cpuinfo_cache) {
 					.size = arm_linux_processors[i].proc_cpuinfo_cache.d_size,
 					.associativity = arm_linux_processors[i].proc_cpuinfo_cache.d_assoc,
