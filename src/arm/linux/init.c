@@ -209,6 +209,10 @@ void cpuinfo_arm_linux_init(void) {
 			continue;
 		}
 
+		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_ID) == 0) {
+			continue;
+		}
+
 		cpuinfo_linux_detect_core_siblings(
 			arm_linux_processors_count,
 			i,
