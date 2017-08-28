@@ -12,13 +12,13 @@ TEST(PROCESSORS, non_null) {
 	ASSERT_TRUE(cpuinfo_processors);
 }
 
-TEST(PROCESSORS, vendor_nvidia) {
+TEST(PROCESSORS, vendor) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
 		ASSERT_EQ(cpuinfo_vendor_nvidia, cpuinfo_processors[i].vendor);
 	}
 }
 
-TEST(PROCESSORS, uarch_denver) {
+TEST(PROCESSORS, uarch) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
 		ASSERT_EQ(cpuinfo_uarch_denver, cpuinfo_processors[i].uarch);
 	}

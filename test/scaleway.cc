@@ -12,13 +12,13 @@ TEST(PROCESSORS, non_null) {
 	ASSERT_TRUE(cpuinfo_processors);
 }
 
-TEST(PROCESSORS, vendor_cavium) {
+TEST(PROCESSORS, vendor) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
 		ASSERT_EQ(cpuinfo_vendor_cavium, cpuinfo_processors[i].vendor);
 	}
 }
 
-TEST(PROCESSORS, uarch_thunderx) {
+TEST(PROCESSORS, uarch) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
 		ASSERT_EQ(cpuinfo_uarch_thunderx, cpuinfo_processors[i].uarch);
 	}

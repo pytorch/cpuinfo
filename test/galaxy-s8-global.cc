@@ -12,7 +12,7 @@ TEST(PROCESSORS, non_null) {
 	ASSERT_TRUE(cpuinfo_processors);
 }
 
-TEST(PROCESSORS, vendor_samsung_arm) {
+TEST(PROCESSORS, vendor) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
 		switch (i) {
 			case 0:
@@ -31,7 +31,7 @@ TEST(PROCESSORS, vendor_samsung_arm) {
 	}
 }
 
-TEST(PROCESSORS, uarch_cortex_a53_mongoose_m1) {
+TEST(PROCESSORS, uarch) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
 		switch (i) {
 			case 0:
