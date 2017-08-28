@@ -40,18 +40,18 @@
 #define PRESENT_CPULIST_FILENAME "/sys/devices/system/cpu/present"
 
 
-inline static const char* parse_number(const char* string, const char* end, uint32_t number_ptr[restrict static 1]) {
+inline static const char* parse_number(const char* start, const char* end, uint32_t number_ptr[restrict static 1]) {
 	uint32_t number = 0;
-	while (string != end) {
-		const uint32_t digit = (uint32_t) (*string) - (uint32_t) '0';
+	const char* parsed = start;
+	for (; parsed != end; parsed++) {
+		const uint32_t digit = (uint32_t) (uint8_t) (*parsed) - (uint32_t) '0';
 		if (digit >= 10) {
 			break;
 		}
 		number = number * UINT32_C(10) + digit;
-		string += 1;
 	}
 	*number_ptr = number;
-	return end;
+	return parsed;
 }
 
 /* Locale-independent */
