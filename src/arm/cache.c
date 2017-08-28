@@ -493,7 +493,7 @@ void cpuinfo_arm_decode_cache(
 			break;
 		case cpuinfo_uarch_cortex_a72:
 			/*
-			 * ARM® Cortex-A72 MPCore Processor Technical Reference Manual
+			 * ARM Cortex-A72 MPCore Processor Technical Reference Manual
 			 * 6.1. About the L1 memory system
 			 *   The L1 memory system consists of separate instruction and data caches.
 			 *
