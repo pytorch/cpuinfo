@@ -251,7 +251,7 @@ TEST(L2, non_null) {
 TEST(L2, size) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(512 * 1024, l2.instances[k].size);
+		ASSERT_EQ(256 * 1024, l2.instances[k].size);
 	}
 }
 

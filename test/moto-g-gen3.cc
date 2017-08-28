@@ -129,7 +129,7 @@ TEST(L1I, non_null) {
 TEST(L1I, size) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(16 * 1024, l1i.instances[k].size);
+		ASSERT_EQ(32 * 1024, l1i.instances[k].size);
 	}
 }
 
@@ -190,7 +190,7 @@ TEST(L1D, non_null) {
 TEST(L1D, size) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(16 * 1024, l1d.instances[k].size);
+		ASSERT_EQ(32 * 1024, l1d.instances[k].size);
 	}
 }
 
