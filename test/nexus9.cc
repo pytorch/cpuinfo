@@ -262,7 +262,7 @@ TEST(L1D, processors) {
 	}
 }
 
-TEST(L2, DISABLED_count) {
+TEST(L2, count) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	ASSERT_EQ(1, l2.count);
 }
@@ -315,7 +315,7 @@ TEST(L2, flags) {
 	}
 }
 
-TEST(L2, DISABLED_processors) {
+TEST(L2, processors) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
 		ASSERT_EQ(0, l2.instances[k].processor_start);
