@@ -20,7 +20,7 @@ TEST(PROCESSORS, vendor) {
 
 TEST(PROCESSORS, uarch) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(cpuinfo_uarch_cortex_a53, cpuinfo_processors[i].uarch);
+		ASSERT_EQ(cpuinfo_uarch_cortex_a7, cpuinfo_processors[i].uarch);
 	}
 }
 
@@ -105,7 +105,7 @@ TEST(ISA, sha1) {
 }
 
 TEST(ISA, sha2) {
-	ASSERT_TRUE(cpuinfo_isa.sha2);
+	ASSERT_FALSE(cpuinfo_isa.sha2);
 }
 
 TEST(ISA, pmull) {
@@ -129,7 +129,7 @@ TEST(L1I, non_null) {
 TEST(L1I, size) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(16 * 1024, l1i.instances[k].size);
+		ASSERT_EQ(32 * 1024, l1i.instances[k].size);
 	}
 }
 
@@ -158,7 +158,7 @@ TEST(L1I, partitions) {
 TEST(L1I, line_size) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
 	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(64, l1i.instances[k].line_size);
+		ASSERT_EQ(32, l1i.instances[k].line_size);
 	}
 }
 
@@ -179,7 +179,7 @@ TEST(L1I, processors) {
 
 TEST(L1D, count) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	ASSERT_EQ(4, l1d.count);
+	ASSERT_EQ(5, l1d.count);
 }
 
 TEST(L1D, non_null) {
@@ -190,14 +190,14 @@ TEST(L1D, non_null) {
 TEST(L1D, size) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(16 * 1024, l1d.instances[k].size);
+		ASSERT_EQ(32 * 1024, l1d.instances[k].size);
 	}
 }
 
 TEST(L1D, associativity) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(5, l1d.instances[k].associativity);
+		ASSERT_EQ(4, l1d.instances[k].associativity);
 	}
 }
 
@@ -265,7 +265,7 @@ TEST(L2, size) {
 TEST(L2, associativity) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(16, l2.instances[k].associativity);
+		ASSERT_EQ(8, l2.instances[k].associativity);
 	}
 }
 

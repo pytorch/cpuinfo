@@ -118,7 +118,7 @@ TEST(ISA, crc32) {
 
 TEST(L1I, count) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	ASSERT_EQ(4, l1i.count);
+	ASSERT_EQ(2, l1i.count);
 }
 
 TEST(L1I, non_null) {
@@ -179,7 +179,7 @@ TEST(L1I, processors) {
 
 TEST(L1D, count) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	ASSERT_EQ(4, l1d.count);
+	ASSERT_EQ(2, l1d.count);
 }
 
 TEST(L1D, non_null) {

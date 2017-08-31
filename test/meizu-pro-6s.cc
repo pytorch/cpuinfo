@@ -147,7 +147,7 @@ TEST(L1I, size) {
 		switch (k) {
 			case 0:
 			case 1:
-				ASSERT_EQ(16 * 1024, l1i.instances[k].size);
+				ASSERT_EQ(48 * 1024, l1i.instances[k].size);
 				break;
 			case 2:
 			case 3:
@@ -157,7 +157,7 @@ TEST(L1I, size) {
 			case 7:
 			case 8:
 			case 9:
-				ASSERT_EQ(48 * 1024, l1i.instances[k].size);
+				ASSERT_EQ(16 * 1024, l1i.instances[k].size);
 				break;
 		}
 	}
@@ -332,7 +332,7 @@ TEST(L2, size) {
 				break;
 			case 1:
 			case 2:
-				ASSERT_EQ(512 * 1024, l2.instances[k].size);
+				ASSERT_EQ(256 * 1024, l2.instances[k].size);
 				break;
 		}
 	}
@@ -341,7 +341,7 @@ TEST(L2, size) {
 TEST(L2, associativity) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(8, l2.instances[k].associativity);
+		ASSERT_EQ(16, l2.instances[k].associativity);
 	}
 }
 
@@ -370,7 +370,15 @@ TEST(L2, line_size) {
 TEST(L2, flags) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(0, l2.instances[k].flags);
+		switch (k) {
+			case 0:
+				ASSERT_EQ(CPUINFO_CACHE_INCLUSIVE, l2.instances[k].flags);
+				break;
+			case 1:
+			case 2:
+				ASSERT_EQ(0, l2.instances[k].flags);
+				break;
+		}
 	}
 }
 
