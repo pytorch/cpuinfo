@@ -1698,10 +1698,37 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.model = 30,
 	},
 	{
+		/* "kai" -> Tegra T30L */
+		.platform = "kai",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+		.suffix = 'L',
+	},
+	{
 		/* "p3" (Samsung Galaxy Tab 8.9) -> Tegra T20 */
 		.platform = "p3",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 20,
+	},
+	{
+		/* "n1" (Samsung Galaxy R / Samsung Captivate Glide) -> Tegra AP20H */
+		.platform = "n1",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+		.model = 20,
+		.suffix = 'H',
+	},
+	{
+		/* "SHW-M380S" (Samsung Galaxy Tab 10.1) -> Tegra T20 */
+		.platform = "SHW-M380S",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 20,
+	},
+	{
+		/* "m470" (Hisense Sero 7 Pro) -> Tegra T30L */
+		.platform = "m470",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+		.suffix = 'L',
 	},
 	{
 		/* "endeavoru" (HTC One X) -> Tegra AP33 */
@@ -1728,10 +1755,46 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.model = 114,
 	},
 	{
+		/* "tegratab" (Tegra Note 7) -> Tegra T114 */
+		.platform = "tegratab",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 114,
+	},
+	{
 		/* "tn8" (nVidia Shield Tablet K1) -> Tegra T124 */
 		.platform = "tn8",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 124,
+	},
+	{
+		/* "roth" (nVidia Shield Portable) -> Tegra T114 */
+		.platform = "roth",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 114,
+	},
+	{
+		/* "foster_e" (nVidia Shield TV, Flash) -> Tegra T210 */
+		.platform = "foster_e",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 210,
+	},
+	{
+		/* "foster_e_hdd" (nVidia Shield TV, HDD) -> Tegra T210 */
+		.platform = "foster_e_hdd",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 210,
+	},
+	{
+		/* "darcy" (nVidia Shield TV 2017) -> Tegra T210 */
+		.platform = "darcy",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 210,
+	},
+	{
+		/* "pisces" (Xiaomi Mi 3) -> Tegra T114 */
+		.platform = "pisces",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 114,
 	},
 	{
 		/* "mocha" (Xiaomi Mi Pad) -> Tegra T124 */
@@ -1754,6 +1817,18 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.suffix = 'N',
 	},
 	{
+		/* "MT799" (nabi 2 Tablet) -> Tegra T30 */
+		.platform = "MT799",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+	},
+	{
+		/* "t8400n" (nabi DreamTab HD8) -> Tegra T114 */
+		.platform = "t8400n",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 114,
+	},
+	{
 		/* "chagall" (Fujitsu Stylistic M532) -> Tegra T30 */
 		.platform = "chagall",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
@@ -1769,6 +1844,12 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		/* "bobsleigh" (Fujitsu Arrows Tab F-05E) -> Tegra T33 */
 		.platform = "bobsleigh",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 33,
+	},
+	{
+		/* "tegra_fjdev101" (Fujitsu Arrows X F-10D) -> Tegra AP33 */
+		.platform = "tegra_fjdev101",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
 		.model = 33,
 	},
 	{
@@ -1797,6 +1878,12 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.model = 33,
 	},
 	{
+		/* "vu10" (LG Optimus Vu P895) -> Tegra AP33 */
+		.platform = "vu10",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+		.model = 33,
+	},
+	{
 		/* "BIRCH" (HP Slate 7 Plus) -> Tegra T30L */
 		.platform = "BIRCH",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
@@ -1810,11 +1897,42 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.model = 114,
 	},
 	{
+		/* "maya" (HP SlateBook 10 x2) -> Tegra T114 */
+		.platform = "maya",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 114,
+	},
+	{
+		/* "antares" (Toshiba AT100) -> Tegra T20 */
+		.platform = "antares",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 20,
+	},
+	{
+		/* "tostab12AL" (Toshiba AT300SE "Excite 10 SE") -> Tegra T30L */
+		.platform = "tostab12AL",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+		.suffix = 'L',
+	},
+	{
 		/* "tostab12BL" (Toshiba AT10-A "Excite Pure") -> Tegra T30L */
 		.platform = "tostab12BL",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 30,
 		.suffix = 'L',
+	},
+	{
+		/* "sphinx" (Toshiba AT270 "Excite 7.7") -> Tegra T30 */
+		.platform = "sphinx",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+	},
+	{
+		/* "tostab11BS" (Toshiba AT570 "Regza 7.7") -> Tegra T30 */
+		.platform = "tostab11BS",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
 	},
 	{
 		/* "tostab12BA" (Toshiba AT10-LE-A "Excite Pro") -> Tegra T114 */
@@ -1823,11 +1941,17 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.model = 114,
 	},
 	{
-		/* "picasso" (Acer Iconia Tab A500) -> Tegra AP20H */
-		.platform = "picasso",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+		/* "vangogh" (Acer Iconia Tab A100) -> Tegra T20 */
+		.platform = "vangogh",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 20,
-		.suffix = 'H',
+	},
+	{
+		/* "a110" (Acer Iconia Tab A110) -> Tegra T30L */
+		.platform = "a110",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+		.suffix = 'L',
 	},
 	{
 		/* "picasso_e" (Acer Iconia Tab A200) -> Tegra AP20H */
@@ -1842,6 +1966,13 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 30,
 		.suffix = 'L',
+	},
+	{
+		/* "picasso" (Acer Iconia Tab A500) -> Tegra AP20H */
+		.platform = "picasso",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+		.model = 20,
+		.suffix = 'H',
 	},
 	{
 		/* "picasso_m" (Acer Iconia Tab A510) -> Tegra T30 */
@@ -1868,6 +1999,18 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 30,
 		.suffix = 'L',
+	},
+	{
+		/* "WIKIPAD" (Wikipad) -> Tegra T30 */
+		.platform = "WIKIPAD",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+	},
+	{
+		/* "kb" (Pegatron Q00Q) -> Tegra T114 */
+		.platform = "kb",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 114,
 	},
 };
 
@@ -2441,8 +2584,8 @@ static const struct special_map_entry special_platform_map_entries[] = {
 		.model = 114,
 	},
 	{
-		/* "s5pc100" -> Samsung Exynos 3110 */
-		.platform = "s5pc100",
+		/* "s5pc110" -> Samsung Exynos 3110 */
+		.platform = "s5pc110",
 		.series = cpuinfo_arm_chipset_series_samsung_exynos,
 		.model = 3110,
 	},
