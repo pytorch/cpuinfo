@@ -250,6 +250,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := galaxy-c9-pro-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-c9-pro.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s3-us-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s3-us.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
