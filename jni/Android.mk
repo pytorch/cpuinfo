@@ -15,6 +15,8 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/cache.c \
 	$(LOCAL_PATH)/src/arm/linux/init.c \
 	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c \
+	$(LOCAL_PATH)/src/arm/linux/clusters.c \
+	$(LOCAL_PATH)/src/arm/linux/midr.c \
 	$(LOCAL_PATH)/src/arm/android/properties.c \
 	$(LOCAL_PATH)/src/arm/android/chipset.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
@@ -61,6 +63,8 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/cache.c \
 	$(LOCAL_PATH)/src/arm/linux/init.c \
 	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c \
+	$(LOCAL_PATH)/src/arm/linux/clusters.c \
+	$(LOCAL_PATH)/src/arm/linux/midr.c \
 	$(LOCAL_PATH)/src/arm/android/properties.c \
 	$(LOCAL_PATH)/src/arm/android/chipset.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)

@@ -33,6 +33,34 @@ static inline int cmp(uint32_t a, uint32_t b) {
 	return (a > b) - (a < b);
 }
 
+static bool cluster_siblings_parser(
+	uint32_t processor, uint32_t siblings_start, uint32_t siblings_end,
+	struct cpuinfo_arm_linux_processor* processors)
+{
+	processors[processor].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
+	uint32_t package_group_min = processors[processor].package_group_min;
+
+	for (uint32_t sibling = siblings_start; sibling < siblings_end; sibling++) {
+		if (!bitmask_all(processors[sibling].flags, CPUINFO_LINUX_MASK_USABLE)) {
+			cpuinfo_log_info("invalid processor %"PRIu32" reported as a sibling for processor %"PRIu32,
+				sibling, processor);
+			continue;
+		}
+
+		const uint32_t sibling_package_group_min = processors[sibling].package_group_min;
+		if (sibling_package_group_min < package_group_min) {
+			package_group_min = sibling_package_group_min;
+		}
+
+		processors[sibling].package_group_min = package_group_min;
+		processors[sibling].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
+	}
+
+	processors[processor].package_group_min = package_group_min;
+
+	return true;
+}
+
 static int cmp_x86_processor_by_apic_id(const void* ptr_a, const void* ptr_b) {
 	const struct cpuinfo_arm_linux_processor* processor_a = (const struct cpuinfo_arm_linux_processor*) ptr_a;
 	const struct cpuinfo_arm_linux_processor* processor_b = (const struct cpuinfo_arm_linux_processor*) ptr_b;
@@ -48,10 +76,10 @@ static int cmp_x86_processor_by_apic_id(const void* ptr_a, const void* ptr_b) {
 	const uint32_t midr_a = processor_a->midr;
 	const uint32_t midr_b = processor_b->midr;
 	if (midr_a != midr_b) {
-		if (midr_is_big_core(midr_a) || midr_is_little_core(midr_b)) {
-			return -1;
-		} else if (midr_is_big_core(midr_b) || midr_is_little_core(midr_a)) {
-			return 1;
+		const uint32_t score_a = midr_score_core(midr_a);
+		const uint32_t score_b = midr_score_core(midr_b);
+		if (score_a != score_b) {
+			return score_a > score_b ? -1 : 1;
 		}
 	}
 
@@ -124,6 +152,13 @@ void cpuinfo_arm_linux_init(void) {
 		return;
 	}
 
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+			cpuinfo_log_debug("parsed processor %"PRIu32" MIDR 0x%08"PRIx32,
+				i, arm_linux_processors[i].midr);
+		}
+	}
+
 	uint32_t usable_processors = 0;
 	uint32_t known_processors = 0;
 	uint32_t last_reported_processor = 0;
@@ -172,7 +207,7 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
-	/* Detect min/max frequency, core ID, and package ID */
+	/* Detect min/max frequency and package ID */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			const uint32_t max_frequency = cpuinfo_linux_get_processor_max_frequency(i);
@@ -195,8 +230,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Initialize topology group IDs */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		arm_linux_processors[i].core_group_min = arm_linux_processors[i].core_group_max = i;
-		arm_linux_processors[i].package_group_min = arm_linux_processors[i].package_group_max = i;
+		arm_linux_processors[i].package_group_min = i;
 	}
 
 	/* Propagate topology group IDs among siblings */
@@ -205,259 +239,89 @@ void cpuinfo_arm_linux_init(void) {
 			continue;
 		}
 
-		if ((arm_linux_processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_ID) == 0) {
-			continue;
-		}
-
-		cpuinfo_linux_detect_core_siblings(
-			arm_linux_processors_count,
-			i,
-			&arm_linux_processors->flags,
-			&arm_linux_processors->package_id,
-			&arm_linux_processors->package_group_min,
-			&arm_linux_processors->package_group_max,
-			sizeof(struct cpuinfo_arm_linux_processor));
-	}
-
-	/*
-	 * Topology information about some or all logical processors may be unavailable, for the following reasons:
-	 * - Linux kernel is too old, or configured without support for topology information in sysfs.
-	 * - Core is offline, and Linux kernel is configured to not report topology for offline cores.
-	 *
-	 * In these cases, we use a fall-back mechanism for topology detection, based on the assumption that equivalent
-	 * cores belong to the same cluster:
-	 * - Cores with the same min/max frequency and microarchitecture are assumed to belong to the same cluster.
-	 * - If min or max frequency is not known for any of the cores, but microarchitecture for both cores is the same,
-	 *   and different from Cortex-A53, both cores are assumed to belong to the same cluster. Cortex-A53 is the only
-	 *   microarchitecture, which is simultaneously used in multiple clusters in the same SoCs, e.g. Qualcomm
-	 *   Snapdragon 615 combines 4 "big" Cortex-A53 cores + 4 "LITTLE" Cortex-A53 cores, and MediaTek Helio X20
-	 *   combines 2 "max" Cortex-A72 cores + 4 "med" Cortex-A53 cores + 4 "min" Cortex-A53 cores.
-	 * - If microarchitecture is not known, but min/max frequency are the same for two cores, assume both cores
-	 *   belong to the same cluster.
-	 */
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			continue;
-		}
-
 		if (arm_linux_processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_ID) {
-			continue;
-		}
-
-		for (uint32_t j = 0; j < arm_linux_processors_count; j++) {
-			if (i == j) {
-				continue;
-			}
-
-			if (!bitmask_all(arm_linux_processors[j].flags, CPUINFO_LINUX_MASK_USABLE)) {
-				/* Logical processor is not possible or not present */
-				continue;
-			}
-
-			if (arm_linux_processors[j].flags & CPUINFO_LINUX_FLAG_PACKAGE_ID) {
-				/* Cluster for this processor was already parsed from sysfs */
-				continue;
-			}
-
-			if (cpuinfo_arm_linux_processor_equals(&arm_linux_processors[i], &arm_linux_processors[j])) {
-				cpuinfo_log_info(
-					"processors %"PRIu32" and %"PRIu32" are assigned to the same cluster based on similarity", i, j);
-
-				arm_linux_processors[i].package_group_min = arm_linux_processors[j].package_group_min =
-					min(arm_linux_processors[i].package_group_min, arm_linux_processors[j].package_group_min);
-				arm_linux_processors[i].package_group_max = arm_linux_processors[j].package_group_max =
-					max(arm_linux_processors[i].package_group_max, arm_linux_processors[j].package_group_max);
-				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
-				arm_linux_processors[j].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
-			}
+			cpuinfo_linux_detect_core_siblings(
+				arm_linux_processors_count, i,
+				(cpuinfo_siblings_callback) cluster_siblings_parser,
+				arm_linux_processors);
 		}
 	}
 
-	/*
-	 * It may happen that neither of sysfs topology information, min/max frequencies, or microarchitecture
-	 * is known for some or all cores. This can happen for the following reasons:
-	 * - Kernel is configured without support for sysfs cpufreq and topology information, and reports
-	 *   detailed information only for one of the cores listed in /proc/cpuinfo
-	 * - Some of the cores are offline, and Linux kernel is configured to report information only about
-	 *   online cores.
-	 *
-	 * In this case, it is generally impossible to reconstruct topology information, and we use a heuristic:
-	 * each core which wasn't assigned to any cluster yet, is assumed to belong to the same cluster as
-	 * the preceeding core for which no sysfs information is available.
-	 */
-	uint32_t cluster_processor_id = 0;
-	bool last_processor_has_sysfs_topology = false;
+	/* Propagate all cluster IDs */
+	uint32_t clustered_processors = 0;
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			continue;
-		}
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER)) {
+			clustered_processors += 1;
 
-		if (arm_linux_processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_ID) {
-			/* sysfs topology information is available for this processor */
-			last_processor_has_sysfs_topology = true;
-		} else {
-			if (last_processor_has_sysfs_topology) {
-				/*
-				 * Subsequent processors unassigned to any cluster will be added to the cluster of this
-				 * processor. Note that if this processor itself is not assigned to any cluster,
-				 * it will start a new cluster of processors.
-				 */
-				cluster_processor_id = i;
+			const uint32_t package_group_min = arm_linux_processors[i].package_group_min;
+			if (package_group_min < i) {
+				arm_linux_processors[i].package_group_min = arm_linux_processors[package_group_min].package_group_min;
 			}
-			last_processor_has_sysfs_topology = false;
-		}
 
-		if (!(arm_linux_processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER)) {
-			// TODO: check that processors are not the same
-			if (cluster_processor_id == i) {
-				cpuinfo_log_info("processor %"PRIu32" is assumed to belong to a new cluster", i);
-			} else {
-				cpuinfo_log_info("processor %"PRIu32" is assumed to belong to the cluster of processor %"PRIu32,
-					i, cluster_processor_id);
-				arm_linux_processors[i].package_group_min = arm_linux_processors[cluster_processor_id].package_group_min;
-				arm_linux_processors[cluster_processor_id].package_group_max =
-					arm_linux_processors[i].package_group_max =
-						max(i, arm_linux_processors[cluster_processor_id].package_group_max);
-			}
-			arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
+			cpuinfo_log_debug("processor %"PRIu32" clustered with processor %"PRIu32" as inferred from system siblings lists",
+				i, arm_linux_processors[i].package_group_min);
 		}
 	}
 
-	/*
-	 * Run Shiloach-Vishkin (well, almost) connected components algorithm
-	 */
-	uint32_t update;
-	do {
-		update = 0;
-		for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-			if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-				continue;
-			}
-
-			const uint32_t group_max_processor_id = arm_linux_processors[i].package_group_max;
-			const uint32_t group_min_processor_id = arm_linux_processors[i].package_group_min;
-
-			const uint32_t group_max_processor_group_max = arm_linux_processors[group_max_processor_id].package_group_max;
-			const uint32_t group_max_processor_group_min = arm_linux_processors[group_max_processor_id].package_group_min;
-			const uint32_t group_min_processor_group_max = arm_linux_processors[group_min_processor_id].package_group_max;
-			const uint32_t group_min_processor_group_min = arm_linux_processors[group_min_processor_id].package_group_min;
-
-			const uint32_t new_group_max_processor_id = max(group_max_processor_group_max, group_min_processor_group_max);
-			const uint32_t new_group_min_processor_id = min(group_min_processor_group_min, group_max_processor_group_min);
-
-			arm_linux_processors[i].package_group_max =
-				arm_linux_processors[group_max_processor_id].package_group_max =
-					arm_linux_processors[group_min_processor_id].package_group_max =
-						new_group_max_processor_id;
-			arm_linux_processors[i].package_group_min =
-				arm_linux_processors[group_max_processor_id].package_group_min =
-					arm_linux_processors[group_min_processor_id].package_group_min =
-						new_group_min_processor_id;
-
-			update |= (group_max_processor_id ^ new_group_max_processor_id) | (group_min_processor_id ^ new_group_min_processor_id) |
-				(group_max_processor_group_max ^ new_group_max_processor_id) | (group_max_processor_group_min ^ new_group_min_processor_id) |
-				(group_min_processor_group_max ^ new_group_max_processor_id) | (group_min_processor_group_min ^ new_group_min_processor_id);
-		}
-	} while (update != 0);
-
-	uint32_t cluster_count = 0;
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			continue;
-		}
-
-		if (arm_linux_processors[i].package_group_min == i) {
-			cluster_count += 1;
-		}
-	}
-	cpuinfo_log_info("detected %"PRIu32" core clusters", cluster_count);
-
-	/*
-	 * Two relations between reported /proc/cpuinfo information, and cores is possible:
-	 * - /proc/cpuinfo reports information for all or some of the cores below the corresponding
-	 *   "processor : <number>" lines. Information on offline cores may be missing.
-	 * - /proc/cpuinfo reports information only once, after all "processor : <number>" lines.
-	 *   The reported information may relate to processor #0 or to the processor which
-	 *   executed the system calls to read /proc/cpuinfo. It is also indistinguishable
-	 *   from /proc/cpuinfo reporting information only for the last core (e.g. if all other
-	 *   cores are offline).
-	 *
-	 * We detect the second case by checking if /proc/cpuinfo contains valid MIDR only for one,
-	 * last reported, processor. Note, that the last reported core may be not the last
-	 * present+possible processor, as /proc/cpuinfo may not report high-index offline cores.
-	 */
-	if (usable_processors != 1 && known_processors == 1 && last_reported_processor == last_reported_midr && cluster_count > 1) {
-		cpuinfo_log_error("not sufficient per-cluster information");
-	} else {
+	if (clustered_processors != usable_processors) {
 		/*
-		 * Propagate MIDR, vendor, and microarchitecture values along clusters in two passes:
-		 * - Copy MIDR to min processor of a cluster, if it doesn't have this information
-		 * - Copy max frequency to min processor of a clsuter, if it doesn't have this information
-		 * - Detect vendor and microarchitecture
-		 * - Copy MIDR, vendor, and microarchitecture to all processors of a cluster, overwriting
-		 *   current values for the processors in the group.
+		 * Topology information about some or all logical processors may be unavailable, for the following reasons:
+		 * - Linux kernel is too old, or configured without support for topology information in sysfs.
+		 * - Core is offline, and Linux kernel is configured to not report topology for offline cores.
+		 *
+		 * In this case, we assign processors to clusters using two methods:
+		 * - Try heuristic cluster configurations (e.g. 6-core SoC usually has 4+2 big.LITTLE configuration).
+		 * - If heuristic failed, assign processors to core clusters in a sequential scan.
 		 */
-
-		for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-			if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-				continue;
-			}
-
-			if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
-				continue;
-			}
-
-			const uint32_t group_min_processor_id = arm_linux_processors[i].package_group_min;
-			if (i != group_min_processor_id) {
-				if (!bitmask_all(arm_linux_processors[group_min_processor_id].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
-					cpuinfo_log_debug("copied MIDR %08"PRIx32" from processor %"PRIu32" to group min processor %"PRIu32,
-						arm_linux_processors[i].midr, i, group_min_processor_id);
-					arm_linux_processors[group_min_processor_id].midr = arm_linux_processors[i].midr;
-					arm_linux_processors[group_min_processor_id].flags |= CPUINFO_ARM_LINUX_VALID_MIDR;
-				}
-			}
+		if (!cpuinfo_arm_linux_detect_core_clusters_by_heuristic(usable_processors, arm_linux_processors_count, arm_linux_processors)) {
+			cpuinfo_arm_linux_detect_core_clusters_by_sequential_scan(arm_linux_processors_count, arm_linux_processors);
 		}
-
-		for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-			const uint32_t group_min_processor_id = arm_linux_processors[i].package_group_min;
-			if (i == group_min_processor_id) {
-				/* Decode vendor and uarch only once per cluster */
-				cpuinfo_arm_decode_vendor_uarch(
-					arm_linux_processors[i].midr,
-#if CPUINFO_ARCH_ARM
-					!!(arm_linux_processors[i].features & CPUINFO_ARM_LINUX_FEATURE_VFPV4),
-#endif
-					&arm_linux_processors[i].vendor,
-					&arm_linux_processors[i].uarch);
-			} else {
-				arm_linux_processors[i].midr   = arm_linux_processors[group_min_processor_id].midr;
-				arm_linux_processors[i].vendor = arm_linux_processors[group_min_processor_id].vendor;
-				arm_linux_processors[i].uarch  = arm_linux_processors[group_min_processor_id].uarch;
-			}
-		}
-		
 	}
 
-	/*
-	 * At this point, we figured out the core clusters. Count the number of cores in each clusters:
-	 * - In the first pass, for each logical processor increment the count in group-minimum processor.
-	 * - In the second pass, copy the count from group-minimum processor.
-	 */
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			continue;
-		}
+	cpuinfo_arm_linux_count_cluster_processors(arm_linux_processors_count, arm_linux_processors);
 
-		arm_linux_processors[arm_linux_processors[i].package_group_min].package_processor_count += 1;
-	}	
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			continue;
-		}
+#if defined(__ANDROID__)
+	const struct cpuinfo_arm_chipset chipset =
+		cpuinfo_arm_android_decode_chipset(&android_properties, usable_processors, 0);
+#endif
 
-		arm_linux_processors[i].package_processor_count =
-			arm_linux_processors[arm_linux_processors[i].package_group_min].package_processor_count;
-	}	
+	const uint32_t cluster_count = cpuinfo_arm_linux_detect_cluster_midr(
+#if defined(__ANDROID__)
+		&chipset,
+#endif
+		arm_linux_processors_count, usable_processors, arm_linux_processors);
+
+	/* Initialize core vendor, uarch, and MIDR for every logical processor */
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+			const uint32_t cluster_leader = arm_linux_processors[i].package_group_min;
+			if (cluster_leader == i) {
+				/* Cluster leader: decode core vendor and uarch */
+				cpuinfo_arm_decode_vendor_uarch(
+				arm_linux_processors[cluster_leader].midr,
+#if CPUINFO_ARCH_ARM
+				!!(arm_linux_processors[cluster_leader].features & CPUINFO_ARM_LINUX_FEATURE_VFPV4),
+#endif
+				&arm_linux_processors[cluster_leader].vendor,
+				&arm_linux_processors[cluster_leader].uarch);
+			} else {
+				/* Cluster non-leader: copy vendor, uarch, and MIDR from cluster leader */
+				arm_linux_processors[i].flags =
+					(arm_linux_processors[i].flags & ~CPUINFO_ARM_LINUX_VALID_MIDR) |
+					(arm_linux_processors[cluster_leader].flags & CPUINFO_ARM_LINUX_VALID_MIDR);
+				arm_linux_processors[i].midr = arm_linux_processors[cluster_leader].midr;
+				arm_linux_processors[i].vendor = arm_linux_processors[cluster_leader].vendor;
+				arm_linux_processors[i].uarch = arm_linux_processors[cluster_leader].uarch;
+			}
+		}
+	}
+
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+			cpuinfo_log_debug("post-analysis processor %"PRIu32" MIDR 0x%08"PRIx32,
+				i, arm_linux_processors[i].midr);
+		}
+	}
 
 	qsort(arm_linux_processors, arm_linux_processors_count,
 		sizeof(struct cpuinfo_arm_linux_processor), cmp_x86_processor_by_apic_id);
@@ -479,11 +343,6 @@ void cpuinfo_arm_linux_init(void) {
 			.linux_id = (int) arm_linux_processors[i].system_processor_id,
 		};
 	}
-
-#if defined(__ANDROID__)
-	const struct cpuinfo_arm_chipset chipset =
-		cpuinfo_arm_android_decode_chipset(&android_properties, usable_processors, 0);
-#endif
 
 	/*
 	 * Assumptions:

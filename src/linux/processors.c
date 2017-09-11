@@ -312,95 +312,31 @@ bool cpuinfo_linux_detect_present_processors(uint32_t max_processors_count,
 
 struct siblings_context {
 	const char* group_name;
-	const char* item_name;
 	uint32_t max_processors_count;
 	uint32_t processor;
-	uint32_t* processor_flags;
-	uint32_t* processor_group_id;
-	uint32_t* processor_group_min;
-	uint32_t* processor_group_max;
-	uint32_t* processor0_flags;
-	uint32_t* processor0_group_id;
-	uint32_t* processor0_group_min;
-	uint32_t* processor0_group_max;
-	uint32_t processor_struct_size;
-	uint32_t group_cluster_flag;
-	uint32_t group_id_flag;
+	cpuinfo_siblings_callback callback;
+	void* callback_context;
 };
 
-static inline uint32_t min(uint32_t a, uint32_t b) {
-	return a < b ? a : b;
-}
-
-static inline uint32_t max(uint32_t a, uint32_t b) {
-	return a > b ? a : b;
-}
-
 static bool siblings_parser(uint32_t sibling_list_start, uint32_t sibling_list_end, struct siblings_context* context) {
-	const char* group_name               = context->group_name;
-	const char* item_name                = context->item_name;
-	const uint32_t max_processors_count  = context->max_processors_count;
-	const uint32_t processor             = context->processor;
-	uint32_t* processor_flags_ptr        = context->processor_flags;
-	uint32_t* processor_group_id_ptr     = context->processor_group_id;
-	uint32_t* processor_group_min_ptr    = context->processor_group_min;
-	uint32_t* processor_group_max_ptr    = context->processor_group_max;
-	void* processor0_flags_ptr           = context->processor0_flags;
-	void* processor0_group_id_ptr        = context->processor0_group_id;
-	void* processor0_group_min_ptr       = context->processor0_group_min;
-	void* processor0_group_max_ptr       = context->processor0_group_max;
-	const uint32_t processor_struct_size = context->processor_struct_size;
-	const uint32_t group_cluster_flag    = context->group_cluster_flag;
-	const uint32_t group_id_flag         = context->group_id_flag;
+	const char* group_name                   = context->group_name;
+	const uint32_t max_processors_count      = context->max_processors_count;
+	const uint32_t processor                 = context->processor;
 
-	*processor_flags_ptr |= group_cluster_flag;
-
-	for (uint32_t sibling = sibling_list_start; sibling < sibling_list_end; sibling++) {
-		if (sibling >= max_processors_count) {
-			cpuinfo_log_warning("ignore siblings %"PRIu32"-%"PRIu32" of processor %"PRIu32,
-				sibling, sibling_list_end - 1, processor);
-			break;
-		}
-
-		uint32_t* sibling_flags_ptr     = (uint32_t*) (processor0_flags_ptr + processor_struct_size * sibling);
-		uint32_t* sibling_group_id_ptr  = (uint32_t*) (processor0_group_id_ptr + processor_struct_size * sibling);
-		uint32_t* sibling_group_min_ptr = (uint32_t*) (processor0_group_min_ptr + processor_struct_size * sibling);
-		uint32_t* sibling_group_max_ptr = (uint32_t*) (processor0_group_max_ptr + processor_struct_size * sibling);
-
-		*sibling_group_min_ptr = *processor_group_min_ptr = min(*sibling_group_min_ptr, *processor_group_min_ptr);
-		*sibling_group_max_ptr = *processor_group_max_ptr = max(*sibling_group_max_ptr, *processor_group_max_ptr);
-
-		if (*sibling_flags_ptr & group_id_flag) {
-			if (*processor_flags_ptr & group_id_flag) {
-				if (*sibling_group_id_ptr != *processor_group_id_ptr) {
-					cpuinfo_log_warning("%s sibling processors %"PRIu32" and %"PRIu32" have different %s IDs %"PRIu32" and %"PRIu32,
-						item_name, processor, sibling,
-						group_name, *processor_group_id_ptr, *sibling_group_id_ptr);
-				}
-			} else {
-				cpuinfo_log_debug("propagate %s ID %"PRIu32" from processor %"PRIu32" to processor %"PRIu32,
-					group_name, *sibling_group_id_ptr, sibling, processor);
-				*processor_flags_ptr |= group_id_flag;
-			}
-			*sibling_flags_ptr |= group_cluster_flag;
-		} else {
-			cpuinfo_log_debug("propagate %s ID %"PRIu32" from processor %"PRIu32" to processor %"PRIu32,
-				group_name, *processor_group_id_ptr, processor, sibling);
-			*sibling_group_id_ptr = *processor_group_id_ptr;
-			*sibling_flags_ptr |= group_cluster_flag | group_id_flag;
-		}
+	if (sibling_list_end > max_processors_count) {
+		cpuinfo_log_warning("ignore %s siblings %"PRIu32"-%"PRIu32" of processor %"PRIu32,
+			group_name, max_processors_count, sibling_list_end - 1, processor);
+		sibling_list_end = max_processors_count;
 	}
-	return true;
+
+	return context->callback(processor, sibling_list_start, sibling_list_end, context->callback_context);
 }
 
 bool cpuinfo_linux_detect_core_siblings(
 	uint32_t max_processors_count,
 	uint32_t processor,
-	uint32_t* processor0_flags,
-	uint32_t* processor0_package_id,
-	uint32_t* processor0_package_group_min,
-	uint32_t* processor0_package_group_max,
-	uint32_t processor_struct_size)
+	cpuinfo_siblings_callback callback,
+	void* context)
 {
 	char core_siblings_filename[CORE_SIBLINGS_FILENAME_SIZE];
 	const int chars_formatted = snprintf(
@@ -410,25 +346,15 @@ bool cpuinfo_linux_detect_core_siblings(
 		return false;
 	}
 
-	struct siblings_context context = {
+	struct siblings_context siblings_context = {
 		.group_name = "package",
-		.item_name  = "core",
 		.max_processors_count = max_processors_count,
 		.processor = processor,
-		.processor_flags     = (uint32_t*) ((void*) processor0_flags + processor * processor_struct_size),
-		.processor_group_id  = (uint32_t*) ((void*) processor0_package_id + processor * processor_struct_size),
-		.processor_group_min = (uint32_t*) ((void*) processor0_package_group_min + processor * processor_struct_size),
-		.processor_group_max = (uint32_t*) ((void*) processor0_package_group_max + processor * processor_struct_size),
-		.processor0_flags     = processor0_flags,
-		.processor0_group_id  = processor0_package_id,
-		.processor0_group_min = processor0_package_group_min,
-		.processor0_group_max = processor0_package_group_max,
-		.processor_struct_size = processor_struct_size,
-		.group_cluster_flag = CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER,
-		.group_id_flag      = CPUINFO_LINUX_FLAG_PACKAGE_ID,
+		.callback = callback,
+		.callback_context = context,
 	};
 	if (cpuinfo_linux_parse_cpulist(core_siblings_filename,
-		(cpuinfo_cpulist_callback) siblings_parser, &context))
+		(cpuinfo_cpulist_callback) siblings_parser, &siblings_context))
 	{
 		return true;
 	} else {
@@ -441,11 +367,8 @@ bool cpuinfo_linux_detect_core_siblings(
 bool cpuinfo_linux_detect_thread_siblings(
 	uint32_t max_processors_count,
 	uint32_t processor,
-	uint32_t* processor0_flags,
-	uint32_t* processor0_core_id,
-	uint32_t* processor0_core_group_min,
-	uint32_t* processor0_core_group_max,
-	uint32_t processor_struct_size)
+	cpuinfo_siblings_callback callback,
+	void* context)
 {
 	char thread_siblings_filename[THREAD_SIBLINGS_FILENAME_SIZE];
 	const int chars_formatted = snprintf(
@@ -455,25 +378,15 @@ bool cpuinfo_linux_detect_thread_siblings(
 		return false;
 	}
 
-	struct siblings_context context = {
+	struct siblings_context siblings_context = {
 		.group_name = "core",
-		.item_name  = "thread",
 		.max_processors_count = max_processors_count,
 		.processor = processor,
-		.processor_flags     = (uint32_t*) ((void*) processor0_flags + processor * processor_struct_size),
-		.processor_group_id  = (uint32_t*) ((void*) processor0_core_id + processor * processor_struct_size),
-		.processor_group_min = (uint32_t*) ((void*) processor0_core_group_min + processor * processor_struct_size),
-		.processor_group_max = (uint32_t*) ((void*) processor0_core_group_max + processor * processor_struct_size),
-		.processor0_flags     = processor0_flags,
-		.processor0_group_id  = processor0_core_id,
-		.processor0_group_min = processor0_core_group_min,
-		.processor0_group_max = processor0_core_group_max,
-		.processor_struct_size = processor_struct_size,
-		.group_cluster_flag = CPUINFO_LINUX_FLAG_CORE_CLUSTER,
-		.group_id_flag      = CPUINFO_LINUX_FLAG_CORE_ID,
+		.callback = callback,
+		.callback_context = context,
 	};
 	if (cpuinfo_linux_parse_cpulist(thread_siblings_filename,
-		(cpuinfo_cpulist_callback) siblings_parser, &context))
+		(cpuinfo_cpulist_callback) siblings_parser, &siblings_context))
 	{
 		return true;
 	} else {

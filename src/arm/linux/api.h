@@ -5,6 +5,7 @@
 
 #include <cpuinfo.h>
 #include <arm/midr.h>
+#include <arm/api.h>
 #include <linux/api.h>
 
 /* No hard limit in the kernel, maximum length observed on non-rogue kernels is 64 */
@@ -123,33 +124,10 @@ struct cpuinfo_arm_linux_processor {
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
 	/**
-	 * ID of the core which includes this logical processor.
-	 * The value is parsed from /sys/devices/system/cpu/cpu<N>/topology/core_id
-	 */
-	uint32_t core_id;
-	/**
-	 * Maximum processor ID on the core which includes this logical processor.
-	 * This value can serve as an ID for the cluster of logical processors: it is the
-	 * same for all logical processors on the same core.
-	 */
-	uint32_t core_group_max;
-	/**
-	 * Minimum processor ID on the core which includes this logical processor.
-	 * This value can serve as an ID for the cluster of logical processors: it is the
-	 * same for all logical processors on the same core.
-	 */
-	uint32_t core_group_min;
-	/**
 	 * ID of the physical package which includes this logical processor.
 	 * The value is parsed from /sys/devices/system/cpu/cpu<N>/topology/physical_package_id
 	 */
 	uint32_t package_id;
-	/**
-	 * Maximum processor ID on the package which includes this logical processor.
-	 * This value can serve as an ID for the cluster of logical processors: it is the
-	 * same for all logical processors on the same package.
-	 */
-	uint32_t package_group_max;
 	/**
 	 * Minimum processor ID on the package which includes this logical processor.
 	 * This value can serve as an ID for the cluster of logical processors: it is the
@@ -270,3 +248,24 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 		const struct cpuinfo_arm_linux_processor processors[restrict static 1],
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #endif
+
+bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
+	uint32_t usable_processors,
+	uint32_t max_processors,
+	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
+
+void cpuinfo_arm_linux_detect_core_clusters_by_sequential_scan(
+	uint32_t max_processors,
+	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
+
+void cpuinfo_arm_linux_count_cluster_processors(
+	uint32_t max_processors,
+	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
+
+uint32_t cpuinfo_arm_linux_detect_cluster_midr(
+#if defined(__ANDROID__)
+	const struct cpuinfo_arm_chipset chipset[restrict static 1],
+#endif
+	uint32_t max_processors,
+	uint32_t usable_processors,
+	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);

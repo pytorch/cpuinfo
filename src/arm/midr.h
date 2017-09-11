@@ -59,12 +59,40 @@ inline static uint32_t midr_set_revision(uint32_t midr, uint32_t revision) {
 		((revision << CPUINFO_ARM_MIDR_REVISION_OFFSET) & CPUINFO_ARM_MIDR_REVISION_MASK);
 }
 
+inline static uint32_t midr_get_variant(uint32_t midr) {
+	return (midr & CPUINFO_ARM_MIDR_VARIANT_MASK) >> CPUINFO_ARM_MIDR_VARIANT_OFFSET;
+}
+
 inline static uint32_t midr_get_implementer(uint32_t midr) {
 	return (midr & CPUINFO_ARM_MIDR_IMPLEMENTER_MASK) >> CPUINFO_ARM_MIDR_IMPLEMENTER_OFFSET;
 }
 
 inline static uint32_t midr_get_part(uint32_t midr) {
 	return (midr & CPUINFO_ARM_MIDR_PART_MASK) >> CPUINFO_ARM_MIDR_PART_OFFSET;
+}
+
+inline static uint32_t midr_get_revision(uint32_t midr) {
+	return (midr & CPUINFO_ARM_MIDR_REVISION_MASK) >> CPUINFO_ARM_MIDR_REVISION_OFFSET;
+}
+
+inline static uint32_t midr_copy_implementer(uint32_t midr, uint32_t other_midr) {
+	return (midr & ~CPUINFO_ARM_MIDR_IMPLEMENTER_MASK) | (other_midr & CPUINFO_ARM_MIDR_IMPLEMENTER_MASK);
+}
+
+inline static uint32_t midr_copy_variant(uint32_t midr, uint32_t other_midr) {
+	return (midr & ~CPUINFO_ARM_MIDR_VARIANT_MASK) | (other_midr & CPUINFO_ARM_MIDR_VARIANT_MASK);
+}
+
+inline static uint32_t midr_copy_architecture(uint32_t midr, uint32_t other_midr) {
+	return (midr & ~CPUINFO_ARM_MIDR_ARCHITECTURE_MASK) | (other_midr & CPUINFO_ARM_MIDR_ARCHITECTURE_MASK);
+}
+
+inline static uint32_t midr_copy_part(uint32_t midr, uint32_t other_midr) {
+	return (midr & ~CPUINFO_ARM_MIDR_PART_MASK) | (other_midr & CPUINFO_ARM_MIDR_PART_MASK);
+}
+
+inline static uint32_t midr_copy_revision(uint32_t midr, uint32_t other_midr) {
+	return (midr & ~CPUINFO_ARM_MIDR_REVISION_MASK) | (other_midr & CPUINFO_ARM_MIDR_REVISION_MASK);
 }
 
 inline static bool midr_is_arm1156(uint32_t midr) {
@@ -121,6 +149,41 @@ inline static bool midr_is_kryo_silver(uint32_t midr) {
 inline static bool midr_is_kryo_gold(uint32_t midr) {
 	const uint32_t uarch_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
 	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_KRYO_GOLD & uarch_mask);
+}
+
+inline static uint32_t midr_score_core(uint32_t midr) {
+	const uint32_t core_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
+	switch (midr & core_mask) {
+		case UINT32_C(0x4E000030): /* Denver 2 */
+		case UINT32_C(0x53000010): /* Mongoose */
+		case UINT32_C(0x51008000): /* Kryo 260 / 280 Gold */
+		case UINT32_C(0x51002050): /* Kryo Gold */
+		case UINT32_C(0x4100D0A0): /* Cortex-A75 */
+		case UINT32_C(0x4100D090): /* Cortex-A73 */
+		case UINT32_C(0x4100D080): /* Cortex-A72 */
+		case UINT32_C(0x4100C0E0): /* Cortex-A17 */
+		case UINT32_C(0x4100C0F0): /* Cortex-A15 */
+		case UINT32_C(0x4100C0D0): /* Cortex-A12 */
+			/* These cores are always in big role */
+			return 4;
+		case UINT32_C(0x4100D070): /* Cortex-A57 */
+			/* Cortex-A57 can be in LITTLE role w.r.t. Denver 2, or in big role w.r.t. Cortex-A53 */
+			return 3;
+		case UINT32_C(0x4100D050): /* Cortex-A55 */
+		case UINT32_C(0x4100D030): /* Cortex-A53 */
+			/* Cortex-A53 is usually in LITTLE role, but can be in big role w.r.t. Cortex-A35 */
+			return 2;
+		case UINT32_C(0x4100D040): /* Cortex-A35 */
+		case UINT32_C(0x4100C070): /* Cortex-A7 */
+		case UINT32_C(0x51008010): /* Kryo 260 / 280 Silver */
+		case UINT32_C(0x51002110): /* Kryo Silver (Snapdragon 820) */
+		case UINT32_C(0x51002010): /* Kryo Silver (Snapdragon 821) */
+			/* These cores are always in LITTLE core */
+			return 1;
+		default:
+			/* Cores which do not have big/LITTLE roles */
+			return 0;
+	}
 }
 
 inline static bool midr_is_big_core(uint32_t midr) {
