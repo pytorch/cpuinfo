@@ -166,6 +166,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := lenovo-a6600-plus-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/lenovo-a6600-plus.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := lg-k10-eu-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/lg-k10-eu.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
