@@ -15,10 +15,7 @@ void cpuinfo_arm_android_parse_chipset_properties(
 	uint32_t max_cpu_freq_max,
 	char chipset_name[CPUINFO_ARM_CHIPSET_NAME_MAX])
 {
-	struct cpuinfo_android_properties properties = {
-		.dalvik_arm_variant = cpuinfo_dalvik_arm_variant_unknown,
-		.dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_unknown,
-	};
+	struct cpuinfo_android_properties properties;
 	strncpy(properties.proc_cpuinfo_hardware, proc_cpuinfo_hardware, CPUINFO_HARDWARE_VALUE_MAX);
 	strncpy(properties.ro_product_board, ro_product_board, CPUINFO_BUILD_PROP_VALUE_MAX);
 	strncpy(properties.ro_board_platform, ro_board_platform, CPUINFO_BUILD_PROP_VALUE_MAX);

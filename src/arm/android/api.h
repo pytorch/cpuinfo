@@ -8,36 +8,7 @@
 #define CPUINFO_BUILD_PROP_NAME_MAX  32
 #define CPUINFO_BUILD_PROP_VALUE_MAX 92
 
-enum cpuinfo_dalvik_arm_variant {
-	cpuinfo_dalvik_arm_variant_unknown = 0,
-	cpuinfo_dalvik_arm_variant_cortex_a5,
-	cpuinfo_dalvik_arm_variant_cortex_a7,
-	cpuinfo_dalvik_arm_variant_cortex_a8,
-	cpuinfo_dalvik_arm_variant_cortex_a9,
-	cpuinfo_dalvik_arm_variant_cortex_a15,
-	cpuinfo_dalvik_arm_variant_cortex_a53,
-	cpuinfo_dalvik_arm_variant_cortex_a53_a57,
-	cpuinfo_dalvik_arm_variant_cortex_a72,
-	cpuinfo_dalvik_arm_variant_scorpion,
-	cpuinfo_dalvik_arm_variant_krait,
-	cpuinfo_dalvik_arm_variant_kryo,
-	cpuinfo_dalvik_arm_variant_denver,
-};
-
-enum cpuinfo_dalvik_arm64_variant {
-	cpuinfo_dalvik_arm64_variant_unknown = 0,
-	cpuinfo_dalvik_arm64_variant_cortex_a53,
-	cpuinfo_dalvik_arm64_variant_cortex_a57,
-	cpuinfo_dalvik_arm64_variant_cortex_a53_a57,
-	cpuinfo_dalvik_arm64_variant_exynos_m1,
-	cpuinfo_dalvik_arm64_variant_exynos_m2,
-	cpuinfo_dalvik_arm64_variant_kryo,
-	cpuinfo_dalvik_arm64_variant_denver64,
-};
-
 struct cpuinfo_android_properties {
-	enum cpuinfo_dalvik_arm_variant dalvik_arm_variant;
-	enum cpuinfo_dalvik_arm64_variant dalvik_arm64_variant;
 	char proc_cpuinfo_hardware[CPUINFO_HARDWARE_VALUE_MAX];
 	char ro_product_board[CPUINFO_BUILD_PROP_VALUE_MAX];
 	char ro_board_platform[CPUINFO_BUILD_PROP_VALUE_MAX];

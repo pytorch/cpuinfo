@@ -15,118 +15,6 @@
  */
 #define BUFFER_SIZE 1024
 
-static void parse_dalvik_arm_variant(
-	const char* value_start,
-	const char* value_end,
-	enum cpuinfo_dalvik_arm_variant dalvik_arm_variant[restrict static 1])
-{
-	const size_t value_length = value_end - value_start;
-	switch (value_length) {
-		case 4:
-			if (memcmp(value_start, "kryo", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_kryo;
-			}
-			break;
-		case 5:
-			if (memcmp(value_start, "krait", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_krait;
-			}
-			break;
-		case 6:
-			if (memcmp(value_start, "denver", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_denver;
-			}
-			break;
-		case 8:
-			if (memcmp(value_start, "scorpion", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a5;
-			}
-			break;
-		case 9:
-			if (memcmp(value_start, "cortex-a", value_length - 1) == 0) {
-				switch (value_start[value_length - 1]) {
-					case '5':
-						*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a5;
-						break;
-					case '7':
-						*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a7;
-						break;
-					case '8':
-						*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a8;
-						break;
-					case '9':
-						*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a9;
-						break;
-				}
-			}
-			break;
-		case 10:
-			if (memcmp(value_start, "cortex-a15", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a15;
-			} else if (memcmp(value_start, "cortex-a53", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a53;
-			} else if (memcmp(value_start, "cortex-a72", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a72;
-			}
-			break;
-		case 13:
-			if (memcmp(value_start, "cortex-a53,a57", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a53_a57;
-			}
-			break;
-		case 37:
-			if (memcmp(value_start, "cortex-a53,cortex-a57,generic,default", value_length) == 0) {
-				*dalvik_arm_variant = cpuinfo_dalvik_arm_variant_cortex_a53_a57;
-			}
-			break;
-	}
-	cpuinfo_log_debug("parsed dalvik_arm_variant = %d", *dalvik_arm_variant);
-}
-
-static void parse_dalvik_arm64_variant(
-	const char* value_start,
-	const char* value_end,
-	enum cpuinfo_dalvik_arm64_variant dalvik_arm64_variant[restrict static 1])
-{
-	const size_t value_length = value_end - value_start;
-	switch (value_length) {
-		case 4:
-			if (memcmp(value_start, "kryo", value_length) == 0) {
-				*dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_kryo;
-			}
-			break;
-		case 8:
-			if (memcmp(value_start, "denver64", value_length) == 0) {
-				*dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_denver64;
-			}
-			break;
-		case 9:
-			if (memcmp(value_start, "exynos-m", value_length - 1) == 0) {
-				switch (value_start[value_length - 1]) {
-					case '1':
-						*dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_exynos_m1;
-						break;
-					case '2':
-						*dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_exynos_m2;
-						break;
-				}	
-			}
-		case 10:
-			if (memcmp(value_start, "cortex-a53", value_length) == 0) {
-				*dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_cortex_a53;
-			} else if (memcmp(value_start, "cortex-a57", value_length) == 0) {
-				*dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_cortex_a57;
-			}
-			break;
-		case 14:
-			if (memcmp(value_start, "cortex-a53.a57", value_length) == 0) {
-				*dalvik_arm64_variant = cpuinfo_dalvik_arm64_variant_cortex_a53_a57;
-			}
-			break;
-	}
-	cpuinfo_log_debug("parsed dalvik_arm64_variant = %d", *dalvik_arm64_variant);
-}
-
 /*
  *	Decode a single line of /system/build.prop information.
  *	Lines have format <key>=<value>
@@ -209,24 +97,17 @@ static bool parse_line(
 			}
 			break;
 		case 17:
-			if (memcmp(line_start, "mediatek.platform", key_length) == 0) {
-				memcpy(properties->ro_mediatek_platform, value_start, limited_value_length);
-				cpuinfo_log_debug("parsed ro.mediatek.platform = \"%s\"",
-					properties->ro_mediatek_platform);
-			} else if (memcmp(line_start, "ro.board.platform", key_length) == 0) {
+			if (memcmp(line_start, "ro.board.platform", key_length) == 0) {
 				memcpy(properties->ro_board_platform, value_start, limited_value_length);
 				cpuinfo_log_debug("parsed ro.board.platform = \"%s\"",
 					properties->ro_board_platform);
 			}
 			break;
-		case 25:
-			if (memcmp(line_start, "dalvik.vm.isa.arm.variant", key_length) == 0) {
-				parse_dalvik_arm_variant(value_start, value_end, &properties->dalvik_arm_variant);
-			}
-			break;
-		case 27:
-			if (memcmp(line_start, "dalvik.vm.isa.arm64.variant", key_length) == 0) {
-				parse_dalvik_arm64_variant(value_start, value_end, &properties->dalvik_arm64_variant);
+		case 20:
+			if (memcmp(line_start, "ro.mediatek.platform", key_length) == 0) {
+				memcpy(properties->ro_mediatek_platform, value_start, limited_value_length);
+				cpuinfo_log_debug("parsed ro.mediatek.platform = \"%s\"",
+					properties->ro_mediatek_platform);
 			}
 			break;
 	}
