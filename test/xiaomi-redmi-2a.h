@@ -6,7 +6,7 @@ struct cpuinfo_mock_file filesystem[] = {
 			"processor\t: 0\n"
 			"model name\t: ARMv7 Processor rev 5 (v7l)\n"
 			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"BogoMIPS\t: 1244.61\n"
+			"BogoMIPS\t: 1490.94\n"
 			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
 			"CPU implementer\t: 0x41\n"
 			"CPU architecture: 7\n"
@@ -175,6 +175,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-4\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1495000\n",
@@ -206,3 +216,1065 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "96m",
+	},
+	{
+		.key = "dalvik.vm.heapmaxfree",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heapminfree",
+		.value = "2m",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "256m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heaptargetutilization",
+		.value = "0.75",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "debug.force_rtl",
+		.value = "0",
+	},
+	{
+		.key = "debug.hwc.asyncdisp",
+		.value = "1",
+	},
+	{
+		.key = "debug.hwc.fakevsync",
+		.value = "0",
+	},
+	{
+		.key = "debug.hwc.logvsync",
+		.value = "0",
+	},
+	{
+		.key = "debug.power.loghint",
+		.value = "0",
+	},
+	{
+		.key = "debug.sf.gpuoverlay",
+		.value = "0",
+	},
+	{
+		.key = "debug.sf.sa_enable",
+		.value = "1",
+	},
+	{
+		.key = "debug.sf.sa_log",
+		.value = "0",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "1",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "EDGE,EDGE",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false,false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.orig.alpha",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "ABSENT,ABSENT",
+	},
+	{
+		.key = "gsm.version.baseband",
+		.value = "NGM_V4.10.01.R20.T00P,NGM_V4.10.01.R20.T00P",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "android reference-ril 1.0",
+	},
+	{
+		.key = "init.svc.AcdApiDaemon",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.akmd09911",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.checkpath",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.checksdkpath",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.emsd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.fdpp",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fuse_sdcard",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.fuse_usbotg",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.gps-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.gps_config_init",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.invn_cal_accel",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.invn_cal_gyro",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.lc-elog_powerup",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.lc-mla-manager",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.lc-oms-amt",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.lc-oms-sa",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.lc_boot_mode",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mcd_init",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mcd_service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mdbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.memsicd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.middle_perf",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.otad",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.p2p_supplicant",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.radio_config",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.rild0",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.rild1",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.sdcard",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.setlockstate",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.shelld",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.thermal",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "keyguard.no_require_sim",
+		.value = "true",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.change",
+		.value = "net.qtaguid_enabled",
+	},
+	{
+		.key = "net.hostname",
+		.value = "HM2A-Redmi",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.tcp.buffersize.default",
+		.value = "4096,87380,110208,4096,16384,110208",
+	},
+	{
+		.key = "net.tcp.buffersize.edge",
+		.value = "4093,26280,35040,4096,16384,35040",
+	},
+	{
+		.key = "net.tcp.buffersize.evdo",
+		.value = "4094,87380,262144,4096,16384,262144",
+	},
+	{
+		.key = "net.tcp.buffersize.gprs",
+		.value = "4092,8760,11680,4096,8760,11680",
+	},
+	{
+		.key = "net.tcp.buffersize.hsdpa",
+		.value = "4094,87380,262144,4096,16384,262144",
+	},
+	{
+		.key = "net.tcp.buffersize.hspa",
+		.value = "4094,87380,262144,4096,16384,262144",
+	},
+	{
+		.key = "net.tcp.buffersize.hspap",
+		.value = "4094,87380,1220608,4096,16384,1220608",
+	},
+	{
+		.key = "net.tcp.buffersize.hsupa",
+		.value = "4094,87380,262144,4096,16384,262144",
+	},
+	{
+		.key = "net.tcp.buffersize.lte",
+		.value = "524288,1048576,2097152,262144,524288,1048576",
+	},
+	{
+		.key = "net.tcp.buffersize.umts",
+		.value = "4094,87380,110208,4096,16384,110208",
+	},
+	{
+		.key = "net.tcp.buffersize.wifi",
+		.value = "524288,1048576,2097152,262144,524288,1048576",
+	},
+	{
+		.key = "persist.mass_storage.enable",
+		.value = "false",
+	},
+	{
+		.key = "persist.power.useautobrightadj",
+		.value = "true",
+	},
+	{
+		.key = "persist.radio.default.data",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.elog.path",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.lc.master.card",
+		.value = "10",
+	},
+	{
+		.key = "persist.radio.multisim.config",
+		.value = "dsds",
+	},
+	{
+		.key = "persist.sys.adb.backroot",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.aries.power_profile",
+		.value = "middle",
+	},
+	{
+		.key = "persist.sys.button_jack_profile",
+		.value = "volume",
+	},
+	{
+		.key = "persist.sys.button_jack_switch",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.country",
+		.value = "US",
+	},
+	{
+		.key = "persist.sys.dalvik.vm.lib",
+		.value = "libdvm.so",
+	},
+	{
+		.key = "persist.sys.display_cabc",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.display_ce",
+		.value = "11",
+	},
+	{
+		.key = "persist.sys.display_prefer",
+		.value = "2",
+	},
+	{
+		.key = "persist.sys.gamut_mode",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.install.lc.log",
+		.value = "/data/local/log,I1,0,0,I2,0,0,I3,0,0,I4,0,0,I5,0,0,I6,0,0",
+	},
+	{
+		.key = "persist.sys.install.max.lc.log",
+		.value = "/data/local/log,I1,10,8192,I2,10,8192,I3,10,51200,I4,100,8192,I5,10,8192,I6,10,8192",
+	},
+	{
+		.key = "persist.sys.klo.rec_start",
+		.value = "1409500940",
+	},
+	{
+		.key = "persist.sys.klo",
+		.value = "on",
+	},
+	{
+		.key = "persist.sys.language",
+		.value = "en",
+	},
+	{
+		.key = "persist.sys.lc.actual.rat",
+		.value = "7,1",
+	},
+	{
+		.key = "persist.sys.lc.amt.mmi.station",
+		.value = "18",
+	},
+	{
+		.key = "persist.sys.lc.check.imei",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.lc.dcrm.config",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.lc.def.cs",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.lc.def.ps",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.lc.def.sms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.lc.dual2single",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.lc.dynamic.rat",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.lc.master.card",
+		.value = "10",
+	},
+	{
+		.key = "persist.sys.lc.msms",
+		.value = "221",
+	},
+	{
+		.key = "persist.sys.lc.network.model",
+		.value = "3",
+	},
+	{
+		.key = "persist.sys.lc.standby.rat",
+		.value = "7,3",
+	},
+	{
+		.key = "persist.sys.localevar",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.ltm_enable",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.mcd_config_file",
+		.value = "/system/etc/mcd_default.conf",
+	},
+	{
+		.key = "persist.sys.memctrl",
+		.value = "on",
+	},
+	{
+		.key = "persist.sys.mitalk.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.sys.miui_feature_config",
+		.value = "/system/etc/miui_feature/lite.conf",
+	},
+	{
+		.key = "persist.sys.modem.reset",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.released",
+		.value = "true",
+	},
+	{
+		.key = "persist.sys.screenshot_mode",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.silent",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.smartcover_enabled",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.smartcover_mode",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.timezone",
+		.value = "Asia/Shanghai",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "persist.sys.vold.primary",
+		.value = "0",
+	},
+	{
+		.key = "ril.ecclist1",
+		.value = "120,122,112,911,000,08,110,118,119,999",
+	},
+	{
+		.key = "ril.ecclist",
+		.value = "120,122,112,911,000,08,110,118,119,999",
+	},
+	{
+		.key = "ril.emsd.init.complete.flag0",
+		.value = "0",
+	},
+	{
+		.key = "ril.emsd.init.complete.flag1",
+		.value = "0",
+	},
+	{
+		.key = "rild.get.imsi.count",
+		.value = "0",
+	},
+	{
+		.key = "rild.send.cfun",
+		.value = "1",
+	},
+	{
+		.key = "ro.adb.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.audio.flinger_standbytime_ms",
+		.value = "1000",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "lc1860",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bt.bdaddr_path",
+		.value = "/amt/BT/BT_Address.txt",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "default",
+	},
+	{
+		.key = "ro.build.customer",
+		.value = "XIAOMI",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1471078398",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Sat Aug 13 16:53:18 CST 2016",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "full_lte26007-user 4.4.4 KTU84Q V8.0.1.0.KHLCNDG release-keys",
+	},
+	{
+		.key = "ro.build.display.factory.id",
+		.value = "FACTORY-02",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "KTU84P",
+	},
+	{
+		.key = "ro.build.display.lc.id",
+		.value = "L1860_1.00.10.R57_20151110",
+	},
+	{
+		.key = "ro.build.display.wtid",
+		.value = "SW_S26007A2_V001_M10_XM_USER",
+	},
+	{
+		.key = "ro.build.factory.mode",
+		.value = "0",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "Xiaomi/full_lte26007/lte26007:4.4.4/KTU84Q/V8.0.1.0.KHLCNDG:user/release-keys",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "c3-miui-ota-bd21.bj",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "KTU84Q",
+	},
+	{
+		.key = "ro.build.mass.production",
+		.value = "true",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "HM2014502",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "builder",
+	},
+	{
+		.key = "ro.build.version.base_os",
+		.value = "",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "V8.0.1.0.KHLCNDG",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "4.4.4",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "19",
+	},
+	{
+		.key = "ro.build.version.security_patch",
+		.value = "2016-08-01",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.com.android.dataroaming",
+		.value = "false",
+	},
+	{
+		.key = "ro.com.android.dateformat",
+		.value = "MM-dd-yyyy",
+	},
+	{
+		.key = "ro.com.android.mobiledata",
+		.value = "false",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-xiaomi",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "Alarm_Classic.ogg",
+	},
+	{
+		.key = "ro.config.elder-ringtone",
+		.value = "Angel.mp3",
+	},
+	{
+		.key = "ro.config.low_ram",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.max_starting_bg",
+		.value = "8",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "pixiedust.ogg",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "Ring_Synth_04.ogg",
+	},
+	{
+		.key = "ro.config.sms_delivered_sound",
+		.value = "MessageComplete.ogg",
+	},
+	{
+		.key = "ro.config.sms_received_sound",
+		.value = "FadeIn.ogg",
+	},
+	{
+		.key = "ro.crypto.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "unencrypted",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.factorytest",
+		.value = "0",
+	},
+	{
+		.key = "ro.fm.devicename",
+		.value = "bcm4343_b2",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "leadcoreinnopower",
+	},
+	{
+		.key = "ro.installed.fm",
+		.value = "1",
+	},
+	{
+		.key = "ro.lc.dual2single",
+		.value = "1",
+	},
+	{
+		.key = "ro.lc.dynamic.rat",
+		.value = "1",
+	},
+	{
+		.key = "ro.lc.msms",
+		.value = "221",
+	},
+	{
+		.key = "ro.lc.standby.rat",
+		.value = "7,1",
+	},
+	{
+		.key = "ro.miui.cust_variant",
+		.value = "cn",
+	},
+	{
+		.key = "ro.miui.has_handy_mode_sf",
+		.value = "1",
+	},
+	{
+		.key = "ro.miui.has_real_blur",
+		.value = "1",
+	},
+	{
+		.key = "ro.miui.mcc",
+		.value = "9460",
+	},
+	{
+		.key = "ro.miui.mnc",
+		.value = "9999",
+	},
+	{
+		.key = "ro.miui.region",
+		.value = "CN",
+	},
+	{
+		.key = "ro.miui.ui.version.code",
+		.value = "6",
+	},
+	{
+		.key = "ro.miui.ui.version.name",
+		.value = "V8",
+	},
+	{
+		.key = "ro.miui.version.code_time",
+		.value = "1469635200",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "196608",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "2014502",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "Xiaomi",
+	},
+	{
+		.key = "ro.product.cpu.abi2",
+		.value = "armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "armeabi-v7a",
+	},
+	{
+		.key = "ro.product.cuptsm",
+		.value = "XIAOMI|ESE|02|01",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "lte26007",
+	},
+	{
+		.key = "ro.product.hardware.version",
+		.value = "Ver0606",
+	},
+	{
+		.key = "ro.product.locale.language",
+		.value = "zh",
+	},
+	{
+		.key = "ro.product.locale.region",
+		.value = "CN",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "Xiaomi",
+	},
+	{
+		.key = "ro.product.mod_device",
+		.value = "lte26007",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "HM 2A",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "full_lte26007",
+	},
+	{
+		.key = "ro.product.real_model",
+		.value = "2014502",
+	},
+	{
+		.key = "ro.revision",
+		.value = "0",
+	},
+	{
+		.key = "ro.ril.auto.plmn",
+		.value = "0",
+	},
+	{
+		.key = "ro.ril.miui.imei",
+		.value = "867711020267039",
+	},
+	{
+		.key = "ro.ril.modem.pb",
+		.value = "0",
+	},
+	{
+		.key = "ro.ril.resend.sms.full",
+		.value = "1",
+	},
+	{
+		.key = "ro.runtime.firstboot",
+		.value = "1411237408081",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "1L521W028325",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "320",
+	},
+	{
+		.key = "ro.sys.ft_whole_anim",
+		.value = "false",
+	},
+	{
+		.key = "ro.telephony.call_ring.multiple",
+		.value = "false",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "101",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "sys.alarmboot.mode",
+		.value = "0",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.chargeonly.mode",
+		.value = "0",
+	},
+	{
+		.key = "sys.haptic.down.normal",
+		.value = "0,12,24,32",
+	},
+	{
+		.key = "sys.haptic.down.strong",
+		.value = "0,24,20,46",
+	},
+	{
+		.key = "sys.haptic.down.weak",
+		.value = "0,1,20,21",
+	},
+	{
+		.key = "sys.haptic.long.normal",
+		.value = "0,14,20,32",
+	},
+	{
+		.key = "sys.haptic.long.strong",
+		.value = "0,24,20,45",
+	},
+	{
+		.key = "sys.haptic.long.weak",
+		.value = "0,1,20,21",
+	},
+	{
+		.key = "sys.haptic.tap.normal",
+		.value = "0,15,30,40",
+	},
+	{
+		.key = "sys.haptic.tap.strong",
+		.value = "0,24,32,48",
+	},
+	{
+		.key = "sys.haptic.tap.weak",
+		.value = "0,8,25,28",
+	},
+	{
+		.key = "sys.haptic.up.normal",
+		.value = "0,10,25,35",
+	},
+	{
+		.key = "sys.haptic.up.strong",
+		.value = "0,20,25,46",
+	},
+	{
+		.key = "sys.haptic.up.weak",
+		.value = "0,1,25,26",
+	},
+	{
+		.key = "sys.is_keyguard_showing",
+		.value = "1",
+	},
+	{
+		.key = "sys.keyguard.bleunlock",
+		.value = "true",
+	},
+	{
+		.key = "sys.lc.swap.nvram.standby",
+		.value = "0",
+	},
+	{
+		.key = "sys.lc.usb.state",
+		.value = "1",
+	},
+	{
+		.key = "sys.settings_system_version",
+		.value = "5",
+	},
+	{
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "10800",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "tcmd.suspend",
+		.value = "0",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wlan.driver.status",
+		.value = "ok",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
