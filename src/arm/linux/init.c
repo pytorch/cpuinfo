@@ -161,17 +161,13 @@ void cpuinfo_arm_linux_init(void) {
 
 	uint32_t usable_processors = 0;
 	uint32_t known_processors = 0;
-	uint32_t last_reported_processor = 0;
-	uint32_t last_reported_midr = 0;
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		arm_linux_processors[i].system_processor_id = i;
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			arm_linux_processors[i].processor_id = usable_processors;
 			usable_processors += 1;
 
-			if (arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR) {
-				last_reported_processor = i;
-			} else {
+			if (!(arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR)) {
 				/*
 				 * Processor is in possible and present lists, but not reported in /proc/cpuinfo.
 				 * This is fairly common: high-index processors can be not reported if they are offline.
@@ -180,7 +176,6 @@ void cpuinfo_arm_linux_init(void) {
 			}
 
 			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_INFO)) {
-				last_reported_midr = i;
 				if (known_processors == 0) {
 					/*
 					 * This is the first processor for which we have complete information.
