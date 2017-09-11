@@ -1,0 +1,1351 @@
+[   50.797711]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.797732]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.797743]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.797754]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.797793]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.799738]  (1)[13:kworker/1:0][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   50.806552]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   50.807369]  (1)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.807395]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.808227]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.808249]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.808259]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.808269]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.808318]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.817824]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.817849]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.818662]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.818681]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.818691]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.818702]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.818744]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.828066]  (1)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.828090]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.828907]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.828926]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.828936]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.828946]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.828991]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.838433]  (1)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.838456]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.839222]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.839243]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.839253]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.839263]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.839304]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.848827]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.848865]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.849684]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.849705]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.849716]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.849726]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.849776]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.859112]  (1)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.859134]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.859978]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.859999]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.860010]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.860021]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.860062]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.869319]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   50.869411]  (3)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.869427]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.870230]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.870250]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.870260]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.870270]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.870330]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.872746]  (2)[160:kworker/u8:4]binder: [name:binder&]2739:timeinitializer node 41799: exits with 912:system_server DeathNotify
+[   50.872771]  (2)[160:kworker/u8:4]binder: [name:binder&]2739:timeinitializer node 41822: exits with 912:system_server DeathNotify
+[   50.879669]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.879692]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.880605]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.880627]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.880637]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.880648]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.880704]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.882446]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   50.889972]  (2)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.889995]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.890798]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.890817]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.890827]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.890837]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.890889]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.900170]  (1)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.900195]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.901025]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.901045]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.901055]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.901065]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.901109]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.910452]  (1)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.910474]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.911353]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.911373]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.911384]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.911394]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.911442]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.920715]  (1)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.920742]  (1)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.921561]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.921579]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0672, Y:0474]
+[   50.921589]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0672, Y:0474]
+[   50.921599]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(672, 474)[33]
+[   50.921646]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.931048]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.931073]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.931923]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.931947]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0671, Y:0475]
+[   50.931957]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0671, Y:0475]
+[   50.931967]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(671, 475)[33]
+[   50.932023]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.938541]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   50.941500]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.941526]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.942435]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:81.
+[   50.942455]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2677]org :[X:0671, Y:0477]
+[   50.942465]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2687]caliberated:[X:0671, Y:0477]
+[   50.942475]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2700] 0)(671, 477)[33]
+[   50.942523]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.950942]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.950965]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.951794]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:01, finger:80.
+[   50.951818]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2711]Touch Release!
+[   50.951860]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.957750]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.957779]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.958649]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:00, finger:80.
+[   50.958672]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2714]Additional Eint!
+[   50.958688]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.968009]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.968035]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   50.968858]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:00, finger:80.
+[   50.968876]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [2714]Additional Eint!
+[   50.968890]  (3)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   50.977649] -(0)[2722:AsyncTask #3][name:battery_common&][charger_hv_detect_sw_workaround]
+[   50.977726]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   50.977740]  (0)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   50.977756]  (0)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   50.977829]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.001307]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.024578]  (1)[160:kworker/u8:4]binder: [name:binder&]binder_flush: 2793 woke 2 threads
+[   51.067296]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.113039]  (2)[230:logd.auditd]type=1400 audit(1505169181.310:28): avc: denied { search } for pid=1966 comm="GpuAppSpectator" name="2446" dev="proc" ino=13274 scontext=u:r:gas_srv:s0 tcontext=u:r:system_app:s0 tclass=dir permissive=0
+[   51.132761]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   51.133442]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.184980] -(0)[1076:Binder_3][name:battery_common&][charger_hv_detect_sw_workaround]
+[   51.186910]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.199288]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.265634]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.311758]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   51.312223]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   51.312248]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   51.331350]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.370562]  (1)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(379)(433)(83)(0) (4)(4)(4)(4)(3) (0)(0)(0) (3101)(12)(4) (0)(433)(12)(0)(433) wifi_base(0)
+[   51.384816]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   51.396230] -(1)[1559:Binder_7][name:battery_common&][charger_hv_detect_sw_workaround]
+[   51.396500]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.397662]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.437684] -(0)[0:swapper/0][name:mt_idle&][Power/swap]DP: No enter --- SODI: No enter --- 
+[   51.464318]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.513960]  (2)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.513985]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   51.514805]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2647]button =360 1400
+[   51.514836]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:00, finger:90.
+[   51.514846]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2714]Additional Eint!
+[   51.514891]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   51.530899]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.595298]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.602530] -(2)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   51.602593]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.606774]  (2)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.606798]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   51.607650]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:00, finger:80.
+[   51.607670]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [2714]Additional Eint!
+[   51.607722]  (2)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   51.617033]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.617060]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   51.617917]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:00, finger:80.
+[   51.617938]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2714]Additional Eint!
+[   51.617951]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   51.627355]  (0)[177:mtk-tpd][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.627379]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 814E len 10
+[   51.628119]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2663]pre_touch:00, finger:80.
+[   51.628133]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [2714]Additional Eint!
+[   51.628146]  (0)[177:mtk-tpd]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 814E len 1
+[   51.632391]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   51.666361]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.727488]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.750501]  (2)[227:logd.writer]logd:diff time -59400681, run time  145113915, count 0,step 1 5000,2 2793,3 7462,4 0. filter count 3750.
+[   51.793410]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.809816] -(2)[912:system_server][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   51.811182] -(2)[912:system_server][name:battery_common&][charger_hv_detect_sw_workaround]
+[   51.812092]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   51.859388]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.882474]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   51.925346]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   51.927851]  (0)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   51.927872]  (0)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   51.927886]  (0)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   51.927898]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   51.927907]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   51.927920]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   51.927931]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   51.927940]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   51.927952]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   51.927961]  (0)[100:display_esd_che]DSI read packet_type is 0x21 
+[   51.982269] -(1)[2962:earchbox:search][name:mt_ptp&][PTP] ptp_set_ptp_volt cur_temp = 39500
+[   51.991302]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.018210] -(2)[2962:earchbox:search][name:battery_common&][charger_hv_detect_sw_workaround]
+[   52.035410]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.057602]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.123356]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.132530]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   52.189366]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.241806] -(2)[2983:ClearcutLoggerI][name:battery_common&][charger_hv_detect_sw_workaround]
+[   52.241860]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.241871]  (2)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   52.241887]  (2)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   52.241959]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.255298]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.259612]  (2)[6:kworker/u8:0]binder: [name:binder&]2755:id.partnersetup node 42136: exits with 912:system_server DeathNotify
+[   52.259665]  (2)[6:kworker/u8:0]binder: [name:binder&]2755:id.partnersetup node 42198: exits with 912:system_server DeathNotify
+[   52.259689]  (2)[6:kworker/u8:0]binder: [name:binder&]2755:id.partnersetup node 42527: exits with 912:system_server DeathNotify
+[   52.321308]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.387294]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.387828]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   52.447865] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   52.447923]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.453306]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.529736]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.536287] -(0)[1874:Binder_2][name:battery_common&]******** battery : bat_thread_wakeup  ********
+[   52.536350]  (1)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.536364]  (1)[180:bat_thread_kthr][name:battery_common&][BAT_thread]Cable in, CHR_Type_num=1
+
+[   52.543114]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.585671]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.632648]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   52.654309] -(0)[3020:enovo.ue.device][name:battery_common&][charger_hv_detect_sw_workaround]
+[   52.654362]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.661735]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.677577]  (3)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.677602]  (3)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.681943]  (3)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.681972]  (3)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.682172]  (3)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.682188]  (3)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.682415]  (3)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.682431]  (3)[180:bat_thread_kthr]caozhg  func=fgauge_algo_run.
+[   52.682444]  (3)[180:bat_thread_kthr][name:battery_common&]batteryBufferFirst =0, data= (397)
+[   52.682455]  (3)[180:bat_thread_kthr][name:battery_common&]bufferdata[9]= (397)
+[   52.682465]  (3)[180:bat_thread_kthr][name:battery_common&]batteryBufferFirst =0, data= (3966)
+[   52.682475]  (3)[180:bat_thread_kthr][name:battery_common&]bufferdata[9]= (3966)
+[   52.682491]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.682524]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.682539]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.682571]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.682588]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.682620]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.682628]  (3)[180:bat_thread_kthr]shaohui check there is NTC
+[   52.682638]  (3)[180:bat_thread_kthr][name:battery_common&]batteryBufferFirst =0, data= (25)
+[   52.682647]  (3)[180:bat_thread_kthr][name:battery_common&]bufferdata[9]= (25)
+[   52.682662]  (3)[180:bat_thread_kthr][name:battery_common&]AvgVbat=(3859),bat_vol=(3966),AvgI=(459),I=(397),VChr=(5014),AvgT=(24),T=(25),pre_SOC=(69),SOC=(69),ZCV=(3955),nPercent_ZCV=(3503)
+[   52.682672]  (3)[180:bat_thread_kthr][name:battery_common&][BATTERY] Disable check battery exist.
+[   52.682681]  (3)[180:bat_thread_kthr][name:battery_common&][BATTERY] mt_battery_notify_check
+[   52.682691]  (3)[180:bat_thread_kthr][name:battery_common&][BATTERY] BATTERY_NOTIFY_CASE_0002_VBATTEMP (0)
+[   52.682706]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.682737]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.682752]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.682784]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.682798]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.682830]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.682838]  (3)[180:bat_thread_kthr]shaohui check there is NTC
+[   52.682848]  (3)[180:bat_thread_kthr][name:battery_common&][mt_battery_CheckBatteryStatus] cmd_discharging=(-1)
+[   52.682858]  (3)[180:bat_thread_kthr][name:battery_common&][BATTERY] support JEITA, temperature=24
+[   52.682867]  (3)[180:bat_thread_kthr][name:linear_charging&][BATTERY] Battery Normal Temperature between 15 and 45 !!
+[   52.682867] 
+
+[   52.682902]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_set_cv_voltage] [0xf54]=0x7, [0xf4e]=0xd6
+[   52.682914]  (3)[180:bat_thread_kthr][name:battery_common&][TestMode] Disable Safety Timer. bat_tt_enable=3, bat_thr_test_mode=0, bat_thr_test_value=0
+[   52.682923]  (3)[180:bat_thread_kthr]shaohui test 2806
+[   52.682938]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.682969]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.682983]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.683015]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.683029]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   52.683060]  (3)[180:bat_thread_kthr]shaohui check battery status:0
+[   52.683068]  (3)[180:bat_thread_kthr]shaohui check there is NTC
+[   52.683077]  (0)[6:kworker/u8:0][name:linear_charging&][BATTERY] CC mode charge, timer=80 on 90 !!
+[   52.683077] 
+
+[   52.702023]  (0)[6:kworker/u8:0]binder: [name:binder&]2778:novo.lsf.device node 43123: exits with 912:system_server DeathNotify
+[   52.702051]  (0)[6:kworker/u8:0]binder: [name:binder&]2778:novo.lsf.device node 43189: exits with 912:system_server DeathNotify
+[   52.717312]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.783285]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.810068]  (0)[3046:network][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   52.840522]  (0)[3046:network][name:setup&]Dump cpuinfo
+[   52.849358]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.868797] -(0)[3048:Thread-313][name:battery_common&][charger_hv_detect_sw_workaround]
+[   52.868861]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   52.871915]  (3)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(382)(741)(0)(0) (4)(4)(4)(4)(1) (0)(0)(0) (705)(2)(2) (0)(741)(2)(0)(741) wifi_base(0)
+[   52.883330]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   52.915324]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   52.919734]  (1)[2962:earchbox:search][name:setup&]Dump cpuinfo
+[   52.982966]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.047284]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.068940] -(0)[1872:HeapTaskDaemon][name:battery_common&][charger_hv_detect_sw_workaround]
+[   53.071142]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   53.112321]  (3)[160:kworker/u8:4]binder: [name:binder&]2800:droid.launcher3 node 43805: exits with 912:system_server DeathNotify
+[   53.112344]  (3)[160:kworker/u8:4]binder: [name:binder&]2800:droid.launcher3 node 43874: exits with 912:system_server DeathNotify
+[   53.113290]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.142611]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   53.179288]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.245306]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.271223] -(0)[1872:HeapTaskDaemon][name:battery_common&][charger_hv_detect_sw_workaround]
+[   53.271285]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   53.302288]  (1)[160:kworker/u8:4]binder: [name:binder&]2822:com.lenovo.ota node 44293: exits with 912:system_server DeathNotify
+[   53.302324]  (1)[160:kworker/u8:4]binder: [name:binder&]2822:com.lenovo.ota node 44317: exits with 912:system_server DeathNotify
+[   53.312120]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.312247]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   53.312607]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   53.312628]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   53.377325]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.392427]  (0)[60:kworker/0:1]<ALS/PS>  als data[550]
+[   53.442000]  (1)[160:kworker/u8:4]binder: [name:binder&]2840:gedprovisioning node 44741: exits with 912:system_server DeathNotify
+[   53.442028]  (1)[160:kworker/u8:4]binder: [name:binder&]2840:gedprovisioning node 44779: exits with 912:system_server DeathNotify
+[   53.443405]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.471352] -(0)[1076:Binder_3][name:battery_common&][charger_hv_detect_sw_workaround]
+[   53.471652]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   53.471727]  (1)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   53.471745]  (1)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   53.471823]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   53.509314]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.575293]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.641307]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.645322]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   53.671868] -(1)[12:ksoftirqd/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   53.672118]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   53.691724]  (3)[180:bat_thread_kthr][name:linear_charging&][BATTERY] pchr_turn_on_charging()!
+
+[   53.691747]  (3)[180:bat_thread_kthr][name:linear_charging&]charging_hw_init
+[   53.691915]  (3)[180:bat_thread_kthr]caozhengguang func=pchr_turn_on_charging. g_bcct_flag = 0, g_call_state = 0,backlight_state = 107.
+[   53.691934]  (3)[180:bat_thread_kthr][name:linear_charging&][BATTERY] select_charging_current !
+[   53.691945]  (3)[180:bat_thread_kthr][name:linear_charging&][BATTERY] Default CC mode charging : 50000
+
+[   53.691971]  (3)[180:bat_thread_kthr][name:linear_charging&][BATTERY] pchr_turn_on_charging(), enable =1 
+
+[   53.692099]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf48]=0x7b,
+[   53.692120]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf4a]=0xa2, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf4c]=0x8e,
+[   53.692150]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf4e]=0xd6, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf50]=0xc,
+[   53.692178]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf52]=0x0, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf54]=0x7,
+[   53.692207]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf56]=0x5, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf58]=0x0,
+[   53.692235]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf5a]=0x0, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf5c]=0x70,
+[   53.692263]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf5e]=0x0, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf60]=0x0,
+[   53.692291]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf62]=0x10, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf64]=0x0,
+[   53.692319]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf66]=0x1, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf68]=0x4,
+[   53.692347]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf6a]=0x2, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf6c]=0x2,
+[   53.692375]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf6e]=0x0, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf70]=0x3,
+[   53.692403]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf72]=0x0, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf74]=0x21,
+[   53.692431]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf76]=0x14, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf78]=0x41,
+[   53.692459]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf7a]=0xd4, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf7c]=0x0,
+[   53.692486]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf7e]=0xf, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf80]=0x0,
+[   53.692515]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf82]=0x0, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf84]=0x55,
+[   53.692543]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf86]=0x0, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf88]=0x0,
+[   53.692571]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf8a]=0x1d1d, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf8c]=0x91d,
+[   53.692599]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf8e]=0x3109, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf90]=0x909,
+[   53.692627]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf92]=0x1d1d, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf94]=0x311d,
+[   53.692680]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf96]=0x9, (3)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf98]=0xaf,
+[   53.692707]  (3)[180:bat_thread_kthr][name:charging_hw_pmic&]
+[   53.692722]  (3)[180:bat_thread_kthr][name:battery_common&]mt_battery_update_status.
+[   53.692780]  (3)[180:bat_thread_kthr][name:battery_common&]UI_SOC=(69), resetBatteryMeter=(0)
+[   53.692799] -(3)[180:bat_thread_kthr][name:mtk_rtc_hal_common&]mtk_rtc_hal_common: rtc_spare_reg[0] = {16412, 127, 8}
+[   53.693742]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   53.694277]  (2)[233:healthd]healthd: battery l=69 v=3859 t=24.0 h=2 st=2 chg=u
+[   53.694389]  (2)[233:healthd]healthd: send_already = 0
+[   53.694985]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   53.695504]  (2)[233:healthd]healthd: battery l=69 v=3859 t=24.0 h=2 st=2 chg=u
+[   53.695616]  (2)[233:healthd]healthd: send_already = 0
+[   53.696150]  (3)[6:kworker/u8:0]binder: [name:binder&]2793:android.youtube node 49202: exits with 912:system_server DeathNotify
+[   53.696166]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   53.696181]  (3)[6:kworker/u8:0]binder: [name:binder&]2793:android.youtube node 47199: exits with 912:system_server DeathNotify
+[   53.696191]  (3)[6:kworker/u8:0]binder: [name:binder&]2793:android.youtube node 47203: exits with 912:system_server DeathNotify
+[   53.696200]  (3)[6:kworker/u8:0]binder: [name:binder&]2793:android.youtube node 44640: exits with 912:system_server DeathNotify
+[   53.696209]  (3)[6:kworker/u8:0]binder: [name:binder&]2793:android.youtube node 43796: exits with 912:system_server DeathNotify
+[   53.696230]  (3)[6:kworker/u8:0]binder: [name:binder&]2793:android.youtube node 43885: exits with 912:system_server DeathNotify
+[   53.696754]  (2)[233:healthd]healthd: battery l=69 v=3859 t=24.0 h=2 st=2 chg=u
+[   53.698215]  (2)[233:healthd]healthd: send_already = 0
+[   53.698513]  (0)[1005:ConnectivitySer][name:binder&]binder: 912:1005 target_proc is NULL
+[   53.698537]  (0)[1005:ConnectivitySer][name:binder&]binder: 912:1005 transaction failed 29189, size 320-0
+[   53.698553]  (0)[1005:ConnectivitySer][name:binder&]binder: read put err 29189 to user 9de27908, thread error 29189:29185
+[   53.707323]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.774056]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.810279]  (1)[180:bat_thread_kthr][name:battery_common&]status_smb = 3, capacity_smb = 50, present_smb = 0
+[   53.810302]  (1)[180:bat_thread_kthr][name:battery_common&][DLPT_POWER_OFF_EN] run
+[   53.810333]  (1)[180:bat_thread_kthr][name:battery_common&][mt_kpoc_power_off_check] , chr_vol=5014, boot_mode=0
+
+[   53.810345]  (1)[180:bat_thread_kthr][name:battery_common&]wait event
+[   53.810351]  (2)[233:healthd][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   53.811068]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   53.811573]  (2)[233:healthd]healthd: battery l=69 v=3859 t=24.0 h=2 st=2 chg=u
+[   53.811769]  (2)[233:healthd]healthd: send_already = 0
+[   53.839288]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.872209] -(2)[1679:.gms.persistent][name:battery_common&][charger_hv_detect_sw_workaround]
+[   53.872782]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   53.892619]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   53.905306]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.935023]  (1)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   53.935042]  (1)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   53.935053]  (1)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   53.935063]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   53.935072]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   53.935081]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   53.935090]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   53.935099]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   53.935107]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   53.935116]  (1)[100:display_esd_che]DSI read packet_type is 0x21 
+[   53.960110]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_PGA1_Set()
+[   53.960223]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_PGA2_Set()
+[   53.966500]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_open use sram
+[   53.966520]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_open return
+[   53.966601]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_hw_free
+[   53.967529]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_open use sram
+[   53.967547]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_open return
+[   53.967631]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_hw_params
+[   53.967643]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_hw_params mCaptureUseSram dma_bytes = 30720
+[   53.967653]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]SetVULBuffer
+[   53.967664]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]u4BufferSize = 30720 pucVirtBufAddr = e30c0000 pucPhysBufAddr = 0x11221000
+[   53.967678]  (0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_hw_params dma_bytes = 30720 dma_area = e30c0000 dma_addr = 0x11221000
+[   53.968042] -(0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_pcm_trigger cmd = 1
+[   53.968059] -(0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]mtk_capture_alsa_start
+[   53.968068] -(0)[3178:AudioIn_17][name:mt_soc_pcm_capture&]StartAudioCaptureHardware
+[   53.969213]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_Mic1_Mode_Select_Set()
+[   53.969231]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_Mic1_Mode_Select_Set() mAudio_Analog_Mic1_mode = 0
+[   53.969430]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_Mic2_Mode_Select_Set()
+[   53.969445]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_Mic2_Mode_Select_Set() mAudio_Analog_Mic2_mode = 0
+[   53.969637]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_MicSource1_Set()
+[   53.969651]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_MicSource1_Set() index = 0 done
+[   53.969706]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_ADC1_Set()
+[   53.969719]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]TurnOnADcPowerACC ADCType = 13 enable = 1, refmic_using_ADC_L=1
+[   53.969736]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]MicbiasRef=0x0
+[   53.971283]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   53.977215]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]TurnOnADcPowerACC  AUDIO_ANALOG_DEVICE_IN_ADC1 mux =0
+[   53.977237]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]SetDCcoupleNP MicBias= 0 mode = 0
+[   53.977332]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]SetMicPGAGain  AUDIO_ANALOG_VOLUME_MICAMP1 index =3
+[   53.977684]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_PreAmp1_Set()
+[   53.977704]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]AudioPreAmp1_Sel Mul_Sel = 1 
+[   53.977735]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_PreAmp1_Set() done
+[   53.977865]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_PreAmp2_Set()
+[   53.977879]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]AudioPreAmp2_Sel Mul_Sel = 1 
+[   53.977906]  (0)[3178:AudioIn_17][name:mt_soc_codec_63xx&]Audio_PreAmp2_Set() done
+[   54.037314]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.079554] -(1)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   54.079599]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   54.103289]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.142469]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   54.169605]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.170073]  (1)[3176:MicroRecognitio][name:setup&]Dump cpuinfo
+[   54.170265]  (1)[3176:MicroRecognitio][name:setup&]Dump cpuinfo
+[   54.232674]  (3)[160:kworker/u8:4]binder: [name:binder&]3020:enovo.ue.device node 48755: exits with 912:system_server DeathNotify
+[   54.232703]  (3)[160:kworker/u8:4]binder: [name:binder&]3020:enovo.ue.device node 48789: exits with 912:system_server DeathNotify
+[   54.235291]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.286052] -(3)[2511:ClearcutLoggerA][name:battery_common&][charger_hv_detect_sw_workaround]
+[   54.286116]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   54.301307]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.367864]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.373177]  (2)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(388)(306)(70)(0) (4)(4)(4)(4)(1) (0)(0)(0) (3086)(17)(1) (0)(306)(17)(0)(306) wifi_base(0)
+[   54.392591]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   54.433295]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.491760] -(1)[153:mmcqd/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   54.491784]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   54.499279]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.565301]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.631286]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.642605]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   54.697286]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.698162] -(0)[3195:ClearcutLoggerI][name:battery_common&][charger_hv_detect_sw_workaround]
+[   54.698209]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   54.698221]  (0)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   54.698237]  (0)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   54.698321]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   54.763280]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.810671]  (1)[13:kworker/1:0][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   54.829510]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.892377]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   54.895282]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   54.906106] -(2)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   54.906194]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   54.912056]  (3)[3212:network][name:setup&]Dump cpuinfo
+[   54.916830]  (3)[230:logd.auditd]type=1400 audit(1505169185.110:29): avc: denied { ioctl } for pid=3212 comm="ChromiumNet" path="socket:[19289]" dev="sockfs" ino=19289 ioctlcmd=8b1b scontext=u:r:untrusted_app:s0:c512,c768 tcontext=u:r:untrusted_app:s0:c512,c768 tclass=udp_socket permissive=0
+[   54.917781]  (1)[230:logd.auditd]type=1400 audit(1505169185.110:30): avc: denied { ioctl } for pid=3212 comm="ChromiumNet" path="socket:[19290]" dev="sockfs" ino=19290 ioctlcmd=8b1b scontext=u:r:untrusted_app:s0:c512,c768 tcontext=u:r:untrusted_app:s0:c512,c768 tclass=udp_socket permissive=0
+[   54.918027]  (1)[230:logd.auditd]type=1400 audit(1505169185.110:31): avc: denied { ioctl } for pid=3212 comm="ChromiumNet" path="socket:[19291]" dev="sockfs" ino=19291 ioctlcmd=8b1b scontext=u:r:untrusted_app:s0:c512,c768 tcontext=u:r:untrusted_app:s0:c512,c768 tclass=udp_socket permissive=0
+[   54.918251]  (1)[230:logd.auditd]type=1400 audit(1505169185.110:32): avc: denied { ioctl } for pid=3212 comm="ChromiumNet" path="socket:[19292]" dev="sockfs" ino=19292 ioctlcmd=8b1b scontext=u:r:untrusted_app:s0:c512,c768 tcontext=u:r:untrusted_app:s0:c512,c768 tclass=udp_socket permissive=0
+[   54.921945]  (1)[6:kworker/u8:0]binder: [name:binder&]3064:id.partnersetup node 49609: exits with 912:system_server DeathNotify
+[   54.921974]  (1)[6:kworker/u8:0]binder: [name:binder&]3064:id.partnersetup node 49634: exits with 912:system_server DeathNotify
+[   54.921991]  (1)[6:kworker/u8:0]binder: [name:binder&]3064:id.partnersetup node 49798: exits with 912:system_server DeathNotify
+[   54.961297]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.027398]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.082014]  (0)[160:kworker/u8:4]binder: [name:binder&]3105:ek.atci.service node 50448: exits with 912:system_server DeathNotify
+[   55.082039]  (0)[160:kworker/u8:4]binder: [name:binder&]3105:ek.atci.service node 50483: exits with 912:system_server DeathNotify
+[   55.093302]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.112925] -(1)[3212:ChromiumNet][name:battery_common&][charger_hv_detect_sw_workaround]
+[   55.112982]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   55.142626]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   55.161761]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.225334]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.291341]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.311753]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   55.312064]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   55.312085]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   55.321767] -(1)[1872:HeapTaskDaemon][name:battery_common&][charger_hv_detect_sw_workaround]
+[   55.321811]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   55.332020]  (1)[6:kworker/u8:0]binder: [name:binder&]2902:android.vending node 46659: exits with 912:system_server DeathNotify
+[   55.332048]  (1)[6:kworker/u8:0]binder: [name:binder&]2902:android.vending node 46703: exits with 912:system_server DeathNotify
+[   55.332065]  (1)[6:kworker/u8:0]binder: [name:binder&]2902:android.vending node 47055: exits with 912:system_server DeathNotify
+[   55.357299]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.392419]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   55.423316]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.489516]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.530194] -(2)[0:swapper/2][name:battery_common&][charger_hv_detect_sw_workaround]
+[   55.530248]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   55.555291]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.621868]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.642401]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   55.687288]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.738537] -(1)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   55.738595]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   55.753446]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.811079]  (1)[13:kworker/1:0][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   55.819297]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.874423]  (1)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(338)(278)(133)(0) (4)(4)(4)(4)(1) (0)(0)(0) (2796)(32)(0) (0)(278)(32)(0)(278) wifi_base(0)
+[   55.885303]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.892607]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   55.945387] -(1)[3267:ogle.android.gm][name:battery_common&][charger_hv_detect_sw_workaround]
+[   55.945437]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   55.945449]  (1)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   55.945465]  (1)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   55.945537]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   55.951288]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   55.958693]  (0)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   55.958712]  (0)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   55.958724]  (0)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   55.958735]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   55.958744]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   55.958752]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   55.958761]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   55.958770]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   55.958779]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   55.958788]  (0)[100:display_esd_che]DSI read packet_type is 0x21 
+[   56.017305]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.083302]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.142894]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   56.149565]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.153927] -(1)[3316:main][name:battery_common&][charger_hv_detect_sw_workaround]
+[   56.153951]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   56.162757]  (0)[357:batterywarning][name:battery_common&][Battery] show_BatteryNotify : 0
+[   56.215311]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.281306]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.342045]  (0)[6:kworker/u8:0]binder: [name:binder&]3121:.batterywarning node 50607: exits with 912:system_server DeathNotify
+[   56.342072]  (0)[6:kworker/u8:0]binder: [name:binder&]3121:.batterywarning node 50643: exits with 912:system_server DeathNotify
+[   56.347406]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.360364] -(3)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   56.360424]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   56.392707]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   56.413468]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.479327]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.549611]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.569304] -(0)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   56.569395]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   56.614207]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.623404]  (0)[160:kworker/u8:4]binder: [name:binder&]binder_flush: 3306 woke 2 threads
+[   56.642540]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   56.677724]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.743348]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.775236] -(0)[3306:android.youtube][name:battery_common&][charger_hv_detect_sw_workaround]
+[   56.775290]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   56.809605]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.814048]  (1)[13:kworker/1:0][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   56.875326]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.892429]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   56.941428]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   56.981633] -(0)[3327:HeapTaskDaemon][name:battery_common&][charger_hv_detect_sw_workaround]
+[   56.981711]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   57.007319]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.073684]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.139287]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.142395]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   57.188133] -(0)[3346:putmethod.hindi][name:battery_common&][charger_hv_detect_sw_workaround]
+[   57.188197]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   57.188209]  (0)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   57.188224]  (0)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   57.188291]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   57.205323]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.242073]  (0)[160:kworker/u8:4]binder: [name:binder&]3190:viders.calendar node 52508: exits with 912:system_server DeathNotify
+[   57.242105]  (0)[160:kworker/u8:4]binder: [name:binder&]3190:viders.calendar node 52524: exits with 912:system_server DeathNotify
+[   57.271530]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.311740]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   57.312066]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   57.312087]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   57.332088]  (0)[160:kworker/u8:4]binder: [name:binder&]3221:droid.deskclock node 53606: exits with 912:system_server DeathNotify
+[   57.332112]  (0)[160:kworker/u8:4]binder: [name:binder&]3221:droid.deskclock node 53633: exits with 912:system_server DeathNotify
+[   57.337946]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.375785]  (0)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(257)(403)(4)(0) (4)(4)(4)(4)(1) (0)(0)(0) (2939)(47)(7) (0)(403)(47)(0)(403) wifi_base(0)
+[   57.392401]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   57.394820] -(0)[3306:android.youtube][name:battery_common&][charger_hv_detect_sw_workaround]
+[   57.394875]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   57.403302]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.469311]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.522150]  (0)[108:kworker/u8:2]binder: [name:binder&]3251:ek.engineermode node 54249: exits with 912:system_server DeathNotify
+[   57.522180]  (0)[108:kworker/u8:2]binder: [name:binder&]3251:ek.engineermode node 54283: exits with 912:system_server DeathNotify
+[   57.534271]  (0)[227:logd.writer]logd:diff time 1488799551, run time  146067519, count 0,step 1 5000,2 912,3 7397,4 0. filter count 1321.
+[   57.535295]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.601364]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.601463] -(0)[3425:utmethod.pinyin][name:battery_common&][charger_hv_detect_sw_workaround]
+[   57.601517]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   57.642402]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   57.667327]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.706858]  (0)[3449:network][name:setup&]Dump cpuinfo
+[   57.733371]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.799297]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.808003] -(0)[3425:utmethod.pinyin][name:battery_common&][charger_hv_detect_sw_workaround]
+[   57.808069]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   57.819542]  (1)[13:kworker/1:0][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   57.865322]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.892404]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   57.922518]  (0)[108:kworker/u8:2]binder: [name:binder&]3267:ogle.android.gm node 55703: exits with 912:system_server DeathNotify
+[   57.922546]  (0)[108:kworker/u8:2]binder: [name:binder&]3267:ogle.android.gm node 55888: exits with 912:system_server DeathNotify
+[   57.922563]  (0)[108:kworker/u8:2]binder: [name:binder&]3267:ogle.android.gm node 56395: exits with 912:system_server DeathNotify
+[   57.922579]  (0)[108:kworker/u8:2]binder: [name:binder&]3267:ogle.android.gm node 54545: exits with 912:system_server DeathNotify
+[   57.922594]  (0)[108:kworker/u8:2]binder: [name:binder&]3267:ogle.android.gm node 54607: exits with 912:system_server DeathNotify
+[   57.922616]  (0)[108:kworker/u8:2]binder: [name:binder&]3267:ogle.android.gm node 55481: exits with 912:system_server DeathNotify
+[   57.931309]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   57.965863]  (0)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   57.965886]  (0)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   57.965900]  (0)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   57.965912]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   57.965921]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   57.965930]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   57.965940]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   57.965948]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   57.965957]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   57.965966]  (0)[100:display_esd_che]DSI read packet_type is 0x21 
+[   57.997307]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.016041] -(1)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   58.016057]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   58.063297]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.129562]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.142585]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   58.195332]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.223969] -(3)[3466:le.android.talk][name:battery_common&][charger_hv_detect_sw_workaround]
+[   58.224010]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   58.261445]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.327302]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.371733]  (0)[3385:ApplicationsPro][name:sock&]sock: sk == NULL for sock_i_uid
+[   58.393011]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   58.393324]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.432915] -(2)[3466:le.android.talk][name:battery_common&][charger_hv_detect_sw_workaround]
+[   58.432957]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   58.432970]  (1)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   58.432999]  (1)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   58.433074]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   58.459475]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.525303]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.531713]  (0)[3466:le.android.talk][name:sock&]sock: sk == NULL for sock_i_uid
+[   58.591298]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.639484] -(3)[3334:HeapTaskDaemon][name:battery_common&][charger_hv_detect_sw_workaround]
+[   58.639602]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   58.643425]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   58.657313]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.692124]  (3)[160:kworker/u8:4]binder: [name:binder&]3316:e.process.gapps node 56467: exits with 912:system_server DeathNotify
+[   58.692148]  (3)[160:kworker/u8:4]binder: [name:binder&]3316:e.process.gapps node 56559: exits with 912:system_server DeathNotify
+[   58.692168]  (3)[160:kworker/u8:4]binder: [name:binder&]3316:e.process.gapps node 56728: exits with 912:system_server DeathNotify
+[   58.723284]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.789297]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.819794] -(3)[3466:le.android.talk][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   58.847574] -(3)[3466:le.android.talk][name:battery_common&][charger_hv_detect_sw_workaround]
+[   58.847593]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   58.855415]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.877106]  (1)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(353)(350)(21)(0) (4)(4)(4)(4)(1) (0)(0)(0) (2762)(62)(6) (0)(350)(62)(0)(350) wifi_base(0)
+[   58.893936]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   58.921532]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   58.987303]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.053310]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.056071] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   59.056131]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   59.119290]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.142440]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   59.185285]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.251320]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.261795] -(0)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   59.261819]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   59.311742]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   59.312119]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   59.312158]  (1)[13:kworker/1:0]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   59.317304]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.383324]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.392456]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   59.450046]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.468206] -(2)[3466:le.android.talk][name:battery_common&][charger_hv_detect_sw_workaround]
+[   59.468257]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   59.516238]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.581319]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.642419]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   59.647308]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.675471] -(2)[0:swapper/2][name:battery_common&][charger_hv_detect_sw_workaround]
+[   59.675526]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   59.675538]  (2)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   59.675554]  (2)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   59.675625]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   59.713292]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.732065]  (1)[108:kworker/u8:2]binder: [name:binder&]3346:putmethod.hindi node 57094: exits with 912:system_server DeathNotify
+[   59.732091]  (1)[108:kworker/u8:2]binder: [name:binder&]3346:putmethod.hindi node 57117: exits with 912:system_server DeathNotify
+[   59.759688]  (1)[1433:watchdog][name:aed&]AEEIOCTL_RT_MON_Kick ( 300)
+[   59.759710]  (1)[1433:watchdog][name:aed&][Hang_Detect] hang_detect enabled 10
+[   59.779311]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.820126]  (1)[13:kworker/1:0][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   59.845309]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.881786] -(2)[0:swapper/2][name:battery_common&][charger_hv_detect_sw_workaround]
+[   59.881868]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   59.892450]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   59.911309]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   59.973056]  (0)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   59.973075]  (0)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   59.973087]  (0)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   59.973100]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   59.973110]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   59.973119]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   59.973128]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   59.973137]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   59.973146]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   59.973155]  (0)[100:display_esd_che]DSI read packet_type is 0x21 
+[   59.977290]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.043327]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.088309] -(2)[3179:readThread0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   60.088520]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   60.109353]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.147622]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   60.175294]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.217053]  (0)[3550:NativeLibLoader][name:setup&]Dump cpuinfo
+[   60.241297]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.295185] -(1)[3548:DefaultPool8][name:battery_common&][charger_hv_detect_sw_workaround]
+[   60.295210]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   60.307414]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.373528]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.378466]  (0)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(364)(485)(5)(0) (4)(4)(4)(4)(1) (0)(0)(0) (2337)(77)(5) (0)(485)(77)(0)(485) wifi_base(0)
+[   60.392459]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   60.400261]  (0)[55:dlpt_notify_thr][name:mt_pbm&][PBM] [ma_to_mw] 3976(mV) * 3794(mA) = 15084(mW)
+[   60.439303]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.442254]  (3)[108:kworker/u8:2]binder: [name:binder&]3353:d.process.acore node 57147: exits with 912:system_server DeathNotify
+[   60.442278]  (3)[108:kworker/u8:2]binder: [name:binder&]3353:d.process.acore node 57165: exits with 912:system_server DeathNotify
+[   60.501739] -(3)[0:swapper/3][name:battery_common&][charger_hv_detect_sw_workaround]
+[   60.501794]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   60.505314]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.571289]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.637313]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.642447]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   60.681743]  (0)[147:hang_detect][name:aed&][Hang_Detect] init found pid:1.
+[   60.681849]  (0)[147:hang_detect][name:aed&][Hang_Detect] mmcqd/0 found pid:153.
+[   60.681893]  (0)[147:hang_detect][name:aed&][Hang_Detect] surfaceflinger found pid:236.
+[   60.681914]  (0)[147:hang_detect][name:aed&][Hang_Detect] debuggerd found pid:333.
+[   60.681944]  (0)[147:hang_detect][name:aed&][Hang_Detect] system_server found pid:912.
+[   60.681956]  (0)[147:hang_detect][name:aed&][Hang_Detect] ndroid.systemui found pid:1052.
+[   60.681997]  (0)[147:hang_detect][name:aed&][Hang_Detect] hang_detect thread counts down 10:10.
+[   60.703327]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.708889] -(2)[3179:readThread0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   60.708944]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   60.769294]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.820374]  (1)[13:kworker/1:0][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   60.835421]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.892483]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   60.901318]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   60.915424] -(3)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   60.915492]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   60.915506]  (3)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   60.915521]  (3)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   60.915593]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   60.967431]  (1)[13:kworker/1:0][gsensor] bma_gsensor_get_data,line = 2586
+[   61.033283]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.099307]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.121820] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   61.121900]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   61.142430]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   61.165299]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.231785]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.297278]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.311734]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   61.312038]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   61.312054]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   61.328284] -(1)[160:kworker/u8:4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   61.328302]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   61.341726]  (0)[182:wdtk-0][WDK], local_bit:0x0, cpu:0,RT[61341710991]
+[   61.341737]  (0)[182:wdtk-0][WDK], local_bit:0x1, cpu:0, check bit0x:f, lasthpg_cpu:3, lasthpg_act:1, lasthpg_t:46965981880, RT[61341729683]
+[   61.341745]  (3)[185:wdtk-3][WDK], local_bit:0x1, cpu:3,RT[61341738991]
+[   61.341756]  (0)[182:wdtk-0][thread:182][RT:61341740530] 2017-09-11 22:33:11.544026 UTC;android time 2017-09-12 06:33:11.544026
+[   61.341764]  (3)[185:wdtk-3][WDK], local_bit:0x9, cpu:3, check bit0x:f, lasthpg_cpu:3, lasthpg_act:1, lasthpg_t:46965981880, RT[61341747530]
+[   61.341772]  (1)[183:wdtk-1][WDK], local_bit:0x9, cpu:1,RT[61341765991]
+[   61.341782]  (3)[185:wdtk-3][thread:185][RT:61341766760] 2017-09-11 22:33:11.544053 UTC;android time 2017-09-12 06:33:11.544053
+[   61.341789]  (1)[183:wdtk-1][WDK], local_bit:0xb, cpu:1, check bit0x:f, lasthpg_cpu:3, lasthpg_act:1, lasthpg_t:46965981880, RT[61341774145]
+[   61.341797]  (2)[184:wdtk-2][WDK], local_bit:0xb, cpu:2,RT[61341791222]
+[   61.341808]  (1)[183:wdtk-1][thread:183][RT:61341792760] 2017-09-11 22:33:11.544079 UTC;android time 2017-09-12 06:33:11.544079
+[   61.341815]  (2)[184:wdtk-2][WDK], local_bit:0xf, cpu:2, check bit0x:f, lasthpg_cpu:3, lasthpg_act:1, lasthpg_t:46965981880, RT[61341799683]
+[   61.341820]  (2)[184:wdtk-2][WDK]: kick Ex WDT,RT[61341817145]
+[   61.341897]  (2)[184:wdtk-2][thread:184][RT:61341886530] 2017-09-11 22:33:11.544173 UTC;android time 2017-09-12 06:33:11.544173
+[   61.363289]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.392457]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   61.408482] -(0)[0:swapper/0][name:mt_idle&][Power/swap]CNT(dpidle,rgidle): [0] = (0,41405), [1] = (0,42273), [2] = (0,30593), [3] = (0,23505), 
+[   61.408507] -(0)[0:swapper/0][name:mt_idle&][Power/swap]dpidle_block_cnt: [by_cpu] = 64389, [by_clk] = 0, [by_tmr] = 0, [by_oth] = 0, [by_vtg] = 0, 
+[   61.408524] -(0)[0:swapper/0][name:mt_idle&][Power/swap]dpidle_block_mask: 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
+[   61.429275]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.441752] -(0)[0:swapper/0][name:mt_idle&][Power/swap]DP: No enter --- SODI: No enter --- 
+[   61.495319]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.533931] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   61.533989]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   61.561307]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.627310]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.642373]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   61.693307]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.743891] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   61.743943]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   61.759329]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.820592]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   61.825276]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.879693]  (1)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(240)(210)(0)(0) (4)(4)(4)(4)(1) (0)(0)(0) (2108)(92)(4) (0)(210)(92)(0)(210) wifi_base(0)
+[   61.891282]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.893030]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   61.950325] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   61.950369]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   61.957314]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   61.996688]  (0)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   61.996713]  (0)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   61.996725]  (0)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   61.996736]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   61.996745]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   61.996755]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   61.996764]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   61.996773]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   61.996782]  (0)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   61.996791]  (0)[100:display_esd_che]DSI read packet_type is 0x21 
+[   62.023322]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.089302]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.142421]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   62.155292]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.158321] -(0)[3623::CameraShortcu][name:battery_common&][charger_hv_detect_sw_workaround]
+[   62.158379]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.158391]  (0)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   62.158407]  (0)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   62.158493]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.183430]  (2)[108:kworker/u8:2]binder: [name:binder&]3306:android.youtube node 58229: exits with 912:system_server DeathNotify
+[   62.183464]  (2)[108:kworker/u8:2]binder: [name:binder&]3306:android.youtube node 56850: exits with 912:system_server DeathNotify
+[   62.183484]  (2)[108:kworker/u8:2]binder: [name:binder&]3306:android.youtube node 57500: exits with 912:system_server DeathNotify
+[   62.183501]  (2)[108:kworker/u8:2]binder: [name:binder&]3306:android.youtube node 57504: exits with 912:system_server DeathNotify
+[   62.183523]  (2)[108:kworker/u8:2]binder: [name:binder&]3306:android.youtube node 56458: exits with 912:system_server DeathNotify
+[   62.183540]  (2)[108:kworker/u8:2]binder: [name:binder&]3306:android.youtube node 56531: exits with 912:system_server DeathNotify
+[   62.185540]  (2)[1005:ConnectivitySer][name:binder&]binder: 912:1005 target_proc is NULL
+[   62.185565]  (2)[1005:ConnectivitySer][name:binder&]binder: 912:1005 transaction failed 29189, size 320-0
+[   62.185580]  (2)[1005:ConnectivitySer][name:binder&]binder: read put err 29189 to user 9de27908, thread error 29189:29185
+[   62.221347]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.231754]  (2)[3614:tek.schpwronoff][name:sock&]sock: sk == NULL for sock_i_uid
+[   62.287321]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.353306]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.366265] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   62.366334]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.395499]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   62.412299]  (0)[108:kworker/u8:2]binder: [name:binder&]3425:utmethod.pinyin node 58336: exits with 912:system_server DeathNotify
+[   62.412336]  (0)[108:kworker/u8:2]binder: [name:binder&]3425:utmethod.pinyin node 57782: exits with 912:system_server DeathNotify
+[   62.412359]  (0)[108:kworker/u8:2]binder: [name:binder&]3425:utmethod.pinyin node 57816: exits with 912:system_server DeathNotify
+[   62.419321]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.485323]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.536380] -(1)[3608::CameraShortcut][name:battery_common&]******** battery : bat_thread_wakeup  ********
+[   62.536587]  (1)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.536628]  (1)[180:bat_thread_kthr][name:battery_common&][BAT_thread]Cable in, CHR_Type_num=1
+
+[   62.541179]  (1)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.551326]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.572792] -(3)[3653:pool-1-thread-1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   62.572898]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.617348]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.642495]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   62.662015]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.662057]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.666712]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.666753]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.666959]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.666975]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.667255]  (0)[180:bat_thread_kthr][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.667300]  (0)[180:bat_thread_kthr]caozhg  func=fgauge_algo_run.
+[   62.667313]  (0)[180:bat_thread_kthr][name:battery_common&]batteryBufferFirst =0, data= (411)
+[   62.667323]  (0)[180:bat_thread_kthr][name:battery_common&]bufferdata[10]= (411)
+[   62.667333]  (0)[180:bat_thread_kthr][name:battery_common&]batteryBufferFirst =0, data= (3958)
+[   62.667342]  (0)[180:bat_thread_kthr][name:battery_common&]bufferdata[10]= (3958)
+[   62.667358]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667391]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667406]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667437]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667452]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667483]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667492]  (0)[180:bat_thread_kthr]shaohui check there is NTC
+[   62.667501]  (0)[180:bat_thread_kthr][name:battery_common&]batteryBufferFirst =0, data= (26)
+[   62.667511]  (0)[180:bat_thread_kthr][name:battery_common&]bufferdata[10]= (26)
+[   62.667526]  (0)[180:bat_thread_kthr][name:battery_common&]AvgVbat=(3863),bat_vol=(3958),AvgI=(456),I=(411),VChr=(5014),AvgT=(24),T=(26),pre_SOC=(69),SOC=(69),ZCV=(3966),nPercent_ZCV=(3503)
+[   62.667537]  (0)[180:bat_thread_kthr][name:battery_common&][BATTERY] Disable check battery exist.
+[   62.667546]  (0)[180:bat_thread_kthr][name:battery_common&][BATTERY] mt_battery_notify_check
+[   62.667556]  (0)[180:bat_thread_kthr][name:battery_common&][BATTERY] BATTERY_NOTIFY_CASE_0002_VBATTEMP (0)
+[   62.667571]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667603]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667618]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667652]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667666]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667698]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667707]  (0)[180:bat_thread_kthr]shaohui check there is NTC
+[   62.667718]  (0)[180:bat_thread_kthr][name:battery_common&][mt_battery_CheckBatteryStatus] cmd_discharging=(-1)
+[   62.667729]  (0)[180:bat_thread_kthr][name:battery_common&][BATTERY] support JEITA, temperature=24
+[   62.667739]  (0)[180:bat_thread_kthr][name:linear_charging&][BATTERY] Battery Normal Temperature between 15 and 45 !!
+[   62.667739] 
+
+[   62.667775]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_set_cv_voltage] [0xf54]=0x7, [0xf4e]=0xd6
+[   62.667789]  (0)[180:bat_thread_kthr][name:battery_common&][TestMode] Disable Safety Timer. bat_tt_enable=3, bat_thr_test_mode=0, bat_thr_test_value=0
+[   62.667799]  (0)[180:bat_thread_kthr]shaohui test 2806
+[   62.667814]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667847]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667862]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667893]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667909]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][charging_get_battery_status] BATON_TDET_EN = 1
+[   62.667942]  (0)[180:bat_thread_kthr]shaohui check battery status:0
+[   62.667951]  (0)[180:bat_thread_kthr]shaohui check there is NTC
+[   62.667963]  (1)[986:kworker/1:2][name:linear_charging&][BATTERY] CC mode charge, timer=90 on 100 !!
+[   62.667963] 
+
+[   62.683324]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.691720]  (2)[2917:AsyncTask #4][name:sock&]sock: sk == NULL for sock_i_uid
+[   62.748125]  (3)[108:kworker/u8:2]binder: [name:binder&]binder_flush: 3640 woke 2 threads
+[   62.749312]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.783923] -(3)[3661:dex2oat][name:battery_common&][charger_hv_detect_sw_workaround]
+[   62.783996]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   62.815319]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.829674]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   62.881805]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.892479]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   62.947409]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   62.984075] -(3)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   62.984150]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   63.013338]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.079315]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.142450]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   63.145336]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.184237] -(3)[1872:HeapTaskDaemon][name:battery_common&][charger_hv_detect_sw_workaround]
+[   63.184312]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   63.211321]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.277344]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.311778]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   63.312124]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   63.312144]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   63.343335]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.381071]  (0)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(355)(438)(1)(0) (4)(4)(4)(4)(1) (0)(0)(0) (3072)(107)(3) (0)(438)(107)(0)(438) wifi_base(0)
+[   63.384390] -(3)[3706:ClearcutLoggerI][name:battery_common&][charger_hv_detect_sw_workaround]
+[   63.384454]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   63.384466]  (3)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   63.384483]  (3)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   63.384555]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   63.392448]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   63.409590]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.475305]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.524403]  (3)[1489:heertel.midtest]vid:0x56,firmware:0x0005
+[   63.541311]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.584622] -(3)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   63.584680]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   63.607295]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.643425]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   63.671763]  (0)[180:bat_thread_kthr][name:linear_charging&][BATTERY] pchr_turn_on_charging()!
+
+[   63.671785]  (0)[180:bat_thread_kthr][name:linear_charging&]charging_hw_init
+[   63.671955]  (0)[180:bat_thread_kthr]caozhengguang func=pchr_turn_on_charging. g_bcct_flag = 0, g_call_state = 0,backlight_state = 107.
+[   63.671968]  (0)[180:bat_thread_kthr][name:linear_charging&][BATTERY] select_charging_current !
+[   63.671979]  (0)[180:bat_thread_kthr][name:linear_charging&][BATTERY] Default CC mode charging : 50000
+
+[   63.672001]  (0)[180:bat_thread_kthr][name:linear_charging&][BATTERY] pchr_turn_on_charging(), enable =1 
+
+[   63.672123]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf48]=0x7b,
+[   63.672141]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf4a]=0xa2, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf4c]=0x8e,
+[   63.672170]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf4e]=0xd6, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf50]=0xc,
+[   63.672198]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf52]=0x0, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf54]=0x7,
+[   63.672232]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf56]=0x5, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf58]=0x0,
+[   63.672259]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf5a]=0x0, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf5c]=0x70,
+[   63.672287]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf5e]=0x0, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf60]=0x0,
+[   63.672321]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf62]=0x10, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf64]=0x0,
+[   63.672434]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf66]=0x1, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf68]=0x4,
+[   63.672465]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf6a]=0x2, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf6c]=0x2,
+[   63.672492]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf6e]=0x0, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf70]=0x3,
+[   63.672520]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf72]=0x0, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf74]=0x21,
+[   63.672548]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf76]=0x14, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf78]=0x41,
+[   63.672576]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf7a]=0xd4, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf7c]=0x0,
+[   63.672610]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf7e]=0xf, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf80]=0x0,
+[   63.672637]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf82]=0x0, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf84]=0x55,
+[   63.672665]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf86]=0x0, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf88]=0x0,
+[   63.672693]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf8a]=0x1d1d, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf8c]=0x91d,
+[   63.672721]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf8e]=0x3109, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf90]=0x909,
+[   63.672749]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf92]=0x1d1d, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf94]=0x311d,
+[   63.672777]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf96]=0x9, (0)[180:bat_thread_kthr][name:charging_hw_pmic&][0xf98]=0xaf,
+[   63.672798]  (0)[180:bat_thread_kthr][name:charging_hw_pmic&]
+[   63.672810]  (0)[180:bat_thread_kthr][name:battery_common&]mt_battery_update_status.
+[   63.672866]  (0)[180:bat_thread_kthr][name:battery_common&]UI_SOC=(69), resetBatteryMeter=(0)
+[   63.672887] -(0)[180:bat_thread_kthr][name:mtk_rtc_hal_common&]mtk_rtc_hal_common: rtc_spare_reg[0] = {16412, 127, 8}
+[   63.673298]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.674141]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   63.674649]  (2)[233:healthd]healthd: battery l=69 v=3863 t=24.0 h=2 st=2 chg=u
+[   63.674748]  (2)[233:healthd]healthd: send_already = 0
+[   63.676507]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   63.676993]  (2)[233:healthd]healthd: battery l=69 v=3863 t=24.0 h=2 st=2 chg=u
+[   63.677086]  (2)[233:healthd]healthd: send_already = 0
+[   63.677620]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   63.678062]  (2)[233:healthd]healthd: battery l=69 v=3863 t=24.0 h=2 st=2 chg=u
+[   63.678139]  (2)[233:healthd]healthd: send_already = 0
+[   63.739298]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.752091]  (3)[160:kworker/u8:4]binder: [name:binder&]3512:.thermalmanager node 60527: exits with 912:system_server DeathNotify
+[   63.752117]  (3)[160:kworker/u8:4]binder: [name:binder&]3512:.thermalmanager node 60549: exits with 912:system_server DeathNotify
+[   63.784734] -(3)[940:android.bg][name:battery_common&][charger_hv_detect_sw_workaround]
+[   63.784784]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   63.786009]  (2)[180:bat_thread_kthr][name:battery_common&]status_smb = 3, capacity_smb = 50, present_smb = 0
+[   63.786030]  (2)[180:bat_thread_kthr][name:battery_common&][DLPT_POWER_OFF_EN] run
+[   63.786061]  (2)[180:bat_thread_kthr][name:battery_common&][mt_kpoc_power_off_check] , chr_vol=5014, boot_mode=0
+
+[   63.786072]  (2)[180:bat_thread_kthr][name:battery_common&]wait event
+[   63.787042]  (2)[233:healthd]healthd: Unknown battery status '3'
+[   63.787523]  (2)[233:healthd]healthd: battery l=69 v=3863 t=24.0 h=2 st=2 chg=u
+[   63.787663]  (2)[233:healthd]healthd: send_already = 0
+[   63.805297]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.826767]  (0)[3726:network][name:setup&]Dump cpuinfo
+[   63.830140]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   63.872947]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.892457]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   63.937303]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   63.952056]  (0)[160:kworker/u8:4]binder: [name:binder&]3557:.mediatek.omacp node 60887: exits with 912:system_server DeathNotify
+[   63.952081]  (0)[160:kworker/u8:4]binder: [name:binder&]3557:.mediatek.omacp node 60923: exits with 912:system_server DeathNotify
+[   63.993126] -(3)[940:android.bg][name:battery_common&][charger_hv_detect_sw_workaround]
+[   63.993190]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   64.003297]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.003845]  (3)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   64.003865]  (3)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   64.003877]  (3)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   64.003887]  (3)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   64.003896]  (3)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   64.003905]  (3)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   64.003914]  (3)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   64.003923]  (3)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   64.003932]  (3)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   64.003941]  (3)[100:display_esd_che]DSI read packet_type is 0x21 
+[   64.069312]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.135434]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.142745]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   64.199005] -(3)[0:swapper/3][name:battery_common&][charger_hv_detect_sw_workaround]
+[   64.199057]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   64.201283]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.267300]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.333313]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.392448]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   64.399325]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.401733]  (0)[3711:Thread-411][name:sock&]sock: sk == NULL for sock_i_uid
+[   64.405492] -(0)[3711:Thread-411][name:battery_common&][charger_hv_detect_sw_workaround]
+[   64.405554]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   64.465310]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.531308]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.597294]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.612439] -(0)[3711:Thread-411][name:battery_common&][charger_hv_detect_sw_workaround]
+[   64.612490]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   64.612501]  (0)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   64.612518]  (0)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   64.612590]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   64.643630]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   64.663296]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.729319]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.771701]  (0)[0:swapper/0][name:sock&]sock: sk == NULL for sock_i_uid
+[   64.795272]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.820793] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   64.820853]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   64.821948]  (1)[6:kworker/u8:0]binder: [name:binder&]3466:le.android.talk node 60182: exits with 912:system_server DeathNotify
+[   64.821973]  (1)[6:kworker/u8:0]binder: [name:binder&]3466:le.android.talk node 58368: exits with 912:system_server DeathNotify
+[   64.821990]  (1)[6:kworker/u8:0]binder: [name:binder&]3466:le.android.talk node 58385: exits with 912:system_server DeathNotify
+[   64.831521]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   64.861325]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.882350]  (1)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(329)(492)(8)(0) (4)(4)(4)(4)(1) (0)(0)(0) (2366)(122)(2) (0)(492)(122)(0)(492) wifi_base(0)
+[   64.893244]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   64.927304]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   64.993292]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.028745] -(1)[3179:readThread0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   65.029640]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   65.059331]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.125328]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.142425]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   65.191305]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.236047] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   65.236100]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   65.257291]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.311756]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   65.312093]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   65.312111]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   65.323524]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.382292]  (0)[108:kworker/u8:2]binder: [name:binder&]3573:oid.apps.photos node 61749: exits with 912:system_server DeathNotify
+[   65.382319]  (0)[108:kworker/u8:2]binder: [name:binder&]3573:oid.apps.photos node 61026: exits with 912:system_server DeathNotify
+[   65.382335]  (0)[108:kworker/u8:2]binder: [name:binder&]3573:oid.apps.photos node 61043: exits with 912:system_server DeathNotify
+[   65.389304]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.397724]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   65.444047] -(0)[1559:Binder_7][name:battery_common&][charger_hv_detect_sw_workaround]
+[   65.444101]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   65.455320]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.521340]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.587304]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.612223]  (3)[108:kworker/u8:2]binder: [name:binder&]3608::CameraShortcut node 61958: exits with 912:system_server DeathNotify
+[   65.612257]  (3)[108:kworker/u8:2]binder: [name:binder&]3608::CameraShortcut node 62008: exits with 912:system_server DeathNotify
+[   65.612274]  (3)[108:kworker/u8:2]binder: [name:binder&]3608::CameraShortcut node 62584: exits with 912:system_server DeathNotify
+[   65.642427]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   65.651751] -(0)[924:HeapTaskDaemon][name:battery_common&][charger_hv_detect_sw_workaround]
+[   65.651817]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   65.653307]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.719299]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.785305]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.831827]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   65.851303]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.859079] -(2)[0:swapper/2][name:battery_common&][charger_hv_detect_sw_workaround]
+[   65.859134]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   65.859145]  (2)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   65.859161]  (2)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   65.859234]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   65.892054]  (3)[6:kworker/u8:0]binder: [name:binder&]3614:tek.schpwronoff node 62043: exits with 912:system_server DeathNotify
+[   65.892081]  (3)[6:kworker/u8:0]binder: [name:binder&]3614:tek.schpwronoff node 62066: exits with 912:system_server DeathNotify
+[   65.892409]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   65.917406]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   65.965731]  (3)[227:logd.writer]logd:diff time -158474515, run time  133853142, count 0,step 1 5000,2 1470,3 7781,4 0. filter count 1404.
+[   65.971757]  (1)[2863:com.android.mms][name:ccci&][md1]traffic(3/0):Tx(7f)5-5,1756-1753,0-0,0-0,0-0,0-0,6-6,0-0:Rx(7f)7,1450,0,0,0,0,4,0
+[   65.971783]  (1)[2863:com.android.mms][name:ccci&][md1]traffic(net): tx: [22]0 0, [26]0 0, [30]0 0, rx:[20]0, [24]0, [28]0
+[   65.983915]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.027509]  (1)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   66.027530]  (1)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   66.027542]  (1)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   66.027552]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   66.027561]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   66.027570]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   66.027579]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   66.027587]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   66.027596]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   66.027605]  (1)[100:display_esd_che]DSI read packet_type is 0x21 
+[   66.049319]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.067629] -(2)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   66.067674]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   66.115621]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.142548]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   66.163159]  (0)[357:batterywarning][name:battery_common&][Battery] show_BatteryNotify : 0
+[   66.181309]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.243153]  (0)[6:kworker/u8:0]binder: [name:binder&]3640:android.youtube node 62763: exits with 912:system_server DeathNotify
+[   66.243180]  (0)[6:kworker/u8:0]binder: [name:binder&]3640:android.youtube node 62768: exits with 912:system_server DeathNotify
+[   66.243207]  (0)[6:kworker/u8:0]binder: [name:binder&]3640:android.youtube node 62330: exits with 912:system_server DeathNotify
+[   66.243234]  (0)[6:kworker/u8:0]binder: [name:binder&]3640:android.youtube node 63595: exits with 912:system_server DeathNotify
+[   66.243256]  (0)[6:kworker/u8:0]binder: [name:binder&]3640:android.youtube node 62245: exits with 912:system_server DeathNotify
+[   66.243272]  (0)[6:kworker/u8:0]binder: [name:binder&]3640:android.youtube node 62262: exits with 912:system_server DeathNotify
+[   66.244917]  (2)[1005:ConnectivitySer][name:binder&]binder: 912:1005 target_proc is NULL
+[   66.244938]  (2)[1005:ConnectivitySer][name:binder&]binder: 912:1005 transaction failed 29189, size 320-0
+[   66.244954]  (2)[1005:ConnectivitySer][name:binder&]binder: read put err 29189 to user 9de27908, thread error 29189:29185
+[   66.247287]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.276243] -(1)[3891:oid.apps.photos][name:battery_common&][charger_hv_detect_sw_workaround]
+[   66.276272]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   66.281705]  (0)[0:swapper/0][name:sock&]sock: sk == NULL for sock_i_uid
+[   66.313314]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.379305]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.383536]  (1)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(224)(223)(0)(0) (4)(4)(4)(4)(1) (0)(0)(0) (2074)(137)(1) (0)(223)(137)(0)(223) wifi_base(0)
+[   66.392480]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   66.445325]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.484026] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   66.484080]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   66.511317]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.577322]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.641346]  (2)[250:mtk_wmtd][name:osal&][WMT-CTRL][W]wmt_ctrl_rx:wmt_ctrl_rx be signaled, but no rx data(200)
+[   66.642573]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   66.644901]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.690482] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   66.690548]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   66.709589]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.775313]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.832101]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   66.841304]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.885175]  (0)[93:hps_main]CPU3: shutdown
+[   66.885200]  (0)[93:hps_main][name:hotplug&][Power/hotplug] mt_cpu_kill, cpu: 3
+[   66.886546]  (0)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0200)(4)action end(213)(212)(0)(0) (4)(4)(4)(4)(1) (0)(0)(0) (1937)(142)(6) (0)(212)(142)(0)(212) wifi_base(0)
+[   66.892488]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   66.898147] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   66.898206]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   66.907311]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   66.973313]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.039300]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.104010] -(0)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   67.104054]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   67.104067]  (1)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   67.104083]  (1)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   67.104153]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   67.105317]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.131715]  (0)[3891:oid.apps.photos][name:sock&]sock: sk == NULL for sock_i_uid
+[   67.142385]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   67.171309]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.237304]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.302393]  (0)[6:kworker/u8:0]binder: [name:binder&]3732:roid.music:main node 64558: exits with 912:system_server DeathNotify
+[   67.302423]  (0)[6:kworker/u8:0]binder: [name:binder&]3732:roid.music:main node 64562: exits with 912:system_server DeathNotify
+[   67.302443]  (0)[6:kworker/u8:0]binder: [name:binder&]3732:roid.music:main node 63767: exits with 912:system_server DeathNotify
+[   67.302459]  (0)[6:kworker/u8:0]binder: [name:binder&]3732:roid.music:main node 63690: exits with 912:system_server DeathNotify
+[   67.302479]  (0)[6:kworker/u8:0]binder: [name:binder&]3732:roid.music:main node 63714: exits with 912:system_server DeathNotify
+[   67.303299]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.309732] -(0)[153:mmcqd/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   67.309779]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   67.313080]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   67.314632]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   67.314654]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   67.369315]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.395378]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   67.435362]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.487253]  (2)[93:hps_main][name:mt_smp&]Boot slave CPU
+[   67.487273]  (2)[93:hps_main][name:mt_smp&][Power/hotplug] mt_smp_boot_secondary, cpu: 3
+[   67.487447] -(3)[0:swapper/3]CPU3: Booted secondary processor
+[   67.487461] -(3)[0:swapper/3][name:mt_smp&][Power/hotplug] platform_secondary_init, cpu: 3
+[   67.487577] -(3)[0:swapper/3]CPU3: update cpu_capacity 1024
+[   67.487587] -(3)[0:swapper/3]CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
+[   67.488221]  (0)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0020)(3)action end(297)(616)(0)(0) (4)(4)(4)(4)(1) (474)(5)(1) (1154)(5)(5) (1)(616)(6)(0)(616) wifi_base(0)
+[   67.501292]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.520709] -(0)[1002:WifiStateMachin][name:battery_common&][charger_hv_detect_sw_workaround]
+[   67.520727]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   67.567312]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.633305]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.642796]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   67.699382]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.727192] -(1)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   67.727248]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   67.765388]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.831322]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.832689]  (2)[93:hps_main][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   67.888583]  (2)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(4)DBG_HRT(378)(596)(8)(0) (4)(4)(4)(4)(1) (0)(0)(0) (1511)(4)(4) (0)(596)(4)(0)(596) wifi_base(0)
+[   67.893623]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   67.900029]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   67.934067] -(1)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   67.934126]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   67.963302]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.029297]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.034684]  (1)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   68.034705]  (1)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   68.034717]  (1)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   68.034727]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   68.034737]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   68.034746]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   68.034755]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   68.034763]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   68.034773]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   68.034781]  (1)[100:display_esd_che]DSI read packet_type is 0x21 
+[   68.095337]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.140606] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   68.140668]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   68.142737]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   68.161293]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.227288]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.293301]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.349109] -(3)[2917:AsyncTask #4][name:battery_common&][charger_hv_detect_sw_workaround]
+[   68.349169]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   68.349180]  (3)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   68.349195]  (3)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   68.349266]  (3)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   68.359443]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.392919]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   68.430252]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.491319]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.556651] -(3)[3936:le.android.talk][name:battery_common&][charger_hv_detect_sw_workaround]
+[   68.556686]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   68.557295]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.623321]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.642405]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   68.689312]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.755311]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.763104] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   68.763218]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   68.821309]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.832951]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   68.887305]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.890486]  (0)[93:hps_main]CPU3: shutdown
+[   68.890505]  (0)[93:hps_main][name:hotplug&][Power/hotplug] mt_cpu_kill, cpu: 3
+[   68.891827]  (0)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0200)(4)action end(173)(152)(9)(0) (4)(4)(4)(4)(1) (0)(0)(0) (1934)(14)(6) (0)(152)(14)(0)(152) wifi_base(0)
+[   68.892613]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   68.953303]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   68.971692] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   68.971798]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   69.019307]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.085341]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.142449]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   69.151313]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.178214] -(1)[0:swapper/1][name:battery_common&][charger_hv_detect_sw_workaround]
+[   69.178268]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   69.218091]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.283304]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.311738]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [763]i2c_read_bytes to device 5D address 8040 len 2
+[   69.312060]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [2077][Esd]0x8040 = 0xFF, 0x8041 = 0xAA
+[   69.312079]  (1)[986:kworker/1:2]<<-GTP-DEBUG->> [875]i2c_write_bytes to device 5D address 8040 len 1
+[   69.349564]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.386507] -(1)[3982:IntentService[C][name:battery_common&][charger_hv_detect_sw_workaround]
+[   69.386582]  (1)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   69.392170]  (2)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0000)(3)DBG_HRT(240)(319)(0)(0) (4)(4)(4)(4)(1) (498)(5)(1) (964)(5)(5) (0)(319)(5)(0)(319) wifi_base(0)
+[   69.392404]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   69.415461]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.481269]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.502382]  (2)[108:kworker/u8:2]binder: [name:binder&]3778:android.vending node 65600: exits with 912:system_server DeathNotify
+[   69.502405]  (2)[108:kworker/u8:2]binder: [name:binder&]3778:android.vending node 65623: exits with 912:system_server DeathNotify
+[   69.502422]  (2)[108:kworker/u8:2]binder: [name:binder&]3778:android.vending node 65756: exits with 912:system_server DeathNotify
+[   69.547302]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.592173] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   69.592215]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   69.592226]  (0)[181:mtk charger_hv_][name:battery_common&][BATTERY] Disable check battery exist.
+[   69.592241]  (0)[181:mtk charger_hv_][name:battery_common&][charger_hv_detect_sw_thread_handler] upmu_chr_get_vcdt_hv_det() != 1
+[   69.592325]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   69.613309]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.642378]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   69.679283]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.745305]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.798725] -(0)[0:swapper/0][name:battery_common&][charger_hv_detect_sw_workaround]
+[   69.798791]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   69.811291]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.833188]  (1)[986:kworker/1:2][name:aed&]AEE_MONITOR_SET[status]: 0x1
+[   69.877286]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.892400]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   69.943280]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   69.991939]  (1)[56:cfinteractive][name:mt_cpufreq&][Power/cpufreq] @_mt_cpufreq_set_locked(): Vproc = 1012mv, freq = 793000 KHz
+[   70.005193] -(2)[0:swapper/2][name:battery_common&][charger_hv_detect_sw_workaround]
+[   70.005251]  (2)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   70.009803]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   70.058316]  (1)[100:display_esd_che][DSI]enter cmp read_data0 byte0=0x21 byte1=0x9c byte2=0x0 byte3=0x1e 
+[   70.058338]  (1)[100:display_esd_che][DSI]enter cmp read_data1 byte0=0x0 byte1=0x0 byte2=0x0 byte3=0x0 
+[   70.058353]  (1)[100:display_esd_che][DSI]enter cmp check_table cmd=0xa,count=0x1,para_list[0]=0x9c,para_list[1]=0x0,para_list[2]=0x0,para_list[3]=0x0
+[   70.058365]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x200=0x13700
+[   70.058376]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x204=0xa0604
+[   70.058386]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x60=0x2
+[   70.058397]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x74=0x1e009c21
+[   70.058407]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x88=0x440
+[   70.058418]  (1)[100:display_esd_che][DSI]enter cmp DSI+0x0c=0x80000700
+[   70.058429]  (1)[100:display_esd_che]DSI read packet_type is 0x21 
+[   70.071934]  (1)[56:cfinteractive][name:mt_cpufreq&][Power/cpufreq] @_mt_cpufreq_set_locked(): Vproc = 950mv, freq = 637000 KHz
+[   70.075435]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   70.102279]  (0)[93:hps_main]CPU2: shutdown
+[   70.102304]  (0)[93:hps_main][name:hotplug&][Power/hotplug] mt_cpu_kill, cpu: 2
+[   70.103925]  (0)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0200)(3)action end(139)(135)(0)(0) (4)(4)(4)(4)(1) (281)(12)(0) (1246)(12)(4) (0)(135)(12)(0)(135) wifi_base(0)
+[   70.121968]  (0)[56:cfinteractive][name:mt_cpufreq&][Power/cpufreq] @_mt_cpufreq_set_locked(): Vproc = 1137mv, freq = 988000 KHz
+[   70.141838]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   70.145030]  (0)[282:kworker/0:2]<ALS/PS>  als data[550]
+[   70.207346]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   70.211669] -(0)[3983:roid.music:main][name:battery_common&][charger_hv_detect_sw_workaround]
+[   70.211733]  (0)[181:mtk charger_hv_][name:battery_common&][upmu_is_chr_det] Charger exist and USB is not host
+[   70.245920]  (0)[282:kworker/0:2][name:fliper&]
+[   70.245920] <<SOC DVFS FLIPER>> flip to E(0), 1317
+[   70.273603]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
+[   70.304354]  (0)[93:hps_main][name:mt_smp&]Boot slave CPU
+[   70.304378]  (0)[93:hps_main][name:mt_smp&][Power/hotplug] mt_smp_boot_secondary, cpu: 2
+[   70.304589] -(2)[0:swapper/2]CPU2: Booted secondary processor
+[   70.304602] -(2)[0:swapper/2][name:mt_smp&][Power/hotplug] platform_secondary_init, cpu: 2
+[   70.304732] -(2)[0:swapper/2]CPU2: update cpu_capacity 1024
+[   70.304743] -(2)[0:swapper/2]CPU2: thread -1, cpu 2, socket 0, mpidr 80000002
+[   70.305674]  (0)[93:hps_main][name:mt_smp&]Boot slave CPU
+[   70.305696]  (0)[93:hps_main][name:mt_smp&][Power/hotplug] mt_smp_boot_secondary, cpu: 3
+[   70.305901] -(3)[0:swapper/3]CPU3: Booted secondary processor
+[   70.305913] -(3)[0:swapper/3][name:mt_smp&][Power/hotplug] platform_secondary_init, cpu: 3
+[   70.306039] -(3)[0:swapper/3]CPU3: update cpu_capacity 1024
+[   70.306050] -(3)[0:swapper/3]CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
+[   70.306857]  (2)[93:hps_main][name:mt_hotplug_strategy_algo&][HPS] (0020)(2)action end(199)(697)(0)(0) (4)(4)(4)(4)(1) (193)(1)(1) (193)(1)(1) (1)(697)(2)(0)(697) wifi_base(0)
+[   70.339697]  (1)[986:kworker/1:2][gsensor] bma_gsensor_get_data,line = 2586
