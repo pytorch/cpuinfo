@@ -169,6 +169,8 @@ void cpuinfo_arm_decode_cache(
 			 *   The L2 memory system consists of an:
 			 *    - Optional tightly-coupled L2 cache that includes:
 			 *      - Configurable L2 cache size of 128KB, 256KB, 512KB, and 1MB.
+			 *      - Fixed line length of 64 bytes
+			 *      - 8-way set-associative cache structure
 			 *
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | Reference |
@@ -338,6 +340,52 @@ void cpuinfo_arm_decode_cache(
 			*l1d = (struct cpuinfo_cache) {
 				.size = 32 * 1024,
 				.associativity = 2,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = cluster_cores * 512 * 1024,
+				.associativity = 16,
+				.line_size = 64
+			};
+			break;
+		case cpuinfo_uarch_cortex_a17:
+			/*
+			 * ARM Cortex-A17 MPCore Processor Technical Reference Manual:
+			 * 6.1. About the L1 memory system
+			 *    The L1 memory system consists of separate instruction and data caches.
+			 *    The size of the instruction cache is implemented as either 32KB or 64KB.
+			 *    The size of the data cache is 32KB.
+			 *
+			 *    The L1 instruction cache has the following features:
+			 *     - Instruction side cache line length of 64-bytes.
+			 *     - 4-way set-associative instruction cache.
+			 *
+			 *    The L1 data cache has the following features:
+			 *     - Data side cache line length of 64-bytes.
+			 *     - 4-way set-associative data cache.
+			 *
+			 * 7.1. About the L2 Memory system
+			 *    An integrated L2 cache:
+			 *     - The cache size is implemented as either 256KB, 512KB, 1MB, 2MB, 4MB or 8MB.
+			 *     - A fixed line length of 64 bytes.
+			 *     - 16-way set-associative cache structure.
+			 *
+			 *  +------------------+-------+-----------+-----------+-----------+-----------+
+			 *  | Processor model  | Cores | L1D cache | L1I cache | L2 cache  | Reference |
+			 *  +------------------+-------+-----------+-----------+-----------+-----------+
+			 *  | MediaTek MT6595  | 4(+4) |    32K    |    32K    | 2M(+512K) |    [1]    |
+			 *  +------------------+-------+-----------+-----------+-----------+-----------+
+			 *
+			 * [1] https://blog.osakana.net/archives/5268
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 32 * 1024,
+				.associativity = 4,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 32 * 1024,
+				.associativity = 4,
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
@@ -786,7 +834,6 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		case cpuinfo_uarch_cortex_a12:
-		case cpuinfo_uarch_cortex_a17:
 		case cpuinfo_uarch_cortex_a32:
 		case cpuinfo_uarch_cortex_a35:
 		default:
