@@ -186,43 +186,6 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 	}
 }
 
-inline static bool midr_is_big_core(uint32_t midr) {
-	const uint32_t core_mask = 
-		CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_ARCHITECTURE_MASK | CPUINFO_ARM_MIDR_PART_MASK;
-	switch (midr & core_mask) {
-		case CPUINFO_ARM_MIDR_CORTEX_A75:
-		case CPUINFO_ARM_MIDR_CORTEX_A73:
-		case CPUINFO_ARM_MIDR_CORTEX_A72:
-		case CPUINFO_ARM_MIDR_CORTEX_A57:
-		case CPUINFO_ARM_MIDR_CORTEX_A17:
-		case CPUINFO_ARM_MIDR_CORTEX_A15:
-		case CPUINFO_ARM_MIDR_KRYO280_GOLD:
-		case CPUINFO_ARM_MIDR_KRYO_GOLD:
-		case CPUINFO_ARM_MIDR_MONGOOSE:
-		case CPUINFO_ARM_MIDR_DENVER2:
-			return true;
-		default:
-			return false;
-	}
-}
-
-inline static bool midr_is_little_core(uint32_t midr) {
-	const uint32_t core_mask = 
-		CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_ARCHITECTURE_MASK | CPUINFO_ARM_MIDR_PART_MASK;
-	switch (midr & core_mask) {
-		case CPUINFO_ARM_MIDR_CORTEX_A55:
-		case CPUINFO_ARM_MIDR_CORTEX_A53:
-		case CPUINFO_ARM_MIDR_CORTEX_A35:
-		case CPUINFO_ARM_MIDR_CORTEX_A7:
-		case CPUINFO_ARM_MIDR_KRYO280_SILVER:
-		case CPUINFO_ARM_MIDR_KRYO_SILVER_820:
-		case CPUINFO_ARM_MIDR_KRYO_SILVER_821:
-			return true;
-		default:
-			return false;
-	}
-}
-
 inline static uint32_t midr_little_core_for_big(uint32_t midr) {
 	const uint32_t core_mask = 
 		CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_ARCHITECTURE_MASK | CPUINFO_ARM_MIDR_PART_MASK;
@@ -243,29 +206,6 @@ inline static uint32_t midr_little_core_for_big(uint32_t midr) {
 			return CPUINFO_ARM_MIDR_KRYO_SILVER_820;
 		case CPUINFO_ARM_MIDR_DENVER2:
 			return CPUINFO_ARM_MIDR_CORTEX_A57;
-		default:
-			return midr;
-	}
-}
-
-inline static uint32_t midr_big_core_for_little(uint32_t midr) {
-	const uint32_t core_mask = 
-		CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_ARCHITECTURE_MASK | CPUINFO_ARM_MIDR_PART_MASK;
-	switch (midr & core_mask) {
-		case CPUINFO_ARM_MIDR_CORTEX_A57:
-			return CPUINFO_ARM_MIDR_DENVER2;
-		case CPUINFO_ARM_MIDR_CORTEX_A55:
-			return CPUINFO_ARM_MIDR_CORTEX_A75;
-		case CPUINFO_ARM_MIDR_CORTEX_A53:
-		case CPUINFO_ARM_MIDR_CORTEX_A35:
-			return CPUINFO_ARM_MIDR_CORTEX_A57;
-		case CPUINFO_ARM_MIDR_CORTEX_A7:
-			return CPUINFO_ARM_MIDR_CORTEX_A15;
-		case CPUINFO_ARM_MIDR_KRYO280_SILVER:
-			return CPUINFO_ARM_MIDR_KRYO280_GOLD;
-		case CPUINFO_ARM_MIDR_KRYO_SILVER_820:
-		case CPUINFO_ARM_MIDR_KRYO_SILVER_821:
-			return CPUINFO_ARM_MIDR_KRYO_GOLD;
 		default:
 			return midr;
 	}
