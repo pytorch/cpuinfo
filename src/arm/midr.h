@@ -165,10 +165,10 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100C0F0): /* Cortex-A15 */
 		case UINT32_C(0x4100C0D0): /* Cortex-A12 */
 			/* These cores are always in big role */
-			return 4;
+			return 5;
 		case UINT32_C(0x4100D070): /* Cortex-A57 */
 			/* Cortex-A57 can be in LITTLE role w.r.t. Denver 2, or in big role w.r.t. Cortex-A53 */
-			return 3;
+			return 4;
 		case UINT32_C(0x4100D050): /* Cortex-A55 */
 		case UINT32_C(0x4100D030): /* Cortex-A53 */
 			/* Cortex-A53 is usually in LITTLE role, but can be in big role w.r.t. Cortex-A35 */
@@ -181,8 +181,13 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 			/* These cores are always in LITTLE core */
 			return 1;
 		default:
-			/* Cores which do not have big/LITTLE roles */
-			return 0;
+			/*
+			 * Unknown cores, or cores which do not have big/LITTLE roles.
+			 * To be future-proof w.r.t. cores not yet recognized in cpuinfo, assume position between
+			 * Cortex-A57/A72/A73/A75 and Cortex-A53/A55. Then at least future cores paired with
+			 * one of these known cores will be properly scored.
+			 */
+			return 3;
 	}
 }
 
