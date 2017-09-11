@@ -1,10 +1,18 @@
 struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
-		.size = 243,
+		.size = 421,
 		.content =
 			"Processor\t: AArch64 Processor rev 2 (aarch64)\n"
 			"processor\t: 0\n"
+			"BogoMIPS\t: 26.00\n"
+			"Features\t: fp asimd aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: AArch64\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd03\n"
+			"CPU revision\t: 2\n"
+			"processor\t: 1\n"
 			"BogoMIPS\t: 26.00\n"
 			"Features\t: fp asimd aes pmull sha1 sha2 crc32\n"
 			"CPU implementer\t: 0x41\n"
@@ -413,6 +421,50 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cputopo/big_cpumask",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cputopo/glbinfo",
+		.size = 71,
+		.content =
+			"big/little arch: yes\n"
+			"big/little cpumask:f0/f\n"
+			"nr_cups: 8\n"
+			"nr_clusters: 2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cputopo/is_big_little",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cputopo/is_multi_cluster",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cputopo/little_cpumask",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cputopo/nr_clusters",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1950000\n",
@@ -442,5 +494,2057 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "0\n",
 	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/cpu_capacity",
+		.size = 4,
+		.content = "361\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/max_cpu_capacity",
+		.size = 4,
+		.content = "600\n",
+	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "af.policy.r_submix_prio_adjust",
+		.value = "0",
+	},
+	{
+		.key = "bgw.current3gband",
+		.value = "0",
+	},
+	{
+		.key = "camera.disable_zsl_mode",
+		.value = "1",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xmx",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "256m",
+	},
+	{
+		.key = "dalvik.vm.heapmaxfree",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heapminfree",
+		.value = "4m",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "16m",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xmx",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.isa.arm64.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.mtk-stack-trace-file",
+		.value = "/data/anr/mtk_traces.txt",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "dalvik.vm.zygote32.pid",
+		.value = "386",
+	},
+	{
+		.key = "dalvik.vm.zygote64.pid",
+		.value = "385",
+	},
+	{
+		.key = "debug.MB.running",
+		.value = "0",
+	},
+	{
+		.key = "debug.bindercall.api",
+		.value = "none",
+	},
+	{
+		.key = "debug.force_rtl",
+		.value = "0",
+	},
+	{
+		.key = "debug.hwc.bq_count",
+		.value = "4",
+	},
+	{
+		.key = "debug.hwc.compose_level",
+		.value = "0",
+	},
+	{
+		.key = "debug.mdlogger.Running",
+		.value = "0",
+	},
+	{
+		.key = "debug.mdlogger.log2sd.path",
+		.value = "internal_sd",
+	},
+	{
+		.key = "debug.mtklog.netlog.Running",
+		.value = "0",
+	},
+	{
+		.key = "debug.oppo.morning.time",
+		.value = "2 : 41",
+	},
+	{
+		.key = "debug.program_binary.enable",
+		.value = "1",
+	},
+	{
+		.key = "debug.screenoff.unlock",
+		.value = "0",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "drm.service.enabled",
+		.value = "true",
+	},
+	{
+		.key = "fmradio.driver.enable",
+		.value = "0",
+	},
+	{
+		.key = "gr.apk.number",
+		.value = "5",
+	},
+	{
+		.key = "gr.download.url",
+		.value = "http://otafs.coloros.com/googles/23dec9b52fa383563b162ef9b5abf389",
+	},
+	{
+		.key = "gr.use.leader",
+		.value = "true",
+	},
+	{
+		.key = "gsm.baseband.capability",
+		.value = "1023",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "1,1",
+	},
+	{
+		.key = "gsm.emdstatus.init",
+		.value = "1",
+	},
+	{
+		.key = "gsm.gcf.testmode",
+		.value = "0",
+	},
+	{
+		.key = "gsm.lte.ca.support",
+		.value = "1",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "Unknown,Unknown",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = ",",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false,false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.project.baseband.2",
+		.value = "OPPO6755_15311_66_L(LWCTG)",
+	},
+	{
+		.key = "gsm.project.baseband",
+		.value = "OPPO6755_15311_66_L(LWCTG)",
+	},
+	{
+		.key = "gsm.ril.ct3g.2",
+		.value = "0",
+	},
+	{
+		.key = "gsm.ril.ct3g",
+		.value = "0",
+	},
+	{
+		.key = "gsm.ril.eboot",
+		.value = "-1",
+	},
+	{
+		.key = "gsm.ril.init",
+		.value = "1",
+	},
+	{
+		.key = "gsm.ril.uicctype.2",
+		.value = "USIM",
+	},
+	{
+		.key = "gsm.ril.uicctype.3",
+		.value = "",
+	},
+	{
+		.key = "gsm.ril.uicctype.4",
+		.value = "",
+	},
+	{
+		.key = "gsm.ril.uicctype",
+		.value = "USIM",
+	},
+	{
+		.key = "gsm.serial",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.operator.alpha",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.iso-country",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.numeric",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.spn",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.retry.pin1.2",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.pin1.3",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.pin1.4",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.pin1",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.pin2.2",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.pin2.3",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.pin2.4",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.pin2",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk1.2",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk1.3",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk1.4",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk1",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk2.2",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk2.3",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk2.4",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.retry.puk2",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.ril.mcc.mnc.2",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.ril.mcc.mnc.3",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.ril.mcc.mnc.4",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.ril.mcc.mnc",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.ril.phbready.2",
+		.value = "true",
+	},
+	{
+		.key = "gsm.sim.ril.phbready.3",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.ril.phbready.4",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.ril.phbready",
+		.value = "false",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "ABSENT,ABSENT",
+	},
+	{
+		.key = "gsm.version.baseband1",
+		.value = "MOLY.LR11.W1539.MD.MP.V9.P67.T74, 2016/06/20 17:51",
+	},
+	{
+		.key = "gsm.version.baseband",
+		.value = "MOLY.LR11.W1539.MD.MP.V9.P67.T74, 2016/06/20 17:51",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "mtk gemini ril 1.0",
+	},
+	{
+		.key = "init.svc.DMAgent",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.GoogleOtaAgent",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.MPED",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.MtkCodecService",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.NvRAMAgent",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.PPLAgent",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.agpsd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.block-mode",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.bootlogoupdater",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ccci3_fsd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ccci3_mdinit",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ccci_fsd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ccci_mdinit",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.conn_launcher",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.criticallog",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.datafree",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.datasync",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.debuggerd64",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.emdlogger1",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.emsvr_user",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.enableswap",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.engineermode-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fingerprintd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.gas_srv",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ged_srv",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.gsm0710muxd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.guiext-server",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.lmkd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.logd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.memsicd3416x",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mnld",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mobicore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mobile_log_d",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.msensord",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mtkbt",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netdiag",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.nvram_daemon",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.nvramsensord",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.oppoasserttip",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.p2p_supplicant",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.permission_check",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.pq",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.program_binary",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.prop-adap-core",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.prop-adap-main",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.psensord",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.regioncheck",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ril-daemon-mtk",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ril-daemon",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.rutilsdaemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.sdcard",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.sn",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.spm_script",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.terservice",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.thermal",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.thermal_manager",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.thermalloadalgod",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.volte_imcb",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.volte_stack",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.volte_ua",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vtservice",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.wifi2agps",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.wmtLoader",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.xlogboot",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.xlogdebugchanged",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote_secondary",
+		.value = "running",
+	},
+	{
+		.key = "media.wfd.portrait",
+		.value = "0",
+	},
+	{
+		.key = "media.wfd.video-format",
+		.value = "7",
+	},
+	{
+		.key = "mediatek.wlan.chip",
+		.value = "CONSYS_MT6755",
+	},
+	{
+		.key = "mediatek.wlan.ctia",
+		.value = "0",
+	},
+	{
+		.key = "mediatek.wlan.module.postfix",
+		.value = "_consys_mt6755",
+	},
+	{
+		.key = "mtk.md1.starttime",
+		.value = "1s Wed Mar  2 09:44:38 2016\n",
+	},
+	{
+		.key = "mtk.md1.status",
+		.value = "ready",
+	},
+	{
+		.key = "mtk_wifi.fwpath",
+		.value = "STA",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.change",
+		.value = "net.qtaguid_enabled",
+	},
+	{
+		.key = "net.hostname",
+		.value = "android-6fdae77d2bb7f81a",
+	},
+	{
+		.key = "net.nsiot_pending",
+		.value = "false",
+	},
+	{
+		.key = "net.perf.cpu.core",
+		.value = "4,4,0,0",
+	},
+	{
+		.key = "net.perf.cpu.freq",
+		.value = "1144000,1144000,0,0",
+	},
+	{
+		.key = "net.perf.rps",
+		.value = "ff",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.tcp.default_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "oppo.clear.running",
+		.value = "0",
+	},
+	{
+		.key = "oppo.device.firstboot",
+		.value = "0",
+	},
+	{
+		.key = "oppo.dex.thread.count.switch",
+		.value = "false",
+	},
+	{
+		.key = "oppo.service.datafree.enable",
+		.value = "1",
+	},
+	{
+		.key = "oppo.service.datasync.enable",
+		.value = "0",
+	},
+	{
+		.key = "oppo.service.rutils.enable",
+		.value = "1",
+	},
+	{
+		.key = "persist.aee.core.dump",
+		.value = "disable",
+	},
+	{
+		.key = "persist.af.hac_on",
+		.value = "0",
+	},
+	{
+		.key = "persist.boot_time",
+		.value = "5",
+	},
+	{
+		.key = "persist.bt.fwdump",
+		.value = "0",
+	},
+	{
+		.key = "persist.datashaping.alarmgroup",
+		.value = "1",
+	},
+	{
+		.key = "persist.dbg.volte_avail_ovr",
+		.value = "1",
+	},
+	{
+		.key = "persist.dm.lock",
+		.value = "false",
+	},
+	{
+		.key = "persist.gemini.sim_num",
+		.value = "2",
+	},
+	{
+		.key = "persist.md.perm.checked",
+		.value = "1",
+	},
+	{
+		.key = "persist.meta.dumpdata",
+		.value = "0",
+	},
+	{
+		.key = "persist.mtk.aee.mode",
+		.value = "4",
+	},
+	{
+		.key = "persist.mtk.datashaping.support",
+		.value = "1",
+	},
+	{
+		.key = "persist.mtk.sf.fps.upper_bound",
+		.value = "60",
+	},
+	{
+		.key = "persist.mtk.volte.enable",
+		.value = "0",
+	},
+	{
+		.key = "persist.mtk.wcn.combo.chipid",
+		.value = "0x6755",
+	},
+	{
+		.key = "persist.mtk.wcn.fwlog.status",
+		.value = "no",
+	},
+	{
+		.key = "persist.oppo.ctsversion",
+		.value = "false",
+	},
+	{
+		.key = "persist.power.useautobrightadj",
+		.value = "true",
+	},
+	{
+		.key = "persist.radio.default.sim",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.fd.counter",
+		.value = "15",
+	},
+	{
+		.key = "persist.radio.fd.off.counter",
+		.value = "5",
+	},
+	{
+		.key = "persist.radio.fd.off.r8.counter",
+		.value = "5",
+	},
+	{
+		.key = "persist.radio.fd.r8.counter",
+		.value = "15",
+	},
+	{
+		.key = "persist.radio.ia-apn",
+		.value = "",
+	},
+	{
+		.key = "persist.radio.ia",
+		.value = "",
+	},
+	{
+		.key = "persist.radio.mobile.data",
+		.value = "1,1",
+	},
+	{
+		.key = "persist.radio.mtk_dsbp_support",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.multisim.config",
+		.value = "dsds",
+	},
+	{
+		.key = "persist.radio.reset_on_switch",
+		.value = "true",
+	},
+	{
+		.key = "persist.radio.simswitch",
+		.value = "1",
+	},
+	{
+		.key = "persist.service.acm.enable",
+		.value = "",
+	},
+	{
+		.key = "persist.service.adb.enable",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.assert.enable",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.assert.enabletip",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.assert.panic",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.assert.state",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.cfu_auto",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.dalvik.vm.lib.2",
+		.value = "libart.so",
+	},
+	{
+		.key = "persist.sys.device_first_boot",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.esn_track_switch",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.first_time_boot",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.mute.state",
+		.value = "2",
+	},
+	{
+		.key = "persist.sys.oem_smooth",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.oppo.displaymetrics",
+		.value = "1080,1920",
+	},
+	{
+		.key = "persist.sys.oppo.dragstate",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.oppo.otg_support",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.oppo.region.netlock",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.oppo.region",
+		.value = "US",
+	},
+	{
+		.key = "persist.sys.oppo.screendrag",
+		.value = "0,0,0,0.0",
+	},
+	{
+		.key = "persist.sys.permission.enable",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.port_index",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.poweroffsound",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.poweronsound",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.pq.adl.idx",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.pq.shp.idx",
+		.value = "2",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.screenshot.times",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.sd.defaultpath",
+		.value = "/storage/emulated/0",
+	},
+	{
+		.key = "persist.sys.timezone",
+		.value = "America/New_York",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "mtp,mass_storage,adb",
+	},
+	{
+		.key = "persist.version.confidential",
+		.value = "false",
+	},
+	{
+		.key = "qemu.hw.mainkeys",
+		.value = "1",
+	},
+	{
+		.key = "ril.active.md",
+		.value = "9",
+	},
+	{
+		.key = "ril.current.share_modem",
+		.value = "2",
+	},
+	{
+		.key = "ril.data.allow",
+		.value = "0",
+	},
+	{
+		.key = "ril.ecclist1",
+		.value = "",
+	},
+	{
+		.key = "ril.ecclist2",
+		.value = "",
+	},
+	{
+		.key = "ril.ecclist3",
+		.value = "",
+	},
+	{
+		.key = "ril.ecclist",
+		.value = "",
+	},
+	{
+		.key = "ril.external.md",
+		.value = "0",
+	},
+	{
+		.key = "ril.fd.mode",
+		.value = "1",
+	},
+	{
+		.key = "ril.first.md",
+		.value = "1",
+	},
+	{
+		.key = "ril.flightmode.poweroffMD",
+		.value = "0",
+	},
+	{
+		.key = "ril.ia.iccid",
+		.value = "",
+	},
+	{
+		.key = "ril.iccid.sim1",
+		.value = "N/A",
+	},
+	{
+		.key = "ril.iccid.sim2",
+		.value = "N/A",
+	},
+	{
+		.key = "ril.iccid.sim3",
+		.value = "",
+	},
+	{
+		.key = "ril.iccid.sim4",
+		.value = "",
+	},
+	{
+		.key = "ril.imsi.status.sim1",
+		.value = "0",
+	},
+	{
+		.key = "ril.imsi.status.sim2",
+		.value = "0",
+	},
+	{
+		.key = "ril.ipo.radiooff.2",
+		.value = "0",
+	},
+	{
+		.key = "ril.ipo.radiooff",
+		.value = "0",
+	},
+	{
+		.key = "ril.mux.ee.md1",
+		.value = "0",
+	},
+	{
+		.key = "ril.mux.report.case",
+		.value = "0",
+	},
+	{
+		.key = "ril.nw.rat.detail",
+		.value = "3",
+	},
+	{
+		.key = "ril.nw.worldmode.activemode",
+		.value = "1",
+	},
+	{
+		.key = "ril.pid.1",
+		.value = "966",
+	},
+	{
+		.key = "ril.radio.ia-apn",
+		.value = "",
+	},
+	{
+		.key = "ril.radio.ia",
+		.value = "",
+	},
+	{
+		.key = "ril.radiooff.poweroffMD",
+		.value = "0",
+	},
+	{
+		.key = "ril.ready.sim",
+		.value = "false",
+	},
+	{
+		.key = "ril.specific.sm_cause",
+		.value = "0",
+	},
+	{
+		.key = "ril.telephony.mode",
+		.value = "0",
+	},
+	{
+		.key = "ril.volte.imcb",
+		.value = "1",
+	},
+	{
+		.key = "ril.volte.stack",
+		.value = "1",
+	},
+	{
+		.key = "ril.volte.ua",
+		.value = "1",
+	},
+	{
+		.key = "rild.libargs",
+		.value = "-d /dev/ttyC0",
+	},
+	{
+		.key = "rild.libpath",
+		.value = "mtk-ril.so",
+	},
+	{
+		.key = "rild.mark_switchuser",
+		.value = "0",
+	},
+	{
+		.key = "ro.adb.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.audio.silent",
+		.value = "0",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "mt6755",
+	},
+	{
+		.key = "ro.boot.bootreason",
+		.value = "wdt_by_pass_pwk",
+	},
+	{
+		.key = "ro.boot.hardware",
+		.value = "mt6755",
+	},
+	{
+		.key = "ro.boot.serialno",
+		.value = "KRZ58TGA99999999",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.btstack",
+		.value = "blueangel",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "default",
+	},
+	{
+		.key = "ro.build.date.YmdHM",
+		.value = "201606201827",
+	},
+	{
+		.key = "ro.build.date.Ymd",
+		.value = "160620",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1466418427",
+	},
+	{
+		.key = "ro.build.date.ymd",
+		.value = "160620",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Mon Jun 20 18:27:07 CST 2016",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "full_oppo6755_15311-user 5.1 LMY47I 1466418229 release-keys",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "X9009EX_11_A.18_160620",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "OPPO/X9009/X9009:5.1/LMY47I/1454158811:user/release-keys",
+	},
+	{
+		.key = "ro.build.flavor",
+		.value = "full_oppo6755_15311-user",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "WX-122-132",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "LMY47I",
+	},
+	{
+		.key = "ro.build.kernel.id",
+		.value = "3.10.72-G201606201753",
+	},
+	{
+		.key = "ro.build.master.date",
+		.value = "201606201827",
+	},
+	{
+		.key = "ro.build.ota.versionname",
+		.value = "X9009EX_11_A.18_160620",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "oppo6755_15311",
+	},
+	{
+		.key = "ro.build.release_type",
+		.value = "true",
+	},
+	{
+		.key = "ro.build.soft.majorversion",
+		.value = "",
+	},
+	{
+		.key = "ro.build.soft.version",
+		.value = "A.18",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "root",
+	},
+	{
+		.key = "ro.build.version.all_codenames",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.base_os",
+		.value = "OPPO/X9009/X9009:5.1/LMY47I/1449641681:user/release-keys",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "1466418229",
+	},
+	{
+		.key = "ro.build.version.opporom",
+		.value = "V3.0.0i",
+	},
+	{
+		.key = "ro.build.version.ota",
+		.value = "X9009EX_11.A.18_INT_018_201606201753",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "5.1",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "22",
+	},
+	{
+		.key = "ro.build.version.security_patch",
+		.value = "2016-01-01",
+	},
+	{
+		.key = "ro.camera.sound.forced",
+		.value = "0",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.com.android.dateformat",
+		.value = "MM-dd-yyyy",
+	},
+	{
+		.key = "ro.com.android.mobiledata",
+		.value = "true",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-oppo",
+	},
+	{
+		.key = "ro.com.google.gmsversion",
+		.value = "5.1_r3",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "alarm_001.ogg",
+	},
+	{
+		.key = "ro.config.calendar_sound",
+		.value = "notification_003.ogg",
+	},
+	{
+		.key = "ro.config.notification_sim2",
+		.value = "notification_001.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "notification_001.ogg",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "ringtone_001.ogg",
+	},
+	{
+		.key = "ro.config.ringtone_sim2",
+		.value = "ringtone_001.ogg",
+	},
+	{
+		.key = "ro.crypto.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "unencrypted",
+	},
+	{
+		.key = "ro.dalvik.vm.native.bridge",
+		.value = "0",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.dex2oat_white_list",
+		.value = "com.google.android.gms:",
+	},
+	{
+		.key = "ro.dirac.config",
+		.value = "1",
+	},
+	{
+		.key = "ro.dirac.max_active.headset",
+		.value = "5",
+	},
+	{
+		.key = "ro.dirac.max_active.powersound",
+		.value = "3",
+	},
+	{
+		.key = "ro.dirac.poolsize",
+		.value = "2",
+	},
+	{
+		.key = "ro.factorytest",
+		.value = "0",
+	},
+	{
+		.key = "ro.frp.pst",
+		.value = "/dev/block/platform/mtk-msdc.0/by-name/frp",
+	},
+	{
+		.key = "ro.gemini.smart_sim_switch",
+		.value = "false",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "mt6755",
+	},
+	{
+		.key = "ro.have_aacencode_feature",
+		.value = "1",
+	},
+	{
+		.key = "ro.have_aee_feature",
+		.value = "1",
+	},
+	{
+		.key = "ro.kernel.zio",
+		.value = "38,108,105,16",
+	},
+	{
+		.key = "ro.mediatek.chip_ver",
+		.value = "S01",
+	},
+	{
+		.key = "ro.mediatek.gemini_support",
+		.value = "true",
+	},
+	{
+		.key = "ro.mediatek.platform",
+		.value = "MT6755",
+	},
+	{
+		.key = "ro.mediatek.project.path",
+		.value = "device/oppo/oppo6755_15311",
+	},
+	{
+		.key = "ro.mediatek.version.branch",
+		.value = "L1.MP10.TC16SP",
+	},
+	{
+		.key = "ro.mediatek.version.release",
+		.value = "X9009EX_11_A.18_160620",
+	},
+	{
+		.key = "ro.mediatek.version.sdk",
+		.value = "4",
+	},
+	{
+		.key = "ro.mediatek.wlan.p2p",
+		.value = "1",
+	},
+	{
+		.key = "ro.mediatek.wlan.wsc",
+		.value = "1",
+	},
+	{
+		.key = "ro.mount.fs",
+		.value = "EXT4",
+	},
+	{
+		.key = "ro.mtk_agps_app",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_antibricking_level",
+		.value = "2",
+	},
+	{
+		.key = "ro.mtk_audenh_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_audio_ape_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_audio_tuning_tool_ver",
+		.value = "V2.2",
+	},
+	{
+		.key = "ro.mtk_bessurround_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_bg_power_saving_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_bg_power_saving_ui",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_bip_scws",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_bt_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_cam_lomo_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_cam_mfb_support",
+		.value = "3",
+	},
+	{
+		.key = "ro.mtk_cta_set",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_deinterlace_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_dhcpv6c_wifi",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_dialer_search_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_dual_mic_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_eap_sim_aka",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_emmc_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_enable_md1",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_fd_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_flv_playback_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_gemini_enhancement",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_gemini_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_gps_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_hetcomm_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_ims_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_is_tablet",
+		.value = "0",
+	},
+	{
+		.key = "ro.mtk_lte_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_matv_analog_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_md_sbp_custom_value",
+		.value = "0",
+	},
+	{
+		.key = "ro.mtk_md_world_mode_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_miravision_image_dc",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_miravision_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_oma_drm_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_omacp_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_passpoint_r1_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_perf_fast_start_win",
+		.value = "0",
+	},
+	{
+		.key = "ro.mtk_perf_response_time",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_perf_simple_start_win",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_perfservice_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_pow_perf_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_pq_color_mode",
+		.value = "3",
+	},
+	{
+		.key = "ro.mtk_pq_support",
+		.value = "2",
+	},
+	{
+		.key = "ro.mtk_search_db_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_send_rr_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_shared_sdcard",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_sim_hot_swap",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_sim_hot_swap_common_slot",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_slidevideo_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_slow_motion_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_system_update_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_tetheringipv6_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_thumbnail_play_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_trustonic_tee_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_volte_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wapi_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wappush_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wfd_sink_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wfd_sink_uibc_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wfd_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_widevine_drm_l3_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wifi_mcc_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wlan_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_wmv_playback_support",
+		.value = "1",
+	},
+	{
+		.key = "ro.mtk_world_phone_policy",
+		.value = "0",
+	},
+	{
+		.key = "ro.multi_log_feature",
+		.value = "0",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "196608",
+	},
+	{
+		.key = "ro.oppo.theme.version",
+		.value = "800",
+	},
+	{
+		.key = "ro.oppo.version",
+		.value = "US",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "full_oppo6755_15311",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "OPPO",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "arm64-v8a",
+	},
+	{
+		.key = "ro.product.cpu.abilist32",
+		.value = "armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist64",
+		.value = "arm64-v8a",
+	},
+	{
+		.key = "ro.product.cpu.abilist",
+		.value = "arm64-v8a,armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "X9009",
+	},
+	{
+		.key = "ro.product.locale.language",
+		.value = "en",
+	},
+	{
+		.key = "ro.product.locale.region",
+		.value = "US",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "OPPO",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "X9009",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "X9009",
+	},
+	{
+		.key = "ro.revision",
+		.value = "0",
+	},
+	{
+		.key = "ro.rom.different.version",
+		.value = "ColorOS3.0.0",
+	},
+	{
+		.key = "ro.runtime.firstboot",
+		.value = "1456929893025",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "KRZ58TGA99999999",
+	},
+	{
+		.key = "ro.setupwizard.mode",
+		.value = "OPTIONAL",
+	},
+	{
+		.key = "ro.sf.hwrotation",
+		.value = "0",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "480",
+	},
+	{
+		.key = "ro.sim_me_lock_mode",
+		.value = "0",
+	},
+	{
+		.key = "ro.sim_refresh_reset_by_modem",
+		.value = "1",
+	},
+	{
+		.key = "ro.sys.breathlight.mode",
+		.value = "whitelight",
+	},
+	{
+		.key = "ro.sys.usb.bicr",
+		.value = "yes",
+	},
+	{
+		.key = "ro.sys.usb.charging.only",
+		.value = "yes",
+	},
+	{
+		.key = "ro.sys.usb.mtp.whql.enable",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.usb.storage.type",
+		.value = "mtp,mass_storage",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "14,0",
+	},
+	{
+		.key = "ro.telephony.sim.count",
+		.value = "2",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "ro.xxversion",
+		.value = "v0.5",
+	},
+	{
+		.key = "ro.zygote.preload.enable",
+		.value = "0",
+	},
+	{
+		.key = "ro.zygote",
+		.value = "zygote64_32",
+	},
+	{
+		.key = "selinux.reload_policy",
+		.value = "1",
+	},
+	{
+		.key = "service.bootanim.exit",
+		.value = "1",
+	},
+	{
+		.key = "service.cat.install.on.2",
+		.value = "0",
+	},
+	{
+		.key = "service.cat.install.on.3",
+		.value = "0",
+	},
+	{
+		.key = "service.cat.install.on.4",
+		.value = "0",
+	},
+	{
+		.key = "service.cat.install.on",
+		.value = "0",
+	},
+	{
+		.key = "service.nvram_init",
+		.value = "Ready",
+	},
+	{
+		.key = "service.wcn.coredump.mode",
+		.value = "0",
+	},
+	{
+		.key = "service.wcn.driver.ready",
+		.value = "yes",
+	},
+	{
+		.key = "sys.app_freeze_timeout",
+		.value = "0",
+	},
+	{
+		.key = "sys.boot.reason",
+		.value = "0",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.ipo.pwrdncap",
+		.value = "2",
+	},
+	{
+		.key = "sys.ipowin.done",
+		.value = "1",
+	},
+	{
+		.key = "sys.oppo.screenshot",
+		.value = "0",
+	},
+	{
+		.key = "sys.power.screenoff.reason",
+		.value = "2",
+	},
+	{
+		.key = "sys.power_off_alarm",
+		.value = "0",
+	},
+	{
+		.key = "sys.settings_global_version",
+		.value = "2",
+	},
+	{
+		.key = "sys.settings_secure_version",
+		.value = "2",
+	},
+	{
+		.key = "sys.settings_system_version",
+		.value = "109",
+	},
+	{
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "24300",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "mtp,mass_storage,adb",
+	},
+	{
+		.key = "sys.usb.mtpConnect",
+		.value = "mtpConnection",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "mtp,mass_storage,adb",
+	},
+	{
+		.key = "sys.usb.vid",
+		.value = "22d9",
+	},
+	{
+		.key = "vold.path.external_sd",
+		.value = "/storage/sdcard1",
+	},
+	{
+		.key = "vold.path.internal_sd",
+		.value = "/storage/sdcard0",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "vold.swap.state",
+		.value = "0",
+	},
+	{
+		.key = "wfd.dummy.enable",
+		.value = "1",
+	},
+	{
+		.key = "wifi.direct.interface",
+		.value = "p2p0",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wifi.tethering.interface",
+		.value = "ap0",
+	},
+	{
+		.key = "wlan.driver.status",
+		.value = "ok",
+	},
+	{
+		.key = "wlan.wfd.security.image",
+		.value = "1",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
