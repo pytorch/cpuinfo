@@ -30,6 +30,11 @@ struct cpuinfo_mock_file {
 	size_t offset;
 };
 
+struct cpuinfo_mock_property {
+	const char* key;
+	const char* value;
+};
+
 #if defined(__linux__)
 	void CPUINFO_ABI cpuinfo_mock_filesystem(struct cpuinfo_mock_file* files);
 	int CPUINFO_ABI cpuinfo_mock_open(const char* path, int oflag);
