@@ -109,9 +109,24 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.path = "/sys/devices/system/cpu/online",
 		.size = 2,
 		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 1,
+		.content = "\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+		.size = 9,
+		.content = "s5p_idle\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+		.size = 5,
+		.content = "menu\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
@@ -134,19 +149,54 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "40000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "conservative ondemand userspace powersave interactive performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1000000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 8,
+		.content = "s5pv210\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 9,
+		.content = "ondemand\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1000000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "200000\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 56,
 		.content =
-			"1000000 2396\n"
-			"800000 219\n"
-			"400000 245\n"
-			"200000 185\n"
-			"100000 18\n",
+			"1000000 2511\n"
+			"800000 211\n"
+			"400000 223\n"
+			"200000 233\n"
+			"100000 28\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "100\n",
+		.size = 3,
+		.content = "88\n",
 	},
 	{ NULL },
 };
@@ -191,7 +241,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "gsm.nitz.time",
-		.value = "1505184601399",
+		.value = "1505256706443",
 	},
 	{
 		.key = "gsm.operator.alpha",
@@ -683,7 +733,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.runtime.firstboot",
-		.value = "1505184605487",
+		.value = "1505256709934",
 	},
 	{
 		.key = "ro.secure",
