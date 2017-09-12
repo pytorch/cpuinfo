@@ -208,14 +208,14 @@ struct cpuinfo_mock_file filesystem[] = {
 			"500000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
 			"600000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
 			"700000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"800000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"800000\t\t1\t\t1\t\t1\t\t1\t\t1\t\t1\t\t1\t\t1\t\t\n"
 			"900000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
 			"1000000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
 			"1100000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
 			"1200000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
 			"1300000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
 			"1400000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"1500000\t\t2290\t\t2290\t\t2290\t\t2290\t\t2290\t\t2290\t\t2290\t\t2290\t\t\n",
+			"1500000\t\t1652\t\t1652\t\t1652\t\t1652\t\t1652\t\t1652\t\t1652\t\t1652\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/clusterhotplug/cur_hstate",
@@ -246,7 +246,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/clusterhotplug/time_in_state",
 		.size = 24,
 		.content =
-			"H0 24129\n"
+			"H0 17711\n"
 			"H1 0\n"
 			"H2 0\n"
 			"H3 0\n",
@@ -295,14 +295,14 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 117,
 		.content =
-			"1500000 2339\n"
+			"1500000 1700\n"
 			"1400000 0\n"
 			"1300000 0\n"
 			"1200000 0\n"
 			"1100000 0\n"
 			"1000000 0\n"
 			"900000 0\n"
-			"800000 0\n"
+			"800000 1\n"
 			"700000 0\n"
 			"600000 0\n"
 			"500000 0\n"
@@ -324,6 +324,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -332,6 +337,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
 		.size = 2,
 		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 3,
+		.content = "01\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
@@ -362,14 +372,14 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 117,
 		.content =
-			"1500000 2515\n"
+			"1500000 1888\n"
 			"1400000 0\n"
 			"1300000 0\n"
 			"1200000 0\n"
 			"1100000 0\n"
 			"1000000 0\n"
 			"900000 0\n"
-			"800000 0\n"
+			"800000 1\n"
 			"700000 0\n"
 			"600000 0\n"
 			"500000 0\n"
@@ -391,6 +401,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
 		.size = 2,
 		.content = "1\n",
@@ -399,6 +414,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings_list",
 		.size = 2,
 		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
+		.size = 3,
+		.content = "02\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
@@ -429,14 +449,14 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 117,
 		.content =
-			"1500000 2690\n"
+			"1500000 2074\n"
 			"1400000 0\n"
 			"1300000 0\n"
 			"1200000 0\n"
 			"1100000 0\n"
 			"1000000 0\n"
 			"900000 0\n"
-			"800000 0\n"
+			"800000 1\n"
 			"700000 0\n"
 			"600000 0\n"
 			"500000 0\n"
@@ -458,6 +478,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
 		.size = 2,
 		.content = "2\n",
@@ -466,6 +491,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
 		.size = 2,
 		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings",
+		.size = 3,
+		.content = "04\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
@@ -496,14 +526,14 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 117,
 		.content =
-			"1500000 2866\n"
+			"1500000 2256\n"
 			"1400000 0\n"
 			"1300000 0\n"
 			"1200000 0\n"
 			"1100000 0\n"
 			"1000000 0\n"
 			"900000 0\n"
-			"800000 0\n"
+			"800000 1\n"
 			"700000 0\n"
 			"600000 0\n"
 			"500000 0\n"
@@ -525,6 +555,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
 		.size = 2,
 		.content = "3\n",
@@ -533,6 +568,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings_list",
 		.size = 2,
 		.content = "3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings",
+		.size = 3,
+		.content = "08\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
@@ -561,25 +601,25 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
-		.size = 119,
+		.size = 117,
 		.content =
-			"1500000 2881\n"
+			"1500000 2437\n"
 			"1400000 0\n"
 			"1300000 0\n"
 			"1200000 0\n"
 			"1100000 0\n"
 			"1000000 0\n"
-			"900000 12\n"
-			"800000 0\n"
+			"900000 0\n"
+			"800000 1\n"
 			"700000 0\n"
 			"600000 0\n"
-			"500000 4\n"
-			"400000 24\n",
+			"500000 0\n"
+			"400000 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
 		.size = 2,
-		.content = "9\n",
+		.content = "1\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
@@ -592,6 +632,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -600,6 +645,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings_list",
 		.size = 2,
 		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings",
+		.size = 3,
+		.content = "10\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
@@ -628,25 +678,25 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
-		.size = 124,
+		.size = 117,
 		.content =
-			"1500000 2881\n"
+			"1500000 2623\n"
 			"1400000 0\n"
 			"1300000 0\n"
 			"1200000 0\n"
-			"1100000 10\n"
-			"1000000 3\n"
-			"900000 116\n"
-			"800000 6\n"
-			"700000 11\n"
-			"600000 12\n"
-			"500000 14\n"
-			"400000 50\n",
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 1\n"
+			"700000 0\n"
+			"600000 0\n"
+			"500000 0\n"
+			"400000 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
-		.size = 3,
-		.content = "38\n",
+		.size = 2,
+		.content = "1\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
@@ -659,6 +709,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
 		.size = 2,
 		.content = "1\n",
@@ -669,81 +724,92 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "5\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/related_cpus",
+		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings",
+		.size = 3,
+		.content = "20\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
 		.size = 8,
 		.content = "4 5 6 7\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/affected_cpus",
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/affected_cpus",
 		.size = 8,
 		.content = "4 5 6 7\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_max_freq",
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1500000\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_min_freq",
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "400000\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_transition_latency",
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_transition_latency",
 		.size = 7,
 		.content = "100000\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
-		.size = 126,
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
+		.size = 117,
 		.content =
-			"1500000 3061\n"
-			"1400000 77\n"
-			"1300000 9\n"
-			"1200000 24\n"
-			"1100000 16\n"
-			"1000000 7\n"
-			"900000 151\n"
-			"800000 7\n"
-			"700000 11\n"
-			"600000 12\n"
-			"500000 14\n"
-			"400000 50\n",
+			"1500000 2805\n"
+			"1400000 0\n"
+			"1300000 0\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 1\n"
+			"700000 0\n"
+			"600000 0\n"
+			"500000 0\n"
+			"400000 0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
-		.size = 3,
-		.content = "76\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/physical_package_id",
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
 		.size = 2,
 		.content = "1\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings_list",
+		.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings_list",
 		.size = 4,
 		.content = "4-7\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
-		.size = 2,
-		.content = "3\n",
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings_list",
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
 		.size = 2,
-		.content = "7\n",
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings_list",
+		.size = 2,
+		.content = "6\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings",
+		.size = 3,
+		.content = "40\n",
 	},
 	{ NULL },
 };
 
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
-	{
-		.key = "audioflinger.bootsnd",
-		.value = "0",
-	},
 	{
 		.key = "boot.sfbootcomplete",
 		.value = "0",
@@ -829,10 +895,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "0",
 	},
 	{
-		.key = "dev.bootcomplete",
-		.value = "1",
-	},
-	{
 		.key = "dev.kies.sommode",
 		.value = "TRUE",
 	},
@@ -847,58 +909,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "drm.service.enabled",
 		.value = "true",
-	},
-	{
-		.key = "gsm.current.phone-type",
-		.value = "1",
-	},
-	{
-		.key = "gsm.network.type",
-		.value = "Unknown",
-	},
-	{
-		.key = "gsm.operator.alpha",
-		.value = "",
-	},
-	{
-		.key = "gsm.operator.iso-country",
-		.value = "",
-	},
-	{
-		.key = "gsm.operator.ispsroaming",
-		.value = "false",
-	},
-	{
-		.key = "gsm.operator.isroaming",
-		.value = "false",
-	},
-	{
-		.key = "gsm.operator.numeric",
-		.value = "",
-	},
-	{
-		.key = "gsm.sim.operator.alpha",
-		.value = "",
-	},
-	{
-		.key = "gsm.sim.operator.iso-country",
-		.value = "",
-	},
-	{
-		.key = "gsm.sim.operator.numeric",
-		.value = "",
-	},
-	{
-		.key = "gsm.sim.state",
-		.value = "ABSENT",
-	},
-	{
-		.key = "gsm.version.baseband",
-		.value = "J700TUVU3AQC3",
-	},
-	{
-		.key = "gsm.version.ril-impl",
-		.value = "Samsung RIL v3.0",
 	},
 	{
 		.key = "init.svc.BCS-daemon",
@@ -937,12 +947,8 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "running",
 	},
 	{
-		.key = "init.svc.auditd",
-		.value = "running",
-	},
-	{
 		.key = "init.svc.bootanim",
-		.value = "stopped",
+		.value = "running",
 	},
 	{
 		.key = "init.svc.bootchecker",
@@ -1142,7 +1148,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "net.change",
-		.value = "net.qtaguid_enabled",
+		.value = "net.hostname",
 	},
 	{
 		.key = "net.hostname",
@@ -1165,10 +1171,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "2.2.5",
 	},
 	{
-		.key = "net.qtaguid_enabled",
-		.value = "1",
-	},
-	{
 		.key = "net.smart_switch.disabled",
 		.value = "1",
 	},
@@ -1179,18 +1181,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "net.tcp.default_init_rwnd",
 		.value = "60",
-	},
-	{
-		.key = "nfc.fw.downloadmode_force",
-		.value = "0",
-	},
-	{
-		.key = "nfc.fw.rfreg_mode",
-		.value = "normal",
-	},
-	{
-		.key = "nfc.smartcard.binded",
-		.value = "true",
 	},
 	{
 		.key = "persist.audio.allsoundmute",
@@ -1405,88 +1395,28 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "1",
 	},
 	{
-		.key = "ril.cs_svc",
-		.value = "1",
-	},
-	{
 		.key = "ril.data.intfprefix",
 		.value = "rmnet",
-	},
-	{
-		.key = "ril.ecclist00",
-		.value = "112,911,999,000,08,110,118,119",
-	},
-	{
-		.key = "ril.ecclist_net0",
-		.value = "",
-	},
-	{
-		.key = "ril.epdg.handover.enable",
-		.value = "true",
 	},
 	{
 		.key = "ril.hasisim",
 		.value = "0",
 	},
 	{
-		.key = "ril.hw_ver",
-		.value = "REV0.5",
-	},
-	{
-		.key = "ril.ims.ecsupport",
-		.value = "2",
-	},
-	{
-		.key = "ril.ims.ltevoicesupport",
-		.value = "2",
-	},
-	{
-		.key = "ril.model_id",
-		.value = "QB6072831",
-	},
-	{
-		.key = "ril.modem.board",
-		.value = "SHANNON310",
-	},
-	{
 		.key = "ril.official_cscver",
 		.value = "J700TTMB3AQC3",
 	},
 	{
-		.key = "ril.product_code",
-		.value = "SM2J700TZWATMB",
-	},
-	{
 		.key = "ril.radiostate",
-		.value = "10",
-	},
-	{
-		.key = "ril.rfcal_date",
-		.value = "20160810",
+		.value = "0",
 	},
 	{
 		.key = "ril.serialnumber",
 		.value = "R58H81JDR3F",
 	},
 	{
-		.key = "ril.servicestate",
-		.value = "1",
-	},
-	{
 		.key = "ril.ss.routing",
 		.value = "0",
-	},
-	{
-		.key = "ril.subinfo",
-		.value = "0:2147483643",
-	},
-	{
-		.key = "ril.sw_ver",
-		.value = "J700TUVU3AQC3",
-	},
-	{
-		.key = "ril.voice.rat",
-		.value = "3",
 	},
 	{
 		.key = "rild.libpath",
@@ -2193,10 +2123,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "15758000128",
 	},
 	{
-		.key = "sys.boot_completed",
-		.value = "1",
-	},
-	{
 		.key = "sys.config.samp_spcm_enable",
 		.value = "true",
 	},
@@ -2213,19 +2139,7 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "2.6.0",
 	},
 	{
-		.key = "sys.ims.service_started",
-		.value = "true",
-	},
-	{
-		.key = "sys.keyguard.connected",
-		.value = "true",
-	},
-	{
 		.key = "sys.knox.exists",
-		.value = "0",
-	},
-	{
-		.key = "sys.knox.store",
 		.value = "0",
 	},
 	{
