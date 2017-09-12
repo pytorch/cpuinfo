@@ -217,6 +217,45 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 4,
+		.content = "0-1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 4,
+		.content = "2-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
+		.size = 31,
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\t\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpufreq/current_in_state",
+		.size = 1058,
+		.content =
+			"CPU0:300000=71000 422400=83000 652800=97000 729600=106000 883200=115000 960000=146000 1036800=153000 1190400=167000 1267200=213000 1497600=249000 1574400=263000 1728000=288000 1958400=324000 2265600=377000 2457600=405000 2496000=405000 2572800=413000 2649600=414000 \n"
+			"CPU1:300000=40470 422400=47309 652800=55289 729600=60419 883200=65550 960000=83220 1036800=87209 1190400=95189 1267200=121409 1497600=141930 1574400=149910 1728000=164160 1958400=184679 2265600=214889 2457600=230849 2496000=230849 2572800=235409 2649600=235979 \n"
+			"CPU2:300000=46860 422400=54780 652800=64020 729600=69960 883200=75900 960000=96360 1036800=100980 1190400=110220 1267200=140580 1497600=164340 1574400=173580 1728000=190080 1958400=213840 2265600=248820 2457600=267300 2496000=267300 2572800=272580 2649600=273240 \n"
+			"CPU3:300000=53960 422400=63080 652800=73720 729600=80560 883200=87400 960000=110960 1036800=116280 1190400=126920 1267200=161880 1497600=189240 1574400=199880 1728000=218880 1958400=246240 2265600=286520 2457600=307800 2496000=307800 2572800=313880 2649600=314640 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+		.size = 9,
+		.content = "msm_idle\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+		.size = 5,
+		.content = "menu\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "2649600\n",
@@ -225,6 +264,74 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "300000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+		.size = 139,
+		.content = "300000 422400 652800 729600 883200 960000 1036800 1190400 1267200 1497600 1574400 1728000 1958400 2265600 2457600 2496000 2572800 2649600 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1728000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "300000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 190,
+		.content =
+			"300000 75\n"
+			"422400 8\n"
+			"652800 28\n"
+			"729600 18\n"
+			"883200 52\n"
+			"960000 36\n"
+			"1036800 42\n"
+			"1190400 38\n"
+			"1267200 50\n"
+			"1497600 224\n"
+			"1574400 64\n"
+			"1728000 2427\n"
+			"1958400 0\n"
+			"2265600 0\n"
+			"2457600 0\n"
+			"2496000 0\n"
+			"2572800 0\n"
+			"2649600 293\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "112\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
@@ -237,6 +344,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 2,
+		.content = "f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -245,6 +357,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
 		.size = 2,
 		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
+		.size = 2,
+		.content = "1\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_max_freq",
@@ -257,6 +379,79 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "300000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
+		.size = 139,
+		.content = "300000 422400 652800 729600 883200 960000 1036800 1190400 1267200 1497600 1574400 1728000 1958400 2265600 2457600 2496000 2572800 2649600 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1728000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1728000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "300000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
+		.size = 179,
+		.content =
+			"300000 0\n"
+			"422400 4\n"
+			"652800 0\n"
+			"729600 0\n"
+			"883200 0\n"
+			"960000 0\n"
+			"1036800 0\n"
+			"1190400 0\n"
+			"1267200 0\n"
+			"1497600 4\n"
+			"1574400 4\n"
+			"1728000 3242\n"
+			"1958400 0\n"
+			"2265600 0\n"
+			"2457600 0\n"
+			"2496000 0\n"
+			"2572800 0\n"
+			"2649600 376\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "6\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -265,6 +460,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+		.size = 2,
+		.content = "f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
@@ -277,64 +477,1103 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "1\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "2649600\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "300000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
 		.size = 2,
 		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
-		.size = 2,
-		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "2649600\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "300000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
-		.size = 2,
-		.content = "3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings_list",
-		.size = 2,
-		.content = "3\n",
 	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "af.fast_track_multiplier",
+		.value = "1",
+	},
+	{
+		.key = "audio_hal.period_size",
+		.value = "192",
+	},
+	{
+		.key = "camera.disable_zsl_mode",
+		.value = "0",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xmx",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "256m",
+	},
+	{
+		.key = "dalvik.vm.heapmaxfree",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heapminfree",
+		.value = "512k",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heaptargetutilization",
+		.value = "0.75",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xmx",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.variant",
+		.value = "krait",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "debug.atrace.tags.enableflags",
+		.value = "0",
+	},
+	{
+		.key = "debug.force_rtl",
+		.value = "0",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "drm.service.enabled",
+		.value = "true",
+	},
+	{
+		.key = "fmas.spkr_2ch",
+		.value = "35,25",
+	},
+	{
+		.key = "fmas.spkr_6ch",
+		.value = "35,20,110",
+	},
+	{
+		.key = "fmas.spkr_angles",
+		.value = "10",
+	},
+	{
+		.key = "fmas.spkr_sgain",
+		.value = "0",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "1",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "Unknown",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.operator.alpha",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "ABSENT",
+	},
+	{
+		.key = "gsm.version.baseband",
+		.value = "MDM9625_104662.22.05.24R",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "Qualcomm RIL 1.0",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.adspd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.atfwd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bdAddrLoader",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.bridgemgrd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.cnd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.defaultcrypto",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.gatekeeperd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.imsdatadaemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.imsqmidaemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.irsc_util",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.lmkd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.logd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.logd-reinit",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mdm_helper",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mdm_helper_proxy",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mmi-touch-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mpdecision",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netmgrd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.p2p_supplicant",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qcamerasvr",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qmuxd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qseecomd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ril-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.sensors",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.thermal-engine",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.time_daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "keyguard.no_require_sim",
+		.value = "true",
+	},
+	{
+		.key = "media.aac_51_output_enabled",
+		.value = "true",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.change",
+		.value = "net.dns2",
+	},
+	{
+		.key = "net.dns1",
+		.value = "208.67.222.222",
+	},
+	{
+		.key = "net.dns2",
+		.value = "208.67.220.220",
+	},
+	{
+		.key = "net.hostname",
+		.value = "android-261421b7106da458",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.tcp.default_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "partition.system.verified",
+		.value = "2",
+	},
+	{
+		.key = "persist.audio.dualmic.config",
+		.value = "endfire",
+	},
+	{
+		.key = "persist.audio.fluence.speaker",
+		.value = "false",
+	},
+	{
+		.key = "persist.audio.fluence.voicecall",
+		.value = "true",
+	},
+	{
+		.key = "persist.audio.fluence.voicerec",
+		.value = "false",
+	},
+	{
+		.key = "persist.camera.HAL3.enabled",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.ISP.debug.mask",
+		.value = "0",
+	},
+	{
+		.key = "persist.camera.hal.debug.mask",
+		.value = "7",
+	},
+	{
+		.key = "persist.camera.mct.debug.mask",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.ois.disable",
+		.value = "0",
+	},
+	{
+		.key = "persist.camera.pproc.debug.mask",
+		.value = "7",
+	},
+	{
+		.key = "persist.camera.sensor.debug",
+		.value = "0",
+	},
+	{
+		.key = "persist.camera.stats.debug.mask",
+		.value = "0",
+	},
+	{
+		.key = "persist.data.df.agg.dl_pkt",
+		.value = "10",
+	},
+	{
+		.key = "persist.data.df.agg.dl_size",
+		.value = "4096",
+	},
+	{
+		.key = "persist.data.iwlan.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.data.qmi.adb_logmask",
+		.value = "0",
+	},
+	{
+		.key = "persist.data.wda.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.hwc.mdpcomp.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.ims.disableADBLogs",
+		.value = "2",
+	},
+	{
+		.key = "persist.ims.disableDebugLogs",
+		.value = "1",
+	},
+	{
+		.key = "persist.ims.disableIMSLogs",
+		.value = "1",
+	},
+	{
+		.key = "persist.ims.disableQXDMLogs",
+		.value = "0",
+	},
+	{
+		.key = "persist.logd.size",
+		.value = "",
+	},
+	{
+		.key = "persist.qcril_uim_vcc_feature",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.adb_log_on",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.apm_sim_not_pwdn",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.data_con_rprt",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.eons.enabled",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.fsg_reload_on",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.ignore_ims_wlan",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.mcfg_enabled",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.no_wait_for_card",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.oem_socket",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.sib16_support",
+		.value = "1",
+	},
+	{
+		.key = "persist.rcs.supported",
+		.value = "0",
+	},
+	{
+		.key = "persist.rmnet.data.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.rmnet.mux",
+		.value = "enabled",
+	},
+	{
+		.key = "persist.service.bdroid.bdaddr",
+		.value = "5C:51:88:AC:C3:9F",
+	},
+	{
+		.key = "persist.sys.dalvik.vm.lib.2",
+		.value = "libart.so",
+	},
+	{
+		.key = "persist.sys.locale",
+		.value = "en-US",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.timezone",
+		.value = "America/Los_Angeles",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "persit.camera.imglib.logs",
+		.value = "1",
+	},
+	{
+		.key = "ril.baseband.config.version",
+		.value = "SHAMU_ATT_CUST",
+	},
+	{
+		.key = "ril.ecclist",
+		.value = "911,*911,#911,112,000,08,110,999,118,119",
+	},
+	{
+		.key = "ril.lte.bc.config",
+		.value = "268501086",
+	},
+	{
+		.key = "ril.qcril_pre_init_lock_held",
+		.value = "0",
+	},
+	{
+		.key = "ril.radio.ctbk_inst",
+		.value = "371",
+	},
+	{
+		.key = "ril.radio.ctbk_val",
+		.value = "1,0,0,0,0,0,0,0,0,0,1,0",
+	},
+	{
+		.key = "rild.libpath",
+		.value = "/system/vendor/lib/libril-qc-qmi-1.so",
+	},
+	{
+		.key = "ro.adb.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.audio.monitorRotation",
+		.value = "true",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "mdm",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "msm8084",
+	},
+	{
+		.key = "ro.boot.baseband",
+		.value = "mdm",
+	},
+	{
+		.key = "ro.boot.bl_state",
+		.value = "2",
+	},
+	{
+		.key = "ro.boot.bootdevice",
+		.value = "msm_sdcc.1",
+	},
+	{
+		.key = "ro.boot.bootloader",
+		.value = "moto-apq8084-71.15",
+	},
+	{
+		.key = "ro.boot.bootreason",
+		.value = "reboot",
+	},
+	{
+		.key = "ro.boot.btmacaddr",
+		.value = "5C:51:88:AC:C3:9F",
+	},
+	{
+		.key = "ro.boot.carrier",
+		.value = "",
+	},
+	{
+		.key = "ro.boot.cid",
+		.value = "0xDE",
+	},
+	{
+		.key = "ro.boot.device",
+		.value = "shamu",
+	},
+	{
+		.key = "ro.boot.fsg-id",
+		.value = "",
+	},
+	{
+		.key = "ro.boot.hardware",
+		.value = "shamu",
+	},
+	{
+		.key = "ro.boot.hardware.sku",
+		.value = "XT1103",
+	},
+	{
+		.key = "ro.boot.hwrev",
+		.value = "0x83A0",
+	},
+	{
+		.key = "ro.boot.mode",
+		.value = "normal",
+	},
+	{
+		.key = "ro.boot.powerup_reason",
+		.value = "0x00004000",
+	},
+	{
+		.key = "ro.boot.radio",
+		.value = "0x6",
+	},
+	{
+		.key = "ro.boot.secure_hardware",
+		.value = "1",
+	},
+	{
+		.key = "ro.boot.serialno",
+		.value = "ZX1G22TBGF",
+	},
+	{
+		.key = "ro.boot.version-baseband",
+		.value = "D4.01-9625-05.24+FSG-9625-02.101",
+	},
+	{
+		.key = "ro.boot.wifimacaddr",
+		.value = "5C:51:88:AC:C3:A0",
+	},
+	{
+		.key = "ro.boot.write_protect",
+		.value = "0",
+	},
+	{
+		.key = "ro.bootimage.build.date",
+		.value = "Mon Aug 17 16:12:18 UTC 2015",
+	},
+	{
+		.key = "ro.bootimage.build.date.utc",
+		.value = "1439827938",
+	},
+	{
+		.key = "ro.bootimage.build.fingerprint",
+		.value = "google/shamu/shamu:6.0/MPA44I/2172151:user/dev-keys",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "moto-apq8084-71.15",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "normal",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "nosdcard",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Mon Aug 17 16:07:31 UTC 2015",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1439827651",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "shamu-user 6.0 MPA44I 2172151 release-keys",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "MPA44I",
+	},
+	{
+		.key = "ro.build.expect.baseband",
+		.value = "D4.01-9625-05.24+FSG-9625-02.101",
+	},
+	{
+		.key = "ro.build.expect.bootloader",
+		.value = "moto-apq8084-71.15",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "google/shamu/shamu:6.0/MPA44I/2172151:user/release-keys",
+	},
+	{
+		.key = "ro.build.flavor",
+		.value = "shamu-user",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "wpee25.hot.corp.google.com",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "MPA44I",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "shamu",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "android-build",
+	},
+	{
+		.key = "ro.build.version.all_codenames",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.base_os",
+		.value = "",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "2172151",
+	},
+	{
+		.key = "ro.build.version.preview_sdk",
+		.value = "0",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "6.0",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "23",
+	},
+	{
+		.key = "ro.build.version.security_patch",
+		.value = "",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.com.android.dataroaming",
+		.value = "false",
+	},
+	{
+		.key = "ro.com.android.wifi-watchlist",
+		.value = "GoogleGuest",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-google",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "Oxygen.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "Tethys.ogg",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "Titania.ogg",
+	},
+	{
+		.key = "ro.crypto.fs_crypto_blkdev",
+		.value = "/dev/block/dm-1",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "encrypted",
+	},
+	{
+		.key = "ro.crypto.type",
+		.value = "block",
+	},
+	{
+		.key = "ro.dalvik.vm.native.bridge",
+		.value = "0",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.error.receiver.system.apps",
+		.value = "com.google.android.gms",
+	},
+	{
+		.key = "ro.expect.recovery_id",
+		.value = "0xc7e3a51dcb8bb9aac02a77707b095512cd8b751a000000000000000000000000",
+	},
+	{
+		.key = "ro.facelock.black_timeout",
+		.value = "400",
+	},
+	{
+		.key = "ro.facelock.det_timeout",
+		.value = "1500",
+	},
+	{
+		.key = "ro.facelock.est_max_time",
+		.value = "600",
+	},
+	{
+		.key = "ro.facelock.lively_timeout",
+		.value = "2500",
+	},
+	{
+		.key = "ro.facelock.rec_timeout",
+		.value = "2500",
+	},
+	{
+		.key = "ro.facelock.use_intro_anim",
+		.value = "false",
+	},
+	{
+		.key = "ro.frp.pst",
+		.value = "/dev/block/platform/msm_sdcc.1/by-name/frp",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "shamu",
+	},
+	{
+		.key = "ro.hwui.drop_shadow_cache_size",
+		.value = "6",
+	},
+	{
+		.key = "ro.hwui.gradient_cache_size",
+		.value = "1",
+	},
+	{
+		.key = "ro.hwui.layer_cache_size",
+		.value = "48",
+	},
+	{
+		.key = "ro.hwui.path_cache_size",
+		.value = "32",
+	},
+	{
+		.key = "ro.hwui.r_buffer_cache_size",
+		.value = "8",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_height",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_width",
+		.value = "2048",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_height",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_width",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.texture_cache_flushrate",
+		.value = "0.4",
+	},
+	{
+		.key = "ro.hwui.texture_cache_size",
+		.value = "72",
+	},
+	{
+		.key = "ro.mdm_helper_proxy_req",
+		.value = "true",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "196609",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "shamu",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "google",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "armeabi-v7a",
+	},
+	{
+		.key = "ro.product.cpu.abi2",
+		.value = "armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist",
+		.value = "armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist32",
+		.value = "armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist64",
+		.value = "",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "shamu",
+	},
+	{
+		.key = "ro.product.locale",
+		.value = "en-US",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "motorola",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "Nexus 6",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "shamu",
+	},
+	{
+		.key = "ro.qualcomm.perf.cores_online",
+		.value = "2",
+	},
+	{
+		.key = "ro.recovery_id",
+		.value = "0xc7c6270d7b27f78db1c6d8e41b37e5bf13310428000000000000000000000000",
+	},
+	{
+		.key = "ro.revision",
+		.value = "0",
+	},
+	{
+		.key = "ro.ril.svdo",
+		.value = "false",
+	},
+	{
+		.key = "ro.ril.svlte1x",
+		.value = "false",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "ZX1G22TBGF",
+	},
+	{
+		.key = "ro.setupwizard.enterprise_mode",
+		.value = "1",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "560",
+	},
+	{
+		.key = "ro.telephony.call_ring.multiple",
+		.value = "false",
+	},
+	{
+		.key = "ro.telephony.default_cdma_sub",
+		.value = "0",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "10",
+	},
+	{
+		.key = "ro.url.legal",
+		.value = "http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html",
+	},
+	{
+		.key = "ro.url.legal.android_privacy",
+		.value = "http://www.google.com/intl/%s/mobile/android/basic/privacy.html",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "ro.zygote",
+		.value = "zygote32",
+	},
+	{
+		.key = "selinux.reload_policy",
+		.value = "1",
+	},
+	{
+		.key = "service.bootanim.exit",
+		.value = "1",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.ims.QMI_DAEMON_STATUS",
+		.value = "1",
+	},
+	{
+		.key = "sys.oem_unlock_allowed",
+		.value = "0",
+	},
+	{
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "43200",
+	},
+	{
+		.key = "sys.sysctl.tcp_def_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "sys.usb.ffs.ready",
+		.value = "1",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "telephony.lteOnCdmaDevice",
+		.value = "1",
+	},
+	{
+		.key = "vidc.debug.level",
+		.value = "1",
+	},
+	{
+		.key = "vold.decrypt",
+		.value = "trigger_restart_framework",
+	},
+	{
+		.key = "vold.has_adoptable",
+		.value = "0",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wlan.driver.status",
+		.value = "ok",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
