@@ -1,10 +1,17 @@
 struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
-		.size = 299,
+		.size = 397,
 		.content =
 			"Processor\t: AArch64 Processor rev 3 (aarch64)\n"
 			"processor\t: 0\n"
+			"processor\t: 1\n"
+			"processor\t: 2\n"
+			"processor\t: 3\n"
+			"processor\t: 4\n"
+			"processor\t: 5\n"
+			"processor\t: 6\n"
+			"processor\t: 7\n"
 			"Features\t: fp asimd aes pmull sha1 sha2 crc32 wp half thumb fastmult vfp edsp neon vfpv3 tlsi vfpv4 idiva idivt \n"
 			"CPU implementer\t: 0x41\n"
 			"CPU architecture: 8\n"
@@ -196,6 +203,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1500000\n",
@@ -226,6 +243,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1500000\n",
@@ -250,5 +277,1785 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "1\n",
 	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings_list",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_max_freq",
+		.size = 8,
+		.content = "1500000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_min_freq",
+		.size = 7,
+		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings_list",
+		.size = 4,
+		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_max_freq",
+		.size = 8,
+		.content = "1500000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_min_freq",
+		.size = 7,
+		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
+		.size = 4,
+		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
+		.size = 2,
+		.content = "3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings_list",
+		.size = 2,
+		.content = "3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings_list",
+		.size = 4,
+		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings_list",
+		.size = 2,
+		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_max_freq",
+		.size = 8,
+		.content = "1500000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_min_freq",
+		.size = 7,
+		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings_list",
+		.size = 4,
+		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings_list",
+		.size = 2,
+		.content = "5\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_max_freq",
+		.size = 8,
+		.content = "1500000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_min_freq",
+		.size = 7,
+		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings_list",
+		.size = 4,
+		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings_list",
+		.size = 2,
+		.content = "6\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_max_freq",
+		.size = 8,
+		.content = "1500000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_min_freq",
+		.size = 7,
+		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/physical_package_id",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings_list",
+		.size = 4,
+		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
+		.size = 2,
+		.content = "3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings_list",
+		.size = 2,
+		.content = "7\n",
+	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "audioflinger.bootsnd",
+		.value = "0",
+	},
+	{
+		.key = "boot.sfbootcomplete",
+		.value = "0",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xmx",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-filter",
+		.value = "speed",
+	},
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "128m",
+	},
+	{
+		.key = "dalvik.vm.heapmaxfree",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heapminfree",
+		.value = "2m",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heaptargetutilization",
+		.value = "0.75",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xmx",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-filter",
+		.value = "speed",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.variant",
+		.value = "cortex-a15",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "debug.atrace.tags.enableflags",
+		.value = "0",
+	},
+	{
+		.key = "debug.force_rtl",
+		.value = "0",
+	},
+	{
+		.key = "debug.hwc.otf",
+		.value = "1",
+	},
+	{
+		.key = "debug.hwc.winupdate",
+		.value = "1",
+	},
+	{
+		.key = "debug.sf.layerdump",
+		.value = "0",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "dev.kies.sommode",
+		.value = "TRUE",
+	},
+	{
+		.key = "dev.kiessupport",
+		.value = "TRUE",
+	},
+	{
+		.key = "dev.ssrm.appsync3p",
+		.value = "true",
+	},
+	{
+		.key = "dhcp.wlan0.dns1",
+		.value = "208.67.222.222",
+	},
+	{
+		.key = "dhcp.wlan0.dns2",
+		.value = "208.67.220.220",
+	},
+	{
+		.key = "dhcp.wlan0.dns3",
+		.value = "",
+	},
+	{
+		.key = "dhcp.wlan0.dns4",
+		.value = "",
+	},
+	{
+		.key = "dhcp.wlan0.domain",
+		.value = "tfbnw.net",
+	},
+	{
+		.key = "dhcp.wlan0.gateway",
+		.value = "172.22.192.1",
+	},
+	{
+		.key = "dhcp.wlan0.ipaddress",
+		.value = "172.22.192.120",
+	},
+	{
+		.key = "dhcp.wlan0.leasetime",
+		.value = "10223",
+	},
+	{
+		.key = "dhcp.wlan0.mask",
+		.value = "255.255.224.0",
+	},
+	{
+		.key = "dhcp.wlan0.mtu",
+		.value = "",
+	},
+	{
+		.key = "dhcp.wlan0.pid",
+		.value = "3589",
+	},
+	{
+		.key = "dhcp.wlan0.reason",
+		.value = "BOUND",
+	},
+	{
+		.key = "dhcp.wlan0.result",
+		.value = "ok",
+	},
+	{
+		.key = "dhcp.wlan0.roaming",
+		.value = "0",
+	},
+	{
+		.key = "dhcp.wlan0.server",
+		.value = "192.168.162.165",
+	},
+	{
+		.key = "dhcp.wlan0.vendorInfo",
+		.value = "",
+	},
+	{
+		.key = "drm.service.enabled",
+		.value = "true",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "1,1",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "Unknown,Unknown",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.operator.alpha",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.iso-country",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.numeric",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "NOT_READY,NOT_READY",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "Samsung RIL v3.0",
+	},
+	{
+		.key = "init.svc.BCS-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.DIAG-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.DR-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.SIDESYNC_service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.SMD-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.apaservice",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.argos-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.at_distributor",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.auditd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.bootchecker",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ccm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.cpboot-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.cs_service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.dhcpcd_wlan0",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.edmaudit",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.epmlogd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.gatekeeperd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.gpsd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.icd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ipsec-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.jackservice",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.lmkd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.logd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.logd-reinit",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.macloader",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mobex-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mobicore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.otp",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.p2p_supplicant",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.powersnd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.prepare_param",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ril-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ril-daemon1",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.scs",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.sdp_cryptod",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.sec-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ss_kb_service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.swapon",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.watchdogd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "installd.sdcard_manipulate_done",
+		.value = "0",
+	},
+	{
+		.key = "keyguard.no_require_sim",
+		.value = "true",
+	},
+	{
+		.key = "logd.auditd",
+		.value = "false",
+	},
+	{
+		.key = "logd.klogd",
+		.value = "false",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.change",
+		.value = "net.qtaguid_enabled",
+	},
+	{
+		.key = "net.hostname",
+		.value = "android-cc80e88effbb2886",
+	},
+	{
+		.key = "net.knox.shareddevice.version",
+		.value = "2.6.0",
+	},
+	{
+		.key = "net.knoxscep.version",
+		.value = "2.0.1",
+	},
+	{
+		.key = "net.knoxsso.version",
+		.value = "2.5.0",
+	},
+	{
+		.key = "net.knoxvpn.version",
+		.value = "2.2.5",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.smart_switch.disabled",
+		.value = "1",
+	},
+	{
+		.key = "net.streaming.rtsp.uaprof",
+		.value = "http://wap.samsungmobile.com/uaprof/",
+	},
+	{
+		.key = "net.tcp.default_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "persist.audio.allsoundmute",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.cpufreq",
+		.value = "350000",
+	},
+	{
+		.key = "persist.audio.finemediavolume",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.globaleffect",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.headsetsysvolume",
+		.value = "9",
+	},
+	{
+		.key = "persist.audio.hphonesysvolume",
+		.value = "9",
+	},
+	{
+		.key = "persist.audio.k2hd",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.mpseek",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.mysound",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.ringermode",
+		.value = "2",
+	},
+	{
+		.key = "persist.audio.sales_code",
+		.value = "XSG",
+	},
+	{
+		.key = "persist.audio.soundalivefxsec",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.stereospeaker",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.sysvolume",
+		.value = "9",
+	},
+	{
+		.key = "persist.audio.uhqa",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.voipcpufreq",
+		.value = "350000",
+	},
+	{
+		.key = "persist.bluetooth_fw_ver",
+		.value = "bcm43438A1_V0051.0230.hcd",
+	},
+	{
+		.key = "persist.demo.hdmirotationlock",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.calldefault.simid",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.dataprefer.slotId",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.defdataSIMchange",
+		.value = "true",
+	},
+	{
+		.key = "persist.radio.ims_block",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.initphone-type",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.multisim.config",
+		.value = "dsds",
+	},
+	{
+		.key = "persist.radio.plmnname",
+		.value = ",",
+	},
+	{
+		.key = "persist.radio.sib16_support",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.ss.voiceclass_1",
+		.value = "false",
+	},
+	{
+		.key = "persist.ril.ims.eutranParam",
+		.value = "0",
+	},
+	{
+		.key = "persist.ril.ims.pdnFailCause",
+		.value = "0",
+	},
+	{
+		.key = "persist.ril.ims.utranParam",
+		.value = "0",
+	},
+	{
+		.key = "persist.ril.modem.board",
+		.value = "SHANNON310",
+	},
+	{
+		.key = "persist.ril.modem.board2",
+		.value = "SHANNON310",
+	},
+	{
+		.key = "persist.ril.xcap.pdnFailCause",
+		.value = "0",
+	},
+	{
+		.key = "persist.security.ams.enforcing",
+		.value = "3",
+	},
+	{
+		.key = "persist.security.tlc.ccm",
+		.value = "0",
+	},
+	{
+		.key = "persist.security.tlc.otp",
+		.value = "0",
+	},
+	{
+		.key = "persist.service.bdroid.version",
+		.value = "4.1",
+	},
+	{
+		.key = "persist.sys.SUWRebootReason",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.ccm.date",
+		.value = "Wed Mar 22 20:04:05 KST 2017",
+	},
+	{
+		.key = "persist.sys.dalvik.vm.lib.2",
+		.value = "libart.so",
+	},
+	{
+		.key = "persist.sys.drs.date",
+		.value = "Wed Mar 22 20:04:05 KST 2017",
+	},
+	{
+		.key = "persist.sys.ims.enable_gcf_mode",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.ims_test_mode",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.imsomc_updated",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.kap.date",
+		.value = "Wed Mar 22 20:04:05 KST 2017",
+	},
+	{
+		.key = "persist.sys.locale",
+		.value = "en-US",
+	},
+	{
+		.key = "persist.sys.localedefault",
+		.value = "en-GB",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.sb.setting.enabled",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.setupwizard",
+		.value = "FINISH",
+	},
+	{
+		.key = "persist.sys.sm_mode",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.storage_preload",
+		.value = "2",
+	},
+	{
+		.key = "persist.sys.timezone",
+		.value = "America/New_York",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "persist.sys.usb.dualrole",
+		.value = "false",
+	},
+	{
+		.key = "ril.ICC_TYPE",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.RildInit",
+		.value = "1,1",
+	},
+	{
+		.key = "ril.atd_status",
+		.value = "1_0_0",
+	},
+	{
+		.key = "ril.cbd.boot_done",
+		.value = "1",
+	},
+	{
+		.key = "ril.cbd.dt_revision",
+		.value = "008",
+	},
+	{
+		.key = "ril.cbd.rfs_check_done",
+		.value = "1",
+	},
+	{
+		.key = "ril.cs_svc",
+		.value = "1",
+	},
+	{
+		.key = "ril.ecclist_net0",
+		.value = "",
+	},
+	{
+		.key = "ril.hasisim",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.ims.ecsupport",
+		.value = "2",
+	},
+	{
+		.key = "ril.ims.ltevoicesupport",
+		.value = "2",
+	},
+	{
+		.key = "ril.initPB",
+		.value = "0",
+	},
+	{
+		.key = "ril.initPB2",
+		.value = "0",
+	},
+	{
+		.key = "ril.official_cscver",
+		.value = "J700FOJV4BQC6",
+	},
+	{
+		.key = "ril.radiostate",
+		.value = "10",
+	},
+	{
+		.key = "ril.serialnumber",
+		.value = "RZ8J603D1LE",
+	},
+	{
+		.key = "ril.servicestate",
+		.value = "3",
+	},
+	{
+		.key = "ril.ss.routing",
+		.value = "0",
+	},
+	{
+		.key = "ril.subinfo",
+		.value = "0:2147483643,1:2147483644",
+	},
+	{
+		.key = "ril.voice.rat",
+		.value = "3",
+	},
+	{
+		.key = "rild.libpath",
+		.value = "/system/lib/libsec-ril.so",
+	},
+	{
+		.key = "rild.libpath2",
+		.value = "/system/lib/libsec-ril-dsds.so",
+	},
+	{
+		.key = "ro.adb.qemud",
+		.value = "1",
+	},
+	{
+		.key = "ro.adb.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.arch",
+		.value = "exynos7580",
+	},
+	{
+		.key = "ro.astcenc.astcsupport",
+		.value = "1",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "exynos5",
+	},
+	{
+		.key = "ro.boot.boot_salescode",
+		.value = "",
+	},
+	{
+		.key = "ro.boot.bootloader",
+		.value = "J700FXXU4BQC6",
+	},
+	{
+		.key = "ro.boot.debug_level",
+		.value = "0x4f4c",
+	},
+	{
+		.key = "ro.boot.emmc_checksum",
+		.value = "3",
+	},
+	{
+		.key = "ro.boot.hardware",
+		.value = "samsungexynos7580",
+	},
+	{
+		.key = "ro.boot.hmac_mismatch",
+		.value = "0",
+	},
+	{
+		.key = "ro.boot.hw_rev",
+		.value = "8",
+	},
+	{
+		.key = "ro.boot.odin_download",
+		.value = "1",
+	},
+	{
+		.key = "ro.boot.sec_atd.tty",
+		.value = "/dev/ttySAC1",
+	},
+	{
+		.key = "ro.boot.security_mode",
+		.value = "0",
+	},
+	{
+		.key = "ro.boot.selinux",
+		.value = "enforcing",
+	},
+	{
+		.key = "ro.boot.serialno",
+		.value = "33003962cda514ad",
+	},
+	{
+		.key = "ro.boot.ucs_mode",
+		.value = "0",
+	},
+	{
+		.key = "ro.boot.warranty_bit",
+		.value = "0",
+	},
+	{
+		.key = "ro.boot_recovery",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bootimage.build.date",
+		.value = "Wed Mar 22 20:06:48 KST 2017",
+	},
+	{
+		.key = "ro.bootimage.build.date.utc",
+		.value = "1490180808",
+	},
+	{
+		.key = "ro.bootimage.build.fingerprint",
+		.value = "samsung/j7eltexx/j7elte:6.0.1/MMB29K/J700FXXU4BQC6:user/test-keys",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "J700FXXU4BQC6",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bt.bdaddr_path",
+		.value = "/efs/bluetooth/bt_addr",
+	},
+	{
+		.key = "ro.build.PDA",
+		.value = "J700FXXU4BQC6",
+	},
+	{
+		.key = "ro.build.changelist",
+		.value = "10198822",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "phone",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Wed Mar 22 20:04:05 KST 2017",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1490180645",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "j7eltexx-user 6.0.1 MMB29K J700FXXU4BQC6 release-keys",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "MMB29K.J700FXXU4BQC6",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "samsung/j7eltexx/j7elte:6.0.1/MMB29K/J700FXXU4BQC6:user/release-keys",
+	},
+	{
+		.key = "ro.build.flavor",
+		.value = "j7eltexx-user",
+	},
+	{
+		.key = "ro.build.hidden_ver",
+		.value = "J700FXXU4BQC6",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "SWHC3715",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "MMB29K",
+	},
+	{
+		.key = "ro.build.official.release",
+		.value = "true",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "j7elte",
+	},
+	{
+		.key = "ro.build.scafe.cream",
+		.value = "white",
+	},
+	{
+		.key = "ro.build.scafe.shot",
+		.value = "single",
+	},
+	{
+		.key = "ro.build.scafe.size",
+		.value = "short",
+	},
+	{
+		.key = "ro.build.scafe.version",
+		.value = "2016A",
+	},
+	{
+		.key = "ro.build.selinux",
+		.value = "1",
+	},
+	{
+		.key = "ro.build.selinux.enforce",
+		.value = "1",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "dpi",
+	},
+	{
+		.key = "ro.build.version.all_codenames",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.base_os",
+		.value = "",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "J700FXXU4BQC6",
+	},
+	{
+		.key = "ro.build.version.preview_sdk",
+		.value = "0",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "6.0.1",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "23",
+	},
+	{
+		.key = "ro.build.version.sdl",
+		.value = "2301",
+	},
+	{
+		.key = "ro.build.version.security_patch",
+		.value = "2017-03-01",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.chipname",
+		.value = "exynos7580",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-samsung",
+	},
+	{
+		.key = "ro.com.google.gmsversion",
+		.value = "6.0_r10",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "Morning_Flower.ogg",
+	},
+	{
+		.key = "ro.config.dha_cached_max",
+		.value = "5",
+	},
+	{
+		.key = "ro.config.dha_cached_min",
+		.value = "2",
+	},
+	{
+		.key = "ro.config.dha_empty_init",
+		.value = "12",
+	},
+	{
+		.key = "ro.config.dha_empty_max",
+		.value = "16",
+	},
+	{
+		.key = "ro.config.dha_empty_min",
+		.value = "6",
+	},
+	{
+		.key = "ro.config.dha_lmk_scale",
+		.value = "0.66",
+	},
+	{
+		.key = "ro.config.dha_th_rate",
+		.value = "2.5",
+	},
+	{
+		.key = "ro.config.dmverity",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.kap",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.knox",
+		.value = "v30",
+	},
+	{
+		.key = "ro.config.media_sound",
+		.value = "Media_preview_Touch_the_light.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "Skyline.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound_2",
+		.value = "S_Charming_Bell.ogg",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "Over_the_Horizon.ogg",
+	},
+	{
+		.key = "ro.config.ringtone_2",
+		.value = "Basic_Bell.ogg",
+	},
+	{
+		.key = "ro.config.rkp",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.rm_preload_enabled",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.tima",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.timaversion",
+		.value = "3.0",
+	},
+	{
+		.key = "ro.cp_debug_level",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.crypto.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "unencrypted",
+	},
+	{
+		.key = "ro.csc.country_code",
+		.value = "UAE",
+	},
+	{
+		.key = "ro.csc.countryiso_code",
+		.value = "AE",
+	},
+	{
+		.key = "ro.csc.sales_code",
+		.value = "XSG",
+	},
+	{
+		.key = "ro.dalvik.vm.native.bridge",
+		.value = "0",
+	},
+	{
+		.key = "ro.debug_level",
+		.value = "0x4f4c",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.emmc_checksum",
+		.value = "3",
+	},
+	{
+		.key = "ro.error.receiver.default",
+		.value = "com.samsung.receiver.error",
+	},
+	{
+		.key = "ro.expect.recovery_id",
+		.value = "0xc8326816ea212d9a942ed2888101dea9fa88529d000000000000000000000000",
+	},
+	{
+		.key = "ro.fmp_config",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.frp.pst",
+		.value = "/dev/block/persistent",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "samsungexynos7580",
+	},
+	{
+		.key = "ro.hmac_mismatch",
+		.value = "0",
+	},
+	{
+		.key = "ro.hwui.drop_shadow_cache_size",
+		.value = "2",
+	},
+	{
+		.key = "ro.hwui.gradient_cache_size",
+		.value = "0.5",
+	},
+	{
+		.key = "ro.hwui.layer_cache_size",
+		.value = "16",
+	},
+	{
+		.key = "ro.hwui.path_cache_size",
+		.value = "4",
+	},
+	{
+		.key = "ro.hwui.r_buffer_cache_size",
+		.value = "2",
+	},
+	{
+		.key = "ro.hwui.shape_cache_size",
+		.value = "1",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_height",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_width",
+		.value = "2048",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_height",
+		.value = "512",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_width",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.texture_cache_flushrate",
+		.value = "0.4",
+	},
+	{
+		.key = "ro.hwui.texture_cache_size",
+		.value = "24",
+	},
+	{
+		.key = "ro.im.param.offset",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.kernel.qemu",
+		.value = "0",
+	},
+	{
+		.key = "ro.kernel.qemu.gles",
+		.value = "1",
+	},
+	{
+		.key = "ro.mct.compressiontype",
+		.value = "ETC1",
+	},
+	{
+		.key = "ro.me.param.offset",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.multisim.simslotcount",
+		.value = "2",
+	},
+	{
+		.key = "ro.nfc.port",
+		.value = "I2C",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "196609",
+	},
+	{
+		.key = "ro.pr.param.offset",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "universal7580",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "samsung",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "armeabi-v7a",
+	},
+	{
+		.key = "ro.product.cpu.abi2",
+		.value = "armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist",
+		.value = "armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist32",
+		.value = "armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist64",
+		.value = "",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "j7elte",
+	},
+	{
+		.key = "ro.product.locale",
+		.value = "en-GB",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "samsung",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "SM-J700F",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "j7eltexx",
+	},
+	{
+		.key = "ro.product_ship",
+		.value = "true",
+	},
+	{
+		.key = "ro.revision",
+		.value = "0",
+	},
+	{
+		.key = "ro.ril.gprsclass",
+		.value = "10",
+	},
+	{
+		.key = "ro.ril.hsxpa",
+		.value = "1",
+	},
+	{
+		.key = "ro.rtn_config",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.sec.fle.encryption",
+		.value = "true",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.security.icd.flagmode",
+		.value = "multi",
+	},
+	{
+		.key = "ro.security.reactive.version",
+		.value = "2.0.11",
+	},
+	{
+		.key = "ro.security.vpnpp.release",
+		.value = "7.0",
+	},
+	{
+		.key = "ro.security.vpnpp.ver",
+		.value = "1.4",
+	},
+	{
+		.key = "ro.security_mode",
+		.value = "0",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "33003962cda514ad",
+	},
+	{
+		.key = "ro.setupwizard.mode",
+		.value = "OPTIONAL",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "320",
+	},
+	{
+		.key = "ro.sku.param.offset",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.smps.enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.sn.param.offset",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "9",
+	},
+	{
+		.key = "ro.warranty_bit",
+		.value = "0",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "ro.zygote",
+		.value = "zygote32",
+	},
+	{
+		.key = "ro.zygote.disable_gl_preload",
+		.value = "1",
+	},
+	{
+		.key = "rw.km_fips_status",
+		.value = "ready",
+	},
+	{
+		.key = "secmm.player.uhqamode",
+		.value = "True",
+	},
+	{
+		.key = "security.ASKS.policy_version",
+		.value = "161011",
+	},
+	{
+		.key = "security.mdpp.mass",
+		.value = "skmm",
+	},
+	{
+		.key = "selinux.policy_version",
+		.value = "SEPF_SECMOBILE_6.0.1_0033",
+	},
+	{
+		.key = "selinux.reload_policy",
+		.value = "1",
+	},
+	{
+		.key = "service.bootanim.exit",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.rec.running",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.running",
+		.value = "0",
+	},
+	{
+		.key = "service.media.powersnd",
+		.value = "1",
+	},
+	{
+		.key = "storage.mmc.size",
+		.value = "15758000128",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.config.samp_spcm_enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.config.spcm_db_enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.config.spcm_db_launcher",
+		.value = "true",
+	},
+	{
+		.key = "sys.config.spcm_preload_enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.dockstate",
+		.value = "0",
+	},
+	{
+		.key = "sys.enterprise.billing.version",
+		.value = "1.2.0",
+	},
+	{
+		.key = "sys.enterprise.otp.version",
+		.value = "2.6.0",
+	},
+	{
+		.key = "sys.knox.exists",
+		.value = "0",
+	},
+	{
+		.key = "sys.knox.store",
+		.value = "0",
+	},
+	{
+		.key = "sys.mobicoredaemon.enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.nfc.support",
+		.value = "0",
+	},
+	{
+		.key = "sys.oem_unlock_allowed",
+		.value = "0",
+	},
+	{
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "10800",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "sys.usb.configfs",
+		.value = "0",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "system.camera.CC.disable",
+		.value = "0",
+	},
+	{
+		.key = "telephony.lteOnCdmaDevice",
+		.value = "0",
+	},
+	{
+		.key = "vold.has_adoptable",
+		.value = "0",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wlan.driver.status",
+		.value = "ok",
+	},
+	{
+		.key = "wlan.wfd.status",
+		.value = "disconnected",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
