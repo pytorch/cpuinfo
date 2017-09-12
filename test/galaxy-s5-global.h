@@ -249,9 +249,30 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
+		.size = 672,
+		.content =
+			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
+			"500000\t\t0\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"600000\t\t0\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"700000\t\t0\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"800000\t\t17\t\t17\t\t17\t\t17\t\t34\t\t34\t\t34\t\t34\t\t\n"
+			"900000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"1000000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"1100000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"1200000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"1300000\t\t1914\t\t1914\t\t1914\t\t1914\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"1400000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"1500000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t10\t\t10\t\t10\t\t10\t\t\n"
+			"1600000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t20\t\t20\t\t20\t\t20\t\t\n"
+			"1700000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t1868\t\t1868\t\t1868\t\t1868\t\t\n"
+			"1800000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			"1900000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t0\t\t0\t\t0\t\t0\t\t\n",
+	},
+	{
 		.path = "/sys/devices/system/b.L/big_threads",
 		.size = 2,
-		.content = "4\n",
+		.content = "5\n",
 	},
 	{
 		.path = "/sys/devices/system/b.L/boot_cluster",
@@ -267,24 +288,24 @@ struct cpuinfo_mock_file filesystem[] = {
 			"cpu 2 : 1\n"
 			"cpu 3 : 1\n"
 			"cpu 4 : 1\n"
-			"cpu 5 : 1\n"
+			"cpu 5 : 0\n"
 			"cpu 6 : 1\n"
-			"cpu 7 : 1\n",
+			"cpu 7 : 0\n",
 	},
 	{
 		.path = "/sys/devices/system/b.L/little_threads",
 		.size = 2,
-		.content = "1\n",
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/b.L/down_migrations",
 		.size = 4,
-		.content = "852\n",
+		.content = "905\n",
 	},
 	{
 		.path = "/sys/devices/system/b.L/up_migrations",
 		.size = 5,
-		.content = "1969\n",
+		.content = "2088\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
@@ -307,6 +328,30 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "500000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 89,
+		.content =
+			"1300000 1966\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 17\n"
+			"700000 0\n"
+			"600000 0\n"
+			"500000 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -317,6 +362,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -325,6 +375,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
 		.size = 2,
 		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 3,
+		.content = "01\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
@@ -347,6 +402,30 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "500000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
+		.size = 89,
+		.content =
+			"1300000 2153\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 17\n"
+			"700000 0\n"
+			"600000 0\n"
+			"500000 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -357,6 +436,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
 		.size = 2,
 		.content = "1\n",
@@ -365,6 +449,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings_list",
 		.size = 2,
 		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
+		.size = 3,
+		.content = "02\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
@@ -387,6 +476,30 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "500000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
+		.size = 89,
+		.content =
+			"1300000 2341\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 17\n"
+			"700000 0\n"
+			"600000 0\n"
+			"500000 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -397,6 +510,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
 		.size = 2,
 		.content = "2\n",
@@ -405,6 +523,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
 		.size = 2,
 		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings",
+		.size = 3,
+		.content = "04\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
@@ -427,6 +550,30 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "500000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
+		.size = 89,
+		.content =
+			"1300000 2535\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 17\n"
+			"700000 0\n"
+			"600000 0\n"
+			"500000 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -437,6 +584,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
 		.size = 2,
 		.content = "3\n",
@@ -445,6 +597,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings_list",
 		.size = 2,
 		.content = "3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings",
+		.size = 3,
+		.content = "08\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
@@ -467,6 +624,33 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "800000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
+		.size = 124,
+		.content =
+			"1900000 0\n"
+			"1800000 0\n"
+			"1700000 2601\n"
+			"1600000 80\n"
+			"1500000 30\n"
+			"1400000 0\n"
+			"1300000 0\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 34\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "19\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -477,6 +661,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -485,6 +674,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings_list",
 		.size = 2,
 		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings",
+		.size = 3,
+		.content = "10\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
@@ -507,6 +701,33 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "800000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
+		.size = 124,
+		.content =
+			"1900000 0\n"
+			"1800000 0\n"
+			"1700000 2803\n"
+			"1600000 80\n"
+			"1500000 30\n"
+			"1400000 0\n"
+			"1300000 0\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 34\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "19\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -517,6 +738,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
 		.size = 2,
 		.content = "1\n",
@@ -525,6 +751,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings_list",
 		.size = 2,
 		.content = "5\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings",
+		.size = 3,
+		.content = "20\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
@@ -547,6 +778,33 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "800000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
+		.size = 124,
+		.content =
+			"1900000 0\n"
+			"1800000 0\n"
+			"1700000 2998\n"
+			"1600000 80\n"
+			"1500000 30\n"
+			"1400000 0\n"
+			"1300000 0\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 34\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "19\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -557,6 +815,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
 		.size = 2,
 		.content = "2\n",
@@ -565,6 +828,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings_list",
 		.size = 2,
 		.content = "6\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings",
+		.size = 3,
+		.content = "40\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/related_cpus",
@@ -587,6 +855,33 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "800000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_transition_latency",
+		.size = 7,
+		.content = "100000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
+		.size = 124,
+		.content =
+			"1900000 0\n"
+			"1800000 0\n"
+			"1700000 3196\n"
+			"1600000 80\n"
+			"1500000 30\n"
+			"1400000 0\n"
+			"1300000 0\n"
+			"1200000 0\n"
+			"1100000 0\n"
+			"1000000 0\n"
+			"900000 0\n"
+			"800000 34\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "19\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu7/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -597,6 +892,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
 		.size = 2,
 		.content = "3\n",
@@ -605,6 +905,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings_list",
 		.size = 2,
 		.content = "7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings",
+		.size = 3,
+		.content = "80\n",
 	},
 	{ NULL },
 };
