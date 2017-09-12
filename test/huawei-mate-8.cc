@@ -153,7 +153,7 @@ TEST(L1I, size) {
 			case 5:
 			case 6:
 			case 7:
-				ASSERT_EQ(16 * 1024, l1i.instances[k].size);
+				ASSERT_EQ(32 * 1024, l1i.instances[k].size);
 				break;
 		}
 	}
@@ -229,20 +229,7 @@ TEST(L1D, non_null) {
 TEST(L1D, size) {
 	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
 	for (uint32_t k = 0; k < l1d.count; k++) {
-		switch (k) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-				ASSERT_EQ(32 * 1024, l1d.instances[k].size);
-				break;
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-				ASSERT_EQ(16 * 1024, l1d.instances[k].size);
-				break;
-		}
+		ASSERT_EQ(32 * 1024, l1d.instances[k].size);
 	}
 }
 
@@ -321,7 +308,7 @@ TEST(L2, size) {
 				ASSERT_EQ(1 * 1024 * 1024, l2.instances[k].size);
 				break;
 			case 1:
-				ASSERT_EQ(256 * 1024, l2.instances[k].size);
+				ASSERT_EQ(512 * 1024, l2.instances[k].size);
 				break;
 		}
 	}
@@ -402,6 +389,9 @@ TEST(L4, none) {
 
 int main(int argc, char* argv[]) {
 	cpuinfo_mock_filesystem(filesystem);
+#ifdef __ANDROID__
+	cpuinfo_mock_android_properties(properties);
+#endif
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

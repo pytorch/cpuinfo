@@ -42,6 +42,10 @@ struct cpuinfo_mock_property {
 	ssize_t CPUINFO_ABI cpuinfo_mock_read(int fd, void* buffer, size_t capacity);
 #endif
 
+#if defined(__ANDROID__)
+	void CPUINFO_ABI cpuinfo_mock_android_properties(struct cpuinfo_mock_property* properties);
+#endif
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
