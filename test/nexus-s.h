@@ -1,10 +1,10 @@
 struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
-		.size = 279,
+		.size = 280,
 		.content =
 			"Processor\t: ARMv7 Processor rev 2 (v7l)\n"
-			"BogoMIPS\t: 99.26\n"
+			"BogoMIPS\t: 994.65\n"
 			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 \n"
 			"CPU implementer\t: 0x41\n"
 			"CPU architecture: 7\n"
@@ -109,6 +109,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1000000\n",
@@ -118,5 +128,647 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 7,
 		.content = "100000\n",
 	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 6,
+		.content = "40000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 56,
+		.content =
+			"1000000 2396\n"
+			"800000 219\n"
+			"400000 245\n"
+			"200000 185\n"
+			"100000 18\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "100\n",
+	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "dalvik.vm.dexopt-flags",
+		.value = "m=y",
+	},
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "48m",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "128m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "5m",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "drm.service.enabled",
+		.value = "true",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "2",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "EvDo-rev.A:8",
+	},
+	{
+		.key = "gsm.nitz.time",
+		.value = "1505184601399",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = "Sprint",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "us",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "310120",
+	},
+	{
+		.key = "gsm.sim.operator.alpha",
+		.value = "Sprint",
+	},
+	{
+		.key = "gsm.sim.operator.iso-country",
+		.value = "us",
+	},
+	{
+		.key = "gsm.sim.operator.numeric",
+		.value = "310120",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "READY",
+	},
+	{
+		.key = "gsm.version.baseband",
+		.value = "D720SPRLC1 ",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "RIL 980955",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bluetoothd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.dbus",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.gpsd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.hciattach",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.pvrsrvinit",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ril-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.setup_fs",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "keyguard.no_require_sim",
+		.value = "true",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.cdma.configurable.mode",
+		.value = "-1",
+	},
+	{
+		.key = "net.change",
+		.value = "net.cdma.configurable.mode",
+	},
+	{
+		.key = "net.hostname",
+		.value = "android-2b040bd45a1b2a33",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.tcp.buffersize.default",
+		.value = "4096,87380,110208,4096,16384,110208",
+	},
+	{
+		.key = "net.tcp.buffersize.edge",
+		.value = "4093,26280,35040,4096,16384,35040",
+	},
+	{
+		.key = "net.tcp.buffersize.gprs",
+		.value = "4092,8760,11680,4096,8760,11680",
+	},
+	{
+		.key = "net.tcp.buffersize.hspa",
+		.value = "4094,87380,262144,4096,16384,262144",
+	},
+	{
+		.key = "net.tcp.buffersize.lte",
+		.value = "524288,1048576,2097152,262144,524288,1048576",
+	},
+	{
+		.key = "net.tcp.buffersize.umts",
+		.value = "4094,87380,110208,4096,16384,110208",
+	},
+	{
+		.key = "net.tcp.buffersize.wifi",
+		.value = "524288,1048576,2097152,262144,524288,1048576",
+	},
+	{
+		.key = "net.tcp.buffersize.wimax",
+		.value = "4096,524288,1048576,4096,16384,110208",
+	},
+	{
+		.key = "persist.sys.country",
+		.value = "US",
+	},
+	{
+		.key = "persist.sys.language",
+		.value = "en",
+	},
+	{
+		.key = "persist.sys.localevar",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.timezone",
+		.value = "America/Los_Angeles",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "mass_storage,adb",
+	},
+	{
+		.key = "ril.MSL",
+		.value = "279803",
+	},
+	{
+		.key = "ril.OTKSL",
+		.value = "944368",
+	},
+	{
+		.key = "ril.bt_macaddr",
+		.value = "001247012345",
+	},
+	{
+		.key = "ril.ecclist",
+		.value = "911,#911,*911",
+	},
+	{
+		.key = "ril.hw_ver",
+		.value = "H:D720.06 S.Q  ",
+	},
+	{
+		.key = "ril.model_id",
+		.value = "",
+	},
+	{
+		.key = "ril.otksl_flag",
+		.value = "0",
+	},
+	{
+		.key = "ril.prl_num",
+		.value = "1",
+	},
+	{
+		.key = "ril.prl_ver_1",
+		.value = "P:61083        ",
+	},
+	{
+		.key = "ril.product_code",
+		.value = "",
+	},
+	{
+		.key = "ril.rfcal_date",
+		.value = "0000.00.00",
+	},
+	{
+		.key = "ril.sw_ver",
+		.value = "D720SPRLC1 ",
+	},
+	{
+		.key = "rild.libargs",
+		.value = "-d /dev/ttyS0",
+	},
+	{
+		.key = "rild.libpath",
+		.value = "/vendor/lib/libsec-ril.so",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "D720SPRLC1",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "s5pc110",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "D720SPRKE1",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bt.bdaddr_path",
+		.value = "/efs/bluetooth/bt_addr",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "nosdcard",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1332707366",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Sun Mar 25 20:29:26 UTC 2012",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "sojus-user 4.0.4 IMM76D 299849 release-keys",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "IMM76D",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "google/sojus/crespo4g:4.0.4/IMM76D/299849:user/release-keys",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "vpbs7.mtv.corp.google.com",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "IMM76D",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "crespo4g",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "android-build",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "299849",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "4.0.4",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "15",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "SPR",
+	},
+	{
+		.key = "ro.cdma.home.operator.alpha",
+		.value = "Sprint",
+	},
+	{
+		.key = "ro.cdma.home.operator.numeric",
+		.value = "310120",
+	},
+	{
+		.key = "ro.com.android.dataroaming",
+		.value = "false",
+	},
+	{
+		.key = "ro.com.android.dateformat",
+		.value = "MM-dd-yyyy",
+	},
+	{
+		.key = "ro.com.android.wifi-watchlist",
+		.value = "GoogleGuest",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-google",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "Alarm_Classic.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "Castor.ogg",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "Sceptrum.ogg",
+	},
+	{
+		.key = "ro.crypto.fs_flags",
+		.value = "0x00000406",
+	},
+	{
+		.key = "ro.crypto.fs_mnt_point",
+		.value = "/data",
+	},
+	{
+		.key = "ro.crypto.fs_options",
+		.value = "nomblk_io_submit",
+	},
+	{
+		.key = "ro.crypto.fs_real_blkdev",
+		.value = "/dev/block/platform/s3c-sdhci.0/by-name/userdata",
+	},
+	{
+		.key = "ro.crypto.fs_type",
+		.value = "ext4",
+	},
+	{
+		.key = "ro.crypto.keyfile.userdata",
+		.value = "/efs/userdata_footer",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "unencrypted",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.error.receiver.system.apps",
+		.value = "com.google.android.feedback",
+	},
+	{
+		.key = "ro.factorytest",
+		.value = "0",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "herring",
+	},
+	{
+		.key = "ro.nfc.port",
+		.value = "I2C",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "131072",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "herring",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "google",
+	},
+	{
+		.key = "ro.product.cpu.abi2",
+		.value = "armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "armeabi-v7a",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "crespo4g",
+	},
+	{
+		.key = "ro.product.locale.language",
+		.value = "en",
+	},
+	{
+		.key = "ro.product.locale.region",
+		.value = "US",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "samsung",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "Nexus S 4G",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "sojus",
+	},
+	{
+		.key = "ro.radio.noril",
+		.value = "yes",
+	},
+	{
+		.key = "ro.revision",
+		.value = "34",
+	},
+	{
+		.key = "ro.ril.MEID",
+		.value = "A000002A635782",
+	},
+	{
+		.key = "ro.runtime.firstboot",
+		.value = "1505184605487",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "363581CC0B5F00EC",
+	},
+	{
+		.key = "ro.setupwizard.enterprise_mode",
+		.value = "1",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "240",
+	},
+	{
+		.key = "ro.telephony.call_ring.multiple",
+		.value = "0",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "4",
+	},
+	{
+		.key = "ro.url.legal.android_privacy",
+		.value = "http://www.google.com/intl/%s/mobile/android/basic/privacy.html",
+	},
+	{
+		.key = "ro.url.legal",
+		.value = "http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "ro.wimax.interface",
+		.value = "uwbr0",
+	},
+	{
+		.key = "status.battery.level",
+		.value = "5",
+	},
+	{
+		.key = "status.battery.level_raw",
+		.value = "50",
+	},
+	{
+		.key = "status.battery.level_scale",
+		.value = "9",
+	},
+	{
+		.key = "status.battery.state",
+		.value = "Slow",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "mass_storage,adb",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "mass_storage,adb",
+	},
+	{
+		.key = "system_init.startsurfaceflinger",
+		.value = "0",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wifi.supplicant_scan_interval",
+		.value = "15",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
