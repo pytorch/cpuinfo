@@ -246,7 +246,7 @@ TEST(L2, non_null) {
 	ASSERT_TRUE(l2.instances);
 }
 
-TEST(L2, DISABLED_size) {
+TEST(L2, size) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
 		ASSERT_EQ(512 * 1024, l2.instances[k].size);
@@ -260,10 +260,11 @@ TEST(L2, associativity) {
 	}
 }
 
-TEST(L2, DISABLED_sets) {
+TEST(L2, sets) {
 	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
 	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(1024, l2.instances[k].sets);
+		ASSERT_EQ(l2.instances[k].size,
+			l2.instances[k].sets * l2.instances[k].line_size * l2.instances[k].partitions * l2.instances[k].associativity);
 	}
 }
 

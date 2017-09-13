@@ -418,6 +418,9 @@ TEST(L4, none) {
 
 int main(int argc, char* argv[]) {
 	cpuinfo_mock_filesystem(filesystem);
+#ifdef __ANDROID__
+	cpuinfo_mock_android_properties(properties);
+#endif
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

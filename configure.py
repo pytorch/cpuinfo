@@ -70,26 +70,8 @@ def main(args):
             build.smoketest("brand-string-test", build.cxx("name/brand-string.cc"))
         if options.mock:
             with build.options(macros={"CPUINFO_MOCK": int(options.mock)}):
-                if build.target.is_arm and build.target.is_linux:
-                    # build.unittest("raspberry-pi-test", build.cxx("raspberry-pi.cc"))
-                    # build.unittest("raspberry-pi-zero-test", build.cxx("raspberry-pi-zero.cc"))
-                    # build.unittest("raspberry-pi2-test", build.cxx("raspberry-pi2.cc"))
-                    # build.unittest("raspberry-pi3-test", build.cxx("raspberry-pi3.cc"))
-                    # build.unittest("beagleboard-xm-test", build.cxx("beagleboard-xm.cc"))
-                    # build.unittest("pandaboard-es-test", build.cxx("pandaboard-es.cc"))
-                    # build.unittest("odroid-u2-test", build.cxx("odroid-u2.cc"))
-                    # build.unittest("arndaleboard-test", build.cxx("arndaleboard.cc"))
-
-                    # build.unittest("nexus-s-test", build.cxx("nexus-s.cc"))
-                    # build.unittest("galaxy-nexus-test", build.cxx("galaxy-nexus.cc"))
-                    build.unittest("nexus4-test", build.cxx("nexus4.cc"))
-                    # build.unittest("nexus5-test", build.cxx("nexus5.cc"))
-
-                if (build.target.is_arm or build.target.is_arm64) and build.target.is_linux:
-                #     build.unittest("jetson-tx1-test", build.cxx("jetson-tx1.cc"))
-                #     build.unittest("nexus9-test", build.cxx("nexus9.cc"))
-                #     build.unittest("scaleway-test", build.cxx("scaleway.cc"))
-                    build.unittest("galaxy-s7-us-test", build.cxx("galaxy-s7-us.cc"))
+                if build.target.is_arm64 and build.target.is_linux:
+                    build.unittest("scaleway-test", build.cxx("scaleway.cc"))
 
     return build
 
