@@ -248,8 +248,21 @@ void cpuinfo_arm_decode_cache(
 				.associativity = 4,
 				.line_size = 64
 			};
+
+			size_t l2_size = 256 * 1024;
+#ifdef __ANDROID__
+			switch (chipset->vendor) {
+				case cpuinfo_arm_chipset_vendor_samsung:
+					l2_size = 512 * 1024;
+					break;
+				default:
+					/* Silence compiler warning about unhandled enum values */
+					break;
+			}
+#endif
+
 			*l2 = (struct cpuinfo_cache) {
-				.size = 256 * 1024,
+				.size = l2_size,
 				.associativity = 8,
 				.line_size = 64
 			};
