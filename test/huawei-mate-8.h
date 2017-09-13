@@ -164,9 +164,29 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
+		.path = "/sys/devices/system/cpu/online",
+		.size = 4,
+		.content = "0-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 1,
+		.content = "\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/modalias",
+		.size = 66,
+		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+		.size = 22,
+		.content = "hisi_big_cluster_idle\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+		.size = 5,
+		.content = "menu\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
@@ -184,6 +204,75 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+		.size = 47,
+		.content = "480000 807000 1018000 1306000 1517000 1805000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 70,
+		.content =
+			"480000 3150\n"
+			"807000 77\n"
+			"1018000 11\n"
+			"1306000 911\n"
+			"1517000 174\n"
+			"1805000 5153\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "97\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
+		.size = 521,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1018000   1306000   1517000   1805000 \n"
+			"   480000:         0         4         0        17         0         1 \n"
+			"   807000:         4         0         0         2         0         0 \n"
+			"  1018000:         0         0         0         2         0         0 \n"
+			"  1306000:        10         0         0         0        13         7 \n"
+			"  1517000:         5         0         1         4         0         9 \n"
+			"  1805000:         4         2         1         5         6         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -192,6 +281,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
@@ -204,9 +298,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 3,
+		.content = "01\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
@@ -224,6 +318,75 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
+		.size = 47,
+		.content = "480000 807000 1018000 1306000 1517000 1805000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
+		.size = 70,
+		.content =
+			"480000 3325\n"
+			"807000 79\n"
+			"1018000 11\n"
+			"1306000 949\n"
+			"1517000 178\n"
+			"1805000 5180\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "105\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/trans_table",
+		.size = 521,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1018000   1306000   1517000   1805000 \n"
+			"   480000:         0         4         0        19         0         1 \n"
+			"   807000:         4         0         0         3         0         0 \n"
+			"  1018000:         0         0         0         2         0         0 \n"
+			"  1306000:        10         1         0         0        14         8 \n"
+			"  1517000:         5         0         1         4         0        10 \n"
+			"  1805000:         5         2         1         5         6         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -232,6 +395,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
@@ -244,9 +412,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "1\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
+		.size = 3,
+		.content = "02\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/affected_cpus",
@@ -264,6 +432,75 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_frequencies",
+		.size = 47,
+		.content = "480000 807000 1018000 1306000 1517000 1805000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
+		.size = 70,
+		.content =
+			"480000 3564\n"
+			"807000 79\n"
+			"1018000 11\n"
+			"1306000 949\n"
+			"1517000 178\n"
+			"1805000 5189\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "106\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/trans_table",
+		.size = 521,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1018000   1306000   1517000   1805000 \n"
+			"   480000:         0         4         0        19         0         1 \n"
+			"   807000:         4         0         0         3         0         0 \n"
+			"  1018000:         0         0         0         2         0         0 \n"
+			"  1306000:        10         1         0         0        14         8 \n"
+			"  1517000:         5         0         1         4         0        10 \n"
+			"  1805000:         6         2         1         5         6         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -272,6 +509,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
@@ -284,9 +526,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "2\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
+		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings",
+		.size = 3,
+		.content = "04\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/affected_cpus",
@@ -304,6 +546,75 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
+		.size = 47,
+		.content = "480000 807000 1018000 1306000 1517000 1805000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
+		.size = 70,
+		.content =
+			"480000 3774\n"
+			"807000 79\n"
+			"1018000 11\n"
+			"1306000 986\n"
+			"1517000 178\n"
+			"1805000 5189\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "108\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/trans_table",
+		.size = 521,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1018000   1306000   1517000   1805000 \n"
+			"   480000:         0         4         0        20         0         1 \n"
+			"   807000:         4         0         0         3         0         0 \n"
+			"  1018000:         0         0         0         2         0         0 \n"
+			"  1306000:        11         1         0         0        14         8 \n"
+			"  1517000:         5         0         1         4         0        10 \n"
+			"  1805000:         6         2         1         5         6         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -312,6 +623,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
@@ -324,9 +640,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "3\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
+		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings",
+		.size = 3,
+		.content = "08\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/affected_cpus",
@@ -344,6 +660,82 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_frequencies",
+		.size = 55,
+		.content = "480000 807000 1210000 1517000 1805000 2016000 2304000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2304000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
+		.size = 80,
+		.content =
+			"480000 0\n"
+			"807000 7546\n"
+			"1210000 376\n"
+			"1517000 44\n"
+			"1805000 47\n"
+			"2016000 327\n"
+			"2304000 2134\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "116\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/trans_table",
+		.size = 673,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1210000   1517000   1805000   2016000   2304000 \n"
+			"   480000:         0         0         0         0         0         0         0 \n"
+			"   807000:         0         0        30         0         0         2         0 \n"
+			"  1210000:         0        17         0        14         0         1         0 \n"
+			"  1517000:         0         0         1         0         8         5         1 \n"
+			"  1805000:         0         3         0         0         0         5         0 \n"
+			"  2016000:         0         6         0         0         0         0        11 \n"
+			"  2304000:         0         7         1         0         0         4         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -352,6 +744,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings_list",
 		.size = 4,
 		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
@@ -364,9 +761,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
+		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings",
+		.size = 3,
+		.content = "10\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/affected_cpus",
@@ -384,6 +781,82 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_frequencies",
+		.size = 55,
+		.content = "480000 807000 1210000 1517000 1805000 2016000 2304000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2304000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
+		.size = 80,
+		.content =
+			"480000 0\n"
+			"807000 7772\n"
+			"1210000 388\n"
+			"1517000 46\n"
+			"1805000 47\n"
+			"2016000 329\n"
+			"2304000 2142\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "121\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/trans_table",
+		.size = 673,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1210000   1517000   1805000   2016000   2304000 \n"
+			"   480000:         0         0         0         0         0         0         0 \n"
+			"   807000:         0         0        31         0         0         2         0 \n"
+			"  1210000:         0        17         0        15         0         1         0 \n"
+			"  1517000:         0         0         1         0         8         6         1 \n"
+			"  1805000:         0         3         0         0         0         5         0 \n"
+			"  2016000:         0         6         0         0         0         0        12 \n"
+			"  2304000:         0         8         1         0         0         4         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -392,6 +865,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings_list",
 		.size = 4,
 		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
@@ -404,9 +882,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "5\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
+		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings",
+		.size = 3,
+		.content = "20\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/affected_cpus",
@@ -424,6 +902,82 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_frequencies",
+		.size = 55,
+		.content = "480000 807000 1210000 1517000 1805000 2016000 2304000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2304000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
+		.size = 80,
+		.content =
+			"480000 0\n"
+			"807000 8033\n"
+			"1210000 388\n"
+			"1517000 46\n"
+			"1805000 47\n"
+			"2016000 329\n"
+			"2304000 2142\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "121\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/trans_table",
+		.size = 673,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1210000   1517000   1805000   2016000   2304000 \n"
+			"   480000:         0         0         0         0         0         0         0 \n"
+			"   807000:         0         0        31         0         0         2         0 \n"
+			"  1210000:         0        17         0        15         0         1         0 \n"
+			"  1517000:         0         0         1         0         8         6         1 \n"
+			"  1805000:         0         3         0         0         0         5         0 \n"
+			"  2016000:         0         6         0         0         0         0        12 \n"
+			"  2304000:         0         8         1         0         0         4         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -432,6 +986,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings_list",
 		.size = 4,
 		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
@@ -444,9 +1003,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "6\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
+		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings",
+		.size = 3,
+		.content = "40\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/affected_cpus",
@@ -464,6 +1023,82 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_frequencies",
+		.size = 55,
+		.content = "480000 807000 1210000 1517000 1805000 2016000 2304000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2304000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "807000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
+		.size = 80,
+		.content =
+			"480000 0\n"
+			"807000 8295\n"
+			"1210000 388\n"
+			"1517000 46\n"
+			"1805000 47\n"
+			"2016000 329\n"
+			"2304000 2142\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "121\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/trans_table",
+		.size = 673,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1210000   1517000   1805000   2016000   2304000 \n"
+			"   480000:         0         0         0         0         0         0         0 \n"
+			"   807000:         0         0        31         0         0         2         0 \n"
+			"  1210000:         0        17         0        15         0         1         0 \n"
+			"  1517000:         0         0         1         0         8         6         1 \n"
+			"  1805000:         0         3         0         0         0         5         0 \n"
+			"  2016000:         0         6         0         0         0         0        12 \n"
+			"  2304000:         0         8         1         0         0         4         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu7/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -474,6 +1109,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
 		.size = 2,
 		.content = "3\n",
@@ -482,6 +1122,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings_list",
 		.size = 2,
 		.content = "7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings",
+		.size = 3,
+		.content = "80\n",
 	},
 	{ NULL },
 };
@@ -602,7 +1247,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "debug.aps.current_battery",
-		.value = "91",
+		.value = "88",
 	},
 	{
 		.key = "debug.aps.enable",
@@ -770,7 +1415,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "hw.wifipro.dns_fail_count",
-		.value = "28",
+		.value = "24",
 	},
 	{
 		.key = "hw_chargemonitor.log",
@@ -2746,7 +3391,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.runtime.firstboot",
-		.value = "1505167754776",
+		.value = "1505266044886",
 	},
 	{
 		.key = "ro.secure",
