@@ -390,7 +390,7 @@ static const struct hmp_config hmp_configs[] = {
  * @param cluster_leaders - indices of core clusters' leaders in the @p processors array.
  * @param processors_count - number of usable logical processors in the system.
  * @param[in,out] processors - array of logical processor descriptions with pre-parsed MIDR, maximum frequency,
- *                             and decoded core cluster (package_group_min) information.
+ *                             and decoded core cluster (package_leader_id) information.
  *                             Upon successful return, processors[i].midr for all clusters' leaders contains the
  *                             tabulated MIDR values.
  * @param verify_midr - indicated whether the function should check that the MIDR values to be assigned to leaders of
@@ -480,7 +480,7 @@ static bool cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
  * @param last_processor_with_midr - index of the last logical processor with known MIDR in the @p processors array.
  * @param cluster_leaders - indices of core clusters' leaders in the @p processors array.
  * @param[in,out] processors - array of logical processor descriptions with pre-parsed MIDR, maximum frequency,
- *                             and decoded core cluster (package_group_min) information.
+ *                             and decoded core cluster (package_leader_id) information.
  *                             Upon successful return, processors[i].midr for all core clusters' leaders contains
  *                             the heuristically detected MIDR value.
  * @param verify_midr - indicated whether the function should check that the MIDR values to be assigned to leaders of
@@ -506,8 +506,8 @@ static bool cpuinfo_arm_linux_detect_cluster_midr_by_big_little_heuristic(
 	}
 
 	const uint32_t midr_flags =
-		(processors[processors[last_processor_with_midr].package_group_min].flags & CPUINFO_ARM_LINUX_VALID_MIDR);
-	const uint32_t big_midr = processors[processors[last_processor_with_midr].package_group_min].midr;
+		(processors[processors[last_processor_with_midr].package_leader_id].flags & CPUINFO_ARM_LINUX_VALID_MIDR);
+	const uint32_t big_midr = processors[processors[last_processor_with_midr].package_leader_id].midr;
 	const uint32_t little_midr = midr_little_core_for_big(big_midr);
 
 	/* Default assumption: the first reported cluster is LITTLE cluster (this holds on most Linux kernels) */
@@ -575,7 +575,7 @@ static bool cpuinfo_arm_linux_detect_cluster_midr_by_big_little_heuristic(
  * @param default_midr - MIDR value that will be assigned to cluster leaders preceeding any reported MIDR value.
  * @param processors_count - number of logical processor descriptions in the @p processors array.
  * @param[in,out] processors - array of logical processor descriptions with pre-parsed MIDR, maximum frequency,
- *                             and decoded core cluster (package_group_min) information.
+ *                             and decoded core cluster (package_leader_id) information.
  *                             Upon successful return, processors[i].midr for all core clusters' leaders contains
  *                             the assigned MIDR value.
  */
@@ -587,7 +587,7 @@ static void cpuinfo_arm_linux_detect_cluster_midr_by_sequential_scan(
 	uint32_t midr = default_midr;
 	for (uint32_t i = 0; i < processors_count; i++) {
 		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			if (processors[i].package_group_min == i) {
+			if (processors[i].package_leader_id == i) {
 				if (bitmask_all(processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
 					midr = processors[i].midr;	
 				} else {
@@ -609,7 +609,7 @@ static void cpuinfo_arm_linux_detect_cluster_midr_by_sequential_scan(
  * @param usable_processors - number of processor descriptions in the @p processors array with both POSSIBLE and
  *                            PRESENT flags.
  * @param[in,out] processors - array of logical processor descriptions with pre-parsed MIDR, maximum frequency,
- *                             and decoded core cluster (package_group_min) information.
+ *                             and decoded core cluster (package_leader_id) information.
  *                             Upon return, processors[i].midr for all clusters' leaders contains the MIDR value.
  *
  * @returns The number of core clusters
@@ -636,7 +636,7 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 				last_processor_with_midr = i;
 				processors_with_midr_count += 1;
 			}
-			const uint32_t group_leader = processors[i].package_group_min;
+			const uint32_t group_leader = processors[i].package_leader_id;
 			if (group_leader == i) {
 				if (clusters_count < CLUSTERS_MAX) {
 					cluster_leaders[clusters_count] = i;
@@ -707,7 +707,7 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 
 		/* Fall back to sequential initialization of MIDR values for core clusters */
 		cpuinfo_arm_linux_detect_cluster_midr_by_sequential_scan(
-			processors[processors[last_processor_with_midr].package_group_min].midr,
+			processors[processors[last_processor_with_midr].package_leader_id].midr,
 			max_processors, processors);
 	} else if (processors_with_midr_count < usable_processors) {
 		/*
@@ -717,7 +717,7 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 		uint32_t clusters_with_midr_count = 0;
 		for (uint32_t i = 0; i < max_processors; i++) {
 			if (bitmask_all(processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_ARM_LINUX_VALID_MIDR)) {
-				if (processors[i].package_group_min == i) {
+				if (processors[i].package_leader_id == i) {
 					clusters_with_midr_count += 1;
 				}
 			}
@@ -753,7 +753,7 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 
 				/* Fall back to sequential initialization of MIDR values for core clusters */
 				cpuinfo_arm_linux_detect_cluster_midr_by_sequential_scan(
-					processors[processors[last_processor_with_midr].package_group_min].midr,
+					processors[processors[last_processor_with_midr].package_leader_id].midr,
 					max_processors, processors);
 			}
 		}

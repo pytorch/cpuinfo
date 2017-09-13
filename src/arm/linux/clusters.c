@@ -104,12 +104,12 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 
 				expected_cluster_exists = !!(processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER);
 				if (expected_cluster_exists) {
-					if (processors[i].package_group_min != i) {
+					if (processors[i].package_leader_id != i) {
 						cpuinfo_log_debug(
 							"heuristic detection of core clusters failed: "
 							"processor %"PRIu32" is expected to start a new cluster #%"PRIu32" with %"PRIu32" cores, "
 							"but system siblings lists reported it as a sibling of processor %"PRIu32,
-							i, cluster, cluster_processors[cluster], processors[i].package_group_min);
+							i, cluster, cluster_processors[cluster], processors[i].package_leader_id);
 						return false;
 					}
 				} else {
@@ -127,7 +127,7 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 					 * For all processors we expect in the cluster, check that:
 					 * - They have pre-assigned cluster from siblings lists (CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER flag).
 					 * - They were assigned to the same cluster based on siblings lists
-					 *   (package_group_min points to the first processor in the cluster).
+					 *   (package_leader_id points to the first processor in the cluster).
 					 */
 
 					if ((processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER) == 0) {
@@ -138,7 +138,7 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 							i, cluster_start, cluster_start);
 						return false;
 					}
-					if (processors[i].package_group_min != cluster_start) {
+					if (processors[i].package_leader_id != cluster_start) {
 						cpuinfo_log_debug(
 							"heuristic detection of core clusters failed: "
 							"processor %"PRIu32" is expected to belong to the cluster of processor %"PRIu32", "
@@ -160,7 +160,7 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 							"heuristic detection of core clusters failed: "
 							"processor %"PRIu32" is expected to be unassigned to any cluster, "
 							"but system siblings lists reported it to belong to the cluster of processor %"PRIu32,
-							i, processors[i].package_group_min);
+							i, processors[i].package_leader_id);
 						return false;
 					}
 
@@ -277,7 +277,7 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 						i, cluster_start);
 				}
 
-				processors[i].package_group_min = cluster_start;
+				processors[i].package_leader_id = cluster_start;
 				processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
 			}
 			expected_cluster_processors--;
@@ -419,7 +419,7 @@ void cpuinfo_arm_linux_detect_core_clusters_by_sequential_scan(
 
 			/* All checks passed, attach processor to the preceeding cluster */
 			cluster_processors++;
-			processors[i].package_group_min = cluster_start;
+			processors[i].package_leader_id = cluster_start;
 			processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
 			cpuinfo_log_debug("assigned processor %"PRIu32" to preceeding cluster of processor %"PRIu32, i, cluster_start);
 			continue;
@@ -427,7 +427,7 @@ void cpuinfo_arm_linux_detect_core_clusters_by_sequential_scan(
 new_cluster:
 			/* Create a new cluster starting with processor i */
 			cluster_start = i;
-			processors[i].package_group_min = i;
+			processors[i].package_leader_id = i;
 			processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
 			cluster_processors = 1;
 
@@ -467,7 +467,7 @@ new_cluster:
  *
  * @param max_processors - number of elements in the @p processors array.
  * @param[in,out] processors - processor descriptors with pre-parsed POSSIBLE and PRESENT flags, 
- *                             and decoded core cluster (package_group_min) information.
+ *                             and decoded core cluster (package_leader_id) information.
  *                             The function expects the value of processors[i].package_processor_count to be zero.
  *                             Upon return, processors[i].package_processor_count will contain the number of logical
  *                             processors in the respective core cluster.
@@ -479,15 +479,15 @@ void cpuinfo_arm_linux_count_cluster_processors(
 	/* First pass: accumulate the number of processors at the group leader's package_processor_count */
 	for (uint32_t i = 0; i < max_processors; i++) {
 		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			const uint32_t package_group_min = processors[i].package_group_min;
-			processors[package_group_min].package_processor_count += 1;
+			const uint32_t package_leader_id = processors[i].package_leader_id;
+			processors[package_leader_id].package_processor_count += 1;
 		}
 	}	
 	/* Second pass: copy the package_processor_count from the group leader processor */
 	for (uint32_t i = 0; i < max_processors; i++) {
 		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			const uint32_t package_group_min = processors[i].package_group_min;
-			processors[i].package_processor_count = processors[package_group_min].package_processor_count;
+			const uint32_t package_leader_id = processors[i].package_leader_id;
+			processors[i].package_processor_count = processors[package_leader_id].package_processor_count;
 		}
 	}	
 }

@@ -40,7 +40,7 @@ static bool cluster_siblings_parser(
 	struct cpuinfo_arm_linux_processor* processors)
 {
 	processors[processor].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
-	uint32_t package_group_min = processors[processor].package_group_min;
+	uint32_t package_leader_id = processors[processor].package_leader_id;
 
 	for (uint32_t sibling = siblings_start; sibling < siblings_end; sibling++) {
 		if (!bitmask_all(processors[sibling].flags, CPUINFO_LINUX_MASK_USABLE)) {
@@ -49,16 +49,16 @@ static bool cluster_siblings_parser(
 			continue;
 		}
 
-		const uint32_t sibling_package_group_min = processors[sibling].package_group_min;
-		if (sibling_package_group_min < package_group_min) {
-			package_group_min = sibling_package_group_min;
+		const uint32_t sibling_package_leader_id = processors[sibling].package_leader_id;
+		if (sibling_package_leader_id < package_leader_id) {
+			package_leader_id = sibling_package_leader_id;
 		}
 
-		processors[sibling].package_group_min = package_group_min;
+		processors[sibling].package_leader_id = package_leader_id;
 		processors[sibling].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
 	}
 
-	processors[processor].package_group_min = package_group_min;
+	processors[processor].package_leader_id = package_leader_id;
 
 	return true;
 }
@@ -93,8 +93,8 @@ static int cmp_arm_linux_processor(const void* ptr_a, const void* ptr_b) {
 	}
 
 	/* Compare based on cluster leader id (i.e. cluster 1 < cluster 0) */
-	const uint32_t cluster_a = processor_a->package_group_min;
-	const uint32_t cluster_b = processor_b->package_group_min;
+	const uint32_t cluster_a = processor_a->package_leader_id;
+	const uint32_t cluster_b = processor_b->package_leader_id;
 	if (cluster_a != cluster_b) {
 		return cluster_a > cluster_b ? -1 : 1;
 	}
@@ -234,7 +234,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Initialize topology group IDs */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		arm_linux_processors[i].package_group_min = i;
+		arm_linux_processors[i].package_leader_id = i;
 	}
 
 	/* Propagate topology group IDs among siblings */
@@ -257,13 +257,13 @@ void cpuinfo_arm_linux_init(void) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER)) {
 			clustered_processors += 1;
 
-			const uint32_t package_group_min = arm_linux_processors[i].package_group_min;
-			if (package_group_min < i) {
-				arm_linux_processors[i].package_group_min = arm_linux_processors[package_group_min].package_group_min;
+			const uint32_t package_leader_id = arm_linux_processors[i].package_leader_id;
+			if (package_leader_id < i) {
+				arm_linux_processors[i].package_leader_id = arm_linux_processors[package_leader_id].package_leader_id;
 			}
 
 			cpuinfo_log_debug("processor %"PRIu32" clustered with processor %"PRIu32" as inferred from system siblings lists",
-				i, arm_linux_processors[i].package_group_min);
+				i, arm_linux_processors[i].package_leader_id);
 		}
 	}
 
@@ -298,7 +298,7 @@ void cpuinfo_arm_linux_init(void) {
 	/* Initialize core vendor, uarch, MIDR, and frequency for every logical processor */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			const uint32_t cluster_leader = arm_linux_processors[i].package_group_min;
+			const uint32_t cluster_leader = arm_linux_processors[i].package_leader_id;
 			if (cluster_leader == i) {
 				/* Cluster leader: decode core vendor and uarch */
 				cpuinfo_arm_decode_vendor_uarch(
@@ -425,7 +425,7 @@ void cpuinfo_arm_linux_init(void) {
 				};
 			}
 		#endif
-		if (arm_linux_processors[i].package_group_min == arm_linux_processors[i].system_processor_id) {
+		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 			shared_l2.processor_start = i;
 			shared_l2.processor_count = arm_linux_processors[i].package_processor_count;
 			l2[l2_index++] = shared_l2;

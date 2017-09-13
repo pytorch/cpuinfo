@@ -133,7 +133,7 @@ struct cpuinfo_arm_linux_processor {
 	 * This value can serve as an ID for the cluster of logical processors: it is the
 	 * same for all logical processors on the same package.
 	 */
-	uint32_t package_group_min;
+	uint32_t package_leader_id;
 	/**
 	 * Number of logical processors in the package.
 	 */
