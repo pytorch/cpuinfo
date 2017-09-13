@@ -249,9 +249,24 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-1\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
-		.size = 2,
-		.content = "0\n",
+		.path = "/sys/devices/system/cpu/online",
+		.size = 4,
+		.content = "0-1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 1,
+		.content = "\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+		.size = 9,
+		.content = "msm_idle\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+		.size = 5,
+		.content = "menu\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
@@ -269,6 +284,68 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "384000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+		.size = 91,
+		.content = "384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 51,
+		.content = "msm-dcvs ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1512000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "performance\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "384000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 116,
+		.content =
+			"384000 0\n"
+			"486000 0\n"
+			"594000 0\n"
+			"702000 0\n"
+			"810000 0\n"
+			"918000 0\n"
+			"1026000 0\n"
+			"1134000 0\n"
+			"1242000 0\n"
+			"1350000 0\n"
+			"1458000 0\n"
+			"1512000 818\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
 		.size = 3,
 		.content = "-1\n",
@@ -277,6 +354,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings_list",
 		.size = 2,
 		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 2,
+		.content = "1\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
@@ -289,7 +371,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
 		.size = 2,
 		.content = "1\n",
 	},
@@ -309,6 +391,73 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "384000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
+		.size = 91,
+		.content = "384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
+		.size = 51,
+		.content = "msm-dcvs ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1512000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "performance\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1512000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "384000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
+		.size = 117,
+		.content =
+			"384000 0\n"
+			"486000 0\n"
+			"594000 0\n"
+			"702000 0\n"
+			"810000 0\n"
+			"918000 0\n"
+			"1026000 0\n"
+			"1134000 0\n"
+			"1242000 0\n"
+			"1350000 0\n"
+			"1458000 0\n"
+			"1512000 1064\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
 		.size = 3,
 		.content = "-1\n",
@@ -319,6 +468,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "1\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -327,6 +481,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings_list",
 		.size = 2,
 		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
+		.size = 2,
+		.content = "2\n",
 	},
 	{ NULL },
 };
@@ -398,100 +557,8 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "1",
 	},
 	{
-		.key = "dev.MDPLimitCondition",
-		.value = "1",
-	},
-	{
-		.key = "dev.bootcomplete",
-		.value = "1",
-	},
-	{
 		.key = "dev.kiessupport",
 		.value = "TRUE",
-	},
-	{
-		.key = "dhcp.wlan0.dns1",
-		.value = "208.67.222.222",
-	},
-	{
-		.key = "dhcp.wlan0.dns2",
-		.value = "208.67.220.220",
-	},
-	{
-		.key = "dhcp.wlan0.dns3",
-		.value = "",
-	},
-	{
-		.key = "dhcp.wlan0.dns4",
-		.value = "",
-	},
-	{
-		.key = "dhcp.wlan0.gateway",
-		.value = "172.22.192.1",
-	},
-	{
-		.key = "dhcp.wlan0.ipaddress",
-		.value = "172.22.221.104",
-	},
-	{
-		.key = "dhcp.wlan0.leasetime",
-		.value = "10448",
-	},
-	{
-		.key = "dhcp.wlan0.mask",
-		.value = "255.255.224.0",
-	},
-	{
-		.key = "dhcp.wlan0.pid",
-		.value = "1803",
-	},
-	{
-		.key = "dhcp.wlan0.reason",
-		.value = "BOUND",
-	},
-	{
-		.key = "dhcp.wlan0.result",
-		.value = "ok",
-	},
-	{
-		.key = "dhcp.wlan0.server",
-		.value = "192.168.162.165",
-	},
-	{
-		.key = "dhcp.wlan0.vendorInfo",
-		.value = "",
-	},
-	{
-		.key = "gsm.current.phone-type",
-		.value = "1",
-	},
-	{
-		.key = "gsm.operator.alpha",
-		.value = "",
-	},
-	{
-		.key = "gsm.operator.iso-country",
-		.value = "us",
-	},
-	{
-		.key = "gsm.operator.isroaming",
-		.value = "false",
-	},
-	{
-		.key = "gsm.operator.numeric",
-		.value = "310410",
-	},
-	{
-		.key = "gsm.sim.state",
-		.value = "ABSENT",
-	},
-	{
-		.key = "gsm.version.baseband",
-		.value = "I747UCDLK3",
-	},
-	{
-		.key = "gsm.version.ril-impl",
-		.value = "Qualcomm RIL 1.0",
 	},
 	{
 		.key = "hw.cabl.version",
@@ -546,10 +613,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "running",
 	},
 	{
-		.key = "init.svc.dhcpcd_wlan0",
-		.value = "running",
-	},
-	{
 		.key = "init.svc.diag_uart_log",
 		.value = "running",
 	},
@@ -567,7 +630,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.immvibed",
-		.value = "running",
+		.value = "stopped",
 	},
 	{
 		.key = "init.svc.installd",
@@ -579,7 +642,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.macloader",
-		.value = "stopped",
+		.value = "running",
 	},
 	{
 		.key = "init.svc.media",
@@ -587,10 +650,6 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.mobex-daemon",
-		.value = "running",
-	},
-	{
-		.key = "init.svc.mpdecision",
 		.value = "running",
 	},
 	{
@@ -602,16 +661,12 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "running",
 	},
 	{
-		.key = "init.svc.p2p_supplicant",
-		.value = "running",
-	},
-	{
 		.key = "init.svc.poke_helper",
 		.value = "running",
 	},
 	{
 		.key = "init.svc.powersnd",
-		.value = "stopped",
+		.value = "running",
 	},
 	{
 		.key = "init.svc.ppd",
@@ -627,10 +682,6 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.qcom-c_main-sh",
-		.value = "stopped",
-	},
-	{
-		.key = "init.svc.qcom-post-boot",
 		.value = "stopped",
 	},
 	{
@@ -654,10 +705,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "running",
 	},
 	{
-		.key = "init.svc.qosmgrd",
-		.value = "running",
-	},
-	{
 		.key = "init.svc.qrngd",
 		.value = "running",
 	},
@@ -675,7 +722,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.samsungani",
-		.value = "stopped",
+		.value = "running",
 	},
 	{
 		.key = "init.svc.sdcard",
@@ -711,10 +758,6 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.vold",
-		.value = "running",
-	},
-	{
-		.key = "init.svc.wpa_supplicant",
 		.value = "running",
 	},
 	{
@@ -771,63 +814,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "net.change",
-		.value = "net.dnschange",
-	},
-	{
-		.key = "net.dns.cache_size",
-		.value = "512",
-	},
-	{
-		.key = "net.dns.cache_ttl",
-		.value = "600",
-	},
-	{
-		.key = "net.dns1",
-		.value = "208.67.222.222",
-	},
-	{
-		.key = "net.dns2",
-		.value = "208.67.220.220",
-	},
-	{
-		.key = "net.dnschange",
-		.value = "1",
-	},
-	{
-		.key = "net.hostname",
-		.value = "android-6177c039235e824c",
-	},
-	{
-		.key = "net.http.getzip",
-		.value = "1",
-	},
-	{
-		.key = "net.http.idle_cache.shutdown",
-		.value = "true",
-	},
-	{
-		.key = "net.http.idle_cache.size",
-		.value = "40",
-	},
-	{
-		.key = "net.http.threads",
-		.value = "10",
-	},
-	{
-		.key = "net.nw.cache.orderby",
-		.value = "weight",
-	},
-	{
-		.key = "net.nw.cache.prioadvstep",
-		.value = "86400000",
-	},
-	{
-		.key = "net.nw.cache.weightadvstep",
-		.value = "3600000",
-	},
-	{
-		.key = "net.qtaguid_enabled",
-		.value = "1",
+		.value = "net.tcp.buffersize.evdo_b",
 	},
 	{
 		.key = "net.rmnet0.dns1",
@@ -908,26 +895,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "net.tcp.buffersize.wifi",
 		.value = "524288,1048576,2097152,262144,524288,1048576",
-	},
-	{
-		.key = "net.webkit.cache.maxdeadsize",
-		.value = "4194304",
-	},
-	{
-		.key = "net.webkit.cache.mindeadsize",
-		.value = "4194304",
-	},
-	{
-		.key = "net.webkit.cache.size",
-		.value = "12582912",
-	},
-	{
-		.key = "net.wlan0.dns1",
-		.value = "50.0.0.0",
-	},
-	{
-		.key = "net.wlan0.dns2",
-		.value = "50.0.0.0",
 	},
 	{
 		.key = "persist.audio.allsoundmute",
@@ -1118,76 +1085,8 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "true",
 	},
 	{
-		.key = "ril.CardSlotStatus",
-		.value = "0",
-	},
-	{
-		.key = "ril.approved_codever",
-		.value = "none",
-	},
-	{
-		.key = "ril.approved_cscver",
-		.value = "none",
-	},
-	{
-		.key = "ril.approved_modemver",
-		.value = "none",
-	},
-	{
 		.key = "ril.atd_status",
 		.value = "1_0",
-	},
-	{
-		.key = "ril.deviceOffRes",
-		.value = "0",
-	},
-	{
-		.key = "ril.ecclist0",
-		.value = "911,112,08,000,110,118,119,999",
-	},
-	{
-		.key = "ril.ecclist",
-		.value = "911,*911,#911,112,000,08,110,999,118,119",
-	},
-	{
-		.key = "ril.eri_num",
-		.value = "0",
-	},
-	{
-		.key = "ril.hw_ver",
-		.value = "REV0.4",
-	},
-	{
-		.key = "ril.model_id",
-		.value = "",
-	},
-	{
-		.key = "ril.modem.board",
-		.value = "MSM8960",
-	},
-	{
-		.key = "ril.modem_sim_status",
-		.value = "1",
-	},
-	{
-		.key = "ril.official_cscver",
-		.value = "I747ATTDLK3",
-	},
-	{
-		.key = "ril.prl_num",
-		.value = "0",
-	},
-	{
-		.key = "ril.product_code",
-		.value = "SGH-I747RWBATT",
-	},
-	{
-		.key = "ril.rfcal_date",
-		.value = "2013.01.03",
-	},
-	{
-		.key = "ril.sales_code",
-		.value = "ATT",
 	},
 	{
 		.key = "ril.serialnumber",
@@ -1196,10 +1095,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "ril.subscription.types",
 		.value = "NV,RUIM",
-	},
-	{
-		.key = "ril.sw_ver",
-		.value = "I747UCDLK3",
 	},
 	{
 		.key = "rild.libargs",
@@ -1622,10 +1517,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "true",
 	},
 	{
-		.key = "ro.runtime.firstboot",
-		.value = "1505166807521",
-	},
-	{
 		.key = "ro.sec.fle.encryption",
 		.value = "true",
 	},
@@ -1667,14 +1558,10 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "service.bootanim.exit",
-		.value = "1",
+		.value = "0",
 	},
 	{
 		.key = "service.media.powersnd",
-		.value = "1",
-	},
-	{
-		.key = "sys.boot_completed",
 		.value = "1",
 	},
 	{
@@ -1688,10 +1575,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "sys.service_manager_ready",
 		.value = "1",
-	},
-	{
-		.key = "sys.settings_system_version",
-		.value = "10",
 	},
 	{
 		.key = "sys.usb.config",
@@ -1722,16 +1605,8 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "/data/misc/wifi/WCNSS_qcom_cfg.ini",
 	},
 	{
-		.key = "wlan.driver.status",
-		.value = "ok",
-	},
-	{
 		.key = "wlan.poke_helper.pid",
-		.value = "222",
-	},
-	{
-		.key = "wlan.wfd.status",
-		.value = "disconnected",
+		.value = "224",
 	},
 	{
 		.key = "wlan.wfd.tcp",
