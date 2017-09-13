@@ -402,6 +402,68 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 4,
+		.content = "0-5\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 4,
+		.content = "6-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/modalias",
+		.size = 66,
+		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
+		.size = 837,
+		.content =
+			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
+			"400000\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\t0\t\tN/A\t\t\n"
+			"691200\t\t3228\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"806400\t\t1057\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"883200\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t5594\t\t12\t\t596\t\tN/A\t\t\n"
+			"940800\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t3\t\t2\t\t0\t\tN/A\t\t\n"
+			"998400\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t2\t\t1\t\t1\t\tN/A\t\t\n"
+			"1017600\t\t722\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"1056000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t8\t\t0\t\t0\t\tN/A\t\t\n"
+			"1113600\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t2\t\t0\t\t2\t\tN/A\t\t\n"
+			"1190400\t\t545\t\t0\t\t0\t\t0\t\t230\t\t9\t\t59\t\tN/A\t\t\n"
+			"1248000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t5\t\t0\t\t0\t\tN/A\t\t\n"
+			"1305600\t\t149\t\t0\t\t0\t\t0\t\t18\t\t0\t\t0\t\tN/A\t\t\n"
+			"1382400\t\t290\t\t0\t\t0\t\t0\t\t52\t\t0\t\t0\t\tN/A\t\t\n"
+			"1401600\t\t4353\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"1612800\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t28\t\t0\t\t8\t\tN/A\t\t\n"
+			"1747200\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t0\t\t0\t\t0\t\tN/A\t\t\n"
+			"1804800\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t147\t\t96\t\t0\t\tN/A\t\t\n"
+			"1958400\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t2293\t\t31\t\t0\t\tN/A\t\t\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpufreq/current_in_state",
+		.size = 426,
+		.content =
+			"CPU4:400000=0 883200=0 940800=0 998400=0 1056000=0 1113600=0 1190400=0 1248000=0 1305600=0 1382400=0 1612800=0 1747200=0 1804800=0 1958400=0 \n"
+			"CPU5:400000=0 883200=0 940800=0 998400=0 1056000=0 1113600=0 1190400=0 1248000=0 1305600=0 1382400=0 1612800=0 1747200=0 1804800=0 1958400=0 \n"
+			"CPU6:400000=0 883200=0 940800=0 998400=0 1056000=0 1113600=0 1190400=0 1248000=0 1305600=0 1382400=0 1612800=0 1747200=0 1804800=0 1958400=0 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+		.size = 9,
+		.content = "msm_idle\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+		.size = 5,
+		.content = "menu\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1401600\n",
@@ -410,6 +472,64 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+		.size = 62,
+		.content = "400000 691200 806400 1017600 1190400 1305600 1382400 1401600 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 54,
+		.content = "interactive ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "691200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "691200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 94,
+		.content =
+			"400000 0\n"
+			"691200 3302\n"
+			"806400 1057\n"
+			"1017600 722\n"
+			"1190400 545\n"
+			"1305600 149\n"
+			"1382400 290\n"
+			"1401600 4353\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "954\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
@@ -422,6 +542,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -430,6 +555,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
 		.size = 2,
 		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 3,
+		.content = "01\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_max_freq",
@@ -442,6 +577,64 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "400000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
+		.size = 62,
+		.content = "400000 691200 806400 1017600 1190400 1305600 1382400 1401600 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
+		.size = 54,
+		.content = "interactive ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "691200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "691200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
+		.size = 94,
+		.content =
+			"400000 0\n"
+			"691200 3434\n"
+			"806400 1102\n"
+			"1017600 747\n"
+			"1190400 555\n"
+			"1305600 149\n"
+			"1382400 300\n"
+			"1401600 4363\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "972\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -450,6 +643,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
@@ -462,6 +660,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "1\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
+		.size = 3,
+		.content = "02\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1401600\n",
@@ -470,6 +678,64 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_frequencies",
+		.size = 62,
+		.content = "400000 691200 806400 1017600 1190400 1305600 1382400 1401600 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_governors",
+		.size = 54,
+		.content = "interactive ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "691200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "691200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
+		.size = 94,
+		.content =
+			"400000 0\n"
+			"691200 3668\n"
+			"806400 1102\n"
+			"1017600 747\n"
+			"1190400 555\n"
+			"1305600 149\n"
+			"1382400 300\n"
+			"1401600 4363\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "972\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
@@ -482,6 +748,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
 		.size = 2,
 		.content = "2\n",
@@ -490,6 +761,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
 		.size = 2,
 		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings",
+		.size = 3,
+		.content = "04\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_max_freq",
@@ -502,6 +783,64 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "400000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
+		.size = 62,
+		.content = "400000 691200 806400 1017600 1190400 1305600 1382400 1401600 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
+		.size = 54,
+		.content = "interactive ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "806400\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "691200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
+		.size = 94,
+		.content =
+			"400000 0\n"
+			"691200 3882\n"
+			"806400 1128\n"
+			"1017600 747\n"
+			"1190400 555\n"
+			"1305600 149\n"
+			"1382400 300\n"
+			"1401600 4363\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "976\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -510,6 +849,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
@@ -522,6 +866,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings",
+		.size = 3,
+		.content = "08\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/affected_cpus",
+		.size = 4,
+		.content = "4 5\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1958400\n",
@@ -530,6 +884,75 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "400000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_frequencies",
+		.size = 109,
+		.content = "400000 883200 940800 998400 1056000 1113600 1190400 1248000 1305600 1382400 1612800 1747200 1804800 1958400 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_governors",
+		.size = 54,
+		.content = "interactive ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "883200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1958400\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "883200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
+		.size = 150,
+		.content =
+			"400000 0\n"
+			"883200 8252\n"
+			"940800 9\n"
+			"998400 5\n"
+			"1056000 8\n"
+			"1113600 11\n"
+			"1190400 362\n"
+			"1248000 5\n"
+			"1305600 18\n"
+			"1382400 67\n"
+			"1612800 60\n"
+			"1747200 0\n"
+			"1804800 243\n"
+			"1958400 2329\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "740\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
@@ -542,6 +965,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -552,34 +980,2737 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_max_freq",
+		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings",
+		.size = 3,
+		.content = "10\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/affected_cpus",
+		.size = 4,
+		.content = "4 5\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1958400\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_min_freq",
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "400000\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_frequencies",
+		.size = 109,
+		.content = "400000 883200 940800 998400 1056000 1113600 1190400 1248000 1305600 1382400 1612800 1747200 1804800 1958400 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_governors",
+		.size = 54,
+		.content = "interactive ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "883200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1958400\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "883200\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
+		.size = 150,
+		.content =
+			"400000 0\n"
+			"883200 8497\n"
+			"940800 9\n"
+			"998400 5\n"
+			"1056000 8\n"
+			"1113600 11\n"
+			"1190400 362\n"
+			"1248000 5\n"
+			"1305600 18\n"
+			"1382400 67\n"
+			"1612800 60\n"
+			"1747200 0\n"
+			"1804800 243\n"
+			"1958400 2329\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "740\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings_list",
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings_list",
 		.size = 4,
 		.content = "4-7\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
-		.size = 2,
-		.content = "2\n",
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings_list",
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
 		.size = 2,
-		.content = "6\n",
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings_list",
+		.size = 2,
+		.content = "5\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings",
+		.size = 3,
+		.content = "20\n",
 	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "af.fast_track_multiplier",
+		.value = "1",
+	},
+	{
+		.key = "audio.deep_buffer.media",
+		.value = "true",
+	},
+	{
+		.key = "audio.dolby.ds2.enabled",
+		.value = "true",
+	},
+	{
+		.key = "audio.offload.buffer.size.kb",
+		.value = "64",
+	},
+	{
+		.key = "audio.offload.gapless.enabled",
+		.value = "false",
+	},
+	{
+		.key = "audio.offload.multiple.enabled",
+		.value = "false",
+	},
+	{
+		.key = "audio.offload.pcm.16bit.enable",
+		.value = "true",
+	},
+	{
+		.key = "audio.offload.pcm.24bit.enable",
+		.value = "true",
+	},
+	{
+		.key = "audio.offload.video",
+		.value = "true",
+	},
+	{
+		.key = "audio.parser.ip.buffer.size",
+		.value = "262144",
+	},
+	{
+		.key = "audio.playback.mch.downsample",
+		.value = "true",
+	},
+	{
+		.key = "audio.pp.asphere.enabled",
+		.value = "false",
+	},
+	{
+		.key = "audio.safx.pbe.enabled",
+		.value = "true",
+	},
+	{
+		.key = "audio_hal.period_size",
+		.value = "192",
+	},
+	{
+		.key = "audioflinger.bootsnd",
+		.value = "0",
+	},
+	{
+		.key = "bluetooth.hciattach",
+		.value = "true",
+	},
+	{
+		.key = "bluetooth.hfp.client",
+		.value = "1",
+	},
+	{
+		.key = "bluetooth.status",
+		.value = "on",
+	},
+	{
+		.key = "boot.sfbootcomplete",
+		.value = "0",
+	},
+	{
+		.key = "camera.display.lmax",
+		.value = "1280x720",
+	},
+	{
+		.key = "camera.display.umax",
+		.value = "1920x1080",
+	},
+	{
+		.key = "camera.hal1.packagelist",
+		.value = "com.skype.raider,com.google.android.talk",
+	},
+	{
+		.key = "camera.lowpower.record.enable",
+		.value = "1",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xmx",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "256m",
+	},
+	{
+		.key = "dalvik.vm.heapmaxfree",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heapminfree",
+		.value = "2m",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heaptargetutilization",
+		.value = "0.75",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xmx",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.variant",
+		.value = "cortex-a53",
+	},
+	{
+		.key = "dalvik.vm.isa.arm64.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.isa.arm64.variant",
+		.value = "generic",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "debug.atrace.tags.enableflags",
+		.value = "0",
+	},
+	{
+		.key = "debug.egl.hw",
+		.value = "1",
+	},
+	{
+		.key = "debug.enable.sglscale",
+		.value = "1",
+	},
+	{
+		.key = "debug.force_rtl",
+		.value = "0",
+	},
+	{
+		.key = "debug.mdpcomp.logs",
+		.value = "0",
+	},
+	{
+		.key = "debug.sf.hw",
+		.value = "1",
+	},
+	{
+		.key = "debug.sf.layerdump",
+		.value = "0",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "dev.kies.deviceowner",
+		.value = "0",
+	},
+	{
+		.key = "dev.kies.drivedisplay",
+		.value = "0",
+	},
+	{
+		.key = "dev.kies.drivedisplay.trust",
+		.value = "1",
+	},
+	{
+		.key = "dev.kies.sommode",
+		.value = "TRUE",
+	},
+	{
+		.key = "dev.kiessupport",
+		.value = "TRUE",
+	},
+	{
+		.key = "dev.knoxapp.running",
+		.value = "false",
+	},
+	{
+		.key = "dev.pm.dyn_samplingrate",
+		.value = "1",
+	},
+	{
+		.key = "dev.ssrm.appsync3p",
+		.value = "true",
+	},
+	{
+		.key = "dev.ssrm.dex2oat.affinity",
+		.value = "",
+	},
+	{
+		.key = "dev.ssrm.gamelevel",
+		.value = "-4,5,-1,2",
+	},
+	{
+		.key = "dev.ssrm.init",
+		.value = "1",
+	},
+	{
+		.key = "dev.ssrm.live_thumbnail",
+		.value = "1",
+	},
+	{
+		.key = "dev.ssrm.lpc_ver",
+		.value = "1.0.21",
+	},
+	{
+		.key = "dev.ssrm.mode",
+		.value = "",
+	},
+	{
+		.key = "dev.ssrm.pst",
+		.value = "325",
+	},
+	{
+		.key = "dev.ssrm.smart_switch",
+		.value = "true",
+	},
+	{
+		.key = "dhcp.wlan0.dns1",
+		.value = "208.67.222.222",
+	},
+	{
+		.key = "dhcp.wlan0.dns2",
+		.value = "208.67.220.220",
+	},
+	{
+		.key = "dhcp.wlan0.dns3",
+		.value = "",
+	},
+	{
+		.key = "dhcp.wlan0.dns4",
+		.value = "",
+	},
+	{
+		.key = "dhcp.wlan0.domain",
+		.value = "tfbnw.net",
+	},
+	{
+		.key = "dhcp.wlan0.gateway",
+		.value = "172.22.192.1",
+	},
+	{
+		.key = "dhcp.wlan0.ipaddress",
+		.value = "172.22.205.127",
+	},
+	{
+		.key = "dhcp.wlan0.leasetime",
+		.value = "10800",
+	},
+	{
+		.key = "dhcp.wlan0.mask",
+		.value = "255.255.224.0",
+	},
+	{
+		.key = "dhcp.wlan0.mtu",
+		.value = "",
+	},
+	{
+		.key = "dhcp.wlan0.pid",
+		.value = "2994",
+	},
+	{
+		.key = "dhcp.wlan0.reason",
+		.value = "ROUTERADVERT",
+	},
+	{
+		.key = "dhcp.wlan0.result",
+		.value = "ok",
+	},
+	{
+		.key = "dhcp.wlan0.roaming",
+		.value = "0",
+	},
+	{
+		.key = "dhcp.wlan0.server",
+		.value = "192.168.162.165",
+	},
+	{
+		.key = "dhcp.wlan0.vendorInfo",
+		.value = "",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "1,1",
+	},
+	{
+		.key = "gsm.current.vsid",
+		.value = "0",
+	},
+	{
+		.key = "gsm.current.vsid2",
+		.value = "1",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "Unknown,Unknown",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = ",",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "us,",
+	},
+	{
+		.key = "gsm.operator.ispsroaming",
+		.value = "false,false",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false,false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "310410,",
+	},
+	{
+		.key = "gsm.sim.operator.alpha",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.iso-country",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.numeric",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.sixmode",
+		.value = "GSM,GSM",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "ABSENT,ABSENT",
+	},
+	{
+		.key = "gsm.version.baseband",
+		.value = "C9000ZHU1AQC1",
+	},
+	{
+		.key = "gsm.version.baseband1",
+		.value = "C9000ZHU1AQC1",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "Samsung RIL v3.0",
+	},
+	{
+		.key = "init.svc.BCS-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.DR-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.RIDL",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.SIDESYNC_service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.SMD-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.TvoutService_C",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.adsprpcd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.apaservice",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.at_distributor",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.atfwd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.audiod",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.auditd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bms-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.bootchecker",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ccm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.cnss-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.compact_memory",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.config_bluetooth",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.config_bt_addr",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.cs-early-boot",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.cs-post-boot",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.cs_service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.debuggerd64",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.defaultcrypto",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.dhcpcd_wlan0",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.diag_uart_log",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.edmaudit",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.epmlogd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fingerprintd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.gatekeeperd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.hciattach",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.icd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.imsd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.insthk",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.irsc_util",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.jackservice",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.lmkd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.loc_launcher",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.macloader",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mobex-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.msm_irqbal_lb",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netmgrd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.otp",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.p2p_supplicant",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.per_mgr",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.per_proxy",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.perfd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.powersnd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.prepare_param",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcamerasvr",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qcom-c_core-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcom-c_main-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcom-post-boot",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcom-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcom-usb-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qfintverify",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qmuxd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qseecomd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qseeproxydaemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qti",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qti-testscripts",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ril-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ril-daemon1",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.rmt_storage",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.run-mobicore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.scs",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.sdp_cryptod",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.seemp_healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.sem_daemon",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.sensorhubservice",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.swapon",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.tbaseLoader",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.tftp_server",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.thermal-engine",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.time_daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.tunman",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.wcnss-service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote_secondary",
+		.value = "running",
+	},
+	{
+		.key = "keyguard.no_require_sim",
+		.value = "true",
+	},
+	{
+		.key = "logd.auditd",
+		.value = "false",
+	},
+	{
+		.key = "logd.klogd",
+		.value = "false",
+	},
+	{
+		.key = "media.aac_51_output_enabled",
+		.value = "true",
+	},
+	{
+		.key = "media.msm8956.version",
+		.value = "1",
+	},
+	{
+		.key = "media.msm8956hw",
+		.value = "1",
+	},
+	{
+		.key = "media.settings.xml",
+		.value = "/etc/media_profiles_8956.xml",
+	},
+	{
+		.key = "mm.enable.qcom_parser",
+		.value = "1048575",
+	},
+	{
+		.key = "mm.enable.smoothstreaming",
+		.value = "true",
+	},
+	{
+		.key = "mmp.enable.3g2",
+		.value = "true",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.change",
+		.value = "net.iptype",
+	},
+	{
+		.key = "net.dns1",
+		.value = "208.67.222.222",
+	},
+	{
+		.key = "net.dns2",
+		.value = "208.67.220.220",
+	},
+	{
+		.key = "net.hostname",
+		.value = "android-24a2976d7ab2f114",
+	},
+	{
+		.key = "net.iptype",
+		.value = "502:v4v6v6",
+	},
+	{
+		.key = "net.knox.shareddevice.version",
+		.value = "2.6.0",
+	},
+	{
+		.key = "net.knoxscep.version",
+		.value = "2.1.0",
+	},
+	{
+		.key = "net.knoxsso.version",
+		.value = "2.5.0",
+	},
+	{
+		.key = "net.knoxvpn.version",
+		.value = "2.3.0",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.smart_switch.disabled",
+		.value = "1",
+	},
+	{
+		.key = "net.tcp.2g_init_rwnd",
+		.value = "10",
+	},
+	{
+		.key = "net.tcp.buffersize.default",
+		.value = "4096,87380,524288,4096,16384,110208",
+	},
+	{
+		.key = "net.tcp.buffersize.edge",
+		.value = "4093,26280,35040,4096,16384,35040",
+	},
+	{
+		.key = "net.tcp.buffersize.evdo",
+		.value = "4094,87380,524288,4096,16384,262144",
+	},
+	{
+		.key = "net.tcp.buffersize.gprs",
+		.value = "4092,8760,11680,4096,8760,11680",
+	},
+	{
+		.key = "net.tcp.buffersize.hsdpa",
+		.value = "4094,87380,1220608,4096,16384,1220608",
+	},
+	{
+		.key = "net.tcp.buffersize.hspa",
+		.value = "4094,87380,1220608,4096,16384,1220608",
+	},
+	{
+		.key = "net.tcp.buffersize.hspap",
+		.value = "4094,87380,1220608,4096,16384,1220608",
+	},
+	{
+		.key = "net.tcp.buffersize.hsupa",
+		.value = "4094,87380,1220608,4096,16384,1220608",
+	},
+	{
+		.key = "net.tcp.buffersize.lte",
+		.value = "2097152,4194304,8388608,262144,524288,1048576",
+	},
+	{
+		.key = "net.tcp.buffersize.umts",
+		.value = "4094,87380,110208,4096,16384,110208",
+	},
+	{
+		.key = "net.tcp.buffersize.wifi",
+		.value = "524288,2097152,4194304,262144,524288,1048576",
+	},
+	{
+		.key = "net.tcp.default_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "nfc.delay.boot",
+		.value = "0",
+	},
+	{
+		.key = "nfc.fw.dfl_areacode",
+		.value = "DEF",
+	},
+	{
+		.key = "nfc.fw.downloadmode_force",
+		.value = "0",
+	},
+	{
+		.key = "nfc.fw.rfreg_display_ver",
+		.value = "1",
+	},
+	{
+		.key = "nfc.fw.rfreg_mode",
+		.value = "normal",
+	},
+	{
+		.key = "nfc.fw.rfreg_ver",
+		.value = "16/12/5/17.52.10",
+	},
+	{
+		.key = "nfc.smartcard.binded",
+		.value = "true",
+	},
+	{
+		.key = "persist.audio.allsoundmute",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.cpufreq",
+		.value = "350000",
+	},
+	{
+		.key = "persist.audio.finemediavolume",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.fluence.speaker",
+		.value = "true",
+	},
+	{
+		.key = "persist.audio.fluence.voicecall",
+		.value = "true",
+	},
+	{
+		.key = "persist.audio.fluence.voicerec",
+		.value = "false",
+	},
+	{
+		.key = "persist.audio.globaleffect",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.headsetsysvolume",
+		.value = "9",
+	},
+	{
+		.key = "persist.audio.hphonesysvolume",
+		.value = "9",
+	},
+	{
+		.key = "persist.audio.k2hd",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.mpseek",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.mysound",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.ringermode",
+		.value = "2",
+	},
+	{
+		.key = "persist.audio.sales_code",
+		.value = "TGY",
+	},
+	{
+		.key = "persist.audio.soundalivefxsec",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.stereospeaker",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.sysvolume",
+		.value = "9",
+	},
+	{
+		.key = "persist.audio.uhqa",
+		.value = "1",
+	},
+	{
+		.key = "persist.audio.voipcpufreq",
+		.value = "350000",
+	},
+	{
+		.key = "persist.camera.c2d.debug.mask",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.cpp.debug.mask",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.debug.logfile",
+		.value = "0",
+	},
+	{
+		.key = "persist.camera.global.debug",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.hal.debug",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.iface.logs",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.imglib.logs",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.isp.debug",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.mct.debug",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.mmstill.logs",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.pproc.debug.mask",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.sensor.debug",
+		.value = "1",
+	},
+	{
+		.key = "persist.camera.stats.debug.mask",
+		.value = "1",
+	},
+	{
+		.key = "persist.cne.feature",
+		.value = "0",
+	},
+	{
+		.key = "persist.data.dpm.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.data.dropssdp",
+		.value = "false",
+	},
+	{
+		.key = "persist.data.mode",
+		.value = "concurrent",
+	},
+	{
+		.key = "persist.data.netmgrd.qos.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.debug.coresight.config",
+		.value = "stm-events",
+	},
+	{
+		.key = "persist.debug.wfd.enable",
+		.value = "1",
+	},
+	{
+		.key = "persist.demo.hdmirotationlock",
+		.value = "false",
+	},
+	{
+		.key = "persist.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "persist.gps.qc_nlp_in_use",
+		.value = "1",
+	},
+	{
+		.key = "persist.hwc.enable_vds",
+		.value = "1",
+	},
+	{
+		.key = "persist.hwc.mdpcomp.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.loc.nlp_name",
+		.value = "com.qualcomm.location",
+	},
+	{
+		.key = "persist.qfp",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.add_power_save",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.apm_sim_not_pwdn",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.custom_ecc",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.initphone-type",
+		.value = "1,1",
+	},
+	{
+		.key = "persist.radio.last.phonetype",
+		.value = "1,1",
+	},
+	{
+		.key = "persist.radio.latest-modeltype",
+		.value = "2",
+	},
+	{
+		.key = "persist.radio.lte_vrte_ltd",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.multisim.config",
+		.value = "dsds",
+	},
+	{
+		.key = "persist.radio.multisim.stackid",
+		.value = "0,1",
+	},
+	{
+		.key = "persist.radio.plmnname",
+		.value = ",",
+	},
+	{
+		.key = "persist.radio.sib16_support",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.silent-reset",
+		.value = "2",
+	},
+	{
+		.key = "persist.radio.sim.onoff",
+		.value = "1,1",
+	},
+	{
+		.key = "persist.radio.tdscdma_present",
+		.value = "1",
+	},
+	{
+		.key = "persist.ril.dfm.srlte",
+		.value = "false",
+	},
+	{
+		.key = "persist.ril.ims.eutranParam",
+		.value = "0",
+	},
+	{
+		.key = "persist.ril.ims.utranParam",
+		.value = "0",
+	},
+	{
+		.key = "persist.ril.modem.board",
+		.value = "MSM8976",
+	},
+	{
+		.key = "persist.ril.radiocapa.tdscdma",
+		.value = "true",
+	},
+	{
+		.key = "persist.security.ams.enforcing",
+		.value = "3",
+	},
+	{
+		.key = "persist.security.tlc.ccm",
+		.value = "0",
+	},
+	{
+		.key = "persist.security.tlc.otp",
+		.value = "0",
+	},
+	{
+		.key = "persist.service.bdroid.version",
+		.value = "4.2",
+	},
+	{
+		.key = "persist.sys.SUWRebootReason",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.bpmsetting.enable",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.ccm.date",
+		.value = "Fri Mar 10 16:45:59 KST 2017",
+	},
+	{
+		.key = "persist.sys.country",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.dalvik.vm.lib.2",
+		.value = "libart.so",
+	},
+	{
+		.key = "persist.sys.drs.date",
+		.value = "Fri Mar 10 16:45:59 KST 2017",
+	},
+	{
+		.key = "persist.sys.ims.supportmmtel1",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.ims.supportmmtel2",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.kap.date",
+		.value = "Fri Mar 10 16:45:59 KST 2017",
+	},
+	{
+		.key = "persist.sys.kap.status",
+		.value = "NONE",
+	},
+	{
+		.key = "persist.sys.language",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.locale",
+		.value = "en-US",
+	},
+	{
+		.key = "persist.sys.localedefault",
+		.value = "en-US",
+	},
+	{
+		.key = "persist.sys.localevar",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.sb.setting.enabled",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.setupwizard",
+		.value = "FINISH",
+	},
+	{
+		.key = "persist.sys.sm_mode",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.softsim.netmode",
+		.value = "3g",
+	},
+	{
+		.key = "persist.sys.softsim.status",
+		.value = "default,default",
+	},
+	{
+		.key = "persist.sys.ssrm_unbox_cnt",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.storage_preload",
+		.value = "2",
+	},
+	{
+		.key = "persist.sys.timezone",
+		.value = "America/New_York",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "persist.sys.usb.config.extra",
+		.value = "none",
+	},
+	{
+		.key = "persist.sys.usb.dualrole",
+		.value = "false",
+	},
+	{
+		.key = "persist.timed.enable",
+		.value = "true",
+	},
+	{
+		.key = "qcom.hw.aac.encoder",
+		.value = "true",
+	},
+	{
+		.key = "qemu.hw.mainkeys",
+		.value = "0",
+	},
+	{
+		.key = "ril.CompleteMsg",
+		.value = "OK",
+	},
+	{
+		.key = "ril.ICC_TYPE",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.IsCSIM",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.RildInit",
+		.value = "1,1",
+	},
+	{
+		.key = "ril.airplane.mode",
+		.value = "0",
+	},
+	{
+		.key = "ril.approved_codever",
+		.value = "none",
+	},
+	{
+		.key = "ril.approved_cscver",
+		.value = "none",
+	},
+	{
+		.key = "ril.approved_modemver",
+		.value = "none",
+	},
+	{
+		.key = "ril.atd_status",
+		.value = "1_0_0",
+	},
+	{
+		.key = "ril.backoffstate",
+		.value = "1024",
+	},
+	{
+		.key = "ril.cold_sim",
+		.value = "0",
+	},
+	{
+		.key = "ril.cs_svc",
+		.value = "1",
+	},
+	{
+		.key = "ril.dds.socket_num",
+		.value = "-1",
+	},
+	{
+		.key = "ril.debug_modemfactory",
+		.value = "CSC Feature State: IMS ON, EPDG OFF",
+	},
+	{
+		.key = "ril.ecclist0",
+		.value = "911,*911,#911,112,000,08,110,999,118,119",
+	},
+	{
+		.key = "ril.ecclist00",
+		.value = "112,911,999,000,110,118,119",
+	},
+	{
+		.key = "ril.ecclist10",
+		.value = "112,911,999,000,08,110,118,119,120,122",
+	},
+	{
+		.key = "ril.ecclist_net0",
+		.value = "",
+	},
+	{
+		.key = "ril.ecclist_net1",
+		.value = "",
+	},
+	{
+		.key = "ril.eri_num",
+		.value = "1",
+	},
+	{
+		.key = "ril.eri_ver_1",
+		.value = "E:None ",
+	},
+	{
+		.key = "ril.hasisim",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.hw_ver",
+		.value = "REV01",
+	},
+	{
+		.key = "ril.ims.ecsupport",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.initPB",
+		.value = "0",
+	},
+	{
+		.key = "ril.initPB2",
+		.value = "0",
+	},
+	{
+		.key = "ril.isctc",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.modem.board",
+		.value = "MSM8976",
+	},
+	{
+		.key = "ril.official_cscver",
+		.value = "C9000ZZH1AQC1",
+	},
+	{
+		.key = "ril.product_code",
+		.value = "SM-C9000ZKATGY",
+	},
+	{
+		.key = "ril.radiostate",
+		.value = "10",
+	},
+	{
+		.key = "ril.rfcal_date",
+		.value = "2017.03.01",
+	},
+	{
+		.key = "ril.serialnumber",
+		.value = "R28J3003P0Z",
+	},
+	{
+		.key = "ril.servicestate",
+		.value = "2,1",
+	},
+	{
+		.key = "ril.simoperator",
+		.value = ",",
+	},
+	{
+		.key = "ril.ss.routing",
+		.value = "0,0",
+	},
+	{
+		.key = "ril.subinfo",
+		.value = "0:2147483643,1:2147483644",
+	},
+	{
+		.key = "ril.sw_ver",
+		.value = "C9000ZHU1AQC1",
+	},
+	{
+		.key = "ril.timezoneID",
+		.value = "",
+	},
+	{
+		.key = "ril.twwan911Timer",
+		.value = "40",
+	},
+	{
+		.key = "ril.voicecapable",
+		.value = "true",
+	},
+	{
+		.key = "rild.libpath",
+		.value = "/system/lib64/libsec-ril.so",
+	},
+	{
+		.key = "rild.libpath2",
+		.value = "/system/lib64/libsec-ril-dsds.so",
+	},
+	{
+		.key = "ro.adb.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.alarm_boot",
+		.value = "false",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.am.reschedule_service",
+		.value = "true",
+	},
+	{
+		.key = "ro.astcenc.astcsupport",
+		.value = "1",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "msm",
+	},
+	{
+		.key = "ro.bluetooth.dun",
+		.value = "true",
+	},
+	{
+		.key = "ro.bluetooth.hfp.ver",
+		.value = "1.7",
+	},
+	{
+		.key = "ro.bluetooth.sap",
+		.value = "true",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "msm8952",
+	},
+	{
+		.key = "ro.boot.baseband",
+		.value = "msm",
+	},
+	{
+		.key = "ro.boot.boot_recovery",
+		.value = "0",
+	},
+	{
+		.key = "ro.boot.bootdevice",
+		.value = "7824900.sdhci",
+	},
+	{
+		.key = "ro.boot.bootloader",
+		.value = "C9000ZHU1AQC1",
+	},
+	{
+		.key = "ro.boot.cp_debug_level",
+		.value = "0x55FF",
+	},
+	{
+		.key = "ro.boot.debug_level",
+		.value = "0x4f4c",
+	},
+	{
+		.key = "ro.boot.em.did",
+		.value = "29907598b8df",
+	},
+	{
+		.key = "ro.boot.em.model",
+		.value = "SM-C9000",
+	},
+	{
+		.key = "ro.boot.em.status",
+		.value = "0x0",
+	},
+	{
+		.key = "ro.boot.emmc",
+		.value = "true",
+	},
+	{
+		.key = "ro.boot.hardware",
+		.value = "qcom",
+	},
+	{
+		.key = "ro.boot.revision",
+		.value = "9",
+	},
+	{
+		.key = "ro.boot.sec_atd.tty",
+		.value = "/dev/ttyHSL0",
+	},
+	{
+		.key = "ro.boot.security_mode",
+		.value = "1526595584",
+	},
+	{
+		.key = "ro.boot.serialno",
+		.value = "7fc7472a",
+	},
+	{
+		.key = "ro.boot.sku_theme",
+		.value = "SM-C9000ZKACHC",
+	},
+	{
+		.key = "ro.boot.skutheme_offset",
+		.value = "9437224",
+	},
+	{
+		.key = "ro.boot.ucs_mode",
+		.value = "0",
+	},
+	{
+		.key = "ro.boot.warranty_bit",
+		.value = "1",
+	},
+	{
+		.key = "ro.boot_recovery",
+		.value = "0",
+	},
+	{
+		.key = "ro.bootimage.build.date",
+		.value = "Fri Mar 10 16:46:11 KST 2017",
+	},
+	{
+		.key = "ro.bootimage.build.date.utc",
+		.value = "1489131971",
+	},
+	{
+		.key = "ro.bootimage.build.fingerprint",
+		.value = "samsung/c9ltezh/c9ltechn:6.0.1/MMB29M/C9000ZHU1AQC1:user/test-keys",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "C9000ZHU1AQC1",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bt.bdaddr_path",
+		.value = "/efs/bluetooth/bt_addr",
+	},
+	{
+		.key = "ro.build.PDA",
+		.value = "C9000ZHU1APC1",
+	},
+	{
+		.key = "ro.build.changelist",
+		.value = "10182499",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "phone",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Fri Mar 10 16:45:59 KST 2017",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1489131959",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "c9ltezh-user 6.0.1 MMB29M C9000ZHU1APC1 release-keys",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "MMB29M.C9000ZHU1APC1",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "samsung/c9ltezh/c9ltechn:6.0.1/MMB29M/C9000ZHU1APC1:user/release-keys",
+	},
+	{
+		.key = "ro.build.flavor",
+		.value = "c9ltezh-user",
+	},
+	{
+		.key = "ro.build.hidden_ver",
+		.value = "C9000ZHU1APC1",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "SWDG5215",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "MMB29M",
+	},
+	{
+		.key = "ro.build.official.release",
+		.value = "true",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "c9ltechn",
+	},
+	{
+		.key = "ro.build.scafe.cream",
+		.value = "white",
+	},
+	{
+		.key = "ro.build.scafe.shot",
+		.value = "double",
+	},
+	{
+		.key = "ro.build.scafe.size",
+		.value = "short",
+	},
+	{
+		.key = "ro.build.scafe.version",
+		.value = "2016B",
+	},
+	{
+		.key = "ro.build.selinux",
+		.value = "1",
+	},
+	{
+		.key = "ro.build.selinux.enforce",
+		.value = "1",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "dpi",
+	},
+	{
+		.key = "ro.build.version.all_codenames",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.base_os",
+		.value = "",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "C9000ZHU1APC1",
+	},
+	{
+		.key = "ro.build.version.preview_sdk",
+		.value = "0",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "6.0.1",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "23",
+	},
+	{
+		.key = "ro.build.version.sdl",
+		.value = "2302",
+	},
+	{
+		.key = "ro.build.version.security_patch",
+		.value = "2017-03-01",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.chipname",
+		.value = "MSM8976",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-samsung",
+	},
+	{
+		.key = "ro.com.google.clientidbase.gmm",
+		.value = "android-samsung",
+	},
+	{
+		.key = "ro.com.google.gmsversion",
+		.value = "6.0_r10",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "Morning_Flower.ogg",
+	},
+	{
+		.key = "ro.config.dha_cached_max",
+		.value = "20",
+	},
+	{
+		.key = "ro.config.dha_cached_min",
+		.value = "5",
+	},
+	{
+		.key = "ro.config.dha_empty_init",
+		.value = "40",
+	},
+	{
+		.key = "ro.config.dha_empty_max",
+		.value = "40",
+	},
+	{
+		.key = "ro.config.dha_lmk_scale",
+		.value = "0.414",
+	},
+	{
+		.key = "ro.config.dha_pwhitelist_enable",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.dmverity",
+		.value = "True",
+	},
+	{
+		.key = "ro.config.iccc_version",
+		.value = "1.0",
+	},
+	{
+		.key = "ro.config.kap",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.knox",
+		.value = "v30",
+	},
+	{
+		.key = "ro.config.max_starting_bg",
+		.value = "8",
+	},
+	{
+		.key = "ro.config.media_sound",
+		.value = "Media_preview_Touch_the_light.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "Grace_Note.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound_2",
+		.value = "S_Charming_Bell.ogg",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "Over_the_Horizon.ogg",
+	},
+	{
+		.key = "ro.config.ringtone_2",
+		.value = "Basic_Bell.ogg",
+	},
+	{
+		.key = "ro.config.rm_preload_enabled",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.tima",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.timaversion",
+		.value = "3.0",
+	},
+	{
+		.key = "ro.core_ctl_max_cpu",
+		.value = "4",
+	},
+	{
+		.key = "ro.core_ctl_min_cpu",
+		.value = "2",
+	},
+	{
+		.key = "ro.cp_debug_level",
+		.value = "0x55FF",
+	},
+	{
+		.key = "ro.crypto.default.encrypted",
+		.value = "true",
+	},
+	{
+		.key = "ro.crypto.fs_crypto_blkdev",
+		.value = "/dev/block/dm-0",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "encrypted",
+	},
+	{
+		.key = "ro.crypto.type",
+		.value = "block",
+	},
+	{
+		.key = "ro.csc.country_code",
+		.value = "Hong Kong",
+	},
+	{
+		.key = "ro.csc.countryiso_code",
+		.value = "HK",
+	},
+	{
+		.key = "ro.csc.sales_code",
+		.value = "TGY",
+	},
+	{
+		.key = "ro.cutoff_voltage_mv",
+		.value = "3200",
+	},
+	{
+		.key = "ro.dalvik.vm.native.bridge",
+		.value = "0",
+	},
+	{
+		.key = "ro.debug_level",
+		.value = "0x4f4c",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.em.did",
+		.value = "29907598b8df",
+	},
+	{
+		.key = "ro.em.model",
+		.value = "SM-C9000",
+	},
+	{
+		.key = "ro.em.status",
+		.value = "0x0",
+	},
+	{
+		.key = "ro.error.receiver.default",
+		.value = "com.samsung.receiver.error",
+	},
+	{
+		.key = "ro.expect.recovery_id",
+		.value = "0x454562f52b6f636ba11d93f9c9d35111660f9482000000000000000000000000",
+	},
+	{
+		.key = "ro.fm.transmitter",
+		.value = "false",
+	},
+	{
+		.key = "ro.frp.pst",
+		.value = "/dev/block/persistent",
+	},
+	{
+		.key = "ro.gps.agps_provider",
+		.value = "1",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "qcom",
+	},
+	{
+		.key = "ro.hdcp2.rx",
+		.value = "tz",
+	},
+	{
+		.key = "ro.hwui.drop_shadow_cache_size",
+		.value = "6",
+	},
+	{
+		.key = "ro.hwui.gradient_cache_size",
+		.value = "2",
+	},
+	{
+		.key = "ro.hwui.layer_cache_size",
+		.value = "34",
+	},
+	{
+		.key = "ro.hwui.path_cache_size",
+		.value = "10",
+	},
+	{
+		.key = "ro.hwui.r_buffer_cache_size",
+		.value = "4",
+	},
+	{
+		.key = "ro.hwui.shape_cache_size",
+		.value = "4",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_height",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_width",
+		.value = "2048",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_height",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_width",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.texture_cache_flushrate",
+		.value = "0.4",
+	},
+	{
+		.key = "ro.hwui.texture_cache_size",
+		.value = "50",
+	},
+	{
+		.key = "ro.kernel.qemu",
+		.value = "0",
+	},
+	{
+		.key = "ro.mct.compressiontype",
+		.value = "ETC1",
+	},
+	{
+		.key = "ro.mdtp.package_name2",
+		.value = "com.qualcomm.qti.securemsm.mdtp.MdtpDemo",
+	},
+	{
+		.key = "ro.mst.support",
+		.value = "0",
+	},
+	{
+		.key = "ro.multisim.simslotcount",
+		.value = "2",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "196609",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "MSM8976",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "samsung",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "arm64-v8a",
+	},
+	{
+		.key = "ro.product.cpu.abilist",
+		.value = "arm64-v8a,armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist32",
+		.value = "armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist64",
+		.value = "arm64-v8a",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "c9ltechn",
+	},
+	{
+		.key = "ro.product.locale",
+		.value = "en-GB",
+	},
+	{
+		.key = "ro.product.locale.language",
+		.value = "en",
+	},
+	{
+		.key = "ro.product.locale.region",
+		.value = "US",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "samsung",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "SM-C9000",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "c9ltezh",
+	},
+	{
+		.key = "ro.product_ship",
+		.value = "true",
+	},
+	{
+		.key = "ro.qc.sdk.audio.fluencetype",
+		.value = "none",
+	},
+	{
+		.key = "ro.qc.sdk.audio.ssr",
+		.value = "false",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.ftp",
+		.value = "true",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.hfp",
+		.value = "true",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.hsp",
+		.value = "true",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.map",
+		.value = "true",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.nap",
+		.value = "true",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.opp",
+		.value = "true",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.pbap",
+		.value = "true",
+	},
+	{
+		.key = "ro.qualcomm.bt.hci_transport",
+		.value = "smd",
+	},
+	{
+		.key = "ro.qualcomm.cabl",
+		.value = "2",
+	},
+	{
+		.key = "ro.revision",
+		.value = "9",
+	},
+	{
+		.key = "ro.ril.svdo",
+		.value = "false",
+	},
+	{
+		.key = "ro.ril.svlte1x",
+		.value = "false",
+	},
+	{
+		.key = "ro.runtime.firstboot",
+		.value = "1505263675215",
+	},
+	{
+		.key = "ro.sec.fle.encryption",
+		.value = "true",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.security.ese.cosname",
+		.value = "UT2.0_01000002",
+	},
+	{
+		.key = "ro.security.esest",
+		.value = "per0201exi",
+	},
+	{
+		.key = "ro.security.icd.flagmode",
+		.value = "multi",
+	},
+	{
+		.key = "ro.security.reactive.version",
+		.value = "2.0.11",
+	},
+	{
+		.key = "ro.security.vpnpp.release",
+		.value = "7.0",
+	},
+	{
+		.key = "ro.security.vpnpp.ver",
+		.value = "1.4",
+	},
+	{
+		.key = "ro.security_mode",
+		.value = "1526595584",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "7fc7472a",
+	},
+	{
+		.key = "ro.setupwizard.mode",
+		.value = "OPTIONAL",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "420",
+	},
+	{
+		.key = "ro.sku.param.offset",
+		.value = "9437224",
+	},
+	{
+		.key = "ro.sku_theme",
+		.value = "SM-C9000ZKACHC",
+	},
+	{
+		.key = "ro.sys.fw.bservice_age",
+		.value = "5000",
+	},
+	{
+		.key = "ro.sys.fw.bservice_enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.sys.fw.bservice_limit",
+		.value = "5",
+	},
+	{
+		.key = "ro.sys.fw.dex2oat_thread_count",
+		.value = "4",
+	},
+	{
+		.key = "ro.sys.fw.empty_app_percent",
+		.value = "50",
+	},
+	{
+		.key = "ro.sys.fw.trim_cache_percent",
+		.value = "100",
+	},
+	{
+		.key = "ro.sys.fw.trim_empty_percent",
+		.value = "100",
+	},
+	{
+		.key = "ro.sys.fw.trim_enable_memory",
+		.value = "2147483648",
+	},
+	{
+		.key = "ro.sys.fw.use_trim_settings",
+		.value = "true",
+	},
+	{
+		.key = "ro.telephony.call_ring.multiple",
+		.value = "false",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "9,1",
+	},
+	{
+		.key = "ro.use_data_netmgrd",
+		.value = "true",
+	},
+	{
+		.key = "ro.vendor.extension_library",
+		.value = "libqti-perfd-client.so",
+	},
+	{
+		.key = "ro.vendor.gt_library",
+		.value = "libqti-gt.so",
+	},
+	{
+		.key = "ro.vold.forceencryption",
+		.value = "1",
+	},
+	{
+		.key = "ro.warranty_bit",
+		.value = "1",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "ro.zygote",
+		.value = "zygote64_32",
+	},
+	{
+		.key = "rtsp.video.keep-damaged-au",
+		.value = "video/3gp",
+	},
+	{
+		.key = "rw.km_fips_status",
+		.value = "ready",
+	},
+	{
+		.key = "sec.fle.encryption.status",
+		.value = "Dec NewFile IncludeMedia",
+	},
+	{
+		.key = "secmm.player.gp.url",
+		.value = "true",
+	},
+	{
+		.key = "secmm.player.uhqamode",
+		.value = "True",
+	},
+	{
+		.key = "security.ASKS.policy_version",
+		.value = "161011",
+	},
+	{
+		.key = "security.mdpp.mass",
+		.value = "skmm",
+	},
+	{
+		.key = "security.perf_harden",
+		.value = "1",
+	},
+	{
+		.key = "security.semdaemonfinish",
+		.value = "1",
+	},
+	{
+		.key = "selinux.policy_version",
+		.value = "SEPF_SECMOBILE_6.0.1_0033",
+	},
+	{
+		.key = "selinux.reload_policy",
+		.value = "1",
+	},
+	{
+		.key = "service.bootanim.exit",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.hdmi_preview",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.rec.running",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.running",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.running_0",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.running_1",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.samsung.enabled",
+		.value = "0",
+	},
+	{
+		.key = "service.camera.sfs.running",
+		.value = "0",
+	},
+	{
+		.key = "service.media.powersnd",
+		.value = "1",
+	},
+	{
+		.key = "storage.efs_sync.done",
+		.value = "0",
+	},
+	{
+		.key = "storage.mmc.size",
+		.value = "62537072640",
+	},
+	{
+		.key = "storage.support.sdcard",
+		.value = "1",
+	},
+	{
+		.key = "storage.support.usb",
+		.value = "1",
+	},
+	{
+		.key = "sys.adaptivedisplay.eadon",
+		.value = "true",
+	},
+	{
+		.key = "sys.bartender.batterystats.ver",
+		.value = "11",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.cameramode.blackbox",
+		.value = "0",
+	},
+	{
+		.key = "sys.cameramode.vtcall",
+		.value = "0",
+	},
+	{
+		.key = "sys.config.bigdata_enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.config.bigdata_mem_enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.config.mars_version",
+		.value = "1.00",
+	},
+	{
+		.key = "sys.dockstate",
+		.value = "0",
+	},
+	{
+		.key = "sys.enterprise.billing.version",
+		.value = "1.2.0",
+	},
+	{
+		.key = "sys.enterprise.otp.version",
+		.value = "2.6.0",
+	},
+	{
+		.key = "sys.ims.service_started",
+		.value = "true",
+	},
+	{
+		.key = "sys.isdumpstaterunning",
+		.value = "0",
+	},
+	{
+		.key = "sys.keyguard.connected",
+		.value = "true",
+	},
+	{
+		.key = "sys.keymaster.loaded",
+		.value = "true",
+	},
+	{
+		.key = "sys.knox.store",
+		.value = "0",
+	},
+	{
+		.key = "sys.listeners.registered",
+		.value = "true",
+	},
+	{
+		.key = "sys.mdniecontrolservice.mscon",
+		.value = "true",
+	},
+	{
+		.key = "sys.mobicore.loaded",
+		.value = "true",
+	},
+	{
+		.key = "sys.mobicoredaemon.enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.nfc.support",
+		.value = "1",
+	},
+	{
+		.key = "sys.oem_unlock_allowed",
+		.value = "0",
+	},
+	{
+		.key = "sys.qseecomd.enable",
+		.value = "true",
+	},
+	{
+		.key = "sys.reset_reason",
+		.value = "N|NP",
+	},
+	{
+		.key = "sys.settings_global_version",
+		.value = "3",
+	},
+	{
+		.key = "sys.settings_secure_version",
+		.value = "3",
+	},
+	{
+		.key = "sys.settings_system_version",
+		.value = "9",
+	},
+	{
+		.key = "sys.siop.level",
+		.value = "-3",
+	},
+	{
+		.key = "sys.skip_lockscreen",
+		.value = "0",
+	},
+	{
+		.key = "sys.ssrm.mdnie",
+		.value = "-1",
+	},
+	{
+		.key = "sys.sysctl.compact_memory",
+		.value = "0",
+	},
+	{
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "24300",
+	},
+	{
+		.key = "sys.sysctl.tcp_adv_win_scale",
+		.value = "1",
+	},
+	{
+		.key = "sys.sysctl.tcp_def_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "sys.usb.configfs",
+		.value = "0",
+	},
+	{
+		.key = "sys.usb.ffs.ready",
+		.value = "1",
+	},
+	{
+		.key = "sys.usb.rps_mask",
+		.value = "2",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "system.camera.CC.disable",
+		.value = "0",
+	},
+	{
+		.key = "telephony.lteOnCdmaDevice",
+		.value = "1",
+	},
+	{
+		.key = "tunman.protocol",
+		.value = "1",
+	},
+	{
+		.key = "tunnel.audio.encode",
+		.value = "false",
+	},
+	{
+		.key = "use.voice.path.for.pcm.voip",
+		.value = "true",
+	},
+	{
+		.key = "vidc.enc.dcvs.extra-buff-count",
+		.value = "2",
+	},
+	{
+		.key = "vidc.enc.narrow.searchrange",
+		.value = "1",
+	},
+	{
+		.key = "voice.conc.fallbackpath",
+		.value = "deep-buffer",
+	},
+	{
+		.key = "voice.playback.conc.disabled",
+		.value = "true",
+	},
+	{
+		.key = "voice.record.conc.disabled",
+		.value = "false",
+	},
+	{
+		.key = "voice.voip.conc.disabled",
+		.value = "true",
+	},
+	{
+		.key = "vold.crypt.type",
+		.value = "default",
+	},
+	{
+		.key = "vold.decrypt",
+		.value = "trigger_restart_framework",
+	},
+	{
+		.key = "vold.encrypt_progress",
+		.value = "",
+	},
+	{
+		.key = "vold.has_adoptable",
+		.value = "0",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "vzw.os.rooted",
+		.value = "false",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wlan.driver.ath",
+		.value = "0",
+	},
+	{
+		.key = "wlan.driver.status",
+		.value = "ok",
+	},
+	{
+		.key = "wlan.p2p.chkintent",
+		.value = "0",
+	},
+	{
+		.key = "wlan.wfd.status",
+		.value = "disconnected",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
