@@ -322,6 +322,58 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 4,
+		.content = "0-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 1,
+		.content = "\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/modalias",
+		.size = 66,
+		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
+		.size = 383,
+		.content =
+			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
+			"480000\t\t0\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"807000\t\t0\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"1306000\t\t0\t\t0\t\t0\t\t0\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"1402000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t278\t\t278\t\t278\t\t278\t\t\n"
+			"1709000\t\t3149\t\t3149\t\t3149\t\t3149\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			"1805000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t50\t\t50\t\t50\t\t50\t\t\n"
+			"2016000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t2821\t\t2821\t\t2821\t\t2821\t\t\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpufreq/current_in_state",
+		.size = 176,
+		.content =
+			"CPU4:480000=0 807000=0 1306000=0 1709000=0 \n"
+			"CPU5:480000=0 807000=0 1306000=0 1709000=0 \n"
+			"CPU6:480000=0 807000=0 1306000=0 1709000=0 \n"
+			"CPU7:480000=0 807000=0 1306000=0 1709000=0 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+		.size = 25,
+		.content = "hisi_little_cluster_idle\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+		.size = 5,
+		.content = "menu\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1709000\n",
@@ -330,6 +382,76 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+		.size = 31,
+		.content = "480000 807000 1306000 1709000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 41,
+		.content =
+			"480000 0\n"
+			"807000 0\n"
+			"1306000 0\n"
+			"1709000 3218\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
+		.size = 277,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1306000   1709000 \n"
+			"   480000:         0         0         0         1 \n"
+			"   807000:         0         0         0         0 \n"
+			"  1306000:         0         0         0         0 \n"
+			"  1709000:         0         0         0         0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
@@ -342,6 +464,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -350,6 +477,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
 		.size = 2,
 		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 3,
+		.content = "01\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_max_freq",
@@ -362,6 +499,76 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
+		.size = 31,
+		.content = "480000 807000 1306000 1709000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
+		.size = 41,
+		.content =
+			"480000 0\n"
+			"807000 0\n"
+			"1306000 0\n"
+			"1709000 3443\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/trans_table",
+		.size = 277,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1306000   1709000 \n"
+			"   480000:         0         0         0         1 \n"
+			"   807000:         0         0         0         1 \n"
+			"  1306000:         0         0         0         0 \n"
+			"  1709000:         0         1         0         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -370,6 +577,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
@@ -382,6 +594,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "1\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
+		.size = 3,
+		.content = "02\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1709000\n",
@@ -390,6 +612,76 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_frequencies",
+		.size = 31,
+		.content = "480000 807000 1306000 1709000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
+		.size = 41,
+		.content =
+			"480000 7\n"
+			"807000 2\n"
+			"1306000 0\n"
+			"1709000 4014\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
+		.size = 2,
+		.content = "9\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/trans_table",
+		.size = 277,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1306000   1709000 \n"
+			"   480000:         0         1         0         2 \n"
+			"   807000:         0         0         0         2 \n"
+			"  1306000:         0         0         0         0 \n"
+			"  1709000:         3         1         0         0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
@@ -402,6 +694,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
 		.size = 2,
 		.content = "2\n",
@@ -410,6 +707,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
 		.size = 2,
 		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings",
+		.size = 3,
+		.content = "04\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_max_freq",
@@ -422,6 +729,76 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "480000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
+		.size = 31,
+		.content = "480000 807000 1306000 1709000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "1709000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "480000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
+		.size = 42,
+		.content =
+			"480000 82\n"
+			"807000 2\n"
+			"1306000 0\n"
+			"1709000 4164\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "10\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/trans_table",
+		.size = 277,
+		.content =
+			"   From  :    To\n"
+			"         :    480000    807000   1306000   1709000 \n"
+			"   480000:         0         1         0         3 \n"
+			"   807000:         0         0         0         2 \n"
+			"  1306000:         0         0         0         0 \n"
+			"  1709000:         3         1         0         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -430,6 +807,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
@@ -442,6 +824,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "3\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings",
+		.size = 3,
+		.content = "08\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "2016000\n",
@@ -450,6 +842,74 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_min_freq",
 		.size = 8,
 		.content = "1402000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_frequencies",
+		.size = 25,
+		.content = "1402000 1805000 2016000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "2016000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
+		.size = 9,
+		.content = "ondemand\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2016000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
+		.size = 8,
+		.content = "1402000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
+		.size = 37,
+		.content =
+			"1402000 476\n"
+			"1805000 177\n"
+			"2016000 3837\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "94\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/trans_table",
+		.size = 185,
+		.content =
+			"   From  :    To\n"
+			"         :   1402000   1805000   2016000 \n"
+			"  1402000:         0        18        11 \n"
+			"  1805000:        21         0        17 \n"
+			"  2016000:         7        20         0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
@@ -462,6 +922,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -470,6 +935,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings_list",
 		.size = 2,
 		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings",
+		.size = 3,
+		.content = "10\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_max_freq",
@@ -482,6 +957,74 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "1402000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_frequencies",
+		.size = 25,
+		.content = "1402000 1805000 2016000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "2016000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor",
+		.size = 9,
+		.content = "ondemand\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2016000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq",
+		.size = 8,
+		.content = "1402000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
+		.size = 37,
+		.content =
+			"1402000 497\n"
+			"1805000 213\n"
+			"2016000 4008\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "111\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/trans_table",
+		.size = 185,
+		.content =
+			"   From  :    To\n"
+			"         :   1402000   1805000   2016000 \n"
+			"  1402000:         0        23        13 \n"
+			"  1805000:        25         0        19 \n"
+			"  2016000:        10        21         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -490,6 +1033,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings_list",
 		.size = 4,
 		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
@@ -502,6 +1050,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "5\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings",
+		.size = 3,
+		.content = "20\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "2016000\n",
@@ -510,6 +1068,74 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_min_freq",
 		.size = 8,
 		.content = "1402000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_frequencies",
+		.size = 25,
+		.content = "1402000 1805000 2016000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1402000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor",
+		.size = 9,
+		.content = "ondemand\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2016000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq",
+		.size = 8,
+		.content = "1402000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
+		.size = 37,
+		.content =
+			"1402000 742\n"
+			"1805000 328\n"
+			"2016000 4597\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "151\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/trans_table",
+		.size = 185,
+		.content =
+			"   From  :    To\n"
+			"         :   1402000   1805000   2016000 \n"
+			"  1402000:         0        31        13 \n"
+			"  1805000:        32         0        31 \n"
+			"  2016000:        11        33         0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
@@ -522,6 +1148,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "4-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
 		.size = 2,
 		.content = "2\n",
@@ -530,6 +1161,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings_list",
 		.size = 2,
 		.content = "6\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings",
+		.size = 3,
+		.content = "40\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/affected_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_max_freq",
@@ -542,6 +1183,74 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "1402000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/related_cpus",
+		.size = 8,
+		.content = "4 5 6 7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_frequencies",
+		.size = 25,
+		.content = "1402000 1805000 2016000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_governors",
+		.size = 67,
+		.content = "interactive conservative ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "2016000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_driver",
+		.size = 15,
+		.content = "arm-big-little\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor",
+		.size = 9,
+		.content = "ondemand\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_max_freq",
+		.size = 8,
+		.content = "2016000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq",
+		.size = 8,
+		.content = "1402000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
+		.size = 37,
+		.content =
+			"1402000 754\n"
+			"1805000 364\n"
+			"2016000 4740\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "169\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/trans_table",
+		.size = 185,
+		.content =
+			"   From  :    To\n"
+			"         :   1402000   1805000   2016000 \n"
+			"  1402000:         0        33        15 \n"
+			"  1805000:        35         0        36 \n"
+			"  2016000:        12        38         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu7/topology/physical_package_id",
 		.size = 2,
 		.content = "1\n",
@@ -550,6 +1259,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings_list",
 		.size = 4,
 		.content = "4-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings",
+		.size = 3,
+		.content = "f0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
@@ -561,5 +1275,2556 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "7\n",
 	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings",
+		.size = 3,
+		.content = "80\n",
+	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "audio.offload.disable",
+		.value = "1",
+	},
+	{
+		.key = "audioril.lib",
+		.value = "libhuawei-audio-ril.so",
+	},
+	{
+		.key = "build.hisi_perf_opt",
+		.value = "true",
+	},
+	{
+		.key = "camera.dis.flag",
+		.value = "2",
+	},
+	{
+		.key = "camera.drop.buffer",
+		.value = "1",
+	},
+	{
+		.key = "dalvik.vm.checkjni",
+		.value = "false",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.dex2oat-Xmx",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "192m",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "512m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heaptargetutilization",
+		.value = "0.75",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xms",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.image-dex2oat-Xmx",
+		.value = "64m",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.isa.arm.variant",
+		.value = "cortex-a15",
+	},
+	{
+		.key = "dalvik.vm.isa.arm64.features",
+		.value = "default",
+	},
+	{
+		.key = "dalvik.vm.isa.arm64.variant",
+		.value = "generic",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "debug.aps.battery_limit",
+		.value = "5",
+	},
+	{
+		.key = "debug.aps.scene_num",
+		.value = "5",
+	},
+	{
+		.key = "debug.atrace.tags.enableflags",
+		.value = "0",
+	},
+	{
+		.key = "debug.force_rtl",
+		.value = "0",
+	},
+	{
+		.key = "debug.hwui.enable_bp_cache",
+		.value = "false",
+	},
+	{
+		.key = "debug.hwui.render_dirty_regions",
+		.value = "false",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "drm.service.enabled",
+		.value = "true",
+	},
+	{
+		.key = "dumptool.run",
+		.value = "1",
+	},
+	{
+		.key = "fw.max_users",
+		.value = "1",
+	},
+	{
+		.key = "fw.show_multiuserui",
+		.value = "0",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "1,1",
+	},
+	{
+		.key = "gsm.dualcards.switch",
+		.value = "false",
+	},
+	{
+		.key = "gsm.fastdormancy.mode",
+		.value = "0",
+	},
+	{
+		.key = "gsm.hw.fdn.activated1",
+		.value = "false",
+	},
+	{
+		.key = "gsm.hw.fdn.activated2",
+		.value = "false",
+	},
+	{
+		.key = "gsm.hw.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.hw.operator.isroaming",
+		.value = "false",
+	},
+	{
+		.key = "gsm.hw.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.hw.sim.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "UMTS,Unknown",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.sigcust.configured",
+		.value = "true",
+	},
+	{
+		.key = "gsm.sim.hw_atr",
+		.value = "null",
+	},
+	{
+		.key = "gsm.sim.hw_atr1",
+		.value = "null",
+	},
+	{
+		.key = "gsm.sim.operator.alpha",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.iso-country",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.operator.numeric",
+		.value = ",",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "ABSENT,ABSENT",
+	},
+	{
+		.key = "gsm.sim1.type",
+		.value = "-1",
+	},
+	{
+		.key = "gsm.sim2.type",
+		.value = "-1",
+	},
+	{
+		.key = "gsm.version.baseband",
+		.value = "21.290.06.00.031,21.290.06.00.031",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "android infineon balong-ril 1.0",
+	},
+	{
+		.key = "hifi.watchdog.come",
+		.value = "false",
+	},
+	{
+		.key = "huawei.check_root.hotapermit",
+		.value = "safe",
+	},
+	{
+		.key = "huawei.check_root.oldstate",
+		.value = "safe",
+	},
+	{
+		.key = "huawei.check_root.prop",
+		.value = "safe",
+	},
+	{
+		.key = "huawei.check_root.setids",
+		.value = "safe",
+	},
+	{
+		.key = "huawei.check_root.verifyboot",
+		.value = "safe",
+	},
+	{
+		.key = "hw.check.system",
+		.value = "cs-pass",
+	},
+	{
+		.key = "hw.lcd.density",
+		.value = "480",
+	},
+	{
+		.key = "hw.wifipro.dns_fail_count",
+		.value = "2",
+	},
+	{
+		.key = "hw_chargemonitor.log",
+		.value = "start",
+	},
+	{
+		.key = "init.svc.HwCamCfgSvr",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.agnsscontrol",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.applogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.atcmdserver",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bastetd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.chargelogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.chargemonitor",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.check_hota",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.check_root",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.check_system",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.chr_logd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.cs-set",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.data_cleanner",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.debuggerd64",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.defaultcrypto",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.device-monitor",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.dhcpcd_bnep0",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.dhcpcd_bt-pan",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.dhcpcd_p2p",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.dhcpcd_wlan0",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.diagserver",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.dumpstate",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.dumptool",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.eventslogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fac_log_service",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.filebackup",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fingerprintd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fm_server_hisi",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.fuse_sdcard1",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fuse_sdcard1rw",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.fuse_usbotg",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.gatekeeperd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.goldeneye",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.hdbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.hilogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.hiscoutmanager",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.hisi_bfg",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.hostapd_bin",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.hsgnss",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.hw_cdma_service",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.hw_ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.hwnffserver",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.hwpged",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.inputlogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.iprenew_bnep0",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.iprenew_p2p",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.iprenew_wlan0",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.isplogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.jankservice",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.kmemleak_debug",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.kmsgcat_cp",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.kmsglogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.lmkd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.logcat_service",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.logcatd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.logctl_service",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.logd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.logd-reinit",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.logserver",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.macaddr",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mapper",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mdnsd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.modematserver",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.modemlogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.modemlogcat_VIA",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mtpd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.oam_hisi",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.octty",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.oeminfo_nvm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.p2p_supplicant",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.perfhub",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.perfprofd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.pmom",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.powerlogd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.pre-recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.preparesdservice",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.racoon",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.ril-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.rillogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.shlogd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.sleeplogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.supl20clientd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.systeminfo",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.teecd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.teelogcat",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.telemntncat",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.thermal-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.uncrypt",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.watchlssd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.wpa_supplicant",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote_secondary",
+		.value = "running",
+	},
+	{
+		.key = "is_hisi_connectivity_chip",
+		.value = "1",
+	},
+	{
+		.key = "keyguard.no_require_sim",
+		.value = "true",
+	},
+	{
+		.key = "media.stagefright.use-awesome",
+		.value = "false",
+	},
+	{
+		.key = "modify_ram_show",
+		.value = "true",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.change",
+		.value = "net.qtaguid_enabled",
+	},
+	{
+		.key = "net.hostname",
+		.value = "HUAWEI_P9_lite",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.tcp.default_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "net.tethering.noprovisioning",
+		.value = "true",
+	},
+	{
+		.key = "persist.config.hw.lca.region",
+		.value = "inland",
+	},
+	{
+		.key = "persist.dsds.enabled",
+		.value = "true",
+	},
+	{
+		.key = "persist.fw.force_adoptable",
+		.value = "true",
+	},
+	{
+		.key = "persist.hw_camera.video_sta",
+		.value = "false",
+	},
+	{
+		.key = "persist.media.offload.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.radio.airmode_sim0",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.apm_sim_not_pwdn",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.commril_mode",
+		.value = "ULG_MODE",
+	},
+	{
+		.key = "persist.radio.modem.cap",
+		.value = "09A9C",
+	},
+	{
+		.key = "persist.radio.multisim.config",
+		.value = "dsds",
+	},
+	{
+		.key = "persist.radio.procsetdata",
+		.value = "com.huawei.hwstartupguide",
+	},
+	{
+		.key = "persist.radio.sub_state_cfg",
+		.value = "1,1,1",
+	},
+	{
+		.key = "persist.radio.usersetdata",
+		.value = "true",
+	},
+	{
+		.key = "persist.service.hdb.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.service.tm2.tofile",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.dalvik.vm.lib.2",
+		.value = "libart.so",
+	},
+	{
+		.key = "persist.sys.dualcards",
+		.value = "true",
+	},
+	{
+		.key = "persist.sys.fingerpressnavi",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.hidewindow.enable",
+		.value = "true",
+	},
+	{
+		.key = "persist.sys.huawei.debug.on",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.hwairplanestate",
+		.value = "error",
+	},
+	{
+		.key = "persist.sys.jankenable",
+		.value = "true",
+	},
+	{
+		.key = "persist.sys.kmemleak.debug",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.locale",
+		.value = "en-US",
+	},
+	{
+		.key = "persist.sys.logsystem.coredump",
+		.value = "off",
+	},
+	{
+		.key = "persist.sys.logsystem.modem",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.logsystem.protohint",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.powerup_reason",
+		.value = "NORMAL",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.shut_alarm",
+		.value = "none",
+	},
+	{
+		.key = "persist.sys.smart_power",
+		.value = "2",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "hisuite,mtp,mass_storage,adb",
+	},
+	{
+		.key = "persist.telephony.mpdn",
+		.value = "true",
+	},
+	{
+		.key = "qemu.hw.mainkeys",
+		.value = "0",
+	},
+	{
+		.key = "ril.balong_cid",
+		.value = "0",
+	},
+	{
+		.key = "ril.ecclist",
+		.value = "112,911,000,08,110,118,119,999,911,112",
+	},
+	{
+		.key = "ril.ecclist1",
+		.value = "112,911,000,08,110,118,119,999",
+	},
+	{
+		.key = "ril.force_to_set_ecc",
+		.value = "invalid",
+	},
+	{
+		.key = "ril.hw_modem0.rssi",
+		.value = "-1",
+	},
+	{
+		.key = "ril.hw_modem1.rssi",
+		.value = "-1",
+	},
+	{
+		.key = "ril.modem.balong_nvm_server",
+		.value = "true",
+	},
+	{
+		.key = "ril.operator.numeric",
+		.value = "310260",
+	},
+	{
+		.key = "rild.libargs",
+		.value = "-m modem0",
+	},
+	{
+		.key = "rild.libargs1",
+		.value = "-m modem1",
+	},
+	{
+		.key = "rild.libpath",
+		.value = "/system/lib64/libbalong-ril.so",
+	},
+	{
+		.key = "rild.libpath1",
+		.value = "/system/lib64/libbalong-ril-1.so",
+	},
+	{
+		.key = "rild.rild1_ready_to_start",
+		.value = "false",
+	},
+	{
+		.key = "ro.adb.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.am.reschedule_service",
+		.value = "true",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.board.boardid",
+		.value = "4733",
+	},
+	{
+		.key = "ro.board.boardname",
+		.value = "VENUS_L23_VD",
+	},
+	{
+		.key = "ro.board.modemid",
+		.value = "3b414800",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "hi6250",
+	},
+	{
+		.key = "ro.boardid.product",
+		.value = "51312",
+	},
+	{
+		.key = "ro.boardserialno",
+		.value = "4C4BMU1777008041",
+	},
+	{
+		.key = "ro.boot.ddrsize",
+		.value = "2",
+	},
+	{
+		.key = "ro.boot.hardware",
+		.value = "hi6250",
+	},
+	{
+		.key = "ro.boot.mode",
+		.value = "normal",
+	},
+	{
+		.key = "ro.boot.selinux",
+		.value = "enforcing",
+	},
+	{
+		.key = "ro.boot.serialno",
+		.value = "GVY4C17630003878",
+	},
+	{
+		.key = "ro.boot.verifiedbootstate",
+		.value = "GREEN",
+	},
+	{
+		.key = "ro.boot.veritymode",
+		.value = "enforcing",
+	},
+	{
+		.key = "ro.bootimage.build.date",
+		.value = "Fri Nov 25 19:29:30 CST 2016",
+	},
+	{
+		.key = "ro.bootimage.build.date.utc",
+		.value = "1480073370",
+	},
+	{
+		.key = "ro.bootimage.build.fingerprint",
+		.value = "hi6250/hi6250/hi6250:6.0/MRA58K/jenkins11251923:user/test-keys",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "normal",
+	},
+	{
+		.key = "ro.bt.bdaddr_path",
+		.value = "/data/misc/bluedroid/macbt",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "nosdcard",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Fri Nov 25 19:25:55 CST 2016",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1480073155",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "VNS-L23-user 6.0 HUAWEIVNS-L23 C605B120 release-keys",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "VNS-L23C605B120",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "HUAWEI/VNS-L23/HWVNS-H:6.0/HUAWEIVNS-L23/C605B120:user/release-keys",
+	},
+	{
+		.key = "ro.build.flavor",
+		.value = "hi6250-user",
+	},
+	{
+		.key = "ro.build.hide",
+		.value = "false",
+	},
+	{
+		.key = "ro.build.hide.matchers",
+		.value = "Honor;ARM;hi6250;Mali-T830;Mali-T880;",
+	},
+	{
+		.key = "ro.build.hide.replacements",
+		.value = "Huawei;unknown;unknown;unknown;unknown;",
+	},
+	{
+		.key = "ro.build.hide.settings",
+		.value = "4;1.2 GHz;1.0GB;405 MB;4.00 GB;540 x 960;4.3;3.0.8;2.0",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "huawei-RH2288H-V2-12L",
+	},
+	{
+		.key = "ro.build.hw_emui_api_level",
+		.value = "10",
+	},
+	{
+		.key = "ro.build.hw_emui_lite.enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "HUAWEIVNS-L23",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "hi6250",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.update_version",
+		.value = "V1_2",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "jenkins",
+	},
+	{
+		.key = "ro.build.version.all_codenames",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.base_os",
+		.value = "",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.emui",
+		.value = "EmotionUI_4.1.1",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "C605B120",
+	},
+	{
+		.key = "ro.build.version.preview_sdk",
+		.value = "0",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "6.0",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "23",
+	},
+	{
+		.key = "ro.build.version.security_patch",
+		.value = "2016-11-01",
+	},
+	{
+		.key = "ro.camera.sound.forced",
+		.value = "1",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "unknown",
+	},
+	{
+		.key = "ro.cellbroadcast.emergencyids",
+		.value = "0-65534",
+	},
+	{
+		.key = "ro.check.modem_network",
+		.value = "true",
+	},
+	{
+		.key = "ro.cofig.onlinemusic.enabled",
+		.value = "false",
+	},
+	{
+		.key = "ro.cofig.onlinevideo.enabled",
+		.value = "false",
+	},
+	{
+		.key = "ro.com.android.mobiledata",
+		.value = "true",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-huawei",
+	},
+	{
+		.key = "ro.com.google.clientidbase.am",
+		.value = "android-huawei",
+	},
+	{
+		.key = "ro.com.google.clientidbase.gmm",
+		.value = "android-huawei",
+	},
+	{
+		.key = "ro.com.google.clientidbase.ms",
+		.value = "android-huawei",
+	},
+	{
+		.key = "ro.com.google.clientidbase.yt",
+		.value = "android-huawei",
+	},
+	{
+		.key = "ro.com.google.gmsversion",
+		.value = "6.0_r8",
+	},
+	{
+		.key = "ro.confg.hw_bootversion",
+		.value = "Dallas-Trunk_BOOT",
+	},
+	{
+		.key = "ro.confg.hw_fastbootversion",
+		.value = "Dallas-Trunk_FASTBOOT",
+	},
+	{
+		.key = "ro.confg.hw_systemversion",
+		.value = "VNS-L23C900B120_SYSTEM",
+	},
+	{
+		.key = "ro.confg.hw_userdataversion",
+		.value = "VNS-C900B120_DATA_hw_la",
+	},
+	{
+		.key = "ro.config.CphsOnsEnabled",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "Creamy.ogg",
+	},
+	{
+		.key = "ro.config.amrwb_disable",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.antimal_enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.apn_cancel_nopop",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.app_big_icon_size",
+		.value = "172",
+	},
+	{
+		.key = "ro.config.att_unknown",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.attach_apn_enabled",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.attach_ip_type",
+		.value = "IPV4V6",
+	},
+	{
+		.key = "ro.config.bg_call_twinking",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.c2dmdelay",
+		.value = "30000",
+	},
+	{
+		.key = "ro.config.ca_withoutcat",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.calendar_del_fir_sub",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.calendar_del_show_cal",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.camera_target_track",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.carkitmodenotif",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.cbs_del_2B",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.client_number",
+		.value = "2",
+	},
+	{
+		.key = "ro.config.colorTemperature_3d",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.colorTemperature_K3",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.compatibility_enable",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.conn_diagnose",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.cpu_info_display",
+		.value = "Kirin 650",
+	},
+	{
+		.key = "ro.config.data_preinstalled",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.default_commril_mode",
+		.value = "ULG_MODE",
+	},
+	{
+		.key = "ro.config.delay_send_signal",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.delete.preferapn",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.device_time_for_mms",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.dsds_mode",
+		.value = "umts_gsm",
+	},
+	{
+		.key = "ro.config.dualsim_display",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.earphone_hint",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.enable_c2dm_delay",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.fm_type",
+		.value = "libbcmfm_if",
+	},
+	{
+		.key = "ro.config.fp_launch_app",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.fp_navigation",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.gcm_hb_speed_factor",
+		.value = "4",
+	},
+	{
+		.key = "ro.config.gcm_hb_speedup",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hebrew_dialpad_show",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.helix_enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hide_simcard_index",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hspap_hsdpa_open",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.huawei_smallwindow",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.hw.filterApnNotify",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw.imeisv",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw.security_volume",
+		.value = "8",
+	},
+	{
+		.key = "ro.config.hw_3G_support",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_ReduceSAR",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_RemindWifiToPdp",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_SkipGpsErrorMsg",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_accesscontrol",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_allow_rs_mms",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_always_allow_mms",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.hw_audio_plus",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_autoConFirmBT",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_auto_scene",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_beam_per",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_burst_snapshot",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_bestShot",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_davinci",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_docbeauty",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_hdr",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_mfd",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_omron",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_refocus",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_camera_smartae",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_camera_zsl",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_cbs_mcc",
+		.value = "730",
+	},
+	{
+		.key = "ro.config.hw_channel_info",
+		.value = "0,0,0,0",
+	},
+	{
+		.key = "ro.config.hw_confirm_waiting",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_custverdisplay",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_directly_callfdn",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_disable_cops",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_dolby",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_dsda",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_dsdspowerup",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_dts",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_dts_settings",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_eapsim",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_easywakeup",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_ecc_with_sim_card",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_enable_merge",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_eyes_protection",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.hw_floatvideo",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_globalEcc",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_glovemode_enabled",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.hw_gps_power_track",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_hideIcons",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_hideSimIcon",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_hidecallforward",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_holdRetrivedToast",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_hotswap_on",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_hungtasklist",
+		.value = "whitelist,system_server,SurfaceFlinger",
+	},
+	{
+		.key = "ro.config.hw_imei_sv_enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_imei_sv_show_two",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_lite_oom",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_lock_emergency",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_low_ram",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_lte_support",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_manual_focus",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_media_flags",
+		.value = "3",
+	},
+	{
+		.key = "ro.config.hw_multiscreen",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_music_lp",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_navi_launcher",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_navigationbar",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_nfc_on",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_omacp",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.hw_opt_pre_contact",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_opta",
+		.value = "605",
+	},
+	{
+		.key = "ro.config.hw_optb",
+		.value = "999",
+	},
+	{
+		.key = "ro.config.hw_perfhub",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_photo_beauty",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_pop_unsupport_lte",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_power_saving",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_rcm_cert",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_remindBT",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_sdlEyNumber",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_sensorhub",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_showSimName",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_showTestInfo",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_show_4G_Plus_icon",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_show_network_icon",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_sim2airplane",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_simlock_retries",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_simpleui_enable",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.hw_singlehand",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.hw_smart_backlight",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.hw_smartcardservice",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_stkTitleSim",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_subtitle_support",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_support_geofence",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_support_ipcall",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.hw_support_vm_ecc",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_sws",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_testingsettings",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_timeformat",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_useCtrlSocket",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_use_browser_ua",
+		.value = "http://wap1.huawei.com/uaprof/HUAWEI_VNS_L23_UAProfile.xml",
+	},
+	{
+		.key = "ro.config.hw_vcardBase64",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_version_app_info",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_video_beauty",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_voicemail_sim",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hw_volte_icon_rule",
+		.value = "2",
+	},
+	{
+		.key = "ro.config.hw_wifipro_enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hwft_PinPukUnlockscr",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.hwinternet_audio",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.hwtheme",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.incall_notify_mms",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.ipv4.mtu",
+		.value = "1400",
+	},
+	{
+		.key = "ro.config.isSLEntitleSet",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.is_4g_show_lte",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.is_start_commril",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.keyguard_unusedata",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.launcher_matchcard",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.linkplus.liveupdate",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.linkplus.roaming",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.longDtmf",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.lte_show_northamerica",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.lvm_mode",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.marketing_name",
+		.value = "HUAWEI P9 lite",
+	},
+	{
+		.key = "ro.config.mccmnc_stk_icon",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.mmu_en",
+		.value = "1",
+	},
+	{
+		.key = "ro.config.modem_number",
+		.value = "2",
+	},
+	{
+		.key = "ro.config.nfc_ce_transevt",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "Bongo.ogg",
+	},
+	{
+		.key = "ro.config.only_ussd",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.plmn_to_settings",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.pre_apn_NotDel",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.pre_apn_unable",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.protect_launcher",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.readBtAddress",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "Dream_It_Possible.ogg",
+	},
+	{
+		.key = "ro.config.ringtone2",
+		.value = "Huawei_Tune.ogg",
+	},
+	{
+		.key = "ro.config.show2846",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.show6130",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.showPinRetryTimes",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.showSutelInLegalInfo",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.show_epg_menu",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.show_full_month",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.show_nw_mode",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.show_sim_icon",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.show_subname",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.show_vmail_number",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.signalplus.tas",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.signalplus.xpass",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.simlang",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.slow_play_enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.small.previewpos",
+		.value = "left",
+	},
+	{
+		.key = "ro.config.soundtrigger_enabled",
+		.value = "0",
+	},
+	{
+		.key = "ro.config.spare_ntp_server",
+		.value = "ntp.sjtu.edu.cn,time.windows.com,time.nist.gov,1.cn.pool.ntp.org",
+	},
+	{
+		.key = "ro.config.speed_control_enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.stk_name_imsi_start",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.stk_use_lasttitle",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.support_internetCall",
+		.value = "false",
+	},
+	{
+		.key = "ro.config.support_one_time_hota",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.switchPrimaryVolume",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.swsAlwaysActiveForSPK",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.sws_version",
+		.value = "sws2",
+	},
+	{
+		.key = "ro.config.timeformat",
+		.value = "12",
+	},
+	{
+		.key = "ro.config.tw_dialpad_show",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.updatelocation",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.utkShowIcon",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.vm_prioritymode",
+		.value = "2",
+	},
+	{
+		.key = "ro.config.widevine_level3",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.wifi_country_code",
+		.value = "true",
+	},
+	{
+		.key = "ro.config.wifi_reduce_power",
+		.value = "true,17,17,17,17,12",
+	},
+	{
+		.key = "ro.connectivity.chiptype",
+		.value = "hisi",
+	},
+	{
+		.key = "ro.connectivity.sub_chiptype",
+		.value = "hisi",
+	},
+	{
+		.key = "ro.contacts.camcard_enable",
+		.value = "false",
+	},
+	{
+		.key = "ro.crypto.fs_crypto_blkdev",
+		.value = "/dev/block/dm-2",
+	},
+	{
+		.key = "ro.crypto.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "encrypted",
+	},
+	{
+		.key = "ro.crypto.type",
+		.value = "block",
+	},
+	{
+		.key = "ro.cust.cdrom",
+		.value = "/system/cdrom/autorun.iso",
+	},
+	{
+		.key = "ro.dalvik.vm.native.bridge",
+		.value = "0",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.dropbox.partnerpath",
+		.value = "data/cust/xml/huawei_dropboxpartner.txt",
+	},
+	{
+		.key = "ro.dual.sim.phone",
+		.value = "true",
+	},
+	{
+		.key = "ro.expect.recovery_id",
+		.value = "",
+	},
+	{
+		.key = "ro.frp.pst",
+		.value = "/dev/block/platform/hi_mci.0/by-name/frp",
+	},
+	{
+		.key = "ro.gallery.thumbnailLoading",
+		.value = "true",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "hi6250",
+	},
+	{
+		.key = "ro.hardware.consumerir",
+		.value = "hisi.hi6250",
+	},
+	{
+		.key = "ro.huawei.cust.oma",
+		.value = "false",
+	},
+	{
+		.key = "ro.huawei.cust.oma_drm",
+		.value = "false",
+	},
+	{
+		.key = "ro.huawei.flag.oma_reboot",
+		.value = "true",
+	},
+	{
+		.key = "ro.hw.country",
+		.value = "la",
+	},
+	{
+		.key = "ro.hw.custPath",
+		.value = "/cust/hw/la",
+	},
+	{
+		.key = "ro.hw.oemName",
+		.value = "VNS-L23",
+	},
+	{
+		.key = "ro.hw.specialCustPath",
+		.value = "/cust_spec",
+	},
+	{
+		.key = "ro.hw.vendor",
+		.value = "hw",
+	},
+	{
+		.key = "ro.hwcamera.BackSnapShotLimit",
+		.value = "true",
+	},
+	{
+		.key = "ro.hwcamera.SlowMotionZoom",
+		.value = "false",
+	},
+	{
+		.key = "ro.hwcamera.brightness_range",
+		.value = "60,178",
+	},
+	{
+		.key = "ro.hwcamera.isdm",
+		.value = "false",
+	},
+	{
+		.key = "ro.hwcamera.jpeg.quality",
+		.value = "95",
+	},
+	{
+		.key = "ro.hwcamera.lowmemory.crop",
+		.value = "true",
+	},
+	{
+		.key = "ro.hwcamera.previeweffects",
+		.value = "true",
+	},
+	{
+		.key = "ro.hwcamera.sm.video_size",
+		.value = "640x480",
+	},
+	{
+		.key = "ro.hwcamera.suppernight",
+		.value = "false",
+	},
+	{
+		.key = "ro.hwui.drop_shadow_cache_size",
+		.value = "6",
+	},
+	{
+		.key = "ro.hwui.fbo_cache_size",
+		.value = "0",
+	},
+	{
+		.key = "ro.hwui.gradient_cache_size",
+		.value = "1",
+	},
+	{
+		.key = "ro.hwui.layer_cache_size",
+		.value = "32",
+	},
+	{
+		.key = "ro.hwui.path_cache_size",
+		.value = "16",
+	},
+	{
+		.key = "ro.hwui.r_buffer_cache_size",
+		.value = "8",
+	},
+	{
+		.key = "ro.hwui.shape_cache_size",
+		.value = "2",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_height",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.text_large_cache_width",
+		.value = "2048",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_height",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.text_small_cache_width",
+		.value = "1024",
+	},
+	{
+		.key = "ro.hwui.texture_cache_flushrate",
+		.value = "0.4",
+	},
+	{
+		.key = "ro.hwui.texture_cache_size",
+		.value = "48",
+	},
+	{
+		.key = "ro.image",
+		.value = "bootimage",
+	},
+	{
+		.key = "ro.logsystem.usertype",
+		.value = "1",
+	},
+	{
+		.key = "ro.lte.goodstd",
+		.value = "-105",
+	},
+	{
+		.key = "ro.lte.greatstd",
+		.value = "-97",
+	},
+	{
+		.key = "ro.lte.modstd",
+		.value = "-113",
+	},
+	{
+		.key = "ro.lte.poorstd",
+		.value = "-120",
+	},
+	{
+		.key = "ro.magic.api.version",
+		.value = "0.1",
+	},
+	{
+		.key = "ro.media.NxpSmartPACurve",
+		.value = "VNS_HISI_1225:1,-40:87,-4:93,-2:100,0.0:-15:",
+	},
+	{
+		.key = "ro.media.maxmem",
+		.value = "4294967295",
+	},
+	{
+		.key = "ro.media.radar",
+		.value = "0",
+	},
+	{
+		.key = "ro.multi.rild",
+		.value = "false",
+	},
+	{
+		.key = "ro.networkstatus.delaytimer",
+		.value = "20",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "196609",
+	},
+	{
+		.key = "ro.product.BaseDescription",
+		.value = "VNS-L23-user 6.0 HUAWEIVNS-L23 C900B120 release-keys",
+	},
+	{
+		.key = "ro.product.BaseFingerprint",
+		.value = "HUAWEI/VNS-L23/HWVNS-H:6.0/HUAWEIVNS-L23/C900B120:user/release-keys",
+	},
+	{
+		.key = "ro.product.BaseVersion",
+		.value = "VNS-L23C900B120",
+	},
+	{
+		.key = "ro.product.CustCVersion",
+		.value = "C605",
+	},
+	{
+		.key = "ro.product.CustDVersion",
+		.value = "D126",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "VNS-L23",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "HUAWEI",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "arm64-v8a",
+	},
+	{
+		.key = "ro.product.cpu.abilist",
+		.value = "arm64-v8a,armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist32",
+		.value = "armeabi-v7a,armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abilist64",
+		.value = "arm64-v8a",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "HWVNS-H",
+	},
+	{
+		.key = "ro.product.hardwareversion",
+		.value = "HL2VENUSM",
+	},
+	{
+		.key = "ro.product.locale",
+		.value = "es-AR",
+	},
+	{
+		.key = "ro.product.locale.language",
+		.value = "en",
+	},
+	{
+		.key = "ro.product.locale.region",
+		.value = "US",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "HUAWEI",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "HUAWEI VNS-L23",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "VNS-L23",
+	},
+	{
+		.key = "ro.product.platform.pseudonym",
+		.value = "1ARB9CV",
+	},
+	{
+		.key = "ro.product.show_hardwareversion",
+		.value = "true",
+	},
+	{
+		.key = "ro.readfastboot",
+		.value = "0",
+	},
+	{
+		.key = "ro.revision",
+		.value = "0",
+	},
+	{
+		.key = "ro.ril.ecclist",
+		.value = "112,911,#911,*911",
+	},
+	{
+		.key = "ro.runmode",
+		.value = "normal",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "GVY4C17630003878",
+	},
+	{
+		.key = "ro.setupwizard.mode",
+		.value = "DISABLED",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "480",
+	},
+	{
+		.key = "ro.sys.fw.bg_apps_limit",
+		.value = "20",
+	},
+	{
+		.key = "ro.sys.powerup_reason",
+		.value = "NORMAL",
+	},
+	{
+		.key = "ro.systemui.debug",
+		.value = "true",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "9",
+	},
+	{
+		.key = "ro.tui.service",
+		.value = "true",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "ro.zygote",
+		.value = "zygote64_32",
+	},
+	{
+		.key = "security.perf_harden",
+		.value = "1",
+	},
+	{
+		.key = "selinux.reload_policy",
+		.value = "1",
+	},
+	{
+		.key = "service.bootanim.exit",
+		.value = "1",
+	},
+	{
+		.key = "setup_hi110x_modules",
+		.value = "success",
+	},
+	{
+		.key = "sys.aps.support",
+		.value = "6651",
+	},
+	{
+		.key = "sys.aps.version",
+		.value = "3.2.12-3.1.15",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.defaultapn.enabled",
+		.value = "true",
+	},
+	{
+		.key = "sys.fingerprint.deviceId",
+		.value = "0",
+	},
+	{
+		.key = "sys.hwsholder.count",
+		.value = "0",
+	},
+	{
+		.key = "sys.iswifihotspoton",
+		.value = "false",
+	},
+	{
+		.key = "sys.oem_unlock_allowed",
+		.value = "0",
+	},
+	{
+		.key = "sys.refresh.dirty",
+		.value = "1",
+	},
+	{
+		.key = "sys.resettype",
+		.value = "normal:coldboot",
+	},
+	{
+		.key = "sys.settings_global_version",
+		.value = "2",
+	},
+	{
+		.key = "sys.settings_system_version",
+		.value = "1",
+	},
+	{
+		.key = "sys.show_google_nlp",
+		.value = "true",
+	},
+	{
+		.key = "sys.super_power_save",
+		.value = "false",
+	},
+	{
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "24300",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "hisuite,mtp,mass_storage,adb",
+	},
+	{
+		.key = "sys.usb.start_atdiag",
+		.value = "1",
+	},
+	{
+		.key = "sys.usb.start_modempcui",
+		.value = "0",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "hisuite,mtp,mass_storage,adb",
+	},
+	{
+		.key = "sys.userdata_is_ready",
+		.value = "1",
+	},
+	{
+		.key = "thread_ca_server_work_property",
+		.value = "1",
+	},
+	{
+		.key = "trustedcore_sfs_property",
+		.value = "1",
+	},
+	{
+		.key = "viatel.device.at",
+		.value = "spi.10.ttySPI",
+	},
+	{
+		.key = "viatel.device.data",
+		.value = "spi.0.ttySPI",
+	},
+	{
+		.key = "viatel.device.fls",
+		.value = "spi.2.ttySPI",
+	},
+	{
+		.key = "viatel.device.gps",
+		.value = "spi.5.ttySPI",
+	},
+	{
+		.key = "viatel.device.pcv",
+		.value = "spi.4.ttySPI",
+	},
+	{
+		.key = "vold.crypto_support_innersd",
+		.value = "1",
+	},
+	{
+		.key = "vold.decrypt",
+		.value = "trigger_restart_framework",
+	},
+	{
+		.key = "vold.has_adoptable",
+		.value = "0",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wlan.driver.status",
+		.value = "ok",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
