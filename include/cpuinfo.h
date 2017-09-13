@@ -607,9 +607,13 @@ struct cpuinfo_core {
 	uint32_t processor_count;
 };
 
+#define CPUINFO_PACKAGE_NAME_MAX 48
+
 struct cpuinfo_package {
+	char name[CPUINFO_PACKAGE_NAME_MAX];
 	uint32_t processor_start;
 	uint32_t processor_count;
+	uint32_t core_start;
 	uint32_t core_count;
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		struct cpuinfo_x86_model_info model_info;

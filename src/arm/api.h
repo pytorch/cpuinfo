@@ -74,7 +74,7 @@ struct cpuinfo_arm_chipset {
 	char suffix[CPUINFO_ARM_CHIPSET_SUFFIX_MAX];
 };
 
-#define CPUINFO_ARM_CHIPSET_NAME_MAX 48
+#define CPUINFO_ARM_CHIPSET_NAME_MAX CPUINFO_PACKAGE_NAME_MAX
 
 void cpuinfo_arm_chipset_to_string(
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],

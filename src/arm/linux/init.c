@@ -17,6 +17,8 @@
 
 struct cpuinfo_arm_isa cpuinfo_isa = { 0 };
 
+static struct cpuinfo_package package = { 0 };
+
 static inline bool bitmask_all(uint32_t bitfield, uint32_t mask) {
 	return (bitfield & mask) == mask;
 }
@@ -359,6 +361,11 @@ void cpuinfo_arm_linux_init(void) {
 	 * - Level 1 instruction and data caches are private to the core clusters.
 	 * - Level 2 cache is shared between cores in the same cluster.
 	 */
+#if defined(__ANDROID__)
+	cpuinfo_arm_chipset_to_string(&chipset, package.name);
+#endif
+	package.processor_count = package.core_count = usable_processors;
+
 	l1i = calloc(usable_processors, sizeof(struct cpuinfo_cache));
 	if (l1i == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
@@ -434,11 +441,13 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Commit */
 	cpuinfo_processors = processors;
+	cpuinfo_packages = &package;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
 
 	cpuinfo_processors_count = usable_processors;
+	cpuinfo_packages_count = 1;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;

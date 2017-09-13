@@ -24,6 +24,42 @@ TEST(PROCESSORS, uarch) {
 	}
 }
 
+TEST(PACKAGES, count) {
+	ASSERT_EQ(1, cpuinfo_packages_count);
+}
+
+TEST(PACKAGES, name) {
+	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
+		ASSERT_EQ("MediaTek MT6755",
+			std::string(cpuinfo_packages[i].name,
+				strnlen(cpuinfo_packages[i].name, CPUINFO_PACKAGE_NAME_MAX)));
+	}
+}
+
+TEST(PACKAGES, processor_start) {
+	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
+		ASSERT_EQ(0, cpuinfo_packages[i].processor_start);
+	}
+}
+
+TEST(PACKAGES, processor_count) {
+	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
+		ASSERT_EQ(8, cpuinfo_packages[i].processor_count);
+	}
+}
+
+TEST(PACKAGES, core_start) {
+	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
+		ASSERT_EQ(0, cpuinfo_packages[i].core_start);
+	}
+}
+
+TEST(PACKAGES, core_count) {
+	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
+		ASSERT_EQ(8, cpuinfo_packages[i].core_count);
+	}
+}
+
 TEST(ISA, thumb) {
 	ASSERT_TRUE(cpuinfo_isa.thumb);
 }
