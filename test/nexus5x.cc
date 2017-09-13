@@ -35,6 +35,23 @@ TEST(PROCESSORS, uarch) {
 	}
 }
 
+TEST(PROCESSORS, linux_id) {
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		switch (i) {
+			case 0:
+			case 1:
+				ASSERT_EQ(i + 4, cpuinfo_processors[i].topology.linux_id);
+				break;
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				ASSERT_EQ(i - 2, cpuinfo_processors[i].topology.linux_id);
+				break;
+		}
+	}
+}
+
 TEST(PACKAGES, count) {
 	ASSERT_EQ(1, cpuinfo_packages_count);
 }
