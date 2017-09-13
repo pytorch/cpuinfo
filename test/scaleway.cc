@@ -24,7 +24,6 @@ TEST(PROCESSORS, uarch) {
 	}
 }
 
-#if CPUINFO_ARCH_ARM
 TEST(ISA, thumb) {
 	ASSERT_TRUE(cpuinfo_isa.thumb);
 }
@@ -96,7 +95,6 @@ TEST(ISA, wmmx2) {
 TEST(ISA, neon) {
 	ASSERT_TRUE(cpuinfo_isa.neon);
 }
-#endif /* CPUINFO_ARCH_ARM */
 
 TEST(ISA, aes) {
 	ASSERT_TRUE(cpuinfo_isa.aes);
