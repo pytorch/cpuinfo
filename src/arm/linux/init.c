@@ -61,7 +61,7 @@ static bool cluster_siblings_parser(
 	return true;
 }
 
-static int cmp_x86_processor_by_apic_id(const void* ptr_a, const void* ptr_b) {
+static int cmp_arm_linux_processor(const void* ptr_a, const void* ptr_b) {
 	const struct cpuinfo_arm_linux_processor* processor_a = (const struct cpuinfo_arm_linux_processor*) ptr_a;
 	const struct cpuinfo_arm_linux_processor* processor_b = (const struct cpuinfo_arm_linux_processor*) ptr_b;
 
@@ -88,6 +88,13 @@ static int cmp_x86_processor_by_apic_id(const void* ptr_a, const void* ptr_b) {
 	const uint32_t frequency_b = processor_b->max_frequency;
 	if (frequency_a != frequency_b) {
 		return frequency_a > frequency_b ? -1 : 1;
+	}
+
+	/* Compare based on cluster leader id (i.e. cluster 1 < cluster 0) */
+	const uint32_t cluster_a = processor_a->package_group_min;
+	const uint32_t cluster_b = processor_b->package_group_min;
+	if (cluster_a != cluster_b) {
+		return cluster_a > cluster_b ? -1 : 1;
 	}
 
 	/* Compare based on system processor id (i.e. processor 0 < processor 1) */
@@ -286,7 +293,7 @@ void cpuinfo_arm_linux_init(void) {
 #endif
 		arm_linux_processors_count, usable_processors, arm_linux_processors);
 
-	/* Initialize core vendor, uarch, and MIDR for every logical processor */
+	/* Initialize core vendor, uarch, MIDR, and frequency for every logical processor */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
 			const uint32_t cluster_leader = arm_linux_processors[i].package_group_min;
@@ -300,26 +307,33 @@ void cpuinfo_arm_linux_init(void) {
 				&arm_linux_processors[cluster_leader].vendor,
 				&arm_linux_processors[cluster_leader].uarch);
 			} else {
-				/* Cluster non-leader: copy vendor, uarch, and MIDR from cluster leader */
-				arm_linux_processors[i].flags =
-					(arm_linux_processors[i].flags & ~CPUINFO_ARM_LINUX_VALID_MIDR) |
-					(arm_linux_processors[cluster_leader].flags & CPUINFO_ARM_LINUX_VALID_MIDR);
+				/* Cluster non-leader: copy vendor, uarch, MIDR, and frequency from cluster leader */
+				arm_linux_processors[i].flags |= arm_linux_processors[cluster_leader].flags &
+					(CPUINFO_ARM_LINUX_VALID_MIDR | CPUINFO_LINUX_FLAG_MAX_FREQUENCY);
 				arm_linux_processors[i].midr = arm_linux_processors[cluster_leader].midr;
 				arm_linux_processors[i].vendor = arm_linux_processors[cluster_leader].vendor;
 				arm_linux_processors[i].uarch = arm_linux_processors[cluster_leader].uarch;
+				arm_linux_processors[i].max_frequency = arm_linux_processors[cluster_leader].max_frequency;
 			}
 		}
 	}
 
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			cpuinfo_log_debug("post-analysis processor %"PRIu32" MIDR 0x%08"PRIx32,
-				i, arm_linux_processors[i].midr);
+			cpuinfo_log_debug("post-analysis processor %"PRIu32": MIDR %08"PRIx32" frequency %"PRIu32,
+				i, arm_linux_processors[i].midr, arm_linux_processors[i].max_frequency);
 		}
 	}
 
 	qsort(arm_linux_processors, arm_linux_processors_count,
-		sizeof(struct cpuinfo_arm_linux_processor), cmp_x86_processor_by_apic_id);
+		sizeof(struct cpuinfo_arm_linux_processor), cmp_arm_linux_processor);
+
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+			cpuinfo_log_debug("post-sort processor %"PRIu32": system id %"PRIu32" MIDR %08"PRIx32" frequency %"PRIu32,
+				i, arm_linux_processors[i].system_processor_id, arm_linux_processors[i].midr, arm_linux_processors[i].max_frequency);
+		}
+	}
 
 	processors = calloc(usable_processors, sizeof(struct cpuinfo_processor));
 	if (processors == NULL) {
