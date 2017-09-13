@@ -5,14 +5,12 @@
 #include <arm/api.h>
 #include <arm/midr.h>
 
-
 void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
 	uint32_t cluster_cores,
 	uint32_t midr,
-#ifdef __ANDROID__
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
-#endif
+	uint32_t cluster_id,
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
@@ -248,24 +246,19 @@ void cpuinfo_arm_decode_cache(
 				.associativity = 4,
 				.line_size = 64
 			};
-
-			size_t l2_size = 256 * 1024;
-#ifdef __ANDROID__
-			switch (chipset->vendor) {
-				case cpuinfo_arm_chipset_vendor_samsung:
-					l2_size = 512 * 1024;
-					break;
-				default:
-					/* Silence compiler warning about unhandled enum values */
-					break;
-			}
-#endif
-
 			*l2 = (struct cpuinfo_cache) {
-				.size = l2_size,
 				.associativity = 8,
 				.line_size = 64
 			};
+			switch (chipset->vendor) {
+				case cpuinfo_arm_chipset_vendor_samsung:
+					l2->size = 512 * 1024;
+					break;
+				default:
+					l2->size = 256 * 1024;
+					break;
+			}
+
 			break;
 		case cpuinfo_uarch_cortex_a9:
 			/*
@@ -469,22 +462,59 @@ void cpuinfo_arm_decode_cache(
 				/* Use conservative values by default */
 				size_t l1_size = 16 * 1024;
 				size_t l2_size = 256 * 1024;
-#ifdef __ANDROID__
-				switch (chipset->vendor) {
-					case cpuinfo_arm_chipset_vendor_qualcomm:
-					case cpuinfo_arm_chipset_vendor_hisilicon:
+				switch (chipset->series) {
+					case cpuinfo_arm_chipset_series_qualcomm_msm:
+						l1_size = 32 * 1024;
+						l2_size = 512 * 1024;
+						switch (chipset->model) {
+							case 8937: /* Snapdragon 430 */
+							case 8940: /* Snapdragon 435 */
+							case 8953: /* Snapdragon 625 or 626 (8953PRO) */
+								if (cluster_id == 0) {
+									/* 1M L2 for big cluster */
+									l2_size = 1024 * 1024;
+								}
+								break;
+							case 8952: /* Snapdragon 617 */
+								if (cluster_id != 0) {
+									/* 256K L2 for LITTLE cluster */
+									l2_size = 256 * 1024;
+								}
+								break;
+							default:
+								/* Silence compiler warning about unhandled enum values */
+								break;
+						}
+						break;
+					case cpuinfo_arm_chipset_series_qualcomm_apq:
 						l1_size = 32 * 1024;
 						l2_size = 512 * 1024;
 						break;
-					case cpuinfo_arm_chipset_vendor_samsung:
+					case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
+						l1_size = 32 * 1024;
+						l2_size = 512 * 1024;
+						switch (chipset->model) {
+							case 450:
+							case 630:
+								if (cluster_id == 0) {
+									/* 1M L2 for big cluster */
+									l2_size = 1024 * 1024;
+								}
+								break;
+						}
+						break;
+					case cpuinfo_arm_chipset_series_hisilicon_hi:
+					case cpuinfo_arm_chipset_series_hisilicon_kirin:
+						l1_size = 32 * 1024;
+						l2_size = 512 * 1024;
+						break;
+					case cpuinfo_arm_chipset_series_samsung_exynos:
 						l1_size = 32 * 1024;
 						break;
 					default:
 						/* Silence compiler warning about unhandled enum values */
 						break;
 				}
-#endif
-
 				*l1i = (struct cpuinfo_cache) {
 					.size = l1_size,
 					.associativity = 2,

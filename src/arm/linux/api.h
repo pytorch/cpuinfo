@@ -150,13 +150,7 @@ struct cpuinfo_arm_linux_processor {
 	 * If failed to read or parse the file, the value is 0.
 	 */
 	uint32_t min_frequency;
-	/**
-	 * Normalized processor number.
-	 */
-	uint32_t processor_id;
-	/**
-	 * Linux processor ID
-	 */
+	/** Linux processor ID */
 	uint32_t system_processor_id;
 	uint32_t flags;
 };

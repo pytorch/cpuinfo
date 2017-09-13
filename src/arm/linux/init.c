@@ -173,7 +173,6 @@ void cpuinfo_arm_linux_init(void) {
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		arm_linux_processors[i].system_processor_id = i;
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			arm_linux_processors[i].processor_id = usable_processors;
 			usable_processors += 1;
 
 			if (!(arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR)) {
@@ -390,7 +389,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Populate cache infromation structures in l1i, l1d, and l2 */
 	struct cpuinfo_cache shared_l2;	
-	uint32_t l2_index = 0;
+	uint32_t cluster_id = 0;
 	for (uint32_t i = 0; i < usable_processors; i++) {
 		cpuinfo_arm_decode_cache(
 			processors[i].uarch,
@@ -398,6 +397,7 @@ void cpuinfo_arm_linux_init(void) {
 			arm_linux_processors[i].midr,
 #if defined(__ANDROID__)
 			&chipset,
+			cluster_id,
 #endif
 			arm_linux_processors[i].architecture_version,
 			&l1i[i], &l1d[i], &shared_l2);
@@ -428,7 +428,7 @@ void cpuinfo_arm_linux_init(void) {
 		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 			shared_l2.processor_start = i;
 			shared_l2.processor_count = arm_linux_processors[i].package_processor_count;
-			l2[l2_index++] = shared_l2;
+			l2[cluster_id++] = shared_l2;
 		}
 	}
 

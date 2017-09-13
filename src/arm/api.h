@@ -95,9 +95,8 @@ void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
 	uint32_t cluster_cores,
 	uint32_t midr,
-#ifdef __ANDROID__
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
-#endif
+	uint32_t cluster_id,
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
