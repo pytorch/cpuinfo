@@ -1,7 +1,7 @@
 struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
-		.size = 1832,
+		.size = 314,
 		.content =
 			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
 			"processor\t: 0\n"
@@ -12,66 +12,6 @@ struct cpuinfo_mock_file filesystem[] = {
 			"CPU variant\t: 0x0\n"
 			"CPU part\t: 0xc07\n"
 			"CPU revision\t: 5\n"
-			"\n"
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"Processor\t: ARMv7 Processor rev 0 (v7l)\n"
-			"processor\t: 4\n"
-			"BogoMIPS\t: 36.90\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc0e\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"Processor\t: ARMv7 Processor rev 0 (v7l)\n"
-			"processor\t: 5\n"
-			"BogoMIPS\t: 36.90\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc0e\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"Processor\t: ARMv7 Processor rev 0 (v7l)\n"
-			"processor\t: 6\n"
-			"BogoMIPS\t: 36.90\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc0e\n"
-			"CPU revision\t: 0\n"
 			"\n"
 			"Hardware\t: MT6595\n"
 			"Revision\t: 0000\n"
@@ -295,6 +235,16 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 4,
+		.content = "1-7\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cputopo/big_cpumask",
 		.size = 3,
 		.content = "f0\n",
@@ -329,14 +279,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "2\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
+		.size = 2,
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
@@ -349,6 +294,79 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "403000\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 5,
+		.content = "1000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 8,
+		.content = "0 1 2 3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+		.size = 63,
+		.content = "1690000 1495000 1365000 1248000 1144000 1001000 806000 403000 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 62,
+		.content = "hotplug ondemand userspace powersave interactive performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 8,
+		.content = "1144000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 11,
+		.content = "mt-cpufreq\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+		.size = 7,
+		.content = "403000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 87,
+		.content =
+			"1690000 1493\n"
+			"1495000 0\n"
+			"1365000 8\n"
+			"1248000 4\n"
+			"1144000 20654\n"
+			"1001000 12\n"
+			"806000 33\n"
+			"403000 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 3,
+		.content = "95\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
+		.size = 845,
+		.content =
+			"   From  :    To\n"
+			"         :   1690000   1495000   1365000   1248000   1144000   1001000    806000    403000 \n"
+			"  1690000:         0         0         0         2        41         1         1         0 \n"
+			"  1495000:         0         0         0         0         0         0         0         0 \n"
+			"  1365000:         0         0         0         0         1         0         0         0 \n"
+			"  1248000:         2         0         0         0         0         0         0         0 \n"
+			"  1144000:        39         0         1         0         0         1         1         0 \n"
+			"  1001000:         1         0         0         0         0         0         1         0 \n"
+			"   806000:         3         0         0         0         0         0         0         0 \n"
+			"   403000:         0         0         0         0         0         0         0         0 \n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
@@ -357,6 +375,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings_list",
 		.size = 4,
 		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
@@ -369,164 +392,9 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1690000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "403000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings_list",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1690000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "403000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
-		.size = 2,
-		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
-		.size = 2,
-		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1690000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "403000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
-		.size = 2,
-		.content = "3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings_list",
-		.size = 2,
-		.content = "3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/affected_cpus",
-		.size = 2,
-		.content = "4\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "2002000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "403000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings_list",
-		.size = 4,
-		.content = "4-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings_list",
-		.size = 2,
-		.content = "4\n",
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 3,
+		.content = "01\n",
 	},
 	{ NULL },
 };
@@ -727,7 +595,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "gsm.serial",
-		.value = "8S5P69A6MYB5HB6049K02A260                                   10P",
+		.value = "8S5P69A6MYB5HB6047N009F60                                   10 ",
 	},
 	{
 		.key = "gsm.sim.inserted",
@@ -1007,7 +875,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.sbchk",
-		.value = "running",
+		.value = "stopped",
 	},
 	{
 		.key = "init.svc.sdcard",
@@ -1019,7 +887,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.sn",
-		.value = "running",
+		.value = "stopped",
 	},
 	{
 		.key = "init.svc.surfaceflinger",
@@ -1111,7 +979,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "net.hostname",
-		.value = "android-f58681d406fed5fd",
+		.value = "android-bb0b43137f68f353",
 	},
 	{
 		.key = "net.qtaguid_enabled",
@@ -1160,6 +1028,10 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "nvram_init",
 		.value = "Ready",
+	},
+	{
+		.key = "persist.af.modem.sph_enh_mask",
+		.value = "0xffff 0xffffffbf",
 	},
 	{
 		.key = "persist.backgrounddata.enable",
@@ -1467,7 +1339,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.boot.serialno",
-		.value = "92316F87696BB886",
+		.value = "0123456789ABCDEF",
 	},
 	{
 		.key = "ro.bootloader",
@@ -1826,12 +1698,16 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "0",
 	},
 	{
+		.key = "ro.runtime.firstboot",
+		.value = "1395149903249",
+	},
+	{
 		.key = "ro.secure",
 		.value = "1",
 	},
 	{
 		.key = "ro.serialno",
-		.value = "92316F87696BB886",
+		.value = "0123456789ABCDEF",
 	},
 	{
 		.key = "ro.sf.hwrotation",
@@ -1883,7 +1759,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "sys.autok.is_done",
-		.value = "0.10443",
+		.value = "0.15920",
 	},
 	{
 		.key = "sys.boot.reason",
@@ -1895,7 +1771,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "sys.customsn.showcode",
-		.value = "HB0E2VBR",
+		.value = "00000000",
 	},
 	{
 		.key = "sys.display.clearMotion.dimmed",
@@ -1928,6 +1804,10 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "sys.usb.config",
 		.value = "mtp,adb",
+	},
+	{
+		.key = "sys.usb.mtpConnect",
+		.value = "mtpConnection",
 	},
 	{
 		.key = "sys.usb.state",
