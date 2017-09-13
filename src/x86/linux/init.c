@@ -147,7 +147,7 @@ void cpuinfo_x86_linux_init(void) {
 		}
 
 		cpuinfo_x86_init_processor(&x86_processors[i]);
-		x86_processors[i].topology.linux_id = processor_bit;
+		x86_processors[i].linux_id = processor_bit;
 	}
 
 	qsort(x86_processors, (size_t) processors_count, sizeof(struct cpuinfo_x86_processor),
@@ -161,8 +161,9 @@ void cpuinfo_x86_linux_init(void) {
 	}
 
 	for (uint32_t i = 0; i < (uint32_t) processors_count; i++) {
-		processors[i].vendor = x86_processors[i].vendor;
-		processors[i].uarch  = x86_processors[i].uarch;
+		processors[i].vendor   = x86_processors[i].vendor;
+		processors[i].uarch    = x86_processors[i].uarch;
+		processors[i].linux_id = x86_processors[i].linux_id;
 
 		/* Initialize topology information */
 		const uint32_t apic_id = x86_processors[i].topology.apic_id;
@@ -175,7 +176,6 @@ void cpuinfo_x86_linux_init(void) {
 			.thread_id  = (apic_id >> x86_processors[i].topology.thread_bits_offset) & thread_mask,
 			.core_id    = (apic_id >> x86_processors[i].topology.core_bits_offset) & core_mask,
 			.package_id = apic_id >> package_offset,
-			.linux_id   = x86_processors[i].topology.linux_id,
 			.apic_id    = x86_processors[i].topology.apic_id,
 		};
 	}

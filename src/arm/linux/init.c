@@ -347,11 +347,11 @@ void cpuinfo_arm_linux_init(void) {
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		processors[i].vendor = arm_linux_processors[i].vendor;
 		processors[i].uarch = arm_linux_processors[i].uarch;
+		processors[i].linux_id = (int) arm_linux_processors[i].system_processor_id;
 		processors[i].topology = (struct cpuinfo_topology) {
 			.thread_id = 0,
 			.core_id = arm_linux_processors[i].system_processor_id,
 			.package_id = 0,
-			.linux_id = (int) arm_linux_processors[i].system_processor_id,
 		};
 	}
 

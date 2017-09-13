@@ -26,7 +26,7 @@ TEST(PROCESSORS, uarch) {
 
 TEST(PROCESSORS, linux_id) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(i, cpuinfo_processors[i].topology.linux_id);
+		ASSERT_EQ(i, cpuinfo_processors[i].linux_id);
 	}
 }
 

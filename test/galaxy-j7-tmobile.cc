@@ -31,13 +31,13 @@ TEST(PROCESSORS, linux_id) {
 			case 1:
 			case 2:
 			case 3:
-				ASSERT_EQ(i + 4, cpuinfo_processors[i].topology.linux_id);
+				ASSERT_EQ(i + 4, cpuinfo_processors[i].linux_id);
 				break;
 			case 4:
 			case 5:
 			case 6:
 			case 7:
-				ASSERT_EQ(i - 4, cpuinfo_processors[i].topology.linux_id);
+				ASSERT_EQ(i - 4, cpuinfo_processors[i].linux_id);
 				break;
 		}
 	}

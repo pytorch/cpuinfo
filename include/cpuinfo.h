@@ -580,9 +580,6 @@ struct cpuinfo_topology {
 	uint32_t core_id;
 	/* Package (socket) ID */
 	uint32_t package_id;
-	#if defined(__linux__)
-		int linux_id;
-	#endif
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		uint32_t apic_id;
 	#endif
@@ -591,6 +588,9 @@ struct cpuinfo_topology {
 struct cpuinfo_processor {
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
+#if defined(__linux__)
+	int linux_id;
+#endif
 	struct cpuinfo_topology topology;
 	struct {
 		const struct cpuinfo_trace_cache* trace;
