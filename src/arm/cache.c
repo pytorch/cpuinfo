@@ -281,11 +281,15 @@ void cpuinfo_arm_decode_cache(
 			 *  | Exynos 4 Dual 4212 |   2   |    32K    |    32K    |    1M     |    [2]    |
 			 *  | Exynos 4 Quad 4412 |   4   |    32K    |    32K    |    1M     |    [3]    |
 			 *  | Exynos 4 Quad 4415 |   4   |    32K    |    32K    |    1M     |           |
+			 *  | TI OMAP 4430       |   2   |    32K    |    32K    |    1M     |    [4]    |
+			 *  | TI OMAP 4460       |   2   |    32K    |    32K    |    1M     |    [5]    |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] http://www.samsung.com/global/business/semiconductor/file/product/Exynos_4_Dual_45nm_User_Manaul_Public_REV1.00-0.pdf
 			 * [2] http://www.samsung.com/global/business/semiconductor/file/product/Exynos_4_Dual_32nm_User_Manaul_Public_REV100-0.pdf
 			 * [3] http://www.samsung.com/global/business/semiconductor/file/product/Exynos_4_Quad_User_Manaul_Public_REV1.00-0.pdf
+			 * [4] https://www.hotchips.org/wp-content/uploads/hc_archives/hc21/2_mon/HC21.24.400.ClientProcessors-Epub/HC21.24.421.Witt-OMAP4430.pdf
+			 * [5] http://www.anandtech.com/show/5310/samsung-galaxy-nexus-ice-cream-sandwich-review/9
 			 */
 
 			/* Use Exynos 4 specs */
