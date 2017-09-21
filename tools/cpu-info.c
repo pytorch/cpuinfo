@@ -185,6 +185,7 @@ int main(int argc, char** argv) {
 	cpuinfo_initialize();
 	#ifdef __ANDROID__
 		printf("SoC name: %s\n", cpuinfo_packages[0].name);
+		printf("GPU name: %s\n", cpuinfo_packages[0].gpu_name);
 	#else
 		printf("Packages:\n");
 		for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {

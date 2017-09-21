@@ -608,9 +608,13 @@ struct cpuinfo_core {
 };
 
 #define CPUINFO_PACKAGE_NAME_MAX 48
+#define CPUINFO_GPU_NAME_MAX 64
 
 struct cpuinfo_package {
 	char name[CPUINFO_PACKAGE_NAME_MAX];
+	#ifdef __ANDROID__
+		char gpu_name[CPUINFO_GPU_NAME_MAX];
+	#endif
 	uint32_t processor_start;
 	uint32_t processor_count;
 	uint32_t core_start;

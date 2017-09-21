@@ -8,6 +8,7 @@
 #if defined(__ANDROID__)
 	#include <arm/android/api.h>
 #endif
+#include <gpu/api.h>
 #include <arm/api.h>
 #include <arm/midr.h>
 #include <linux/api.h>
@@ -454,6 +455,10 @@ void cpuinfo_arm_linux_init(void) {
 
 	processors = NULL;
 	l1i = l1d = l2 = NULL;
+
+	#ifdef __ANDROID__
+		cpuinfo_gpu_query_gles2(package.gpu_name);
+	#endif
 
 cleanup:
 	free(arm_linux_processors);
