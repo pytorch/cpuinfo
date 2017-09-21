@@ -1,258 +1,208 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <inttypes.h>
 
 #include <cpuinfo.h>
 
-int main(int argc, char** argv) {
-	cpuinfo_initialize();
+
+static const char* vendor_to_string(enum cpuinfo_vendor vendor) {
 	switch (cpuinfo_processors[0].vendor) {
 		case cpuinfo_vendor_unknown:
-			printf("Vendor: unknown\n");
-			break;
+			return "unknown";
 		case cpuinfo_vendor_intel:
-			printf("Vendor: Intel\n");
-			break;
+			return "Intel";
 		case cpuinfo_vendor_amd:
-			printf("Vendor: AMD\n");
-			break;
+			return "AMD";
 		case cpuinfo_vendor_arm:
-			printf("Vendor: ARM\n");
-			break;
+			return "ARM";
 		case cpuinfo_vendor_qualcomm:
-			printf("Vendor: Qualcomm\n");
-			break;
+			return "Qualcomm";
 		case cpuinfo_vendor_apple:
-			printf("Vendor: Apple\n");
-			break;
+			return "Apple";
 		case cpuinfo_vendor_samsung:
-			printf("Vendor: Samsung\n");
-			break;
+			return "Samsung";
 		case cpuinfo_vendor_nvidia:
-			printf("Vendor: nVidia\n");
-			break;
+			return "nVidia";
 		case cpuinfo_vendor_mips:
-			printf("Vendor: MIPS\n");
-			break;
+			return "MIPS";
 		case cpuinfo_vendor_ibm:
-			printf("Vendor: IBM\n");
-			break;
+			return "IBM";
 		case cpuinfo_vendor_ingenic:
-			printf("Vendor: Ingenic\n");
-			break;
+			return "Ingenic";
 		case cpuinfo_vendor_via:
-			printf("Vendor: VIA\n");
-			break;
+			return "VIA";
 		case cpuinfo_vendor_cavium:
-			printf("Vendor: Cavium\n");
-			break;
+			return "Cavium";
 		default:
-			printf("Vendor: other (%d)\n", cpuinfo_processors[0].vendor);
+			return NULL;
 	}
-	switch (cpuinfo_processors[0].uarch) {
+}
+
+static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
+	switch (uarch) {
 		case cpuinfo_uarch_unknown:
-			printf("uArch: unknown\n");
-			break;
+			return "unknown";
 		case cpuinfo_uarch_p5:
-			printf("uArch: P5\n");
-			break;
+			return "P5";
 		case cpuinfo_uarch_quark:
-			printf("uArch: Quark\n");
-			break;
+			return "Quark";
 		case cpuinfo_uarch_p6:
-			printf("uArch: P6\n");
-			break;
+			return "P6";
 		case cpuinfo_uarch_dothan:
-			printf("uArch: Dothan\n");
-			break;
+			return "Dothan";
 		case cpuinfo_uarch_yonah:
-			printf("uArch: Yonah\n");
-			break;
+			return "Yonah";
 		case cpuinfo_uarch_conroe:
-			printf("uArch: Conroe\n");
-			break;
+			return "Conroe";
 		case cpuinfo_uarch_penryn:
-			printf("uArch: Penryn\n");
-			break;
+			return "Penryn";
 		case cpuinfo_uarch_nehalem:
-			printf("uArch: Nehalem\n");
-			break;
+			return "Nehalem";
 		case cpuinfo_uarch_sandy_bridge:
-			printf("uArch: Sandy Bridge\n");
-			break;
+			return "Sandy Bridge";
 		case cpuinfo_uarch_ivy_bridge:
-			printf("uArch: Ivy Bridge\n");
-			break;
+			return "Ivy Bridge";
 		case cpuinfo_uarch_haswell:
-			printf("uArch: Haswell\n");
-			break;
+			return "Haswell";
 		case cpuinfo_uarch_broadwell:
-			printf("uArch: Broadwell\n");
-			break;
+			return "Broadwell";
 		case cpuinfo_uarch_sky_lake:
-			printf("uArch: Sky Lake\n");
-			break;
+			return "Sky Lake";
 		case cpuinfo_uarch_kaby_lake:
-			printf("uArch: Kaby Lake\n");
-			break;
+			return "Kaby Lake";
 		case cpuinfo_uarch_willamette:
-			printf("uArch: Willamette\n");
-			break;
+			return "Willamette";
 		case cpuinfo_uarch_prescott:
-			printf("uArch: Prescott\n");
-			break;
+			return "Prescott";
 		case cpuinfo_uarch_bonnell:
-			printf("uArch: Bonnell\n");
-			break;
+			return "Bonnell";
 		case cpuinfo_uarch_saltwell:
-			printf("uArch: Saltwell\n");
-			break;
+			return "Saltwell";
 		case cpuinfo_uarch_silvermont:
-			printf("uArch: Silvermont\n");
-			break;
+			return "Silvermont";
 		case cpuinfo_uarch_airmont:
-			printf("uArch: Airmont\n");
-			break;
+			return "Airmont";
 		case cpuinfo_uarch_knights_ferry:
-			printf("uArch: Knights Ferry\n");
-			break;
+			return "Knights Ferry";
 		case cpuinfo_uarch_knights_corner:
-			printf("uArch: Knights Corner\n");
-			break;
+			return "Knights Corner";
 		case cpuinfo_uarch_knights_landing:
-			printf("uArch: Knights Landing\n");
-			break;
+			return "Knights Landing";
 		case cpuinfo_uarch_knights_hill:
-			printf("uArch: Knights Hill\n");
-			break;
+			return "Knights Hill";
 		case cpuinfo_uarch_knights_mill:
-			printf("uArch: Knights Mill\n");
-			break;
+			return "Knights Mill";
 		case cpuinfo_uarch_k5:
-			printf("uArch: K5\n");
-			break;
+			return "K5";
 		case cpuinfo_uarch_k6:
-			printf("uArch: K6\n");
-			break;
+			return "K6";
 		case cpuinfo_uarch_k7:
-			printf("uArch: K7\n");
-			break;
+			return "K7";
 		case cpuinfo_uarch_k8:
-			printf("uArch: K8\n");
-			break;
+			return "K8";
 		case cpuinfo_uarch_k10:
-			printf("uArch: K10\n");
-			break;
+			return "K10";
 		case cpuinfo_uarch_bulldozer:
-			printf("uArch: Bulldozer\n");
-			break;
+			return "Bulldozer";
 		case cpuinfo_uarch_piledriver:
-			printf("uArch: Piledriver\n");
-			break;
+			return "Piledriver";
 		case cpuinfo_uarch_steamroller:
-			printf("uArch: Steamroller\n");
-			break;
+			return "Steamroller";
 		case cpuinfo_uarch_excavator:
-			printf("uArch: Excavator\n");
-			break;
+			return "Excavator";
 		case cpuinfo_uarch_zen:
-			printf("uArch: Zen\n");
-			break;
+			return "Zen";
 		case cpuinfo_uarch_geode:
-			printf("uArch: Geode\n");
-			break;
+			return "Geode";
 		case cpuinfo_uarch_bobcat:
-			printf("uArch: Bobcat\n");
-			break;
+			return "Bobcat";
 		case cpuinfo_uarch_jaguar:
-			printf("uArch: Jaguar/Puma\n");
-			break;
+			return "Jaguar/Puma";
 		case cpuinfo_uarch_xscale:
-			printf("uArch: XScale\n");
-			break;
+			return "XScale";
 		case cpuinfo_uarch_arm7:
-			printf("uArch: ARM7\n");
-			break;
+			return "ARM7";
 		case cpuinfo_uarch_arm9:
-			printf("uArch: ARM9\n");
-			break;
+			return "ARM9";
 		case cpuinfo_uarch_arm11:
-			printf("uArch: ARM11\n");
-			break;
+			return "ARM11";
 		case cpuinfo_uarch_cortex_a5:
-			printf("uArch: Cortex-A5\n");
-			break;
+			return "Cortex-A5";
 		case cpuinfo_uarch_cortex_a7:
-			printf("uArch: Cortex-A7\n");
-			break;
+			return "Cortex-A7";
 		case cpuinfo_uarch_cortex_a8:
-			printf("uArch: Cortex-A8\n");
-			break;
+			return "Cortex-A8";
 		case cpuinfo_uarch_cortex_a9:
-			printf("uArch: Cortex-A9\n");
-			break;
+			return "Cortex-A9";
 		case cpuinfo_uarch_cortex_a12:
-			printf("uArch: Cortex-A12\n");
-			break;
+			return "Cortex-A12";
 		case cpuinfo_uarch_cortex_a15:
-			printf("uArch: Cortex-A15\n");
-			break;
+			return "Cortex-A15";
 		case cpuinfo_uarch_cortex_a17:
-			printf("uArch: Cortex-A17\n");
-			break;
+			return "Cortex-A17";
 		case cpuinfo_uarch_cortex_a32:
-			printf("uArch: Cortex-A32\n");
-			break;
+			return "Cortex-A32";
 		case cpuinfo_uarch_cortex_a35:
-			printf("uArch: Cortex-A35\n");
-			break;
+			return "Cortex-A35";
 		case cpuinfo_uarch_cortex_a53:
-			printf("uArch: Cortex-A53\n");
-			break;
+			return "Cortex-A53";
 		case cpuinfo_uarch_cortex_a57:
-			printf("uArch: Cortex-A57\n");
-			break;
+			return "Cortex-A57";
 		case cpuinfo_uarch_cortex_a72:
-			printf("uArch: Cortex-A72\n");
-			break;
+			return "Cortex-A72";
 		case cpuinfo_uarch_cortex_a73:
-			printf("uArch: Cortex-A73\n");
-			break;
+			return "Cortex-A73";
 		case cpuinfo_uarch_scorpion:
-			printf("uArch: Scorpion\n");
-			break;
+			return "Scorpion";
 		case cpuinfo_uarch_krait:
-			printf("uArch: Krait\n");
-			break;
+			return "Krait";
 		case cpuinfo_uarch_kryo:
-			printf("uArch: Kryo\n");
-			break;
+			return "Kryo";
 		case cpuinfo_uarch_denver:
-			printf("uArch: Denver\n");
-			break;
+			return "Denver";
 		case cpuinfo_uarch_mongoose:
-			printf("uArch: Mongoose\n");
-			break;
+			return "Mongoose";
 		case cpuinfo_uarch_swift:
-			printf("uArch: Swift\n");
-			break;
+			return "Swift";
 		case cpuinfo_uarch_cyclone:
-			printf("uArch: Cyclone\n");
-			break;
+			return "Cyclone";
 		case cpuinfo_uarch_typhoon:
-			printf("uArch: Typhoon\n");
-			break;
+			return "Typhoon";
 		case cpuinfo_uarch_twister:
-			printf("uArch: Twister\n");
-			break;
+			return "Twister";
 		case cpuinfo_uarch_hurricane:
-			printf("uArch: Hurricane\n");
-			break;
+			return "Hurricane";
 		case cpuinfo_uarch_thunderx:
-			printf("uArch: ThunderX\n");
-			break;
+			return "ThunderX";
 		case cpuinfo_uarch_pj4:
-			printf("uArch: PJ4\n");
-			break;
+			return "PJ4";
 		default:
-			printf("uArch: other (0x%08X)\n", cpuinfo_processors[0].uarch);
+			return NULL;
+	}
+}
+
+int main(int argc, char** argv) {
+	cpuinfo_initialize();
+	#ifdef __ANDROID__
+		printf("SoC name: %s\n", cpuinfo_packages[0].name);
+	#else
+		printf("Packages:\n");
+		for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
+			printf("\t%"PRIu32": %s\n", i, cpuinfo_packages[i].name);
+		}
+	#endif
+	printf("Logical processors:\n");
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		const char* vendor_string = vendor_to_string(cpuinfo_processors[i].vendor);
+		const char* uarch_string = uarch_to_string(cpuinfo_processors[i].uarch);
+		if (vendor_string == NULL) {
+			printf("\t%"PRIu32": vendor 0x%08"PRIx32" uarch 0x%08"PRIx32"\n",
+				i, (uint32_t) cpuinfo_processors[i].vendor, (uint32_t) cpuinfo_processors[i].uarch);
+		} else if (uarch_string == NULL) {
+			printf("\t%"PRIu32": %s uarch 0x%08"PRIx32"\n",
+				i, vendor_string, (uint32_t) cpuinfo_processors[i].uarch);
+		} else {
+			printf("\t%"PRIu32": %s %s\n", i, vendor_string, uarch_string);
+		}
 	}
 }
