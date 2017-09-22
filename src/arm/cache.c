@@ -443,8 +443,18 @@ void cpuinfo_arm_decode_cache(
 			 * [4] http://www.boardset.com/products/products_v8890.php
 			 * [5] http://mirror.lemaker.org/Hi6220V100_Multi-Mode_Application_Processor_Function_Description.pdf
 			 */
-			if (midr_is_kryo280_silver(midr)) {
-				/* Little cores of Snapdragon 835 */
+			if (midr_is_qualcomm_cortex_a53_silver(midr)) {
+				/* Qualcomm-modified Cortex-A53 in Snapdragon 630/660/835 */
+
+				size_t l2_size = 512 * 1024;
+				if (chipset->series == cpuinfo_arm_chipset_series_qualcomm_msm && chipset->model == 8998) {
+					/* Snapdragon 835 (MSM8998): 1 MB L2 (little cores only) */
+					l2_size = 1024 * 1024;
+				} else if (chipset->series == cpuinfo_arm_chipset_series_qualcomm_snapdragon && chipset->model == 630 && cluster_id == 0) {
+					/* Snapdragon 630 (MSM8998): 1 MB L2 for the big cores */
+					l2_size = 1024 * 1024;
+				}
+
 				*l1i = (struct cpuinfo_cache) {
 					.size = 32 * 1024,
 					.associativity = 2,
@@ -456,7 +466,7 @@ void cpuinfo_arm_decode_cache(
 					.line_size = 64
 				};
 				*l2 = (struct cpuinfo_cache) {
-					.size = 1024 * 1024,
+					.size = l2_size,
 					.associativity = 16,
 					.line_size = 64
 				};
@@ -497,14 +507,9 @@ void cpuinfo_arm_decode_cache(
 					case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
 						l1_size = 32 * 1024;
 						l2_size = 512 * 1024;
-						switch (chipset->model) {
-							case 450:
-							case 630:
-								if (cluster_id == 0) {
-									/* 1M L2 for big cluster */
-									l2_size = 1024 * 1024;
-								}
-								break;
+						if (chipset->model == 450 && cluster_id == 0) {
+							/* Snapdragon 450: 1M L2 for big cluster */
+							l2_size = 1024 * 1024;
 						}
 						break;
 					case cpuinfo_arm_chipset_series_hisilicon_hi:
@@ -644,6 +649,7 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		case cpuinfo_uarch_cortex_a73:
+		{
 			/*
 			 * ARM Cortex‑A73 MPCore Processor Technical Reference Manual
 			 * 6.1. About the L1 memory system
@@ -677,11 +683,23 @@ void cpuinfo_arm_decode_cache(
 			 *  | HiSilicon Kirin 960 | 4(+4)   |  64K+32K  |  64K+32K  |     ?     |    [2]    |
 			 *  | MediaTek Helio X30  | 2(+4+4) |     ?     |  64K+ ?   |     ?     |           |
 			 *  | Snapdragon 835      | 4(+4)   |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
+			 *  | Snapdragon 660      | 4(+4)   |  64K+32K  |  64K+32K  |  2M(+1M)  |    [3]    |
 			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] http://www.anandtech.com/show/10347/arm-cortex-a73-artemis-unveiled/2
 			 * [2] http://www.anandtech.com/show/11088/hisilicon-kirin-960-performance-and-power/3
+			 * [3] https://arstechnica.com/gadgets/2017/05/qualcomms-snapdragon-660-and-630-bring-more-high-end-features-to-midrange-chips/
 			 */
+			size_t l2_size = 1024 * 1024;
+			switch (midr) {
+				case UINT32_C(0x51AF8001): /* Kryo 280 Gold */
+					l2_size = 2 * 1024 * 1024;
+					break;
+				case UINT32_C(0x51AF8002): /* Kryo 260 Gold */
+				default:
+					break;
+			}
+
 			*l1i = (struct cpuinfo_cache) {
 				.size = 64 * 1024,
 				.associativity = 4,
@@ -693,12 +711,13 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = cluster_cores * 512 * 1024,
+				.size = l2_size,
 				.associativity = 16,
 				.line_size = 64,
 				.flags = CPUINFO_CACHE_INCLUSIVE
 			};
 			break;
+		}
 		case cpuinfo_uarch_scorpion:
 			/*
 			 * - "The CPU includes 32KB instruction and data caches as

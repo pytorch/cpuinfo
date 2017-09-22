@@ -124,7 +124,7 @@ inline static bool midr_is_cortex_a53(uint32_t midr) {
 	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_CORTEX_A53 & uarch_mask);
 }
 
-inline static bool midr_is_kryo280_silver(uint32_t midr) {
+inline static bool midr_is_qualcomm_cortex_a53_silver(uint32_t midr) {
 	const uint32_t uarch_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
 	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_KRYO280_SILVER & uarch_mask);
 }
