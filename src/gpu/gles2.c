@@ -63,6 +63,8 @@ struct libegl {
 	};
 };
 
+typedef const GLubyte* (GL_APIENTRY *gl_get_string_t)(GLenum);
+
 static const char gles2_function_names[] =
 	"glGetString\0";
 
@@ -71,7 +73,7 @@ static const char gles2_function_names[] =
 struct libgles2 {
 	void* handle;
 	union {
-		PFNGLGETSTRINGPROC get_string;
+		gl_get_string_t get_string;
 		void* functions[LIBGLES2_FUNCTION_COUNT];		
 	};
 };
@@ -138,7 +140,6 @@ failed:
 
 bool cpuinfo_gpu_query_gles2(char gpu_name[restrict static CPUINFO_GPU_NAME_MAX]) {
 	bool success = false;
-	EGLConfig* configs = NULL;
 	EGLDisplay display = EGL_NO_DISPLAY;
 	EGLSurface surface = EGL_NO_SURFACE;
 	EGLSurface previous_draw_surface = EGL_NO_SURFACE;

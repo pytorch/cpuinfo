@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <cstdint>
+
 #include <cpuinfo.h>
 extern "C" {
 	#include <arm/api.h>

@@ -45,7 +45,7 @@ LOCAL_SRC_FILES += \
 endif # x86 or x86_64
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/src
-LOCAL_CFLAGS := -std=gnu99 -D_GNU_SOURCE=1
+LOCAL_CFLAGS := -std=gnu99 -Wall -Wno-maybe-uninitialized -D_GNU_SOURCE=1
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -94,25 +94,28 @@ LOCAL_SRC_FILES += \
 endif # x86 or x86_64
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/src
-LOCAL_CFLAGS := -std=gnu99 -D_GNU_SOURCE=1 -DCPUINFO_LOG_LEVEL=4 -DCPUINFO_MOCK=1
+LOCAL_CFLAGS := -std=gnu99 -Wall -Wno-maybe-uninitialized -D_GNU_SOURCE=1 -DCPUINFO_LOG_LEVEL=4 -DCPUINFO_MOCK=1
 LOCAL_EXPORT_CFLAGS := -DCPUINFO_MOCK=1
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := cpu-info
 LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/cpu-info.c
+LOCAL_CFLAGS := -std=gnu99
 LOCAL_STATIC_LIBRARIES := cpuinfo
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := isa-info
 LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/isa-info.c
+LOCAL_CFLAGS := -std=gnu99
 LOCAL_STATIC_LIBRARIES := cpuinfo
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := cache-info
 LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/cache-info.c
+LOCAL_CFLAGS := -std=gnu99
 LOCAL_STATIC_LIBRARIES := cpuinfo
 include $(BUILD_EXECUTABLE)
 
@@ -274,8 +277,16 @@ endif # armeabi, armeabi-v7a
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v8a))
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := android_properties_interface
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/name/android-properties-interface.c
+LOCAL_CFLAGS := -std=gnu99
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/src
+LOCAL_STATIC_LIBRARIES := cpuinfo
+include $(BUILD_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := chipset-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/name/android-properties-interface.c \
+LOCAL_SRC_FILES := \
 	$(LOCAL_PATH)/test/name/proc-cpuinfo-hardware.cc \
 	$(LOCAL_PATH)/test/name/ro-product-board.cc \
 	$(LOCAL_PATH)/test/name/ro-board-platform.cc \
@@ -283,13 +294,14 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/test/name/android-properties-interface.c \
 	$(LOCAL_PATH)/test/name/ro-chipname.cc \
 	$(LOCAL_PATH)/test/name/android-properties.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/src
-LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
+LOCAL_STATIC_LIBRARIES := android_properties_interface gtest gtest_main
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := cache-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/arm-cache.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/src
+LOCAL_CFLAGS := -std=gnu++11 -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS
 LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
 include $(BUILD_EXECUTABLE)
 

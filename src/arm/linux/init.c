@@ -18,7 +18,7 @@
 
 struct cpuinfo_arm_isa cpuinfo_isa = { 0 };
 
-static struct cpuinfo_package package = { 0 };
+static struct cpuinfo_package package = { { 0 } };
 
 static inline bool bitmask_all(uint32_t bitfield, uint32_t mask) {
 	return (bitfield & mask) == mask;
