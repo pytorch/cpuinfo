@@ -34,6 +34,7 @@ ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
 LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/x86/init.c \
 	$(LOCAL_PATH)/src/x86/info.c \
+	$(LOCAL_PATH)/src/x86/name.c \
 	$(LOCAL_PATH)/src/x86/isa.c \
 	$(LOCAL_PATH)/src/x86/vendor.c \
 	$(LOCAL_PATH)/src/x86/uarch.c \
@@ -83,6 +84,7 @@ ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
 LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/x86/init.c \
 	$(LOCAL_PATH)/src/x86/info.c \
+	$(LOCAL_PATH)/src/x86/name.c \
 	$(LOCAL_PATH)/src/x86/isa.c \
 	$(LOCAL_PATH)/src/x86/vendor.c \
 	$(LOCAL_PATH)/src/x86/uarch.c \
