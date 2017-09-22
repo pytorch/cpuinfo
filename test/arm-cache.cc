@@ -1,0 +1,928 @@
+#include <gtest/gtest.h>
+
+#include <cpuinfo.h>
+extern "C" {
+	#include <arm/api.h>
+}
+
+
+TEST(QUALCOMM, snapdragon_410_msm) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8916,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD030),
+		&chipset, 0, 8,
+		&l1i, &l1d, &l2);
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(512 * 1024, l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_410_apq) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_apq,
+		.model = 8016,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD030),
+		&chipset, 0, 8,
+		&l1i, &l1d, &l2);
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(512 * 1024, l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_415) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8929,
+	};
+
+	for (uint32_t cluster = 0; cluster < 2; cluster++) {
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD031),
+			&chipset, cluster, 8,
+			&l1i, &l1d, &l2);
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(512 * 1024, l2.size);
+	}
+}
+
+TEST(QUALCOMM, snapdragon_425) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8917,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&l1i, &l1d, &l2);
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(512 * 1024, l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_427) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8920,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&l1i, &l1d, &l2);
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(512 * 1024, l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_430) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8937,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_435) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8940,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_450) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+		.model = 450,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_617) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8952,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(512 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(256 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_625) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8953,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_626) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8953,
+		.suffix = {
+			[0] = 'P',
+			[1] = 'R',
+			[2] = 'O',
+		},
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_630) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+		.model = 630,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_650) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8956,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a72, 2, UINT32_C(0x410FD080),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(48 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_652) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8976,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a72, 4, UINT32_C(0x410FD080),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(48 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_653) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8976,
+		.suffix = {
+			[0] = 'P',
+			[1] = 'R',
+			[2] = 'O',
+		},
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a72, 4, UINT32_C(0x410FD080),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(48 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_660) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+		.model = 660,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a73, 4, UINT32_C(0x51AF8002),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(64 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_808) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8992,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a57, 2, UINT32_C(0x410FD033),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD033),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(48 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_810) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8994,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a57, 4, UINT32_C(0x410FD033),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD033),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(48 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_820) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8996,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_kryo, 4, UINT32_C(0x511F2052),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_kryo, 4, UINT32_C(0x511F2112),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(24 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(24 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_821) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8996,
+		.suffix = {
+			[0] = 'P',
+			[1] = 'R',
+			[2] = 'O',
+			[3] = '-',
+			[4] = 'A',
+			[5] = 'C',
+		},
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_kryo, 4, UINT32_C(0x512F2051),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_kryo, 4, UINT32_C(0x512F2011),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(24 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(24 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(QUALCOMM, snapdragon_835) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = 8998,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a73, 4, UINT32_C(0x51AF8001),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(64 * 1024, big_l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(1024 * 1024, little_l2.size);
+}
+
+TEST(SAMSUNG, exynos_8890) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_samsung,
+		.series = cpuinfo_arm_chipset_series_samsung_exynos,
+		.model = 8890,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_mongoose, 4, UINT32_C(0x531F0011),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(256 * 1024, little_l2.size);
+}
+
+TEST(SAMSUNG, exynos_8895) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_samsung,
+		.series = cpuinfo_arm_chipset_series_samsung_exynos,
+		.model = 8890,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_mongoose, 4, UINT32_C(0x534F0010),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(256 * 1024, little_l2.size);
+}
+
+TEST(NVIDIA, tegra_ap20h) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+		.model = 20,
+		.suffix = {
+			[0] = 'H',
+		},
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t20) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 20,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t30l) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+		.suffix = {
+			[0] = 'L',
+		},
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t30) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 30,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t33) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 33,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_ap33) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+		.model = 33,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t114) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 114,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x412FC0F2),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_sl460n) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_sl,
+		.model = 460,
+		.suffix = {
+			[0] = 'N',
+		},
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x414FC091),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(1 * 1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t124) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 124,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+		&chipset, 0, 7,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t132) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 132,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_denver, 2, UINT32_C(0x4E0F0000),
+		&chipset, 0, 8,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(128 * 1024, l1i.size);
+	EXPECT_EQ(64 * 1024, l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+}
+
+TEST(NVIDIA, tegra_t210) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 210,
+	};
+
+	struct cpuinfo_cache l1i = { 0 };
+	struct cpuinfo_cache l1d = { 0 };
+	struct cpuinfo_cache l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a57, 4, UINT32_C(0x411FD071),
+		&chipset, 0, 8,
+		&l1i, &l1d, &l2);
+
+	EXPECT_EQ(48 * 1024, l1i.size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+}
+

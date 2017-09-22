@@ -287,6 +287,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := cache-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/arm-cache.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/src
+LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-c9-pro-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-c9-pro.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test

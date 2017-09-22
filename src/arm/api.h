@@ -76,6 +76,7 @@ struct cpuinfo_arm_chipset {
 
 #define CPUINFO_ARM_CHIPSET_NAME_MAX CPUINFO_PACKAGE_NAME_MAX
 
+#ifndef __cplusplus
 void cpuinfo_arm_chipset_to_string(
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	char name[restrict static CPUINFO_ARM_CHIPSET_NAME_MAX]);
@@ -101,3 +102,15 @@ void cpuinfo_arm_decode_cache(
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
 	struct cpuinfo_cache l2[restrict static 1]);
+#else /* defined(__cplusplus) */
+void cpuinfo_arm_decode_cache(
+	enum cpuinfo_uarch uarch,
+	uint32_t cluster_cores,
+	uint32_t midr,
+	const struct cpuinfo_arm_chipset chipset[1],
+	uint32_t cluster_id,
+	uint32_t arch_version,
+	struct cpuinfo_cache l1i[1],
+	struct cpuinfo_cache l1d[1],
+	struct cpuinfo_cache l2[1]);
+#endif
