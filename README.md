@@ -3,9 +3,11 @@
 cpuinfo is a library to detect essential for performance optimization information about host CPU.
 
 Exposed information:
-- [ ] Processor (SoC) name
+- [x] Processor (SoC) name
+  - [x] Integrated GPU name (Android only)
 - [x] Microarchitecture
 - [x] Usable instruction sets
+- [ ] CPU frequency
 - [x] Cache
   - [x] Size
   - [x] Associativity
@@ -18,24 +20,12 @@ Exposed information:
   - [ ] Associativity
   - [ ] Covered page types (instruction, data)
   - [ ] Covered page sizes
-- [ ] Topology information
-  - [ ] Logical processors
-  - [ ] Cores
-  - [ ] Packages (sockets)
+- [x] Topology information
+  - [x] Logical processors
+  - [x] Cores
+  - [x] Packages (sockets)
 
 Supported environments:
-- [x] Linux
-  - [x] x86
-  - [x] x86-64
-  - [x] 32-bit ARM (ARMv5T and later)
-  - [x] ARM64
-  - [ ] PowerPC
-- [x] OS X
-  - [x] x86
-  - [x] x86-64
-- [ ] Windows
-  - [ ] x86
-  - [ ] x86-64
 - [x] Android
   - [x] x86 ABI
   - [x] x86_64 ABI
@@ -44,6 +34,21 @@ Supported environments:
   - [x] arm64-v8a ABI
   - [ ] mips ABI
   - [ ] mips64 ABI
+- [x] Linux
+  - [x] x86
+  - [x] x86-64
+  - [x] 32-bit ARM (ARMv5T and later)
+  - [x] ARM64
+  - [ ] PowerPC
+- [ ] iOS
+  - [ ] ARMv7
+  - [ ] ARM64
+- [x] OS X
+  - [x] x86
+  - [x] x86-64
+- [ ] Windows
+  - [ ] x86
+  - [ ] x86-64
 - [ ] Native Client
   - [ ] x86
   - [x] x86-64
@@ -72,32 +77,34 @@ Planned features:
   - [x] Cavium-designed ARM cores (ThunderX)
   - [ ] AppliedMicro-designed ARM cores
 - Instruction set detection
-  - [x] Using CPUID on x86/x86-64 (Linux, Mach)
-  - [x] Using dynamic code generation validator on x86-64 (Native Client)
+  - [x] Using CPUID (x86/x86-64)
+  - [x] Using dynamic code generation validator (Native Client/x86-64)
   - [x] Using `/proc/cpuinfo` on 32-bit ARM EABI (Linux)
-  - [x] Using microarchitecture heuristics on 32-bit ARM
-  - [x] Using `FPSID` and `WCID` registers on 32-bit ARM
+  - [x] Using microarchitecture heuristics on (32-bit ARM)
+  - [x] Using `FPSID` and `WCID` registers (32-bit ARM)
   - [ ] Using `getauxval` or `/proc/self/auxv` (Linux)
   - [ ] Using instruction probing on ARM (Linux)
   - [ ] Using CPUID registers on ARM64 (Linux)
 - Cache detection
-  - [x] Using CPUID leaf 0x00000002 on x86/x86-64
-  - [x] Using CPUID leaf 0x00000004 on non-AMD x86/x86-64
-  - [ ] Using CPUID leaves 0x80000005-0x80000006 on AMD x86/x86-64
-  - [x] Using CPUID leaf 0x8000001D on AMD x86/x86-64
-  - [x] Using `/proc/cpuinfo` on ARMv6 and earlier (Linux)
-  - [x] Using microarchitecture heuristics on ARM
-  - [x] Using chipset heuristics on ARM
+  - [x] Using CPUID leaf 0x00000002 (x86/x86-64)
+  - [x] Using CPUID leaf 0x00000004 (non-AMD x86/x86-64)
+  - [ ] Using CPUID leaves 0x80000005-0x80000006 (AMD x86/x86-64)
+  - [x] Using CPUID leaf 0x8000001D (AMD x86/x86-64)
+  - [x] Using `/proc/cpuinfo` (Linux/pre-ARMv7)
+  - [x] Using microarchitecture heuristics (ARM)
+  - [x] Using chipset name (ARM)
   - [x] Using `sysctlbyname` (Mach)
-  - [ ] Using sysfs (Linux)
+  - [x] Using sysfs `typology` directories (ARM/Linux)
+  - [ ] Using sysfs `cache` directories (Linux)
   - [ ] Using `clGetDeviceInfo` with `CL_DEVICE_GLOBAL_MEM_CACHE_SIZE`/`CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE` parameters (Android)
 - TLB detection
-  - [x] Using CPUID leaf 0x00000002 on x86/x86-64
-  - [ ] Using CPUID leaves 0x80000005-0x80000006 and 0x80000019 on AMD x86/x86-64
-  - [x] Using microarchitecture heuristics on 32-bit ARM
+  - [x] Using CPUID leaf 0x00000002 (x86/x86-64)
+  - [ ] Using CPUID leaves 0x80000005-0x80000006 and 0x80000019 (AMD x86/x86-64)
+  - [x] Using microarchitecture heuristics (ARM)
 - Topology detection
   - [x] Using CPUID leaf 0x00000001 on x86/x86-64 (legacy APIC ID)
   - [x] Using CPUID leaf 0x0000000B on x86/x86-64 (Intel APIC ID)
   - [ ] Using CPUID leaf 0x8000001E on x86/x86-64 (AMD APIC ID)
   - [x] Using `host_info` (Mach)
-  - [ ] Using sysfs (Linux)
+  - [x] Using sysfs (Linux)
+  - [x] Using chipset name (ARM/Linux)
