@@ -8,6 +8,7 @@
 
 #include <cpuinfo.h>
 #include <x86/api.h>
+#include <gpu/api.h>
 #include <linux/api.h>
 #include <api.h>
 #include <log.h>
@@ -267,8 +268,8 @@ void cpuinfo_x86_linux_init(void) {
 		}
 	}
 
-	uint32_t core_index = 0, package_index = 0;
-	uint32_t l1i_index = 0, l1d_index = 0, l2_index = 0, l3_index = 0, l4_index = 0;
+	uint32_t core_index = UINT32_MAX, package_index = UINT32_MAX;
+	uint32_t l1i_index = UINT32_MAX, l1d_index = UINT32_MAX, l2_index = UINT32_MAX, l3_index = UINT32_MAX, l4_index = UINT32_MAX;
 	uint32_t last_core_id = UINT32_MAX, last_package_id = UINT32_MAX;
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
@@ -280,14 +281,14 @@ void cpuinfo_x86_linux_init(void) {
 		if (core_id != last_core_id) {
 			/* new core */
 			new_core = 1;
-			cores[core_index++] = (struct cpuinfo_core) {
+			cores[++core_index] = (struct cpuinfo_core) {
 				.processor_start = i,
 				.processor_count = 1,
 			};
 			last_core_id = core_id;
 		} else {
 			/* another logical processor on the same core */
-			cores[core_index - 1].processor_count++;
+			cores[core_index].processor_count++;
 		}
 
 		const uint32_t package_id = apic_id >>
@@ -295,22 +296,22 @@ void cpuinfo_x86_linux_init(void) {
 				x86_processors[i].topology.thread_bits_offset + x86_processors[i].topology.thread_bits_length);
 		if (package_id != last_package_id) {
 			/* new package */
-			packages[package_index++] = (struct cpuinfo_package) {
+			packages[++package_index] = (struct cpuinfo_package) {
 				.processor_start = i,
 				.processor_count = 1,
-				.core_start = core_index - 1,
+				.core_start = core_index,
 				.core_count = 1,
 			};
 			const uint32_t brand_string_length = cpuinfo_x86_normalize_brand_string(x86_processors[i].brand_string);
-			memcpy(packages[package_index - 1].name, x86_processors[i].brand_string, brand_string_length);
+			memcpy(packages[package_index].name, x86_processors[i].brand_string, brand_string_length);
 			if (brand_string_length < CPUINFO_PACKAGE_NAME_MAX) {
-				packages[package_index - 1].name[brand_string_length] = '\0';
+				packages[package_index].name[brand_string_length] = '\0';
 			}
 			last_package_id = package_id;
 		} else {
 			/* another logical processor on the same package */
-			packages[package_index - 1].processor_count++;
-			packages[package_index - 1].core_count += new_core;
+			packages[package_index].processor_count++;
+			packages[package_index].core_count += new_core;
 		}
 
 		if (x86_processors[i].cache.l1i.size != 0) {
@@ -319,7 +320,7 @@ void cpuinfo_x86_linux_init(void) {
 			if (l1i_id != last_l1i_id) {
 				/* new cache */
 				last_l1i_id = l1i_id;
-				l1i[l1i_index++] = (struct cpuinfo_cache) {
+				l1i[++l1i_index] = (struct cpuinfo_cache) {
 					.size            = x86_processors[i].cache.l1i.size,
 					.associativity   = x86_processors[i].cache.l1i.associativity,
 					.sets            = x86_processors[i].cache.l1i.sets,
@@ -331,7 +332,7 @@ void cpuinfo_x86_linux_init(void) {
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l1i[l1i_index - 1].processor_count += 1;
+				l1i[l1i_index].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -343,7 +344,7 @@ void cpuinfo_x86_linux_init(void) {
 			if (l1i_id != last_l1i_id) {
 				/* new cache */
 				last_l1i_id = l1i_id;
-				l1i[l1i_index++] = (struct cpuinfo_cache) {
+				l1i[++l1i_index] = (struct cpuinfo_cache) {
 					.size            = x86_processors[i].cache.l1i.size,
 					.associativity   = x86_processors[i].cache.l1i.associativity,
 					.sets            = x86_processors[i].cache.l1i.sets,
@@ -355,7 +356,7 @@ void cpuinfo_x86_linux_init(void) {
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l1i[l1i_index - 1].processor_count += 1;
+				l1i[l1i_index].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -367,7 +368,7 @@ void cpuinfo_x86_linux_init(void) {
 			if (l1d_id != last_l1d_id) {
 				/* new cache */
 				last_l1d_id = l1d_id;
-				l1d[l1d_index++] = (struct cpuinfo_cache) {
+				l1d[++l1d_index] = (struct cpuinfo_cache) {
 					.size            = x86_processors[i].cache.l1d.size,
 					.associativity   = x86_processors[i].cache.l1d.associativity,
 					.sets            = x86_processors[i].cache.l1d.sets,
@@ -379,7 +380,7 @@ void cpuinfo_x86_linux_init(void) {
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l1d[l1d_index - 1].processor_count += 1;
+				l1d[l1d_index].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -391,7 +392,7 @@ void cpuinfo_x86_linux_init(void) {
 			if (l2_id != last_l2_id) {
 				/* new cache */
 				last_l2_id = l2_id;
-				l2[l2_index++] = (struct cpuinfo_cache) {
+				l2[++l2_index] = (struct cpuinfo_cache) {
 					.size            = x86_processors[i].cache.l2.size,
 					.associativity   = x86_processors[i].cache.l2.associativity,
 					.sets            = x86_processors[i].cache.l2.sets,
@@ -403,7 +404,7 @@ void cpuinfo_x86_linux_init(void) {
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l2[l2_index - 1].processor_count += 1;
+				l2[l2_index].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -415,7 +416,7 @@ void cpuinfo_x86_linux_init(void) {
 			if (l3_id != last_l3_id) {
 				/* new cache */
 				last_l3_id = l3_id;
-				l3[l3_index++] = (struct cpuinfo_cache) {
+				l3[++l3_index] = (struct cpuinfo_cache) {
 					.size            = x86_processors[i].cache.l3.size,
 					.associativity   = x86_processors[i].cache.l3.associativity,
 					.sets            = x86_processors[i].cache.l3.sets,
@@ -427,7 +428,7 @@ void cpuinfo_x86_linux_init(void) {
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l3[l3_index - 1].processor_count += 1;
+				l3[l3_index].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
@@ -439,7 +440,7 @@ void cpuinfo_x86_linux_init(void) {
 			if (l4_id != last_l4_id) {
 				/* new cache */
 				last_l4_id = l4_id;
-				l4[l4_index++] = (struct cpuinfo_cache) {
+				l4[++l4_index] = (struct cpuinfo_cache) {
 					.size            = x86_processors[i].cache.l4.size,
 					.associativity   = x86_processors[i].cache.l4.associativity,
 					.sets            = x86_processors[i].cache.l4.sets,
@@ -451,13 +452,17 @@ void cpuinfo_x86_linux_init(void) {
 				};
 			} else {
 				/* another processor sharing the same cache */
-				l4[l4_index - 1].processor_count += 1;
+				l4[l4_index].processor_count += 1;
 			}
 		} else {
 			/* reset cache id */
 			last_l4_id = UINT32_MAX;
 		}
 	}
+
+	#ifdef __ANDROID__
+		cpuinfo_gpu_query_gles2(packages[0].gpu_name);
+	#endif
 
 	/* Commit changes */
 	cpuinfo_processors = processors;
