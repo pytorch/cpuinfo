@@ -45,7 +45,7 @@ LOCAL_SRC_FILES += \
 endif # x86 or x86_64
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/src
-LOCAL_CFLAGS := -std=gnu99 -Wall -Wno-maybe-uninitialized -D_GNU_SOURCE=1
+LOCAL_CFLAGS := -std=gnu99 -Wall -Wno-maybe-uninitialized -Wno-unknown-warning-option -D_GNU_SOURCE=1
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -94,7 +94,7 @@ LOCAL_SRC_FILES += \
 endif # x86 or x86_64
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/src
-LOCAL_CFLAGS := -std=gnu99 -Wall -Wno-maybe-uninitialized -D_GNU_SOURCE=1 -DCPUINFO_LOG_LEVEL=4 -DCPUINFO_MOCK=1
+LOCAL_CFLAGS := -std=gnu99 -Wall -Wno-maybe-uninitialized -Wno-unknown-warning-option -D_GNU_SOURCE=1 -DCPUINFO_LOG_LEVEL=4 -DCPUINFO_MOCK=1
 LOCAL_EXPORT_CFLAGS := -DCPUINFO_MOCK=1
 include $(BUILD_STATIC_LIBRARY)
 
@@ -118,6 +118,17 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/cache-info.c
 LOCAL_CFLAGS := -std=gnu99
 LOCAL_STATIC_LIBRARIES := cpuinfo
 include $(BUILD_EXECUTABLE)
+
+ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := cpuid-dump
+LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/cpuid-dump.c
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include $(LOCAL_PATH)/src
+LOCAL_CFLAGS := -std=gnu99
+include $(BUILD_EXECUTABLE)
+
+endif # x86, or x86_64
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := gtest

@@ -64,6 +64,10 @@ def main(args):
         build.executable("isa-info", build.cc("isa-info.c"))
         build.executable("cache-info", build.cc("cache-info.c"))
 
+    if build.target.is_x86_64:
+        with build.options(source_dir="tools", include_dirs=["src", "include"]):
+            build.executable("cpuid-dump", build.cc("cpuid-dump.c"))
+
     with build.options(source_dir="test", include_dirs="test", deps=[build, build.deps.googletest]):
         build.smoketest("init-test", build.cxx("init.cc"))
         if build.target.is_x86_64:
