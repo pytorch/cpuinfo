@@ -32,20 +32,37 @@ static int cmp_x86_processor_by_apic_id(const void* processor_a, const void* pro
 	}
 }
 
-static void cpuinfo_x86_count_caches(
+static void cpuinfo_x86_count_objects(
 	const struct cpuinfo_x86_processor* processors,
 	uint32_t processors_count,
+	uint32_t cores_count_ptr[restrict static 1],
+	uint32_t packages_count_ptr[restrict static 1],
 	uint32_t l1i_count_ptr[restrict static 1],
 	uint32_t l1d_count_ptr[restrict static 1],
 	uint32_t l2_count_ptr[restrict static 1],
 	uint32_t l3_count_ptr[restrict static 1],
 	uint32_t l4_count_ptr[restrict static 1])
 {
+	uint32_t cores_count = 0, packages_count = 0;
 	uint32_t l1i_count = 0, l1d_count = 0, l2_count = 0, l3_count = 0, l4_count = 0;
+	uint32_t last_core_id = UINT32_MAX, last_package_id = UINT32_MAX;
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
 	for (uint32_t i = 0; i < processors_count; i++) {
 		const uint32_t apic_id = processors[i].topology.apic_id;
+		const uint32_t core_id =
+			(apic_id >> processors[i].topology.core_bits_offset) & ~bit_mask(processors[i].topology.core_bits_length);
+		if (core_id != last_core_id) {
+			last_core_id = core_id;
+			cores_count++;
+		}
+		const uint32_t package_id = apic_id >>
+			max(processors[i].topology.core_bits_offset + processors[i].topology.core_bits_length,
+				processors[i].topology.thread_bits_offset + processors[i].topology.thread_bits_length);
+		if (package_id != last_package_id) {
+			last_package_id = package_id;
+			packages_count++;
+		}
 		if (processors[i].cache.l1i.size != 0) {
 			const uint32_t l1i_id = apic_id & ~bit_mask(processors[i].cache.l1i.apic_bits);
 			if (l1i_id != last_l1i_id) {
@@ -82,6 +99,8 @@ static void cpuinfo_x86_count_caches(
 			}
 		}
 	}
+	*cores_count_ptr = cores_count;
+	*packages_count_ptr = packages_count;
 	*l1i_count_ptr = l1i_count;
 	*l1d_count_ptr = l1d_count;
 	*l2_count_ptr  = l2_count;
@@ -100,6 +119,8 @@ static bool cpuinfo_x86_linux_cpulist_callback(uint32_t cpulist_start, uint32_t 
 void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_x86_processor* x86_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
+	struct cpuinfo_package* packages = NULL;
+	struct cpuinfo_core* cores = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
@@ -180,16 +201,31 @@ void cpuinfo_x86_linux_init(void) {
 		};
 	}
 
+	uint32_t packages_count = 0, cores_count = 0;
 	uint32_t l1i_count = 0, l1d_count = 0, l2_count = 0, l3_count = 0, l4_count = 0;
-	cpuinfo_x86_count_caches(x86_processors, processors_count,
-		&l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
+	cpuinfo_x86_count_objects(x86_processors, processors_count,
+		&packages_count, &cores_count, &l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
 
-	cpuinfo_log_info("detected %"PRIu32" L1I caches", l1i_count);
-	cpuinfo_log_info("detected %"PRIu32" L1D caches", l1d_count);
-	cpuinfo_log_info("detected %"PRIu32" L2 caches", l2_count);
-	cpuinfo_log_info("detected %"PRIu32" L3 caches", l3_count);
-	cpuinfo_log_info("detected %"PRIu32" L4 caches", l4_count);
+	cpuinfo_log_debug("detected %"PRIu32" cores caches", cores_count);
+	cpuinfo_log_debug("detected %"PRIu32" packages caches", packages_count);
+	cpuinfo_log_debug("detected %"PRIu32" L1I caches", l1i_count);
+	cpuinfo_log_debug("detected %"PRIu32" L1D caches", l1d_count);
+	cpuinfo_log_debug("detected %"PRIu32" L2 caches", l2_count);
+	cpuinfo_log_debug("detected %"PRIu32" L3 caches", l3_count);
+	cpuinfo_log_debug("detected %"PRIu32" L4 caches", l4_count);
 
+	cores = calloc(cores_count, sizeof(struct cpuinfo_core));
+	if (cores == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
+			cores_count * sizeof(struct cpuinfo_core), cores_count);
+		goto cleanup;
+	}
+	packages = calloc(packages_count, sizeof(struct cpuinfo_package));
+	if (packages == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
+			packages_count * sizeof(struct cpuinfo_package), packages_count);
+		goto cleanup;
+	}
 	if (l1i_count != 0) {
 		l1i = calloc(l1i_count, sizeof(struct cpuinfo_cache));
 		if (l1i == NULL) {
@@ -231,11 +267,76 @@ void cpuinfo_x86_linux_init(void) {
 		}
 	}
 
+	uint32_t core_index = 0, package_index = 0;
 	uint32_t l1i_index = 0, l1d_index = 0, l2_index = 0, l3_index = 0, l4_index = 0;
+	uint32_t last_core_id = UINT32_MAX, last_package_id = UINT32_MAX;
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
 	for (uint32_t i = 0; i < processors_count; i++) {
-		const uint32_t apic_id = processors[i].topology.apic_id;
+		const uint32_t apic_id = x86_processors[i].topology.apic_id;
+		const uint32_t core_id =
+			(apic_id >> x86_processors[i].topology.core_bits_offset) & ~bit_mask(x86_processors[i].topology.core_bits_length);
+		uint32_t new_core = 0;
+		if (core_id != last_core_id) {
+			/* new core */
+			new_core = 1;
+			cores[core_index++] = (struct cpuinfo_core) {
+				.processor_start = i,
+				.processor_count = 1,
+			};
+			last_core_id = core_id;
+		} else {
+			/* another logical processor on the same core */
+			cores[core_index - 1].processor_count++;
+		}
+
+		const uint32_t package_id = apic_id >>
+			max(x86_processors[i].topology.core_bits_offset + x86_processors[i].topology.core_bits_length,
+				x86_processors[i].topology.thread_bits_offset + x86_processors[i].topology.thread_bits_length);
+		if (package_id != last_package_id) {
+			/* new package */
+			packages[package_index++] = (struct cpuinfo_package) {
+				.processor_start = i,
+				.processor_count = 1,
+				.core_start = core_index - 1,
+				.core_count = 1,
+			};
+			const uint32_t brand_string_length = cpuinfo_x86_normalize_brand_string(x86_processors[i].brand_string);
+			memcpy(packages[package_index - 1].name, x86_processors[i].brand_string, brand_string_length);
+			if (brand_string_length < CPUINFO_PACKAGE_NAME_MAX) {
+				packages[package_index - 1].name[brand_string_length] = '\0';
+			}
+			last_package_id = package_id;
+		} else {
+			/* another logical processor on the same package */
+			packages[package_index - 1].processor_count++;
+			packages[package_index - 1].core_count += new_core;
+		}
+
+		if (x86_processors[i].cache.l1i.size != 0) {
+			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processors[i].cache.l1i.apic_bits);
+			processors[i].cache.l1i = &l1i[l1i_index];
+			if (l1i_id != last_l1i_id) {
+				/* new cache */
+				last_l1i_id = l1i_id;
+				l1i[l1i_index++] = (struct cpuinfo_cache) {
+					.size            = x86_processors[i].cache.l1i.size,
+					.associativity   = x86_processors[i].cache.l1i.associativity,
+					.sets            = x86_processors[i].cache.l1i.sets,
+					.partitions      = x86_processors[i].cache.l1i.partitions,
+					.line_size       = x86_processors[i].cache.l1i.line_size,
+					.flags           = x86_processors[i].cache.l1i.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else {
+				/* another processor sharing the same cache */
+				l1i[l1i_index - 1].processor_count += 1;
+			}
+		} else {
+			/* reset cache id */
+			last_l1i_id = UINT32_MAX;
+		}
 		if (x86_processors[i].cache.l1i.size != 0) {
 			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processors[i].cache.l1i.apic_bits);
 			processors[i].cache.l1i = &l1i[l1i_index];
@@ -360,6 +461,8 @@ void cpuinfo_x86_linux_init(void) {
 
 	/* Commit changes */
 	cpuinfo_processors = processors;
+	cpuinfo_cores = cores;
+	cpuinfo_packages = packages;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
@@ -367,6 +470,8 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache[cpuinfo_cache_level_4]  = l4;
 
 	cpuinfo_processors_count = processors_count;
+	cpuinfo_cores_count = cores_count;
+	cpuinfo_packages_count = packages_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
@@ -374,6 +479,8 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
 
 	processors = NULL;
+	cores = NULL;
+	packages = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
 
 cleanup:
@@ -384,6 +491,8 @@ cleanup:
 
 	free(x86_processors);
 	free(processors);
+	free(cores);
+	free(packages);
 	free(l1i);
 	free(l1d);
 	free(l2);

@@ -5,7 +5,7 @@
 
 
 struct cpuinfo_processor* cpuinfo_processors = NULL;
-struct cpuinfo_cores* cpuinfo_cores = NULL;
+struct cpuinfo_core* cpuinfo_cores = NULL;
 struct cpuinfo_package* cpuinfo_packages = NULL;
 
 uint32_t cpuinfo_processors_count = 0;

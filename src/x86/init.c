@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <string.h>
 
 #include <cpuinfo.h>
 #include <x86/cpuid.h>
@@ -63,5 +64,12 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor processor[restrict 
 			cpuinfo_isa = cpuinfo_x86_detect_isa(leaf1, leaf0x80000001,
 				max_base_index, max_extended_index, vendor, uarch);
 		#endif
+	}
+	if (max_extended_index >= UINT32_C(0x80000004)) {
+		struct cpuid_regs brand_string[3];
+		for (uint32_t i = 0; i < 3; i++) {
+			brand_string[i] = cpuid(UINT32_C(0x80000002) + i);
+		}
+		memcpy(processor->brand_string, brand_string, sizeof(processor->brand_string));
 	}
 }

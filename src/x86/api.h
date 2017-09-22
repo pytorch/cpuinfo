@@ -65,6 +65,7 @@ struct cpuinfo_x86_processor {
 		struct cpuinfo_tlb stlb2_1GB;
 	} tlb;
 	struct cpuinfo_x86_topology topology;
+	char brand_string[CPUINFO_PACKAGE_NAME_MAX];
 };
 
 void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor processor[restrict static 1]);
@@ -135,3 +136,5 @@ bool cpuinfo_x86_decode_deterministic_cache_parameters(
 bool cpuinfo_x86_decode_cache_properties(
 	struct cpuid_regs regs,
 	struct cpuinfo_x86_caches cache[restrict static 1]);
+
+uint32_t cpuinfo_x86_normalize_brand_string(char name[restrict static 48]);

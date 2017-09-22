@@ -647,7 +647,7 @@ struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l3_cache(void);
 struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l4_cache(void);
 
 extern struct cpuinfo_processor* cpuinfo_processors;
-extern struct cpuinfo_cores* cpuinfo_cores;
+extern struct cpuinfo_core* cpuinfo_cores;
 extern struct cpuinfo_package* cpuinfo_packages;
 
 extern uint32_t cpuinfo_processors_count;
