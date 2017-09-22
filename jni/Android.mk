@@ -119,6 +119,13 @@ LOCAL_CFLAGS := -std=gnu99
 LOCAL_STATIC_LIBRARIES := cpuinfo
 include $(BUILD_EXECUTABLE)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := size-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/size.c
+LOCAL_CFLAGS := -std=gnu99
+LOCAL_STATIC_LIBRARIES := cpuinfo
+include $(BUILD_EXECUTABLE)
+
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
 
 include $(CLEAR_VARS)
