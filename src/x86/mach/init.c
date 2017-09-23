@@ -21,6 +21,11 @@ void cpuinfo_x86_mach_init(void) {
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
 	struct cpuinfo_package* packages = NULL;
+	struct cpuinfo_cache* l1i = NULL;
+	struct cpuinfo_cache* l1d = NULL;
+	struct cpuinfo_cache* l2 = NULL;
+	struct cpuinfo_cache* l3 = NULL;
+	struct cpuinfo_cache* l4 = NULL;
 
 	struct cpuinfo_mach_topology mach_topology = cpuinfo_mach_detect_topology();
 	processors = calloc(mach_topology.threads, sizeof(struct cpuinfo_processor));
@@ -157,12 +162,6 @@ void cpuinfo_x86_mach_init(void) {
 		l4_count = mach_topology.threads / threads_per_l4;
 		cpuinfo_log_debug("detected %"PRIu32" L4 caches", l4_count);
 	}
-
-	struct cpuinfo_cache* l1i = NULL;
-	struct cpuinfo_cache* l1d = NULL;
-	struct cpuinfo_cache* l2 = NULL;
-	struct cpuinfo_cache* l3 = NULL;
-	struct cpuinfo_cache* l4 = NULL;
 
 	if (x86_processor.cache.l1i.size != 0) {
 		l1i = calloc(l1_count, sizeof(struct cpuinfo_cache));
@@ -308,9 +307,15 @@ void cpuinfo_x86_mach_init(void) {
 	processors = NULL;
 	cores = NULL;
 	packages = NULL;
+	l1i = l1d = l2 = l3 = l4 = NULL;
 
 cleanup:
 	free(processors);
 	free(cores);
 	free(packages);
+	free(l1i);
+	free(l1d);
+	free(l2);
+	free(l3);
+	free(l4);
 }
