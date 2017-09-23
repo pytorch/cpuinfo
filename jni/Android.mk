@@ -459,3 +459,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 endif # armeabi, armeabi-v7a, or arm64-v8a
+
+ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := brand-string-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/name/brand-string.cc
+LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
+include $(BUILD_EXECUTABLE)
+
+endif # x86, or x86_64
