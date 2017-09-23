@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <cpuinfo.h>
 #include <x86/api.h>
@@ -17,12 +18,28 @@ static inline uint32_t bit_mask(uint32_t bits) {
 }
 
 void cpuinfo_x86_mach_init(void) {
+	struct cpuinfo_processor* processors = NULL;
+	struct cpuinfo_core* cores = NULL;
+	struct cpuinfo_package* packages = NULL;
+
 	struct cpuinfo_mach_topology mach_topology = cpuinfo_mach_detect_topology();
-	struct cpuinfo_processor* processors = calloc(mach_topology.threads, sizeof(struct cpuinfo_processor));
+	processors = calloc(mach_topology.threads, sizeof(struct cpuinfo_processor));
 	if (processors == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" logical processors",
 			mach_topology.threads * sizeof(struct cpuinfo_processor), mach_topology.threads);
-		return;
+		goto cleanup;
+	}
+	cores = calloc(mach_topology.cores, sizeof(struct cpuinfo_core));
+	if (cores == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
+			mach_topology.cores * sizeof(struct cpuinfo_core), mach_topology.cores);
+		goto cleanup;
+	}
+	packages = calloc(mach_topology.packages, sizeof(struct cpuinfo_package));
+	if (packages == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" packages",
+			mach_topology.packages * sizeof(struct cpuinfo_package), mach_topology.packages);
+		goto cleanup;
 	}
 
 	struct cpuinfo_x86_processor x86_processor;
@@ -30,17 +47,37 @@ void cpuinfo_x86_mach_init(void) {
 
 	const uint32_t threads_per_core = mach_topology.threads / mach_topology.cores;
 	const uint32_t threads_per_package = mach_topology.threads / mach_topology.packages;
-	for (uint32_t t = 0; t < mach_topology.threads; t++) {
-		processors[t].vendor = x86_processor.vendor;
-		processors[t].uarch = x86_processor.uarch;
+	const uint32_t cores_per_package = mach_topology.packages / mach_topology.cores;
+	for (uint32_t i = 0; i < mach_topology.packages; i++) {
+		packages[i] = (struct cpuinfo_package) {
+			.processor_start = i * threads_per_package,
+			.processor_count = threads_per_package,
+			.core_start = i * cores_per_package,
+			.core_count = cores_per_package,
+		};
+		const uint32_t brand_string_length = cpuinfo_x86_normalize_brand_string(x86_processor.brand_string);
+		memcpy(packages[i].name, x86_processor.brand_string, brand_string_length);
+		if (brand_string_length < CPUINFO_PACKAGE_NAME_MAX) {
+			packages[i].name[brand_string_length] = '\0';
+		}
+	}
+	for (uint32_t i = 0; i < mach_topology.cores; i++) {
+		cores[i] = (struct cpuinfo_core) {
+			.processor_start = i * threads_per_core,
+			.processor_count = threads_per_core,
+		};
+	}
+	for (uint32_t i = 0; i < mach_topology.threads; i++) {
+		processors[i].vendor = x86_processor.vendor;
+		processors[i].uarch = x86_processor.uarch;
 
 		/* Reconstruct APIC IDs from topology components */
 		const uint32_t thread_bits_mask = bit_mask(x86_processor.topology.thread_bits_length);
 		const uint32_t core_bits_mask   = bit_mask(x86_processor.topology.core_bits_length);
 
-		const uint32_t smt_id = t % threads_per_core;
-		const uint32_t core_id = t / threads_per_core;
-		const uint32_t package_id = t / threads_per_package;
+		const uint32_t smt_id = i % threads_per_core;
+		const uint32_t core_id = i / threads_per_core;
+		const uint32_t package_id = i / threads_per_package;
 		const uint32_t package_bits_offset = max(
 			x86_processor.topology.thread_bits_offset + x86_processor.topology.thread_bits_length,
 			x86_processor.topology.core_bits_offset + x86_processor.topology.core_bits_length);
@@ -49,12 +86,12 @@ void cpuinfo_x86_mach_init(void) {
 			((smt_id & thread_bits_mask) << x86_processor.topology.thread_bits_offset) |
 			((core_id & core_bits_mask) << x86_processor.topology.core_bits_offset) |
 			(package_id << package_bits_offset);
-		processors[t].topology = (struct cpuinfo_topology) {
+		processors[i].topology = (struct cpuinfo_topology) {
 			.thread_id  = smt_id,
 			.core_id    = core_id,
 			.package_id = package_id
 		};
-		cpuinfo_log_info("reconstructed APIC ID 0x%08"PRIx32" for thread %"PRIu32, apic_id, t);
+		cpuinfo_log_debug("reconstructed APIC ID 0x%08"PRIx32" for thread %"PRIu32, apic_id, i);
 	}
 
 	uint32_t threads_per_l1 = 0, l1_count = 0;
@@ -255,6 +292,8 @@ void cpuinfo_x86_mach_init(void) {
 	cpuinfo_cache[cpuinfo_cache_level_4]  = l4;
 
 	cpuinfo_processors = processors;
+	cpuinfo_cores = cores;
+	cpuinfo_packages = packages;
 
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1_count;
@@ -263,4 +302,15 @@ void cpuinfo_x86_mach_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
 
 	cpuinfo_processors_count = mach_topology.threads;
+	cpuinfo_cores_count = mach_topology.cores;
+	cpuinfo_packages_count = mach_topology.packages;
+
+	processors = NULL;
+	cores = NULL;
+	packages = NULL;
+
+cleanup:
+	free(processors);
+	free(cores);
+	free(packages);
 }
