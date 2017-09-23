@@ -305,11 +305,7 @@ void cpuinfo_x86_linux_init(void) {
 				.core_start = core_index,
 				.core_count = 1,
 			};
-			const uint32_t brand_string_length = cpuinfo_x86_normalize_brand_string(x86_processors[i].brand_string);
-			memcpy(packages[package_index].name, x86_processors[i].brand_string, brand_string_length);
-			if (brand_string_length < CPUINFO_PACKAGE_NAME_MAX) {
-				packages[package_index].name[brand_string_length] = '\0';
-			}
+			cpuinfo_x86_normalize_brand_string(x86_processors[i].brand_string, packages[package_index].name);
 			last_package_id = package_id;
 		} else {
 			/* another logical processor on the same package */

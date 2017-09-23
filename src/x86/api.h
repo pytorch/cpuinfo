@@ -137,4 +137,6 @@ bool cpuinfo_x86_decode_cache_properties(
 	struct cpuid_regs regs,
 	struct cpuinfo_x86_caches cache[restrict static 1]);
 
-uint32_t cpuinfo_x86_normalize_brand_string(char name[restrict static 48]);
+uint32_t cpuinfo_x86_normalize_brand_string(
+	const char raw_name[restrict static 48],
+	char normalized_name[restrict static 48]);

@@ -5,14 +5,14 @@
 #include <cstring>
 
 
-extern "C" uint32_t cpuinfo_x86_normalize_brand_string(char* name);
+extern "C" uint32_t cpuinfo_x86_normalize_brand_string(
+	const char* raw_name, char* normalized_name);
 
 
 inline std::string normalize_brand_string(const char name[48]) {
-	char buffer[48] = { 0 };
-	memcpy(static_cast<void*>(buffer), static_cast<const void*>(name), 48);
-	const uint32_t normalized_length = cpuinfo_x86_normalize_brand_string(buffer);
-	return std::string(buffer, normalized_length);
+	char normalized_name[48];
+	cpuinfo_x86_normalize_brand_string(name, normalized_name);
+	return std::string(normalized_name);
 }
 
 TEST(BRAND_STRING, intel) {
@@ -280,6 +280,113 @@ TEST(BRAND_STRING, intel) {
 		normalize_brand_string("Intel(R) Xeon(R) CPU           X5667  @ 3.07GHz\0"));
 	EXPECT_EQ("Xeon X6550",
 		normalize_brand_string("Intel(R) Xeon(R) CPU           X6550  @ 2.00GHz\0"));
+}
+
+TEST(BRAND_STRING, intel_android) {
+	EXPECT_EQ("Atom N2600",
+		normalize_brand_string("Intel(R) Atom(TM) CPU N2600   @ 1.60GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Sofia3GR",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Sofia3GR\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z2420",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z2420  @ 1.20GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z2460",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z2460  @ 1.60GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z2480",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z2480  @ 2.00GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z2520",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z2520  @ 1.20GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z2560",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z2560  @ 1.60GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z2580",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z2580  @ 2.00GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3460",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3460  @ 1.06GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3480",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3480  @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3530",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z3530 @ 1.33GHz\0\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3530",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z3530  @ 1.33GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3530",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3530  @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3560",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3560  @ 1.00GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3560",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z3560  @ 1.83GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3560",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z3560 @ 1.83GHz\0\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3580",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3580  @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3580",
+		normalize_brand_string("Intel(R) Atom(TM) CPU Z3580  @ 2.33GHz\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3590",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3590  @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3735D",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3735D @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3735E",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3735E @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3735F",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3735F @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3735G",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3735G @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3736F",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3736F @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3736G",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3736G @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom Z3745",
+		normalize_brand_string("Intel(R) Atom(TM) CPU  Z3745  @ 1.33GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom x5-Z8300",
+		normalize_brand_string("Intel(R) Atom(TM) x5-Z8300  CPU @ 1.44GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom x5-Z8350",
+		normalize_brand_string("Intel(R) Atom(TM) x5-Z8350  CPU @ 1.44GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom x5-Z8500",
+		normalize_brand_string("Intel(R) Atom(TM) x5-Z8500  CPU @ 1.44GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom x5-Z8550",
+		normalize_brand_string("Intel(R) Atom(TM) x5-Z8550  CPU @ 1.44GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom x7-Z8700",
+		normalize_brand_string("Intel(R) Atom(TM) x7-Z8700  CPU @ 1.60GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Atom x7-Z8750",
+		normalize_brand_string("Intel(R) Atom(TM) x7-Z8750  CPU @ 1.60GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Celeron 847",
+		normalize_brand_string("Intel(R) Celeron(R) CPU 847 @ 1.10GHz\0\0\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Celeron N3060",
+		normalize_brand_string("Intel(R) Celeron(R) CPU  N3060  @ 1.60GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Celeron N3160",
+		normalize_brand_string("Intel(R) Celeron(R) CPU  N3160  @ 1.60GHz\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i3-2100",
+		normalize_brand_string("Intel(R) Core(TM) i3-2100 CPU @ 3.10GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i3-2120",
+		normalize_brand_string("Intel(R) Core(TM) i3-2120 CPU @ 3.30GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i3-3110M",
+		normalize_brand_string("Intel(R) Core(TM) i3-3110M CPU @ 2.40GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i3-3217U",
+		normalize_brand_string("Intel(R) Core(TM) i3-3217U CPU @ 1.80GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i3-3220",
+		normalize_brand_string("Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i3-4005U",
+		normalize_brand_string("Intel(R) Core(TM) i3-4005U CPU @ 1.70GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i3-5005U",
+		normalize_brand_string("Intel(R) Core(TM) i3-5005U CPU @ 2.00GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-2467M",
+		normalize_brand_string("Intel(R) Core(TM) i5-2467M CPU @ 1.60GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-3210M",
+		normalize_brand_string("Intel(R) Core(TM) i5-3210M CPU @ 2.50GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-3230M",
+		normalize_brand_string("Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-3470",
+		normalize_brand_string("Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-4210U",
+		normalize_brand_string("Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-4460",
+		normalize_brand_string("Intel(R) Core(TM) i5-4460  CPU @ 3.20GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-5200U",
+		normalize_brand_string("Intel(R) Core(TM) i5-5200U CPU @ 2.20GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-6200U",
+		normalize_brand_string("Intel(R) Core(TM) i5-6200U CPU @ 2.30GHz\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i5-6400",
+		normalize_brand_string("Intel(R) Core(TM) i5-6400 CPU @ 2.70GHz\0\0\0\0\0\0\0\0\0"));
+	EXPECT_EQ("Core i7-4790",
+		normalize_brand_string("Intel(R) Core(TM) i7-4790 CPU @ 3.60GHz\0\0\0\0\0\0\0\0\0"));
 }
 
 TEST(BRAND_STRING, amd) {

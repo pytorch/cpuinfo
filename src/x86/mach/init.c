@@ -60,11 +60,7 @@ void cpuinfo_x86_mach_init(void) {
 			.core_start = i * cores_per_package,
 			.core_count = cores_per_package,
 		};
-		const uint32_t brand_string_length = cpuinfo_x86_normalize_brand_string(x86_processor.brand_string);
-		memcpy(packages[i].name, x86_processor.brand_string, brand_string_length);
-		if (brand_string_length < CPUINFO_PACKAGE_NAME_MAX) {
-			packages[i].name[brand_string_length] = '\0';
-		}
+		cpuinfo_x86_normalize_brand_string(x86_processor.brand_string, packages[i].name);
 	}
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		cores[i] = (struct cpuinfo_core) {

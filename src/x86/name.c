@@ -520,8 +520,14 @@ static bool transform_token(char* token_start, char* token_end, struct parser_st
 	return true;
 }
 
-uint32_t cpuinfo_x86_normalize_brand_string(char name[restrict static 48])
+uint32_t cpuinfo_x86_normalize_brand_string(
+	const char raw_name[restrict static 48],
+	char normalized_name[restrict static 48])
 {
+	normalized_name[0] = '\0';
+	char name[48];
+	memcpy(name, raw_name, sizeof(name));
+
 	/*
 	 * First find the end of the string
 	 * Start search from the end because some brand strings contain zeroes in the middle
@@ -608,7 +614,7 @@ uint32_t cpuinfo_x86_normalize_brand_string(char name[restrict static 48])
 
 	/* Compact tokens: collapse multiple spacing into one */
 	{
-		char* output_ptr = name;
+		char* output_ptr = normalized_name;
 		char* token_start;
 		bool is_token = false;
 		bool previous_token_ends_with_dash = true;
@@ -643,8 +649,15 @@ uint32_t cpuinfo_x86_normalize_brand_string(char name[restrict static 48])
 			output_ptr = move_token(token_start, name_end, output_ptr);
 		}
 		if (parser_state.frequency_token && token_count <= 1) {
+			/* The only remaining part is frequency */
+			normalized_name[0] = '\0';
 			return 0;
 		}
-		return output_ptr - name;
+		if (output_ptr < &normalized_name[48]) {
+			*output_ptr = '\0';
+		} else {
+			normalized_name[47] = '\0';
+		}
+		return output_ptr - normalized_name;
 	}
 }
