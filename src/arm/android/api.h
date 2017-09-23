@@ -25,7 +25,7 @@ enum cpuinfo_android_chipset_property {
 	cpuinfo_android_chipset_property_max,
 };
 
-bool cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties properties[restrict static 1]);
+void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties properties[restrict static 1]);
 
 
 struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset(
