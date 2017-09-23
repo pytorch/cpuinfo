@@ -51,15 +51,16 @@ static void cpuinfo_x86_count_objects(
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
 	for (uint32_t i = 0; i < processors_count; i++) {
 		const uint32_t apic_id = processors[i].topology.apic_id;
-		const uint32_t core_id =
-			(apic_id >> processors[i].topology.core_bits_offset) & ~bit_mask(processors[i].topology.core_bits_length);
+		/* All bits of APIC ID except thread ID mask */
+		const uint32_t core_id = apic_id &
+			~(bit_mask(processors[i].topology.thread_bits_length) << processors[i].topology.thread_bits_offset);
 		if (core_id != last_core_id) {
 			last_core_id = core_id;
 			cores_count++;
 		}
-		const uint32_t package_id = apic_id >>
-			max(processors[i].topology.core_bits_offset + processors[i].topology.core_bits_length,
-				processors[i].topology.thread_bits_offset + processors[i].topology.thread_bits_length);
+		/* All bits of APIC ID except thread ID and core ID masks */
+		const uint32_t package_id = core_id &
+			~(bit_mask(processors[i].topology.core_bits_length) << processors[i].topology.core_bits_offset);
 		if (package_id != last_package_id) {
 			last_package_id = package_id;
 			packages_count++;
@@ -205,7 +206,7 @@ void cpuinfo_x86_linux_init(void) {
 	uint32_t packages_count = 0, cores_count = 0;
 	uint32_t l1i_count = 0, l1d_count = 0, l2_count = 0, l3_count = 0, l4_count = 0;
 	cpuinfo_x86_count_objects(x86_processors, processors_count,
-		&packages_count, &cores_count, &l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
+		&cores_count, &packages_count, &l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
 
 	cpuinfo_log_debug("detected %"PRIu32" cores caches", cores_count);
 	cpuinfo_log_debug("detected %"PRIu32" packages caches", packages_count);
@@ -275,8 +276,10 @@ void cpuinfo_x86_linux_init(void) {
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
 	for (uint32_t i = 0; i < processors_count; i++) {
 		const uint32_t apic_id = x86_processors[i].topology.apic_id;
-		const uint32_t core_id =
-			(apic_id >> x86_processors[i].topology.core_bits_offset) & ~bit_mask(x86_processors[i].topology.core_bits_length);
+
+		/* All bits of APIC ID except thread ID mask */
+		const uint32_t core_id = apic_id &
+			~(bit_mask(x86_processors[i].topology.thread_bits_length) << x86_processors[i].topology.thread_bits_offset);
 		uint32_t new_core = 0;
 		if (core_id != last_core_id) {
 			/* new core */
@@ -291,9 +294,9 @@ void cpuinfo_x86_linux_init(void) {
 			cores[core_index].processor_count++;
 		}
 
-		const uint32_t package_id = apic_id >>
-			max(x86_processors[i].topology.core_bits_offset + x86_processors[i].topology.core_bits_length,
-				x86_processors[i].topology.thread_bits_offset + x86_processors[i].topology.thread_bits_length);
+		/* All bits of APIC ID except thread ID and core ID masks */
+		const uint32_t package_id = core_id &
+			~(bit_mask(x86_processors[i].topology.core_bits_length) << x86_processors[i].topology.core_bits_offset);
 		if (package_id != last_package_id) {
 			/* new package */
 			packages[++package_index] = (struct cpuinfo_package) {
