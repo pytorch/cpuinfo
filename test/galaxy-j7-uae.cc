@@ -43,6 +43,22 @@ TEST(PROCESSORS, linux_id) {
 	}
 }
 
+TEST(CORES, count) {
+	ASSERT_EQ(8, cpuinfo_cores_count);
+}
+
+TEST(CORES, processor_start) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_EQ(i, cpuinfo_cores[i].processor_start);
+	}
+}
+
+TEST(CORES, processor_count) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_EQ(1, cpuinfo_cores[i].processor_count);
+	}
+}
+
 TEST(PACKAGES, count) {
 	ASSERT_EQ(1, cpuinfo_packages_count);
 }
