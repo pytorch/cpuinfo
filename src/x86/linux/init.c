@@ -119,6 +119,8 @@ static bool cpuinfo_x86_linux_cpulist_callback(uint32_t cpulist_start, uint32_t 
 }
 
 void cpuinfo_x86_linux_init(void) {
+	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
+	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
 	struct cpuinfo_x86_processor* x86_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_package* packages = NULL;
@@ -216,6 +218,20 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_log_debug("detected %"PRIu32" L3 caches", l3_count);
 	cpuinfo_log_debug("detected %"PRIu32" L4 caches", l4_count);
 
+	linux_cpu_to_processor_map = calloc(processors_count, sizeof(struct cpuinfo_processor*));
+	if (linux_cpu_to_processor_map == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for mapping entries of %"PRIu32" logical processors",
+			processors_count * sizeof(struct cpuinfo_processor*), processors_count);
+		goto cleanup;
+	}
+
+	linux_cpu_to_core_map = calloc(cores_count, sizeof(struct cpuinfo_core*));
+	if (linux_cpu_to_core_map == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for mapping entries of %"PRIu32" cores",
+			cores_count * sizeof(struct cpuinfo_core*), cores_count);
+		goto cleanup;
+	}
+
 	cores = calloc(cores_count, sizeof(struct cpuinfo_core));
 	if (cores == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
@@ -312,6 +328,9 @@ void cpuinfo_x86_linux_init(void) {
 			packages[package_index].processor_count++;
 			packages[package_index].core_count += new_core;
 		}
+
+		linux_cpu_to_processor_map[x86_processors[i].linux_id] = &processors[i];
+		linux_cpu_to_core_map[x86_processors[i].linux_id] = &cores[core_index];
 
 		if (x86_processors[i].cache.l1i.size != 0) {
 			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processors[i].cache.l1i.apic_bits);
@@ -464,6 +483,9 @@ void cpuinfo_x86_linux_init(void) {
 	#endif
 
 	/* Commit changes */
+	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
+	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
+
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
 	cpuinfo_packages = packages;
@@ -482,6 +504,8 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
 
+	linux_cpu_to_processor_map = NULL;
+	linux_cpu_to_core_map = NULL;
 	processors = NULL;
 	cores = NULL;
 	packages = NULL;
@@ -493,6 +517,8 @@ cleanup:
 			"sched_getaffinity failed: %s", strerror(errno));
 	}
 
+	free(linux_cpu_to_processor_map);
+	free(linux_cpu_to_core_map);
 	free(x86_processors);
 	free(processors);
 	free(cores);

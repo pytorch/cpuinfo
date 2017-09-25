@@ -47,3 +47,7 @@ bool cpuinfo_linux_detect_thread_siblings(
 	uint32_t processor,
 	cpuinfo_siblings_callback callback,
 	void* context);
+
+
+extern const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map;
+extern const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map;

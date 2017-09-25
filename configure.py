@@ -52,6 +52,7 @@ def main(args):
             sources += ["mach/topology.c"]
         if build.target.is_linux:
             sources += [
+                "linux/current.c",
                 "linux/cpulist.c",
                 "linux/processors.c",
             ]

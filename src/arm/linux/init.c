@@ -106,6 +106,8 @@ void cpuinfo_arm_linux_init(void) {
 	struct cpuinfo_arm_linux_processor* arm_linux_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
+	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
+	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
@@ -359,6 +361,20 @@ void cpuinfo_arm_linux_init(void) {
 		goto cleanup;
 	}
 
+	linux_cpu_to_processor_map = calloc(arm_linux_processors_count, sizeof(struct cpuinfo_processor*));
+	if (linux_cpu_to_processor_map == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" logical processor mapping entries",
+			arm_linux_processors_count * sizeof(struct cpuinfo_processor*), arm_linux_processors_count);
+		goto cleanup;
+	}
+
+	linux_cpu_to_core_map = calloc(arm_linux_processors_count, sizeof(struct cpuinfo_core*));
+	if (linux_cpu_to_core_map == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" core mapping entries",
+			arm_linux_processors_count * sizeof(struct cpuinfo_core*), arm_linux_processors_count);
+		goto cleanup;
+	}
+
 	l1i = calloc(usable_processors, sizeof(struct cpuinfo_cache));
 	if (l1i == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
@@ -397,6 +413,8 @@ void cpuinfo_arm_linux_init(void) {
 			.processor_start = i,
 			.processor_count = 1,
 		};
+		linux_cpu_to_processor_map[arm_linux_processors[i].system_processor_id] = &processors[i];
+		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
 		cpuinfo_arm_decode_cache(
 			processors[i].uarch,
 			arm_linux_processors[i].package_processor_count,
@@ -446,6 +464,8 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 	/* Commit */
+	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
+	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
 	cpuinfo_packages = &package;
@@ -459,6 +479,8 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 
+	linux_cpu_to_processor_map = NULL;
+	linux_cpu_to_core_map = NULL;
 	processors = NULL;
 	cores = NULL;
 	l1i = l1d = l2 = NULL;
@@ -469,6 +491,8 @@ void cpuinfo_arm_linux_init(void) {
 
 cleanup:
 	free(arm_linux_processors);
+	free(linux_cpu_to_processor_map);
+	free(linux_cpu_to_core_map);
 	free(processors);
 	free(cores);
 	free(l1i);
