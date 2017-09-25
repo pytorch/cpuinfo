@@ -105,6 +105,7 @@ static int cmp_arm_linux_processor(const void* ptr_a, const void* ptr_b) {
 void cpuinfo_arm_linux_init(void) {
 	struct cpuinfo_arm_linux_processor* arm_linux_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
+	struct cpuinfo_core* cores = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
@@ -333,24 +334,6 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
-	processors = calloc(usable_processors, sizeof(struct cpuinfo_processor));
-	if (processors == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" logical processors",
-			usable_processors * sizeof(struct cpuinfo_processor), usable_processors);
-		goto cleanup;
-	}
-
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		processors[i].vendor = arm_linux_processors[i].vendor;
-		processors[i].uarch = arm_linux_processors[i].uarch;
-		processors[i].linux_id = (int) arm_linux_processors[i].system_processor_id;
-		processors[i].topology = (struct cpuinfo_topology) {
-			.thread_id = 0,
-			.core_id = arm_linux_processors[i].system_processor_id,
-			.package_id = 0,
-		};
-	}
-
 	/*
 	 * Assumptions:
 	 * - No SMP (i.e. each core supports only one hardware thread).
@@ -361,6 +344,20 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_arm_chipset_to_string(&chipset, package.name);
 #endif
 	package.processor_count = package.core_count = usable_processors;
+
+	processors = calloc(usable_processors, sizeof(struct cpuinfo_processor));
+	if (processors == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" logical processors",
+			usable_processors * sizeof(struct cpuinfo_processor), usable_processors);
+		goto cleanup;
+	}
+
+	cores = calloc(usable_processors, sizeof(struct cpuinfo_core));
+	if (cores == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
+			usable_processors * sizeof(struct cpuinfo_core), usable_processors);
+		goto cleanup;
+	}
 
 	l1i = calloc(usable_processors, sizeof(struct cpuinfo_cache));
 	if (l1i == NULL) {
@@ -388,6 +385,18 @@ void cpuinfo_arm_linux_init(void) {
 	struct cpuinfo_cache shared_l2;	
 	uint32_t cluster_id = 0;
 	for (uint32_t i = 0; i < usable_processors; i++) {
+		processors[i].vendor = arm_linux_processors[i].vendor;
+		processors[i].uarch = arm_linux_processors[i].uarch;
+		processors[i].linux_id = (int) arm_linux_processors[i].system_processor_id;
+		processors[i].topology = (struct cpuinfo_topology) {
+			.thread_id = 0,
+			.core_id = arm_linux_processors[i].system_processor_id,
+			.package_id = 0,
+		};
+		cores[i] = (struct cpuinfo_core) {
+			.processor_start = i,
+			.processor_count = 1,
+		};
 		cpuinfo_arm_decode_cache(
 			processors[i].uarch,
 			arm_linux_processors[i].package_processor_count,
@@ -438,6 +447,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Commit */
 	cpuinfo_processors = processors;
+	cpuinfo_cores = cores;
 	cpuinfo_packages = &package;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
@@ -450,6 +460,7 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 
 	processors = NULL;
+	cores = NULL;
 	l1i = l1d = l2 = NULL;
 
 	#ifdef __ANDROID__
@@ -459,6 +470,7 @@ void cpuinfo_arm_linux_init(void) {
 cleanup:
 	free(arm_linux_processors);
 	free(processors);
+	free(cores);
 	free(l1i);
 	free(l1d);
 	free(l2);
