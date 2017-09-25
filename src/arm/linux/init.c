@@ -453,7 +453,7 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
 
-	cpuinfo_processors_count = usable_processors;
+	cpuinfo_processors_count = cpuinfo_cores_count = usable_processors;
 	cpuinfo_packages_count = 1;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = usable_processors;
