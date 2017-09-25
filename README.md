@@ -2,7 +2,7 @@
 
 cpuinfo is a library to detect essential for performance optimization information about host CPU.
 
-Exposed information:
+## Exposed information
 - [x] Processor (SoC) name
   - [x] Integrated GPU name (Android only)
 - [x] Microarchitecture
@@ -25,7 +25,7 @@ Exposed information:
   - [x] Cores
   - [x] Packages (sockets)
 
-Supported environments:
+## Supported environments:
 - [x] Android
   - [x] x86 ABI
   - [x] x86_64 ABI
@@ -39,7 +39,7 @@ Supported environments:
   - [x] x86-64
   - [x] 32-bit ARM (ARMv5T and later)
   - [x] ARM64
-  - [ ] PowerPC
+  - [ ] PowerPC64
 - [ ] iOS
   - [ ] ARMv7
   - [ ] ARM64
@@ -56,7 +56,7 @@ Supported environments:
 - [ ] Portable Native Client
 - [ ] Emscripten
 
-Planned features:
+## Features
 
 - Processor (SoC) name detection
   - [x] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
@@ -68,7 +68,7 @@ Planned features:
   - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen)
   - [ ] VIA-designed x86/x86-64 cores
   - [ ] Other x86 cores (DM&P, RDC, Transmeta, Cyrix, Rise)
-  - [x] ARM-designed ARM cores (up to Cortex-A17, Cortex-73)
+  - [x] ARM-designed ARM cores (up to Cortex-A17, Cortex-75)
   - [x] Qualcomm-designed ARM cores (up to Kryo and Kryo-280)
   - [x] nVidia-designed ARM cores (Denver)
   - [x] Samsung-designed ARM cores (Mongoose)
