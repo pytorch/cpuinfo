@@ -648,8 +648,8 @@ extern uint32_t cpuinfo_processors_count;
 extern uint32_t cpuinfo_cores_count;
 extern uint32_t cpuinfo_packages_count;
 
-const struct cpuinfo_processor* cpuinfo_current_processor(void);
-const struct cpuinfo_core* cpuinfo_current_core(void);
+const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_current_processor(void);
+const struct cpuinfo_core* CPUINFO_ABI cpuinfo_current_core(void);
 
 #ifdef __cplusplus
 } /* extern "C" */
