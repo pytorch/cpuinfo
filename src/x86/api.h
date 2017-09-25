@@ -33,6 +33,20 @@ struct cpuinfo_x86_caches {
 	uint32_t prefetch_size;
 };
 
+struct cpuinfo_x86_model_info {
+	uint32_t cpuid;
+
+	uint32_t model;
+	uint32_t family;
+
+	uint32_t base_model;
+	uint32_t base_family;
+	uint32_t stepping;
+	uint32_t extended_model;
+	uint32_t extended_family;
+	uint32_t processor_type;
+};
+
 struct cpuinfo_x86_topology {
 	uint32_t apic_id;
 	uint32_t thread_bits_offset;

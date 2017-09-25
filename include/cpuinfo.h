@@ -173,18 +173,6 @@
 		bool rdtscp;
 		bool rdpid;
 	};
-
-	struct cpuinfo_x86_model_info {
-		uint32_t model;
-		uint32_t family;
-
-		uint32_t base_model;
-		uint32_t base_family;
-		uint32_t stepping;
-		uint32_t extended_model;
-		uint32_t extended_family;
-		uint32_t processor_type;
-	};
 #endif
 
 #if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
@@ -224,13 +212,6 @@
 		bool sha2;
 		bool pmull;
 		bool crc32;
-	};
-
-	struct cpuinfo_arm_model_info {
-		uint16_t implementer;
-		uint16_t variant;
-		uint16_t part;
-		uint16_t revision;
 	};
 #endif
 

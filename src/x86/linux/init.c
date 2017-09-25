@@ -14,10 +14,6 @@
 #include <log.h>
 
 
-static inline uint32_t max(uint32_t a, uint32_t b) {
-	return a > b ? a : b;
-}
-
 static inline uint32_t bit_mask(uint32_t bits) {
 	return (UINT32_C(1) << bits) - UINT32_C(1);
 }
@@ -185,26 +181,6 @@ void cpuinfo_x86_linux_init(void) {
 		goto cleanup;
 	}
 
-	for (uint32_t i = 0; i < (uint32_t) processors_count; i++) {
-		processors[i].vendor   = x86_processors[i].vendor;
-		processors[i].uarch    = x86_processors[i].uarch;
-		processors[i].linux_id = x86_processors[i].linux_id;
-
-		/* Initialize topology information */
-		const uint32_t apic_id = x86_processors[i].topology.apic_id;
-		const uint32_t thread_mask = bit_mask(x86_processors[i].topology.thread_bits_length);
-		const uint32_t core_mask   = bit_mask(x86_processors[i].topology.core_bits_length);
-		const uint32_t package_offset = max(
-			x86_processors[i].topology.thread_bits_offset,
-			x86_processors[i].topology.core_bits_offset);
-		processors[i].topology = (struct cpuinfo_topology) {
-			.thread_id  = (apic_id >> x86_processors[i].topology.thread_bits_offset) & thread_mask,
-			.core_id    = (apic_id >> x86_processors[i].topology.core_bits_offset) & core_mask,
-			.package_id = apic_id >> package_offset,
-			.apic_id    = x86_processors[i].topology.apic_id,
-		};
-	}
-
 	uint32_t packages_count = 0, cores_count = 0;
 	uint32_t l1i_count = 0, l1d_count = 0, l2_count = 0, l3_count = 0, l4_count = 0;
 	cpuinfo_x86_count_objects(x86_processors, processors_count,
@@ -296,37 +272,52 @@ void cpuinfo_x86_linux_init(void) {
 		/* All bits of APIC ID except thread ID mask */
 		const uint32_t core_id = apic_id &
 			~(bit_mask(x86_processors[i].topology.thread_bits_length) << x86_processors[i].topology.thread_bits_offset);
-		uint32_t new_core = 0;
+		if (core_id != last_core_id) {
+			core_index++;
+		}
+		/* All bits of APIC ID except thread ID and core ID masks */
+		const uint32_t package_id = core_id &
+			~(bit_mask(x86_processors[i].topology.core_bits_length) << x86_processors[i].topology.core_bits_offset);
+		if (package_id != last_package_id) {
+			package_index++;
+		}
+
+		/* Initialize topology information */
+		const uint32_t thread_mask = bit_mask(x86_processors[i].topology.thread_bits_length);
+		processors[i].smt_id   = (apic_id >> x86_processors[i].topology.thread_bits_offset) & thread_mask;
+		processors[i].core     = cores + core_index;
+		processors[i].package  = packages + package_index;
+		processors[i].linux_id = x86_processors[i].linux_id;
+		processors[i].apic_id  = x86_processors[i].topology.apic_id;
+
 		if (core_id != last_core_id) {
 			/* new core */
-			new_core = 1;
-			cores[++core_index] = (struct cpuinfo_core) {
+			cores[core_index] = (struct cpuinfo_core) {
 				.processor_start = i,
 				.processor_count = 1,
+				.core_id = core_id,
+				.package = packages + package_index,
+				.vendor = x86_processors[i].vendor,
+				.uarch = x86_processors[i].uarch,
+				.cpuid = x86_processors[i].model_info.cpuid,
 			};
+			packages[package_index].core_count += 1;
 			last_core_id = core_id;
 		} else {
 			/* another logical processor on the same core */
 			cores[core_index].processor_count++;
 		}
 
-		/* All bits of APIC ID except thread ID and core ID masks */
-		const uint32_t package_id = core_id &
-			~(bit_mask(x86_processors[i].topology.core_bits_length) << x86_processors[i].topology.core_bits_offset);
 		if (package_id != last_package_id) {
 			/* new package */
-			packages[++package_index] = (struct cpuinfo_package) {
-				.processor_start = i,
-				.processor_count = 1,
-				.core_start = core_index,
-				.core_count = 1,
-			};
+			packages[package_index].processor_start = i;
+			packages[package_index].processor_count = 1;
+			packages[package_index].core_start = core_index;
 			cpuinfo_x86_normalize_brand_string(x86_processors[i].brand_string, packages[package_index].name);
 			last_package_id = package_id;
 		} else {
 			/* another logical processor on the same package */
 			packages[package_index].processor_count++;
-			packages[package_index].core_count += new_core;
 		}
 
 		linux_cpu_to_processor_map[x86_processors[i].linux_id] = &processors[i];
