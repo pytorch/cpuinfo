@@ -343,30 +343,7 @@ void cpuinfo_x86_linux_init(void) {
 				/* another processor sharing the same cache */
 				l1i[l1i_index].processor_count += 1;
 			}
-		} else {
-			/* reset cache id */
-			last_l1i_id = UINT32_MAX;
-		}
-		if (x86_processors[i].cache.l1i.size != 0) {
-			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processors[i].cache.l1i.apic_bits);
 			processors[i].cache.l1i = &l1i[l1i_index];
-			if (l1i_id != last_l1i_id) {
-				/* new cache */
-				last_l1i_id = l1i_id;
-				l1i[++l1i_index] = (struct cpuinfo_cache) {
-					.size            = x86_processors[i].cache.l1i.size,
-					.associativity   = x86_processors[i].cache.l1i.associativity,
-					.sets            = x86_processors[i].cache.l1i.sets,
-					.partitions      = x86_processors[i].cache.l1i.partitions,
-					.line_size       = x86_processors[i].cache.l1i.line_size,
-					.flags           = x86_processors[i].cache.l1i.flags,
-					.processor_start = i,
-					.processor_count = 1,
-				};
-			} else {
-				/* another processor sharing the same cache */
-				l1i[l1i_index].processor_count += 1;
-			}
 		} else {
 			/* reset cache id */
 			last_l1i_id = UINT32_MAX;
@@ -391,6 +368,7 @@ void cpuinfo_x86_linux_init(void) {
 				/* another processor sharing the same cache */
 				l1d[l1d_index].processor_count += 1;
 			}
+			processors[i].cache.l1d = &l1d[l1d_index];
 		} else {
 			/* reset cache id */
 			last_l1d_id = UINT32_MAX;
@@ -415,6 +393,7 @@ void cpuinfo_x86_linux_init(void) {
 				/* another processor sharing the same cache */
 				l2[l2_index].processor_count += 1;
 			}
+			processors[i].cache.l2 = &l2[l2_index];
 		} else {
 			/* reset cache id */
 			last_l2_id = UINT32_MAX;
@@ -439,6 +418,7 @@ void cpuinfo_x86_linux_init(void) {
 				/* another processor sharing the same cache */
 				l3[l3_index].processor_count += 1;
 			}
+			processors[i].cache.l3 = &l3[l3_index];
 		} else {
 			/* reset cache id */
 			last_l3_id = UINT32_MAX;
@@ -463,6 +443,7 @@ void cpuinfo_x86_linux_init(void) {
 				/* another processor sharing the same cache */
 				l4[l4_index].processor_count += 1;
 			}
+			processors[i].cache.l4 = &l4[l4_index];
 		} else {
 			/* reset cache id */
 			last_l4_id = UINT32_MAX;
