@@ -399,24 +399,32 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Populate cache infromation structures in l1i, l1d, and l2 */
 	struct cpuinfo_cache shared_l2;	
-	uint32_t cluster_id = 0;
+	uint32_t cluster_id = UINT32_MAX;
 	for (uint32_t i = 0; i < usable_processors; i++) {
-		processors[i].vendor = arm_linux_processors[i].vendor;
-		processors[i].uarch = arm_linux_processors[i].uarch;
+		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
+			cluster_id++;
+		}
+
+		processors[i].smt_id = 0;
+		processors[i].core = cores + i;
+		processors[i].package = &package;
 		processors[i].linux_id = (int) arm_linux_processors[i].system_processor_id;
-		processors[i].topology = (struct cpuinfo_topology) {
-			.thread_id = 0,
-			.core_id = arm_linux_processors[i].system_processor_id,
-			.package_id = 0,
-		};
-		cores[i] = (struct cpuinfo_core) {
-			.processor_start = i,
-			.processor_count = 1,
-		};
+		processors[i].cache.l1i = l1i + i;
+		processors[i].cache.l1d = l1d + i;
+		processors[i].cache.l2 = l2 + cluster_id;
 		linux_cpu_to_processor_map[arm_linux_processors[i].system_processor_id] = &processors[i];
+
+		cores[i].processor_start = i;
+		cores[i].processor_count = 1;
+		cores[i].core_id = i;
+		cores[i].package = &package;
+		cores[i].vendor = arm_linux_processors[i].vendor;
+		cores[i].uarch = arm_linux_processors[i].uarch;
+		cores[i].midr = arm_linux_processors[i].midr;
 		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
+
 		cpuinfo_arm_decode_cache(
-			processors[i].uarch,
+			arm_linux_processors[i].uarch,
 			arm_linux_processors[i].package_processor_count,
 			arm_linux_processors[i].midr,
 #if defined(__ANDROID__)
@@ -452,7 +460,7 @@ void cpuinfo_arm_linux_init(void) {
 		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 			shared_l2.processor_start = i;
 			shared_l2.processor_count = arm_linux_processors[i].package_processor_count;
-			l2[cluster_id++] = shared_l2;
+			l2[cluster_id] = shared_l2;
 		}
 	}
 

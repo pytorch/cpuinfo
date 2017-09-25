@@ -6,7 +6,7 @@
 
 
 static const char* vendor_to_string(enum cpuinfo_vendor vendor) {
-	switch (cpuinfo_processors[0].vendor) {
+	switch (vendor) {
 		case cpuinfo_vendor_unknown:
 			return "unknown";
 		case cpuinfo_vendor_intel:
@@ -192,16 +192,29 @@ int main(int argc, char** argv) {
 			printf("\t%"PRIu32": %s\n", i, cpuinfo_packages[i].name);
 		}
 	#endif
+	printf("Cores:\n");
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		if (cpuinfo_cores[i].processor_count == 1) {
+			printf("\t%"PRIu32": 1 processor (%"PRIu32")\n",
+				i, cpuinfo_cores[i].processor_start);
+		} else {
+			printf("\t%"PRIu32": %"PRIu32" processors (%"PRIu32"-%"PRIu32")\n",
+				i,
+				cpuinfo_cores[i].processor_count,
+				cpuinfo_cores[i].processor_start,
+				cpuinfo_cores[i].processor_start + cpuinfo_cores[i].processor_count - 1);
+		}
+	}
 	printf("Logical processors:\n");
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		const char* vendor_string = vendor_to_string(cpuinfo_processors[i].vendor);
-		const char* uarch_string = uarch_to_string(cpuinfo_processors[i].uarch);
+		const char* vendor_string = vendor_to_string(cpuinfo_processors[i].core->vendor);
+		const char* uarch_string = uarch_to_string(cpuinfo_processors[i].core->uarch);
 		if (vendor_string == NULL) {
 			printf("\t%"PRIu32": vendor 0x%08"PRIx32" uarch 0x%08"PRIx32"\n",
-				i, (uint32_t) cpuinfo_processors[i].vendor, (uint32_t) cpuinfo_processors[i].uarch);
+				i, (uint32_t) cpuinfo_processors[i].core->vendor, (uint32_t) cpuinfo_processors[i].core->uarch);
 		} else if (uarch_string == NULL) {
 			printf("\t%"PRIu32": %s uarch 0x%08"PRIx32"\n",
-				i, vendor_string, (uint32_t) cpuinfo_processors[i].uarch);
+				i, vendor_string, (uint32_t) cpuinfo_processors[i].core->uarch);
 		} else {
 			printf("\t%"PRIu32": %s %s\n", i, vendor_string, uarch_string);
 		}

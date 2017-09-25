@@ -573,27 +573,26 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_pj4 = 0x00900100,
 };
 
-struct cpuinfo_topology {
-	/** Thread (hyperthread, or SMT) ID within a core */
-	uint32_t thread_id;
-	/** Core ID within a package */
-	uint32_t core_id;
-	/* Package (socket) ID */
-	uint32_t package_id;
-	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
-		uint32_t apic_id;
-	#endif
-};
-
 struct cpuinfo_processor {
-	enum cpuinfo_vendor vendor;
-	enum cpuinfo_uarch uarch;
+	/** SMT (hyperthread) ID within a core */
+	uint32_t smt_id;
+	/** Core containing this logical processor */
+	const struct cpuinfo_core* core;
+	/** Physical package containing this logical processor */
+	const struct cpuinfo_package* package;
 #if defined(__linux__)
+	/**
+	 * Linux-specific ID for the logical processor:
+	 * - Linux kernel exposes information about this logical processor in /sys/devices/system/cpu/cpu<linux_id>/
+	 * - Bit <linux_id> in the cpu_set_t identifies this logical processor
+	 */
 	int linux_id;
 #endif
-	struct cpuinfo_topology topology;
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	/** APIC ID (unique x86-specific ID of the logical processor) */
+	uint32_t apic_id;
+#endif
 	struct {
-		const struct cpuinfo_trace_cache* trace;
 		const struct cpuinfo_cache* l1i;
 		const struct cpuinfo_cache* l1d;
 		const struct cpuinfo_cache* l2;
@@ -603,8 +602,25 @@ struct cpuinfo_processor {
 };
 
 struct cpuinfo_core {
+	/** Index of the first logical processor on this core */
 	uint32_t processor_start;
+	/** Number of logical processors on this core */
 	uint32_t processor_count;
+	/** Core ID within a package */
+	uint32_t core_id;
+	/** Physical package containing this core */
+	const struct cpuinfo_package* package;
+	/** Vendor of the CPU microarchitecture for this core */
+	enum cpuinfo_vendor vendor;
+	/** CPU microarchitecture for this core */
+	enum cpuinfo_uarch uarch;
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	/** Value of CPUID leaf 1 EAX register for this core */
+	uint32_t cpuid;
+#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+	/** Value of Main ID Register (MIDR) for this core */
+	uint32_t midr;
+#endif
 };
 
 #define CPUINFO_PACKAGE_NAME_MAX 48
@@ -619,9 +635,6 @@ struct cpuinfo_package {
 	uint32_t processor_count;
 	uint32_t core_start;
 	uint32_t core_count;
-	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
-		struct cpuinfo_x86_model_info model_info;
-	#endif
 };
 
 #ifdef __cplusplus

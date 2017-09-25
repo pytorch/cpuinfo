@@ -11,15 +11,23 @@ TEST(PROCESSORS, non_null) {
 	ASSERT_TRUE(cpuinfo_processors);
 }
 
-TEST(PROCESSORS, known_vendor) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_NE(cpuinfo_vendor_unknown, cpuinfo_processors[i].vendor);
+TEST(CORES_COUNT, non_zero) {
+	ASSERT_NE(0, cpuinfo_cores_count);
+}
+
+TEST(CORES, non_null) {
+	ASSERT_TRUE(cpuinfo_cores);
+}
+
+TEST(CORES, known_vendor) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_NE(cpuinfo_vendor_unknown, cpuinfo_cores[i].vendor);
 	}
 }
 
-TEST(PROCESSORS, known_uarch) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_NE(cpuinfo_uarch_unknown, cpuinfo_processors[i].uarch);
+TEST(CORES, known_uarch) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_NE(cpuinfo_uarch_unknown, cpuinfo_cores[i].uarch);
 	}
 }
 

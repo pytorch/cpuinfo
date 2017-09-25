@@ -12,15 +12,21 @@ TEST(PROCESSORS, non_null) {
 	ASSERT_TRUE(cpuinfo_processors);
 }
 
-TEST(PROCESSORS, vendor) {
+TEST(PROCESSORS, smt_id) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(cpuinfo_vendor_arm, cpuinfo_processors[i].vendor);
+		ASSERT_EQ(0, cpuinfo_processors[i].smt_id);
 	}
 }
 
-TEST(PROCESSORS, uarch) {
+TEST(PROCESSORS, core) {
 	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(cpuinfo_uarch_cortex_a5, cpuinfo_processors[i].uarch);
+		ASSERT_EQ(&cpuinfo_cores[i], cpuinfo_processors[i].core);
+	}
+}
+
+TEST(PROCESSORS, package) {
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		ASSERT_EQ(&cpuinfo_packages[0], cpuinfo_processors[i].package);
 	}
 }
 
@@ -30,8 +36,42 @@ TEST(PROCESSORS, linux_id) {
 	}
 }
 
+TEST(PROCESSORS, l1i) {
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		ASSERT_EQ(&cpuinfo_get_l1i_cache().instances[i], cpuinfo_processors[i].cache.l1i);
+	}
+}
+
+TEST(PROCESSORS, l1d) {
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		ASSERT_EQ(&cpuinfo_get_l1d_cache().instances[i], cpuinfo_processors[i].cache.l1d);
+	}
+}
+
+TEST(PROCESSORS, l2) {
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		ASSERT_EQ(&cpuinfo_get_l2_cache().instances[0], cpuinfo_processors[i].cache.l2);
+	}
+}
+
+TEST(PROCESSORS, l3) {
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		ASSERT_FALSE(cpuinfo_processors[i].cache.l3);
+	}
+}
+
+TEST(PROCESSORS, l4) {
+	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
+		ASSERT_FALSE(cpuinfo_processors[i].cache.l4);
+	}
+}
+
 TEST(CORES, count) {
 	ASSERT_EQ(4, cpuinfo_cores_count);
+}
+
+TEST(CORES, non_null) {
+	ASSERT_TRUE(cpuinfo_cores);
 }
 
 TEST(CORES, processor_start) {
@@ -43,6 +83,36 @@ TEST(CORES, processor_start) {
 TEST(CORES, processor_count) {
 	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
 		ASSERT_EQ(1, cpuinfo_cores[i].processor_count);
+	}
+}
+
+TEST(CORES, core_id) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_EQ(i, cpuinfo_cores[i].core_id);
+	}
+}
+
+TEST(CORES, package) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_EQ(&cpuinfo_packages[0], cpuinfo_cores[i].package);
+	}
+}
+
+TEST(CORES, vendor) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_EQ(cpuinfo_vendor_arm, cpuinfo_cores[i].vendor);
+	}
+}
+
+TEST(CORES, uarch) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_EQ(cpuinfo_uarch_cortex_a5, cpuinfo_cores[i].uarch);
+	}
+}
+
+TEST(CORES, midr) {
+	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
+		ASSERT_EQ(UINT32_C(0x410FC051), cpuinfo_cores[i].midr);
 	}
 }
 
