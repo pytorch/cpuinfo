@@ -574,10 +574,15 @@ struct cpuinfo_processor {
 	uint32_t apic_id;
 #endif
 	struct {
+		/** Level 1 instruction cache */
 		const struct cpuinfo_cache* l1i;
+		/** Level 1 data cache */
 		const struct cpuinfo_cache* l1d;
+		/** Level 2 unified or data cache */
 		const struct cpuinfo_cache* l2;
+		/** Level 3 unified or data cache */
 		const struct cpuinfo_cache* l3;
+		/** Level 4 unified or data cache */
 		const struct cpuinfo_cache* l4;
 	} cache;
 };
@@ -608,13 +613,19 @@ struct cpuinfo_core {
 #define CPUINFO_GPU_NAME_MAX 64
 
 struct cpuinfo_package {
+	/** SoC or processor chip model name */
 	char name[CPUINFO_PACKAGE_NAME_MAX];
-	#ifdef __ANDROID__
-		char gpu_name[CPUINFO_GPU_NAME_MAX];
-	#endif
+#ifdef __ANDROID__
+	/** Integrated GPU model name */
+	char gpu_name[CPUINFO_GPU_NAME_MAX];
+#endif
+	/** Index of the first logical processor on this physical package */
 	uint32_t processor_start;
+	/** Number of logical processors on this physical package */
 	uint32_t processor_count;
+	/** Index of the first core on this physical package */
 	uint32_t core_start;
+	/** Number of cores on this physical package */
 	uint32_t core_count;
 };
 
