@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
 				}
 				break;
 			default:
-				print_cpuid(cpuid(eax), eax);
+				print_cpuid(cpuidex(eax, 0), eax);
 				break;
 		}
 	}
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
 				print_cpuid_brand_string(cpuid(eax), eax);
 				break;
 			default:
-				print_cpuid(cpuid(eax), eax);
+				print_cpuid(cpuidex(eax, 0), eax);
 		}
 	}
 }
