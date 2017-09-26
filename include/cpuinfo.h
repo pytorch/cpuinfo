@@ -780,6 +780,20 @@ static inline bool cpuinfo_has_x86_daz(void) {
 	#endif
 }
 
+static inline bool cpuinfo_has_x86_sse(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.sse;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
 static inline bool cpuinfo_has_x86_sse2(void) {
 	#if CPUINFO_ARCH_X86_64
 		return true;
