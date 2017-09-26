@@ -7,38 +7,63 @@
 	#include <intrin.h>
 #endif
 
+#if CPUINFO_MOCK
+	#include <cpuinfo-mock.h>
+#endif
 #include <x86/api.h>
 
 
 #if defined(__GNUC__) || defined(_MSC_VER)
 	static inline struct cpuid_regs cpuid(uint32_t eax) {
-		struct cpuid_regs regs;
-		#if defined(__GNUC__)
-			__cpuid(eax, regs.eax, regs.ebx, regs.ecx, regs.edx);
+		#if CPUINFO_MOCK
+			uint32_t regs_array[4];
+			cpuinfo_mock_get_cpuid(eax, regs_array);
+			return (struct cpuid_regs) {
+				.eax = regs_array[0],
+				.ebx = regs_array[1],
+				.ecx = regs_array[2],
+				.edx = regs_array[3],
+			};
 		#else
-			int regs_array[4];
-			__cpuid(regs_array, (int) eax);
-			regs.eax = regs_array[0];
-			regs.ebx = regs_array[1];
-			regs.ecx = regs_array[2];
-			regs.edx = regs_array[3];
+			struct cpuid_regs regs;
+			#if defined(__GNUC__)
+				__cpuid(eax, regs.eax, regs.ebx, regs.ecx, regs.edx);
+			#else
+				int regs_array[4];
+				__cpuid(regs_array, (int) eax);
+				regs.eax = regs_array[0];
+				regs.ebx = regs_array[1];
+				regs.ecx = regs_array[2];
+				regs.edx = regs_array[3];
+			#endif
+			return regs;
 		#endif
-		return regs;
 	}
 
 	static inline struct cpuid_regs cpuidex(uint32_t eax, uint32_t ecx) {
-		struct cpuid_regs regs;
-		#if defined(__GNUC__)
-			__cpuid_count(eax, ecx, regs.eax, regs.ebx, regs.ecx, regs.edx);
+		#if CPUINFO_MOCK
+			uint32_t regs_array[4];
+			cpuinfo_mock_get_cpuidex(eax, ecx, regs_array);
+			return (struct cpuid_regs) {
+				.eax = regs_array[0],
+				.ebx = regs_array[1],
+				.ecx = regs_array[2],
+				.edx = regs_array[3],
+			};
 		#else
-			int regs_array[4];
-			__cpuidex(regs_array, (int) eax, (int) ecx);
-			regs.eax = regs_array[0];
-			regs.ebx = regs_array[1];
-			regs.ecx = regs_array[2];
-			regs.edx = regs_array[3];
+			struct cpuid_regs regs;
+			#if defined(__GNUC__)
+				__cpuid_count(eax, ecx, regs.eax, regs.ebx, regs.ecx, regs.edx);
+			#else
+				int regs_array[4];
+				__cpuidex(regs_array, (int) eax, (int) ecx);
+				regs.eax = regs_array[0];
+				regs.ebx = regs_array[1];
+				regs.ecx = regs_array[2];
+				regs.edx = regs_array[3];
+			#endif
+			return regs;
 		#endif
-		return regs;
 	}
 #endif
 

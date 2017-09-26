@@ -92,6 +92,7 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/x86/vendor.c \
 	$(LOCAL_PATH)/src/x86/uarch.c \
 	$(LOCAL_PATH)/src/x86/topology.c \
+	$(LOCAL_PATH)/src/x86/mockcpuid.c \
 	$(LOCAL_PATH)/src/x86/cache/init.c \
 	$(LOCAL_PATH)/src/x86/cache/descriptor.c \
 	$(LOCAL_PATH)/src/x86/cache/deterministic.c \

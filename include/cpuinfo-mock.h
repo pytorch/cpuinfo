@@ -7,7 +7,6 @@
 	#include <sys/types.h>
 #endif
 
-
 #if !defined(CPUINFO_MOCK) || !(CPUINFO_MOCK)
 	#error This header is intended only for test use
 #endif
@@ -22,6 +21,21 @@ extern "C" {
 	void CPUINFO_ABI cpuinfo_set_fpsid(uint32_t fpsid);
 	void CPUINFO_ABI cpuinfo_set_wcid(uint32_t wcid);
 #endif /* CPUINFO_ARCH_ARM */
+
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	struct cpuinfo_mock_cpuid {
+		uint32_t input_eax;
+		uint32_t input_ecx;
+		uint32_t eax;
+		uint32_t ebx;
+		uint32_t ecx;
+		uint32_t edx;
+	};
+
+	void CPUINFO_ABI cpuinfo_mock_set_cpuid(struct cpuinfo_mock_cpuid* dump, size_t entries);
+	void CPUINFO_ABI cpuinfo_mock_get_cpuid(uint32_t eax, uint32_t regs[4]);
+	void CPUINFO_ABI cpuinfo_mock_get_cpuidex(uint32_t eax, uint32_t ecx, uint32_t regs[4]);
+#endif /* CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64 */
 
 struct cpuinfo_mock_file {
 	const char* path;
