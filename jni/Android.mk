@@ -473,6 +473,10 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/test/name/brand-string.cc
 LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
 include $(BUILD_EXECUTABLE)
 
+endif # x86, or x86_64
+
+ifeq ($(TARGET_ARCH_ABI),x86)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := memo-pad-7-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/memo-pad-7.cc
@@ -487,4 +491,4 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
-endif # x86, or x86_64
+endif # x86
