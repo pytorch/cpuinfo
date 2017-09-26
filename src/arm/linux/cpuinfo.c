@@ -787,6 +787,8 @@ static bool parse_line(
 						"length of Hardware value \"%.*s\" in /proc/cpuinfo exceeds limit (%d): truncating to the limit",
 						(int) value_length, value_start, CPUINFO_HARDWARE_VALUE_MAX);
 					value_length = CPUINFO_HARDWARE_VALUE_MAX;
+				} else {
+					state->hardware[value_length] = '\0';
 				}
 				memcpy(state->hardware, value_start, value_length);
 				cpuinfo_log_debug("parsed /proc/cpuinfo Hardware = \"%.*s\"", (int) value_length, value_start);
