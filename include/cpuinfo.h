@@ -760,7 +760,7 @@ static inline bool cpuinfo_has_x86_prefetchw(void) {
 
 static inline bool cpuinfo_has_x86_prefetchwt1(void) {
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
-		return cpuinfo_isa.prefetchw;
+		return cpuinfo_isa.prefetchwt1;
 	#else
 		return false;
 	#endif
@@ -1089,7 +1089,7 @@ static inline bool cpuinfo_has_x86_clwb(void) {
 }
 
 static inline bool cpuinfo_has_x86_movbe(void) {
-	#if CPUINFO_ARCH_X86_64
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		return cpuinfo_isa.movbe;
 	#else
 		return false;
@@ -1357,7 +1357,7 @@ static inline bool cpuinfo_has_arm_vfpv3_fp16_d32(void) {
 	#endif
 }
 
-static inline bool cpuinfo_has_arm_vfpv4_fp16(void) {
+static inline bool cpuinfo_has_arm_vfpv4(void) {
 	#if CPUINFO_ARCH_ARM64
 		return true;
 	#elif CPUINFO_ARCH_ARM
@@ -1367,7 +1367,7 @@ static inline bool cpuinfo_has_arm_vfpv4_fp16(void) {
 	#endif
 }
 
-static inline bool cpuinfo_has_arm_vfpv4_fp16_d32(void) {
+static inline bool cpuinfo_has_arm_vfpv4_d32(void) {
 	#if CPUINFO_ARCH_ARM64
 		return true;
 	#elif CPUINFO_ARCH_ARM
