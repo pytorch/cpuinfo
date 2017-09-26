@@ -1020,6 +1020,38 @@ static inline bool cpuinfo_has_x86_avx512_4fmaps(void) {
 	#endif
 }
 
+static inline bool cpuinfo_has_x86_hle(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.hle;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_rtm(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.rtm;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_xtest(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.xtest;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_mpx(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.mpx;
+	#else
+		return false;
+	#endif
+}
+
 static inline bool cpuinfo_has_x86_cmov(void) {
 	#if CPUINFO_ARCH_X86_64
 		return true;

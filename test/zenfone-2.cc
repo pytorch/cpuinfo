@@ -153,311 +153,247 @@ TEST(PACKAGES, core_count) {
 }
 
 TEST(ISA, rdtsc) {
-	ASSERT_TRUE(cpuinfo_isa.rdtsc);
-}
-
-TEST(ISA, sysenter) {
-	ASSERT_TRUE(cpuinfo_isa.sysenter);
-}
-
-TEST(ISA, syscall) {
-	ASSERT_FALSE(cpuinfo_isa.syscall);
-}
-
-TEST(ISA, msr) {
-	ASSERT_TRUE(cpuinfo_isa.msr);
-}
-
-TEST(ISA, clzero) {
-	ASSERT_FALSE(cpuinfo_isa.clzero);
-}
-
-TEST(ISA, clflush) {
-	ASSERT_TRUE(cpuinfo_isa.clflush);
-}
-
-TEST(ISA, clflushopt) {
-	ASSERT_FALSE(cpuinfo_isa.clflushopt);
-}
-
-TEST(ISA, mwait) {
-	ASSERT_TRUE(cpuinfo_isa.mwait);
-}
-
-TEST(ISA, mwaitx) {
-	ASSERT_FALSE(cpuinfo_isa.mwaitx);
-}
-
-TEST(ISA, emmx) {
-	ASSERT_FALSE(cpuinfo_isa.emmx);
-}
-
-TEST(ISA, fxsave) {
-	ASSERT_TRUE(cpuinfo_isa.fxsave);
-}
-
-TEST(ISA, xsave) {
-	ASSERT_FALSE(cpuinfo_isa.xsave);
-}
-
-TEST(ISA, fpu) {
-	ASSERT_TRUE(cpuinfo_isa.fpu);
-}
-
-TEST(ISA, mmx) {
-	ASSERT_TRUE(cpuinfo_isa.mmx);
-}
-
-TEST(ISA, mmx_plus) {
-	ASSERT_TRUE(cpuinfo_isa.mmx_plus);
-}
-
-TEST(ISA, three_d_now) {
-	ASSERT_FALSE(cpuinfo_isa.three_d_now);
-}
-
-TEST(ISA, three_d_now_plus) {
-	ASSERT_FALSE(cpuinfo_isa.three_d_now_plus);
-}
-
-TEST(ISA, three_d_now_geode) {
-	ASSERT_FALSE(cpuinfo_isa.three_d_now_geode);
-}
-
-TEST(ISA, prefetch) {
-	ASSERT_FALSE(cpuinfo_isa.prefetch);
-}
-
-TEST(ISA, prefetchw) {
-	ASSERT_TRUE(cpuinfo_isa.prefetchw);
-}
-
-TEST(ISA, prefetchwt1) {
-	ASSERT_FALSE(cpuinfo_isa.prefetchwt1);
-}
-
-TEST(ISA, daz) {
-	ASSERT_TRUE(cpuinfo_isa.daz);
-}
-
-TEST(ISA, sse) {
-	ASSERT_TRUE(cpuinfo_isa.sse);
-}
-
-TEST(ISA, sse2) {
-	ASSERT_TRUE(cpuinfo_isa.sse2);
-}
-
-TEST(ISA, sse3) {
-	ASSERT_TRUE(cpuinfo_isa.sse3);
-}
-
-TEST(ISA, ssse3) {
-	ASSERT_TRUE(cpuinfo_isa.ssse3);
-}
-
-TEST(ISA, sse4_1) {
-	ASSERT_TRUE(cpuinfo_isa.sse4_1);
-}
-
-TEST(ISA, sse4_2) {
-	ASSERT_TRUE(cpuinfo_isa.sse4_2);
-}
-
-TEST(ISA, sse4a) {
-	ASSERT_FALSE(cpuinfo_isa.sse4a);
-}
-
-TEST(ISA, misaligned_sse) {
-	ASSERT_FALSE(cpuinfo_isa.misaligned_sse);
-}
-
-TEST(ISA, avx) {
-	ASSERT_FALSE(cpuinfo_isa.avx);
-}
-
-TEST(ISA, fma3) {
-	ASSERT_FALSE(cpuinfo_isa.fma3);
-}
-
-TEST(ISA, fma4) {
-	ASSERT_FALSE(cpuinfo_isa.fma4);
-}
-
-TEST(ISA, xop) {
-	ASSERT_FALSE(cpuinfo_isa.xop);
-}
-
-TEST(ISA, f16c) {
-	ASSERT_FALSE(cpuinfo_isa.f16c);
-}
-
-TEST(ISA, avx2) {
-	ASSERT_FALSE(cpuinfo_isa.avx2);
-}
-
-TEST(ISA, avx512f) {
-	ASSERT_FALSE(cpuinfo_isa.avx512f);
-}
-
-TEST(ISA, avx512pf) {
-	ASSERT_FALSE(cpuinfo_isa.avx512pf);
-}
-
-TEST(ISA, avx512er) {
-	ASSERT_FALSE(cpuinfo_isa.avx512er);
-}
-
-TEST(ISA, avx512cd) {
-	ASSERT_FALSE(cpuinfo_isa.avx512cd);
-}
-
-TEST(ISA, avx512dq) {
-	ASSERT_FALSE(cpuinfo_isa.avx512dq);
-}
-
-TEST(ISA, avx512bw) {
-	ASSERT_FALSE(cpuinfo_isa.avx512bw);
-}
-
-TEST(ISA, avx512vl) {
-	ASSERT_FALSE(cpuinfo_isa.avx512vl);
-}
-
-TEST(ISA, avx512ifma) {
-	ASSERT_FALSE(cpuinfo_isa.avx512ifma);
-}
-
-TEST(ISA, avx512vbmi) {
-	ASSERT_FALSE(cpuinfo_isa.avx512vbmi);
-}
-
-TEST(ISA, avx512vpopcntdq) {
-	ASSERT_FALSE(cpuinfo_isa.avx512vpopcntdq);
-}
-
-TEST(ISA, avx512_4vnniw) {
-	ASSERT_FALSE(cpuinfo_isa.avx512_4vnniw);
-}
-
-TEST(ISA, avx512_4fmaps) {
-	ASSERT_FALSE(cpuinfo_isa.avx512_4fmaps);
-}
-
-TEST(ISA, hle) {
-	ASSERT_FALSE(cpuinfo_isa.hle);
-}
-
-TEST(ISA, rtm) {
-	ASSERT_FALSE(cpuinfo_isa.rtm);
-}
-
-TEST(ISA, xtest) {
-	ASSERT_FALSE(cpuinfo_isa.xtest);
-}
-
-TEST(ISA, mpx) {
-	ASSERT_FALSE(cpuinfo_isa.mpx);
-}
-
-TEST(ISA, cmov) {
-	ASSERT_TRUE(cpuinfo_isa.cmov);
-}
-
-TEST(ISA, cmpxchg8b) {
-	ASSERT_TRUE(cpuinfo_isa.cmpxchg8b);
-}
-
-TEST(ISA, cmpxchg16b) {
-	ASSERT_TRUE(cpuinfo_isa.cmpxchg16b);
-}
-
-TEST(ISA, clwb) {
-	ASSERT_FALSE(cpuinfo_isa.clwb);
-}
-
-TEST(ISA, movbe) {
-	ASSERT_TRUE(cpuinfo_isa.movbe);
-}
-
-TEST(ISA, fs_gs_base) {
-	ASSERT_FALSE(cpuinfo_isa.fs_gs_base);
-}
-
-TEST(ISA, lzcnt) {
-	ASSERT_FALSE(cpuinfo_isa.lzcnt);
-}
-
-TEST(ISA, popcnt) {
-	ASSERT_TRUE(cpuinfo_isa.popcnt);
-}
-
-TEST(ISA, tbm) {
-	ASSERT_FALSE(cpuinfo_isa.tbm);
-}
-
-TEST(ISA, bmi) {
-	ASSERT_FALSE(cpuinfo_isa.bmi);
-}
-
-TEST(ISA, bmi2) {
-	ASSERT_FALSE(cpuinfo_isa.bmi2);
-}
-
-TEST(ISA, adx) {
-	ASSERT_FALSE(cpuinfo_isa.adx);
-}
-
-TEST(ISA, aes) {
-	ASSERT_TRUE(cpuinfo_isa.aes);
-}
-
-TEST(ISA, pclmulqdq) {
-	ASSERT_TRUE(cpuinfo_isa.pclmulqdq);
-}
-
-TEST(ISA, rdrand) {
-	ASSERT_TRUE(cpuinfo_isa.rdrand);
-}
-
-TEST(ISA, rdseed) {
-	ASSERT_FALSE(cpuinfo_isa.rdseed);
-}
-
-TEST(ISA, sha) {
-	ASSERT_FALSE(cpuinfo_isa.sha);
-}
-
-TEST(ISA, rng) {
-	ASSERT_FALSE(cpuinfo_isa.rng);
-}
-
-TEST(ISA, ace) {
-	ASSERT_FALSE(cpuinfo_isa.ace);
-}
-
-TEST(ISA, ace2) {
-	ASSERT_FALSE(cpuinfo_isa.ace2);
-}
-
-TEST(ISA, phe) {
-	ASSERT_FALSE(cpuinfo_isa.phe);
-}
-
-TEST(ISA, pmm) {
-	ASSERT_FALSE(cpuinfo_isa.pmm);
-}
-
-TEST(ISA, lwp) {
-	ASSERT_FALSE(cpuinfo_isa.lwp);
+	ASSERT_TRUE(cpuinfo_has_x86_rdtsc());
 }
 
 TEST(ISA, rdtscp) {
-	ASSERT_TRUE(cpuinfo_isa.rdtscp);
+	ASSERT_TRUE(cpuinfo_has_x86_rdtscp());
 }
 
 TEST(ISA, rdpid) {
-	ASSERT_FALSE(cpuinfo_isa.rdpid);
+	ASSERT_FALSE(cpuinfo_has_x86_rdpid());
+}
+
+TEST(ISA, clzero) {
+	ASSERT_FALSE(cpuinfo_has_x86_clzero());
+}
+
+TEST(ISA, mwait) {
+	ASSERT_TRUE(cpuinfo_has_x86_mwait());
+}
+
+TEST(ISA, mwaitx) {
+	ASSERT_FALSE(cpuinfo_has_x86_mwaitx());
+}
+
+TEST(ISA, fxsave) {
+	ASSERT_TRUE(cpuinfo_has_x86_fxsave());
+}
+
+TEST(ISA, xsave) {
+	ASSERT_FALSE(cpuinfo_has_x86_xsave());
+}
+
+TEST(ISA, fpu) {
+	ASSERT_TRUE(cpuinfo_has_x86_fpu());
+}
+
+TEST(ISA, mmx) {
+	ASSERT_TRUE(cpuinfo_has_x86_mmx());
+}
+
+TEST(ISA, mmx_plus) {
+	ASSERT_TRUE(cpuinfo_has_x86_mmx_plus());
+}
+
+TEST(ISA, three_d_now) {
+	ASSERT_FALSE(cpuinfo_has_x86_3dnow());
+}
+
+TEST(ISA, three_d_now_plus) {
+	ASSERT_FALSE(cpuinfo_has_x86_3dnow_plus());
+}
+
+TEST(ISA, three_d_now_geode) {
+	ASSERT_FALSE(cpuinfo_has_x86_3dnow_geode());
+}
+
+TEST(ISA, prefetch) {
+	ASSERT_FALSE(cpuinfo_has_x86_prefetch());
+}
+
+TEST(ISA, prefetchw) {
+	ASSERT_TRUE(cpuinfo_has_x86_prefetchw());
+}
+
+TEST(ISA, prefetchwt1) {
+	ASSERT_FALSE(cpuinfo_has_x86_prefetchwt1());
+}
+
+TEST(ISA, daz) {
+	ASSERT_TRUE(cpuinfo_has_x86_daz());
+}
+
+TEST(ISA, sse) {
+	ASSERT_TRUE(cpuinfo_has_x86_sse());
+}
+
+TEST(ISA, sse2) {
+	ASSERT_TRUE(cpuinfo_has_x86_sse2());
+}
+
+TEST(ISA, sse3) {
+	ASSERT_TRUE(cpuinfo_has_x86_sse3());
+}
+
+TEST(ISA, ssse3) {
+	ASSERT_TRUE(cpuinfo_has_x86_ssse3());
+}
+
+TEST(ISA, sse4_1) {
+	ASSERT_TRUE(cpuinfo_has_x86_sse4_1());
+}
+
+TEST(ISA, sse4_2) {
+	ASSERT_TRUE(cpuinfo_has_x86_sse4_2());
+}
+
+TEST(ISA, sse4a) {
+	ASSERT_FALSE(cpuinfo_has_x86_sse4a());
+}
+
+TEST(ISA, misaligned_sse) {
+	ASSERT_FALSE(cpuinfo_has_x86_misaligned_sse());
+}
+
+TEST(ISA, avx) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx());
+}
+
+TEST(ISA, fma3) {
+	ASSERT_FALSE(cpuinfo_has_x86_fma3());
+}
+
+TEST(ISA, fma4) {
+	ASSERT_FALSE(cpuinfo_has_x86_fma4());
+}
+
+TEST(ISA, xop) {
+	ASSERT_FALSE(cpuinfo_has_x86_xop());
+}
+
+TEST(ISA, f16c) {
+	ASSERT_FALSE(cpuinfo_has_x86_f16c());
+}
+
+TEST(ISA, avx2) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx2());
+}
+
+TEST(ISA, avx512f) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512f());
+}
+
+TEST(ISA, avx512pf) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512pf());
+}
+
+TEST(ISA, avx512er) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512er());
+}
+
+TEST(ISA, avx512cd) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512cd());
+}
+
+TEST(ISA, avx512dq) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512dq());
+}
+
+TEST(ISA, avx512bw) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512bw());
+}
+
+TEST(ISA, avx512vl) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512vl());
+}
+
+TEST(ISA, avx512ifma) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512ifma());
+}
+
+TEST(ISA, avx512vbmi) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512vbmi());
+}
+
+TEST(ISA, avx512vpopcntdq) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512vpopcntdq());
+}
+
+TEST(ISA, avx512_4vnniw) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512_4vnniw());
+}
+
+TEST(ISA, avx512_4fmaps) {
+	ASSERT_FALSE(cpuinfo_has_x86_avx512_4fmaps());
+}
+
+TEST(ISA, cmov) {
+	ASSERT_TRUE(cpuinfo_has_x86_cmov());
+}
+
+TEST(ISA, cmpxchg8b) {
+	ASSERT_TRUE(cpuinfo_has_x86_cmpxchg8b());
+}
+
+TEST(ISA, cmpxchg16b) {
+	ASSERT_FALSE(cpuinfo_has_x86_cmpxchg16b());
+}
+
+TEST(ISA, clwb) {
+	ASSERT_FALSE(cpuinfo_has_x86_clwb());
+}
+
+TEST(ISA, movbe) {
+	ASSERT_TRUE(cpuinfo_has_x86_movbe());
+}
+
+TEST(ISA, lahf_salf) {
+	ASSERT_FALSE(cpuinfo_has_x86_lahf_salf());
+}
+
+TEST(ISA, lzcnt) {
+	ASSERT_FALSE(cpuinfo_has_x86_lzcnt());
+}
+
+TEST(ISA, popcnt) {
+	ASSERT_TRUE(cpuinfo_has_x86_popcnt());
+}
+
+TEST(ISA, tbm) {
+	ASSERT_FALSE(cpuinfo_has_x86_tbm());
+}
+
+TEST(ISA, bmi) {
+	ASSERT_FALSE(cpuinfo_has_x86_bmi());
+}
+
+TEST(ISA, bmi2) {
+	ASSERT_FALSE(cpuinfo_has_x86_bmi2());
+}
+
+TEST(ISA, adx) {
+	ASSERT_FALSE(cpuinfo_has_x86_adx());
+}
+
+TEST(ISA, aes) {
+	ASSERT_TRUE(cpuinfo_has_x86_aes());
+}
+
+TEST(ISA, pclmulqdq) {
+	ASSERT_TRUE(cpuinfo_has_x86_pclmulqdq());
+}
+
+TEST(ISA, rdrand) {
+	ASSERT_TRUE(cpuinfo_has_x86_rdrand());
+}
+
+TEST(ISA, rdseed) {
+	ASSERT_FALSE(cpuinfo_has_x86_rdseed());
+}
+
+TEST(ISA, sha) {
+	ASSERT_FALSE(cpuinfo_has_x86_sha());
 }
 
 TEST(L1I, count) {
