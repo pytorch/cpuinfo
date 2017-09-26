@@ -365,7 +365,7 @@ TEST(ISA, movbe) {
 }
 
 TEST(ISA, lahf_salf) {
-	ASSERT_FALSE(cpuinfo_has_x86_lahf_salf());
+	ASSERT_TRUE(cpuinfo_has_x86_lahf_salf());
 }
 
 TEST(ISA, lzcnt) {
