@@ -178,121 +178,153 @@ TEST(PACKAGES, core_count) {
 	}
 }
 
-#if CPUINFO_ARCH_ARM
 TEST(ISA, thumb) {
-	ASSERT_TRUE(cpuinfo_isa.thumb);
+	#if CPUINFO_ARCH_ARM
+		ASSERT_TRUE(cpuinfo_has_arm_thumb());
+	#elif CPUINFO_ARCH_ARM64
+		ASSERT_FALSE(cpuinfo_has_arm_thumb());
+	#endif
 }
 
 TEST(ISA, thumb2) {
-	ASSERT_TRUE(cpuinfo_isa.thumb2);
-}
-
-TEST(ISA, thumbee) {
-	ASSERT_FALSE(cpuinfo_isa.thumbee);
-}
-
-TEST(ISA, jazelle) {
-	ASSERT_FALSE(cpuinfo_isa.jazelle);
+	#if CPUINFO_ARCH_ARM
+		ASSERT_TRUE(cpuinfo_has_arm_thumb2());
+	#elif CPUINFO_ARCH_ARM64
+		ASSERT_FALSE(cpuinfo_has_arm_thumb2());
+	#endif
 }
 
 TEST(ISA, armv5e) {
-	ASSERT_TRUE(cpuinfo_isa.armv5e);
+	#if CPUINFO_ARCH_ARM
+		ASSERT_TRUE(cpuinfo_has_arm_v5e());
+	#elif CPUINFO_ARCH_ARM64
+		ASSERT_FALSE(cpuinfo_has_arm_v5e());
+	#endif
 }
 
 TEST(ISA, armv6) {
-	ASSERT_TRUE(cpuinfo_isa.armv6);
+	#if CPUINFO_ARCH_ARM
+		ASSERT_TRUE(cpuinfo_has_arm_v6());
+	#elif CPUINFO_ARCH_ARM64
+		ASSERT_FALSE(cpuinfo_has_arm_v6());
+	#endif
 }
 
 TEST(ISA, armv6k) {
-	ASSERT_TRUE(cpuinfo_isa.armv6k);
+	#if CPUINFO_ARCH_ARM
+		ASSERT_TRUE(cpuinfo_has_arm_v6k());
+	#elif CPUINFO_ARCH_ARM64
+		ASSERT_FALSE(cpuinfo_has_arm_v6k());
+	#endif
 }
 
 TEST(ISA, armv7) {
-	ASSERT_TRUE(cpuinfo_isa.armv7);
+	#if CPUINFO_ARCH_ARM
+		ASSERT_TRUE(cpuinfo_has_arm_v7());
+	#elif CPUINFO_ARCH_ARM64
+		ASSERT_FALSE(cpuinfo_has_arm_v7());
+	#endif
 }
 
 TEST(ISA, armv7mp) {
-	ASSERT_TRUE(cpuinfo_isa.armv7mp);
+	#if CPUINFO_ARCH_ARM
+		ASSERT_TRUE(cpuinfo_has_arm_v7mp());
+	#elif CPUINFO_ARCH_ARM64
+		ASSERT_FALSE(cpuinfo_has_arm_v7mp());
+	#endif
 }
 
 TEST(ISA, idiv) {
-	ASSERT_TRUE(cpuinfo_isa.idiv);
+	ASSERT_TRUE(cpuinfo_has_arm_idiv());
 }
 
 TEST(ISA, vfpv2) {
-	ASSERT_FALSE(cpuinfo_isa.vfpv2);
+	ASSERT_FALSE(cpuinfo_has_arm_vfpv2());
 }
 
 TEST(ISA, vfpv3) {
-	ASSERT_TRUE(cpuinfo_isa.vfpv3);
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv3());
 }
 
-TEST(ISA, d32) {
-	ASSERT_TRUE(cpuinfo_isa.d32);
+TEST(ISA, vfpv3_d32) {
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv3_d32());
 }
 
-TEST(ISA, fp16) {
-	ASSERT_TRUE(cpuinfo_isa.fp16);
+TEST(ISA, vfpv3_fp16) {
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv3_fp16());
 }
 
-TEST(ISA, fma) {
-	ASSERT_TRUE(cpuinfo_isa.fma);
+TEST(ISA, vfpv3_fp16_d32) {
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv3_fp16_d32());
+}
+
+TEST(ISA, vfpv4) {
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv4());
+}
+
+TEST(ISA, vfpv4_d32) {
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv4_d32());
 }
 
 TEST(ISA, wmmx) {
-	ASSERT_FALSE(cpuinfo_isa.wmmx);
+	ASSERT_FALSE(cpuinfo_has_arm_wmmx());
 }
 
 TEST(ISA, wmmx2) {
-	ASSERT_FALSE(cpuinfo_isa.wmmx2);
+	ASSERT_FALSE(cpuinfo_has_arm_wmmx2());
 }
 
 TEST(ISA, neon) {
-	ASSERT_TRUE(cpuinfo_isa.neon);
-}
-#endif /* CPUINFO_ARCH_ARM */
-
-TEST(ISA, aes) {
-	ASSERT_TRUE(cpuinfo_isa.aes);
+	ASSERT_TRUE(cpuinfo_has_arm_neon());
 }
 
-TEST(ISA, sha1) {
-	ASSERT_TRUE(cpuinfo_isa.sha1);
+TEST(ISA, neon_fp16) {
+	ASSERT_TRUE(cpuinfo_has_arm_neon_fp16());
 }
 
-TEST(ISA, sha2) {
-	ASSERT_TRUE(cpuinfo_isa.sha2);
+TEST(ISA, neon_fma) {
+	ASSERT_TRUE(cpuinfo_has_arm_neon_fma());
 }
 
-TEST(ISA, pmull) {
-	ASSERT_TRUE(cpuinfo_isa.pmull);
-}
-
-TEST(ISA, crc32) {
-	ASSERT_TRUE(cpuinfo_isa.crc32);
-}
-
-#if CPUINFO_ARCH_ARM64
 TEST(ISA, atomics) {
-	ASSERT_FALSE(cpuinfo_isa.atomics);
+	ASSERT_FALSE(cpuinfo_has_arm_atomics());
 }
 
-TEST(ISA, rdm) {
-	ASSERT_FALSE(cpuinfo_isa.rdm);
+TEST(ISA, neon_rdm) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_rdm());
 }
 
-TEST(ISA, fp16arith) {
-	ASSERT_FALSE(cpuinfo_isa.fp16arith);
+TEST(ISA, fp16_arith) {
+	ASSERT_FALSE(cpuinfo_has_arm_fp16_arith());
 }
 
 TEST(ISA, jscvt) {
-	ASSERT_FALSE(cpuinfo_isa.jscvt);
+	ASSERT_FALSE(cpuinfo_has_arm_jscvt());
 }
 
 TEST(ISA, fcma) {
-	ASSERT_FALSE(cpuinfo_isa.fcma);
+	ASSERT_FALSE(cpuinfo_has_arm_fcma());
 }
-#endif /* CPUINFO_ARCH_ARM64 */
+
+TEST(ISA, aes) {
+	ASSERT_TRUE(cpuinfo_has_arm_aes());
+}
+
+TEST(ISA, sha1) {
+	ASSERT_TRUE(cpuinfo_has_arm_sha1());
+}
+
+TEST(ISA, sha2) {
+	ASSERT_TRUE(cpuinfo_has_arm_sha2());
+}
+
+TEST(ISA, pmull) {
+	ASSERT_TRUE(cpuinfo_has_arm_pmull());
+}
+
+TEST(ISA, crc32) {
+	ASSERT_TRUE(cpuinfo_has_arm_crc32());
+}
 
 TEST(L1I, count) {
 	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();

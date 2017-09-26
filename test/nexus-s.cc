@@ -153,95 +153,123 @@ TEST(PACKAGES, core_count) {
 }
 
 TEST(ISA, thumb) {
-	ASSERT_TRUE(cpuinfo_isa.thumb);
+	ASSERT_TRUE(cpuinfo_has_arm_thumb());
 }
 
 TEST(ISA, thumb2) {
-	ASSERT_TRUE(cpuinfo_isa.thumb2);
-}
-
-TEST(ISA, thumbee) {
-	ASSERT_TRUE(cpuinfo_isa.thumbee);
-}
-
-TEST(ISA, jazelle) {
-	ASSERT_FALSE(cpuinfo_isa.jazelle);
+	ASSERT_TRUE(cpuinfo_has_arm_thumb2());
 }
 
 TEST(ISA, armv5e) {
-	ASSERT_TRUE(cpuinfo_isa.armv5e);
+	ASSERT_TRUE(cpuinfo_has_arm_v5e());
 }
 
 TEST(ISA, armv6) {
-	ASSERT_TRUE(cpuinfo_isa.armv6);
+	ASSERT_TRUE(cpuinfo_has_arm_v6());
 }
 
 TEST(ISA, armv6k) {
-	ASSERT_TRUE(cpuinfo_isa.armv6k);
+	ASSERT_TRUE(cpuinfo_has_arm_v6k());
 }
 
 TEST(ISA, armv7) {
-	ASSERT_TRUE(cpuinfo_isa.armv7);
+	ASSERT_TRUE(cpuinfo_has_arm_v7());
 }
 
 TEST(ISA, armv7mp) {
-	ASSERT_FALSE(cpuinfo_isa.armv7mp);
+	ASSERT_FALSE(cpuinfo_has_arm_v7mp());
 }
 
 TEST(ISA, idiv) {
-	ASSERT_FALSE(cpuinfo_isa.idiv);
+	ASSERT_FALSE(cpuinfo_has_arm_idiv());
 }
 
 TEST(ISA, vfpv2) {
-	ASSERT_FALSE(cpuinfo_isa.vfpv2);
+	ASSERT_FALSE(cpuinfo_has_arm_vfpv2());
 }
 
 TEST(ISA, vfpv3) {
-	ASSERT_TRUE(cpuinfo_isa.vfpv3);
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv3());
 }
 
-TEST(ISA, d32) {
-	ASSERT_TRUE(cpuinfo_isa.d32);
+TEST(ISA, vfpv3_d32) {
+	ASSERT_TRUE(cpuinfo_has_arm_vfpv3_d32());
 }
 
-TEST(ISA, fp16) {
-	ASSERT_FALSE(cpuinfo_isa.fp16);
+TEST(ISA, vfpv3_fp16) {
+	ASSERT_FALSE(cpuinfo_has_arm_vfpv3_fp16());
 }
 
-TEST(ISA, fma) {
-	ASSERT_FALSE(cpuinfo_isa.fma);
+TEST(ISA, vfpv3_fp16_d32) {
+	ASSERT_FALSE(cpuinfo_has_arm_vfpv3_fp16_d32());
+}
+
+TEST(ISA, vfpv4) {
+	ASSERT_FALSE(cpuinfo_has_arm_vfpv4());
+}
+
+TEST(ISA, vfpv4_d32) {
+	ASSERT_FALSE(cpuinfo_has_arm_vfpv4_d32());
 }
 
 TEST(ISA, wmmx) {
-	ASSERT_FALSE(cpuinfo_isa.wmmx);
+	ASSERT_FALSE(cpuinfo_has_arm_wmmx());
 }
 
 TEST(ISA, wmmx2) {
-	ASSERT_FALSE(cpuinfo_isa.wmmx2);
+	ASSERT_FALSE(cpuinfo_has_arm_wmmx2());
 }
 
 TEST(ISA, neon) {
-	ASSERT_TRUE(cpuinfo_isa.neon);
+	ASSERT_TRUE(cpuinfo_has_arm_neon());
+}
+
+TEST(ISA, neon_fp16) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_fp16());
+}
+
+TEST(ISA, neon_fma) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_fma());
+}
+
+TEST(ISA, atomics) {
+	ASSERT_FALSE(cpuinfo_has_arm_atomics());
+}
+
+TEST(ISA, neon_rdm) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_rdm());
+}
+
+TEST(ISA, fp16_arith) {
+	ASSERT_FALSE(cpuinfo_has_arm_fp16_arith());
+}
+
+TEST(ISA, jscvt) {
+	ASSERT_FALSE(cpuinfo_has_arm_jscvt());
+}
+
+TEST(ISA, fcma) {
+	ASSERT_FALSE(cpuinfo_has_arm_fcma());
 }
 
 TEST(ISA, aes) {
-	ASSERT_FALSE(cpuinfo_isa.aes);
+	ASSERT_FALSE(cpuinfo_has_arm_aes());
 }
 
 TEST(ISA, sha1) {
-	ASSERT_FALSE(cpuinfo_isa.sha1);
+	ASSERT_FALSE(cpuinfo_has_arm_sha1());
 }
 
 TEST(ISA, sha2) {
-	ASSERT_FALSE(cpuinfo_isa.sha2);
+	ASSERT_FALSE(cpuinfo_has_arm_sha2());
 }
 
 TEST(ISA, pmull) {
-	ASSERT_FALSE(cpuinfo_isa.pmull);
+	ASSERT_FALSE(cpuinfo_has_arm_pmull());
 }
 
 TEST(ISA, crc32) {
-	ASSERT_FALSE(cpuinfo_isa.crc32);
+	ASSERT_FALSE(cpuinfo_has_arm_crc32());
 }
 
 TEST(L1I, count) {
