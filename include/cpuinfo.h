@@ -76,145 +76,6 @@
 	#define CPUINFO_ARCH_ASMJS 0
 #endif
 
-#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
-	struct cpuinfo_x86_isa {
-		#if CPUINFO_ARCH_X86
-			bool rdtsc;
-		#endif
-		bool sysenter;
-		#if CPUINFO_ARCH_X86
-			bool syscall;
-		#endif
-		bool msr;
-		bool clzero;
-		bool clflush;
-		bool clflushopt;
-		bool mwait;
-		bool mwaitx;
-		#if CPUINFO_ARCH_X86
-			bool emmx;
-		#endif
-		bool fxsave;
-		bool xsave;
-		#if CPUINFO_ARCH_X86
-			bool fpu;
-			bool mmx;
-			bool mmx_plus;
-		#endif
-		bool three_d_now;
-		bool three_d_now_plus;
-		#if CPUINFO_ARCH_X86
-			bool three_d_now_geode;
-		#endif
-		bool prefetch;
-		bool prefetchw;
-		bool prefetchwt1;
-		#if CPUINFO_ARCH_X86
-			bool daz;
-			bool sse;
-			bool sse2;
-		#endif
-		bool sse3;
-		bool ssse3;
-		bool sse4_1;
-		bool sse4_2;
-		bool sse4a;
-		bool misaligned_sse;
-		bool avx;
-		bool fma3;
-		bool fma4;
-		bool xop;
-		bool f16c;
-		bool avx2;
-		bool avx512f;
-		bool avx512pf;
-		bool avx512er;
-		bool avx512cd;
-		bool avx512dq;
-		bool avx512bw;
-		bool avx512vl;
-		bool avx512ifma;
-		bool avx512vbmi;
-		bool avx512vpopcntdq;
-		bool avx512_4vnniw;
-		bool avx512_4fmaps;
-		bool hle;
-		bool rtm;
-		bool xtest;
-		bool mpx;
-		#if CPUINFO_ARCH_X86
-			bool cmov;
-			bool cmpxchg8b;
-		#endif
-		bool cmpxchg16b;
-		bool clwb;
-		bool movbe;
-		#if CPUINFO_ARCH_X86_64
-			bool lahf_sahf;
-		#endif
-		bool fs_gs_base;
-		bool lzcnt;
-		bool popcnt;
-		bool tbm;
-		bool bmi;
-		bool bmi2;
-		bool adx;
-		bool aes;
-		bool pclmulqdq;
-		bool rdrand;
-		bool rdseed;
-		bool sha;
-		bool rng;
-		bool ace;
-		bool ace2;
-		bool phe;
-		bool pmm;
-		bool lwp;
-		bool rdtscp;
-		bool rdpid;
-	};
-#endif
-
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
-	struct cpuinfo_arm_isa {
-		#if CPUINFO_ARCH_ARM
-			bool thumb;
-			bool thumb2;
-			bool thumbee;
-			bool jazelle;
-			bool armv5e;
-			bool armv6;
-			bool armv6k;
-			bool armv7;
-			bool armv7mp;
-			bool idiv;
-
-			bool vfpv2;
-			bool vfpv3;
-			bool d32;
-			bool fp16;
-			bool fma;
-
-			bool wmmx;
-			bool wmmx2;
-			bool neon;
-		#endif
-		#if CPUINFO_ARCH_ARM64
-			bool atomics;
-			bool rdm;
-			bool fp16arith;
-			bool jscvt;
-			bool fcma;
-		#endif
-
-		bool aes;
-		bool sha1;
-		bool sha2;
-		bool pmull;
-		bool crc32;
-	};
-#endif
-
 #define CPUINFO_CACHE_UNIFIED          0x00000001
 #define CPUINFO_CACHE_INCLUSIVE        0x00000002
 #define CPUINFO_CACHE_COMPLEX_INDEXING 0x00000004
@@ -638,12 +499,963 @@ void CPUINFO_ABI cpuinfo_initialize(void);
 void CPUINFO_ABI cpuinfo_deinitialize(void);
 
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	/* This structure is not a part of stable API. Use cpuinfo_has_x86_* functions instead. */
+	struct cpuinfo_x86_isa {
+		#if CPUINFO_ARCH_X86
+			bool rdtsc;
+		#endif
+		bool rdtscp;
+		bool rdpid;
+		bool sysenter;
+		#if CPUINFO_ARCH_X86
+			bool syscall;
+		#endif
+		bool msr;
+		bool clzero;
+		bool clflush;
+		bool clflushopt;
+		bool mwait;
+		bool mwaitx;
+		#if CPUINFO_ARCH_X86
+			bool emmx;
+		#endif
+		bool fxsave;
+		bool xsave;
+		#if CPUINFO_ARCH_X86
+			bool fpu;
+			bool mmx;
+			bool mmx_plus;
+		#endif
+		bool three_d_now;
+		bool three_d_now_plus;
+		#if CPUINFO_ARCH_X86
+			bool three_d_now_geode;
+		#endif
+		bool prefetch;
+		bool prefetchw;
+		bool prefetchwt1;
+		#if CPUINFO_ARCH_X86
+			bool daz;
+			bool sse;
+			bool sse2;
+		#endif
+		bool sse3;
+		bool ssse3;
+		bool sse4_1;
+		bool sse4_2;
+		bool sse4a;
+		bool misaligned_sse;
+		bool avx;
+		bool fma3;
+		bool fma4;
+		bool xop;
+		bool f16c;
+		bool avx2;
+		bool avx512f;
+		bool avx512pf;
+		bool avx512er;
+		bool avx512cd;
+		bool avx512dq;
+		bool avx512bw;
+		bool avx512vl;
+		bool avx512ifma;
+		bool avx512vbmi;
+		bool avx512vpopcntdq;
+		bool avx512_4vnniw;
+		bool avx512_4fmaps;
+		bool hle;
+		bool rtm;
+		bool xtest;
+		bool mpx;
+		#if CPUINFO_ARCH_X86
+			bool cmov;
+			bool cmpxchg8b;
+		#endif
+		bool cmpxchg16b;
+		bool clwb;
+		bool movbe;
+		#if CPUINFO_ARCH_X86_64
+			bool lahf_sahf;
+		#endif
+		bool fs_gs_base;
+		bool lzcnt;
+		bool popcnt;
+		bool tbm;
+		bool bmi;
+		bool bmi2;
+		bool adx;
+		bool aes;
+		bool pclmulqdq;
+		bool rdrand;
+		bool rdseed;
+		bool sha;
+		bool rng;
+		bool ace;
+		bool ace2;
+		bool phe;
+		bool pmm;
+		bool lwp;
+	};
+
 	extern struct cpuinfo_x86_isa cpuinfo_isa;
 #endif
 
+static inline bool cpuinfo_has_x86_rdtsc(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.rdtsc;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_rdtscp(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.rdtscp;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_rdpid(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.rdpid;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_clzero(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.clzero;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_mwait(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.mwait;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_mwaitx(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.mwaitx;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_fxsave(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.fxsave;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_xsave(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.xsave;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_fpu(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.fpu;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_mmx(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.mmx;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_mmx_plus(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.mmx_plus;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_3dnow(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.three_d_now;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_3dnow_plus(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.three_d_now_plus;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_3dnow_geode(void) {
+	#if CPUINFO_ARCH_X86_64
+		return false;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return false;
+		#else
+			return cpuinfo_isa.three_d_now_geode;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_prefetch(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.prefetch;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_prefetchw(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.prefetchw;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_prefetchwt1(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.prefetchw;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_daz(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.daz;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_sse2(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.sse2;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_sse3(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.sse3;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_ssse3(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.ssse3;
+		#endif
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_sse4_1(void) {
+	#if CPUINFO_ARCH_X86_64
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.sse4_1;
+		#endif
+	#elif CPUINFO_ARCH_X86
+		return cpuinfo_isa.sse4_1;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_sse4_2(void) {
+	#if CPUINFO_ARCH_X86_64
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.sse4_2;
+		#endif
+	#elif CPUINFO_ARCH_X86
+		return cpuinfo_isa.sse4_2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_sse4a(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.sse4a;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_misaligned_sse(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.misaligned_sse;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_fma3(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.fma3;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_fma4(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.fma4;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_xop(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.xop;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_f16c(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.f16c;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx2(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512f(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512f;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512pf(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512pf;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512er(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512er;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512cd(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512cd;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512dq(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512dq;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512bw(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512bw;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512vl(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512vl;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512ifma(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512ifma;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512vbmi(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512vbmi;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512vpopcntdq(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512vpopcntdq;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512_4vnniw(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512_4vnniw;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512_4fmaps(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512_4fmaps;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_cmov(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		return cpuinfo_isa.cmov;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_cmpxchg8b(void) {
+	#if CPUINFO_ARCH_X86_64
+		return true;
+	#elif CPUINFO_ARCH_X86
+		return cpuinfo_isa.cmpxchg8b;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_cmpxchg16b(void) {
+	#if CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.cmpxchg16b;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_clwb(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.clwb;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_movbe(void) {
+	#if CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.movbe;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_lahf_salf(void) {
+	#if CPUINFO_ARCH_X86
+		return true;
+	#elif CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.lahf_sahf;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_lzcnt(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.lzcnt;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_popcnt(void) {
+	#if CPUINFO_ARCH_X86_64
+		#if defined(__ANDROID__)
+			return true;
+		#else
+			return cpuinfo_isa.popcnt;
+		#endif
+	#elif CPUINFO_ARCH_X86
+		return cpuinfo_isa.popcnt;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_tbm(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.tbm;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_bmi(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.bmi;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_bmi2(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.bmi2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_adx(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.adx;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_aes(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.aes;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_pclmulqdq(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.pclmulqdq;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_rdrand(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.rdrand;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_rdseed(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.rdseed;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_sha(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.sha;
+	#else
+		return false;
+	#endif
+}
+
 #if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+	/* This structure is not a part of stable API. Use cpuinfo_has_arm_* functions instead. */
+	struct cpuinfo_arm_isa {
+		#if CPUINFO_ARCH_ARM
+			bool thumb;
+			bool thumb2;
+			bool thumbee;
+			bool jazelle;
+			bool armv5e;
+			bool armv6;
+			bool armv6k;
+			bool armv7;
+			bool armv7mp;
+			bool idiv;
+
+			bool vfpv2;
+			bool vfpv3;
+			bool d32;
+			bool fp16;
+			bool fma;
+
+			bool wmmx;
+			bool wmmx2;
+			bool neon;
+		#endif
+		#if CPUINFO_ARCH_ARM64
+			bool atomics;
+			bool rdm;
+			bool fp16arith;
+			bool jscvt;
+			bool fcma;
+		#endif
+
+		bool aes;
+		bool sha1;
+		bool sha2;
+		bool pmull;
+		bool crc32;
+	};
+
 	extern struct cpuinfo_arm_isa cpuinfo_isa;
 #endif
+
+static inline bool cpuinfo_has_arm_thumb(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.thumb;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_thumb2(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.thumb2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_v5e(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.armv5e;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_v6(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.armv6;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_v6k(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.armv6k;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_v7(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.armv7;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_v7mp(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.armv7mp;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_idiv(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.idiv;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_vfpv2(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.vfpv2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_vfpv3(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.vfpv3;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_vfpv3_d32(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.vfpv3 && cpuinfo_isa.d32;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_vfpv3_fp16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.vfpv3 && cpuinfo_isa.fp16;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_vfpv3_fp16_d32(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.vfpv3 && cpuinfo_isa.fp16 && cpuinfo_isa.d32;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_vfpv4_fp16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.vfpv3 && cpuinfo_isa.fma;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_vfpv4_fp16_d32(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.vfpv3 && cpuinfo_isa.fma && cpuinfo_isa.d32;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_wmmx(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.wmmx;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_wmmx2(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.wmmx2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_neon(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.neon;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_neon_fp16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.neon && cpuinfo_isa.fp16;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_neon_fma(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.neon && cpuinfo_isa.fma;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_atomics(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.atomics;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_neon_rdm(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.rdm;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_fp16_arith(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.fp16arith;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_jscvt(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.jscvt;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_fcma(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.fcma;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_aes(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.aes;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_sha1(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.sha1;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_sha2(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.sha2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_pmull(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.pmull;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_crc32(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.crc32;
+	#else
+		return false;
+	#endif
+}
 
 struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l1i_cache(void);
 struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l1d_cache(void);
