@@ -15,21 +15,17 @@ Detect if target is a 32-bit or 64-bit ARM system:
 Check if the host CPU support ARM NEON
 ```c
 cpuinfo_initialize();
-#if CPUINFO_ARCH_ARM
-    if (cpuinfo_isa.neon) {
-        neon_implementation(arguments);
-    }
-#endif
+if (cpuinfo_has_arm_neon()) {
+    neon_implementation(arguments);
+}
 ```
 
 Check if the host CPU supports x86 AVX
 ```c
 cpuinfo_initialize();
-#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
-    if (cpuinfo_isa.avx) {
-        avx_implementation(arguments);
-    }
-#endif
+if (cpuinfo_has_x86_avx) {
+    avx_implementation(arguments);
+}
 ```
 
 Check if the thread runs on a Cortex-A53 core
