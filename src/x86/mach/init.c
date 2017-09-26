@@ -70,7 +70,7 @@ void cpuinfo_x86_mach_init(void) {
 			.package = packages + i / cores_per_package,
 			.vendor = x86_processor.vendor,
 			.uarch = x86_processor.uarch,
-			.cpuid = x86_processor.model_info.cpuid,
+			.cpuid = x86_processor.cpuid,
 		};
 	}
 	for (uint32_t i = 0; i < mach_topology.threads; i++) {
