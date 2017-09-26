@@ -328,6 +328,22 @@ TEST(ISA, avx512_4fmaps) {
 	ASSERT_FALSE(cpuinfo_has_x86_avx512_4fmaps());
 }
 
+TEST(ISA, hle) {
+	ASSERT_FALSE(cpuinfo_has_x86_hle());
+}
+
+TEST(ISA, rtm) {
+	ASSERT_FALSE(cpuinfo_has_x86_rtm());
+}
+
+TEST(ISA, xtest) {
+	ASSERT_FALSE(cpuinfo_has_x86_xtest());
+}
+
+TEST(ISA, mpx) {
+	ASSERT_FALSE(cpuinfo_has_x86_mpx());
+}
+
 TEST(ISA, cmov) {
 	ASSERT_TRUE(cpuinfo_has_x86_cmov());
 }
