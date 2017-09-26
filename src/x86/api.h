@@ -34,8 +34,6 @@ struct cpuinfo_x86_caches {
 };
 
 struct cpuinfo_x86_model_info {
-	uint32_t cpuid;
-
 	uint32_t model;
 	uint32_t family;
 
@@ -56,12 +54,12 @@ struct cpuinfo_x86_topology {
 };
 
 struct cpuinfo_x86_processor {
+	uint32_t cpuid;
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
 #ifdef __linux__
 	int linux_id;
 #endif
-	struct cpuinfo_x86_model_info model_info;
 	struct cpuinfo_x86_caches cache;
 	struct {
 		struct cpuinfo_tlb itlb_4KB;

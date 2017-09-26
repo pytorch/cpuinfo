@@ -6,7 +6,6 @@
 
 struct cpuinfo_x86_model_info cpuinfo_x86_decode_model_info(uint32_t eax) {
 	struct cpuinfo_x86_model_info model_info;
-	model_info.cpuid           = eax;
 	model_info.stepping        =  eax        & 0xF;
 	model_info.base_model      = (eax >> 4)  & 0xF;
 	model_info.base_family     = (eax >> 8)  & 0xF;

@@ -43,6 +43,7 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/x86/cache/init.c \
 	$(LOCAL_PATH)/src/x86/cache/descriptor.c \
 	$(LOCAL_PATH)/src/x86/cache/deterministic.c \
+	$(LOCAL_PATH)/src/x86/linux/cpuinfo.c \
 	$(LOCAL_PATH)/src/x86/linux/init.c
 endif # x86 or x86_64
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
@@ -94,6 +95,7 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/x86/cache/init.c \
 	$(LOCAL_PATH)/src/x86/cache/descriptor.c \
 	$(LOCAL_PATH)/src/x86/cache/deterministic.c \
+	$(LOCAL_PATH)/src/x86/linux/cpuinfo.c \
 	$(LOCAL_PATH)/src/x86/linux/init.c
 endif # x86 or x86_64
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include

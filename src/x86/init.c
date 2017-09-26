@@ -26,6 +26,8 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor processor[restrict 
 
 	if (max_base_index >= 1) {
 		const struct cpuid_regs leaf1 = cpuid(1);
+		processor->cpuid = leaf1.eax;
+
 		const struct cpuinfo_x86_model_info model_info = cpuinfo_x86_decode_model_info(leaf1.eax);
 		const enum cpuinfo_uarch uarch = processor->uarch =
 			cpuinfo_x86_decode_uarch(vendor, &model_info);
@@ -71,5 +73,6 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor processor[restrict 
 			brand_string[i] = cpuid(UINT32_C(0x80000002) + i);
 		}
 		memcpy(processor->brand_string, brand_string, sizeof(processor->brand_string));
+		cpuinfo_log_debug("raw CPUID brand string: \"%48s\"", processor->brand_string);
 	}
 }
