@@ -22,7 +22,7 @@ def main(args):
     build.export_cpath("include", ["cpuinfo.h"])
 
     with build.options(source_dir="src", macros=macros, extra_include_dirs="src"):
-        sources = ["init.c", "cache.c", "log.c"]
+        sources = ["init.c", "api.c", "log.c"]
         if build.target.is_x86_64:
             sources += [
                 "x86/init.c", "x86/info.c", "x86/vendor.c", "x86/uarch.c", "x86/name.c",
@@ -69,14 +69,16 @@ def main(args):
         with build.options(source_dir="tools", include_dirs=["src", "include"]):
             build.executable("cpuid-dump", build.cc("cpuid-dump.c"))
 
-    with build.options(source_dir="test", include_dirs="test", deps=[build, build.deps.googletest]):
+    with build.options(source_dir="test", deps=[build, build.deps.googletest]):
         build.smoketest("init-test", build.cxx("init.cc"))
+        if build.target.is_linux:
+            build.smoketest("get-current-test", build.cxx("get-current.cc"))
         if build.target.is_x86_64:
             build.smoketest("brand-string-test", build.cxx("name/brand-string.cc"))
-        if options.mock:
-            with build.options(macros={"CPUINFO_MOCK": int(options.mock)}):
-                if build.target.is_arm64 and build.target.is_linux:
-                    build.unittest("scaleway-test", build.cxx("scaleway.cc"))
+    if options.mock:
+        with build.options(source_dir="test", include_dirs="test", macros="CPUINFO_MOCK", deps=[build, build.deps.googletest]):
+            if build.target.is_arm64 and build.target.is_linux:
+                build.unittest("scaleway-test", build.cxx("scaleway.cc"))
 
     return build
 

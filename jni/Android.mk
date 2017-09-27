@@ -179,127 +179,127 @@ ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a))
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := blu-r1-hd-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/blu-r1-hd.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/blu-r1-hd.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-grand-prime-value-edition-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-grand-prime-value-edition.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-grand-prime-value-edition.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s3-us-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s3-us.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s3-us.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s4-us-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s4-us.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s4-us.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s5-global-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s5-global.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s5-global.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s5-us-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s5-us.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s5-us.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-tab-3-7.0-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-tab-3-7.0.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-tab-3-7.0.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-win-duos-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-win-duos.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-win-duos.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := lenovo-a6600-plus-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/lenovo-a6600-plus.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/lenovo-a6600-plus.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := lenovo-vibe-x2-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/lenovo-vibe-x2.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/lenovo-vibe-x2.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := lg-k10-eu-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/lg-k10-eu.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/lg-k10-eu.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := moto-e-gen1-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/moto-e-gen1.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/moto-e-gen1.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := moto-g-gen2-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/moto-g-gen2.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/moto-g-gen2.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := moto-g-gen3-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/moto-g-gen3.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/moto-g-gen3.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := nexus-s-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus-s.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus-s.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := nexus4-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus4.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus4.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := nexus6-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus6.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus6.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := xiaomi-redmi-2a-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/xiaomi-redmi-2a.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/xiaomi-redmi-2a.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
@@ -338,134 +338,134 @@ include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-c9-pro-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-c9-pro.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-c9-pro.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-j7-tmobile-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-j7-tmobile.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-tmobile.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-j7-uae-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-j7-uae.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-uae.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s6-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s6.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s6.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s7-us-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s7-us.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s7-us.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s7-global-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s7-global.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s7-global.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s8-us-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s8-us.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s8-us.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s8-global-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/galaxy-s8-global.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s8-global.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := huawei-p9-lite-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/huawei-p9-lite.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/huawei-p9-lite.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := huawei-mate-8-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/huawei-mate-8.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/huawei-mate-8.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := meizu-pro-6s-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/meizu-pro-6s.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/meizu-pro-6s.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := nexus5x-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus5x.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus5x.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := nexus6p-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus6p.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus6p.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := nexus9-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/nexus9.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus9.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := oppo-r9-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/oppo-r9.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/oppo-r9.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := pixel-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/pixel.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/pixel.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := pixel-xl-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/pixel-xl.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/pixel-xl.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := pixel-c-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/pixel-c.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/pixel-c.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := xperia-c4-dual-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/xperia-c4-dual.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/xperia-c4-dual.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
@@ -485,15 +485,15 @@ ifeq ($(TARGET_ARCH_ABI),x86)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := memo-pad-7-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/memo-pad-7.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/memo-pad-7.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := zenfone-2-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/zenfone-2.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/zenfone-2.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
