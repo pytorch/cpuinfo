@@ -125,7 +125,7 @@ struct cpuinfo_tlb {
 enum cpuinfo_vendor {
 	/** Processor vendor is not known to the library, or the library failed to get vendor information from the OS. */
 	cpuinfo_vendor_unknown = 0,
-	
+
 	/* Active vendors of modern CPUs */
 
 	/**
@@ -175,7 +175,7 @@ enum cpuinfo_vendor {
 	cpuinfo_vendor_motorola          = 34,
 
 	/* Defunct CPU vendors */
-		
+
 	/**
 	 * Transmeta Corporation. Vendor of x86 processor microarchitectures.
 	 *
@@ -330,7 +330,7 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_bobcat = 0x00200201,
 	/** AMD Jaguar mobile microarchitecture. */
 	cpuinfo_uarch_jaguar = 0x00200202,
-	
+
 	/** ARM7 series. */
 	cpuinfo_uarch_arm7  = 0x00300100,
 	/** ARM9 series. */
