@@ -3,7 +3,7 @@ LOCAL_PATH := $(call my-dir)/..
 include $(CLEAR_VARS)
 LOCAL_MODULE := cpuinfo
 LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
-	$(LOCAL_PATH)/src/cache.c \
+	$(LOCAL_PATH)/src/api.c \
 	$(LOCAL_PATH)/src/log.c \
 	$(LOCAL_PATH)/src/gpu/gles2.c \
 	$(LOCAL_PATH)/src/linux/current.c \
@@ -54,7 +54,7 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := cpuinfo_mock
 LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
-	$(LOCAL_PATH)/src/cache.c \
+	$(LOCAL_PATH)/src/api.c \
 	$(LOCAL_PATH)/src/log.c \
 	$(LOCAL_PATH)/src/gpu/gles2.c \
 	$(LOCAL_PATH)/src/linux/current.c \
@@ -168,6 +168,12 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
 LOCAL_STATIC_LIBRARIES := cpuinfo gtest
 include $(BUILD_EXECUTABLE)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := get-current-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/get-current.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test
+LOCAL_STATIC_LIBRARIES := cpuinfo gtest
+include $(BUILD_EXECUTABLE)
 
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a))
 

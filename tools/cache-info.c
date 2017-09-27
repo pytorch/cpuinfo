@@ -56,19 +56,19 @@ void report_cache(
 
 int main(int argc, char** argv) {
 	cpuinfo_initialize();
-	if ((cpuinfo_get_l1i_cache().count != 0 && cpuinfo_get_l1i_cache().instances->flags & CPUINFO_CACHE_UNIFIED) == 0) {
-		report_cache(cpuinfo_get_l1i_cache().count, cpuinfo_get_l1i_cache().instances, 1, "instruction");
+	if (cpuinfo_get_l1i_caches_count() != 0 && (cpuinfo_get_l1i_cache(0)->flags & CPUINFO_CACHE_UNIFIED) == 0) {
+		report_cache(cpuinfo_get_l1i_caches_count(), cpuinfo_get_l1i_cache(0), 1, "instruction");
 	}
-	if (cpuinfo_get_l1d_cache().count != 0) {
-		report_cache(cpuinfo_get_l1d_cache().count, cpuinfo_get_l1d_cache().instances, 1, "data");
+	if (cpuinfo_get_l1d_caches_count() != 0) {
+		report_cache(cpuinfo_get_l1d_caches_count(), cpuinfo_get_l1d_cache(0), 1, "data");
 	}
-	if (cpuinfo_get_l2_cache().count != 0) {
-		report_cache(cpuinfo_get_l2_cache().count, cpuinfo_get_l2_cache().instances, 2, "data");
+	if (cpuinfo_get_l2_caches_count() != 0) {
+		report_cache(cpuinfo_get_l2_caches_count(), cpuinfo_get_l2_cache(0), 2, "data");
 	}
-	if (cpuinfo_get_l3_cache().count != 0) {
-		report_cache(cpuinfo_get_l3_cache().count, cpuinfo_get_l3_cache().instances, 3, "data");
+	if (cpuinfo_get_l3_caches_count() != 0) {
+		report_cache(cpuinfo_get_l3_caches_count(), cpuinfo_get_l3_cache(0), 3, "data");
 	}
-	if (cpuinfo_get_l4_cache().count != 0) {
-		report_cache(cpuinfo_get_l4_cache().count, cpuinfo_get_l4_cache().instances, 4, "data");
+	if (cpuinfo_get_l4_caches_count() != 0) {
+		report_cache(cpuinfo_get_l4_caches_count(), cpuinfo_get_l4_cache(0), 4, "data");
 	}
 }

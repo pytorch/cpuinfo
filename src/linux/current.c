@@ -7,6 +7,7 @@
 #include <sched.h>
 
 #include <cpuinfo.h>
+#include <api.h>
 #include <linux/api.h>
 
 
@@ -14,7 +15,7 @@ const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map;
 const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map;
 
 
-const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_current_processor(void) {
+const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_current_processor(void) {
 	const int cpu = sched_getcpu();
 	if (cpu >= 0) {
 		return cpuinfo_linux_cpu_to_processor_map[cpu];
@@ -23,7 +24,7 @@ const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_current_processor(void) {
 	}
 }
 
-const struct cpuinfo_core* CPUINFO_ABI cpuinfo_current_core(void) {
+const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_current_core(void) {
 	const int cpu = sched_getcpu();
 	if (cpu >= 0) {
 		return cpuinfo_linux_cpu_to_core_map[cpu];

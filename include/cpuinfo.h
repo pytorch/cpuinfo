@@ -80,15 +80,6 @@
 #define CPUINFO_CACHE_INCLUSIVE        0x00000002
 #define CPUINFO_CACHE_COMPLEX_INDEXING 0x00000004
 
-enum cpuinfo_cache_level {
-	cpuinfo_cache_level_1i  = 0,
-	cpuinfo_cache_level_1d  = 1,
-	cpuinfo_cache_level_2   = 2,
-	cpuinfo_cache_level_3   = 3,
-	cpuinfo_cache_level_4   = 4,
-	cpuinfo_cache_level_max = 5,
-};
-
 struct cpuinfo_cache {
 	/** Cache size in bytes */
 	uint32_t size;
@@ -110,11 +101,6 @@ struct cpuinfo_cache {
 	uint32_t processor_start;
 	/** Number of logical processors that share this cache */
 	uint32_t processor_count;
-};
-
-struct cpuinfo_caches {
-	uint32_t count;
-	const struct cpuinfo_cache* instances;
 };
 
 struct cpuinfo_trace_cache {
@@ -1096,7 +1082,7 @@ static inline bool cpuinfo_has_x86_movbe(void) {
 	#endif
 }
 
-static inline bool cpuinfo_has_x86_lahf_salf(void) {
+static inline bool cpuinfo_has_x86_lahf_sahf(void) {
 	#if CPUINFO_ARCH_X86
 		return true;
 	#elif CPUINFO_ARCH_X86_64
@@ -1503,22 +1489,35 @@ static inline bool cpuinfo_has_arm_crc32(void) {
 	#endif
 }
 
-struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l1i_cache(void);
-struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l1d_cache(void);
-struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l2_cache(void);
-struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l3_cache(void);
-struct cpuinfo_caches CPUINFO_ABI cpuinfo_get_l4_cache(void);
+const struct cpuinfo_processor* cpuinfo_get_processors(void);
+const struct cpuinfo_core* cpuinfo_get_cores(void);
+const struct cpuinfo_package* cpuinfo_get_packages(void);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_caches(void);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_caches(void);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l2_caches(void);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l3_caches(void);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_caches(void);
 
-extern struct cpuinfo_processor* cpuinfo_processors;
-extern struct cpuinfo_core* cpuinfo_cores;
-extern struct cpuinfo_package* cpuinfo_packages;
+const struct cpuinfo_processor* cpuinfo_get_processor(uint32_t index);
+const struct cpuinfo_core* cpuinfo_get_core(uint32_t index);
+const struct cpuinfo_package* cpuinfo_get_package(uint32_t index);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_cache(uint32_t index);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_cache(uint32_t index);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l2_cache(uint32_t index);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l3_cache(uint32_t index);
+const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_cache(uint32_t index);
 
-extern uint32_t cpuinfo_processors_count;
-extern uint32_t cpuinfo_cores_count;
-extern uint32_t cpuinfo_packages_count;
+uint32_t cpuinfo_get_processors_count(void);
+uint32_t cpuinfo_get_cores_count(void);
+uint32_t cpuinfo_get_packages_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_l1i_caches_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_l1d_caches_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_l2_caches_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_l3_caches_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_l4_caches_count(void);
 
-const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_current_processor(void);
-const struct cpuinfo_core* CPUINFO_ABI cpuinfo_current_core(void);
+const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_current_processor(void);
+const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_current_core(void);
 
 #ifdef __cplusplus
 } /* extern "C" */

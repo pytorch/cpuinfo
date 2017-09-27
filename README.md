@@ -31,7 +31,7 @@ if (cpuinfo_has_x86_avx) {
 Check if the thread runs on a Cortex-A53 core
 ```c
 cpuinfo_initialize();
-if (cpuinfo_current_core()->uarch == cpuinfo_uarch_cortex_a53) {
+if (cpuinfo_get_current_core()->uarch == cpuinfo_uarch_cortex_a53) {
     cortex_a53_implementation(arguments);
 }
 ```
@@ -39,7 +39,7 @@ if (cpuinfo_current_core()->uarch == cpuinfo_uarch_cortex_a53) {
 Get the size of level 1 data cache on the fastest core in the processor (e.g. big core in big.LITTLE ARM systems):
 ```c
 cpuinfo_initialize();
-const size_t l1_size = cpuinfo_processors[0].l1d->size;
+const size_t l1_size = cpuinfo_get_processor(0)->l1d->size;
 ```
 
 Pin thread to cores sharing L2 cache with the current core (Linux or Android)
@@ -47,7 +47,7 @@ Pin thread to cores sharing L2 cache with the current core (Linux or Android)
 cpuinfo_initialize();
 cpu_set_t cpu_set;
 CPU_ZERO(&cpu_set);
-const struct cpuinfo_cache* current_l2 = cpuinfo_current_processor()->l2;
+const struct cpuinfo_cache* current_l2 = cpuinfo_get_current_processor()->l2;
 for (uint32_t i = 0; i < current_l2->processor_count; i++) {
     CPU_SET(cpuinfo_processors[current_l2->processor_start + i].linux_id, &cpu_set);
 }

@@ -927,4 +927,3 @@ TEST(NVIDIA, tegra_t210) {
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, l2.size);
 }
-

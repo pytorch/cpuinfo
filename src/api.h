@@ -5,9 +5,23 @@
 
 #include <cpuinfo.h>
 
+enum cpuinfo_cache_level {
+	cpuinfo_cache_level_1i  = 0,
+	cpuinfo_cache_level_1d  = 1,
+	cpuinfo_cache_level_2   = 2,
+	cpuinfo_cache_level_3   = 3,
+	cpuinfo_cache_level_4   = 4,
+	cpuinfo_cache_level_max = 5,
+};
+
+extern struct cpuinfo_processor* cpuinfo_processors;
+extern struct cpuinfo_core* cpuinfo_cores;
+extern struct cpuinfo_package* cpuinfo_packages;
 extern struct cpuinfo_cache* cpuinfo_cache[cpuinfo_cache_level_max];
-extern uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
 extern uint32_t cpuinfo_processors_count;
+extern uint32_t cpuinfo_cores_count;
+extern uint32_t cpuinfo_packages_count;
+extern uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
 
 void cpuinfo_x86_mach_init(void);
 void cpuinfo_x86_linux_init(void);

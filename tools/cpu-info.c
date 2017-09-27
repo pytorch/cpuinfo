@@ -184,37 +184,35 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 int main(int argc, char** argv) {
 	cpuinfo_initialize();
 	#ifdef __ANDROID__
-		printf("SoC name: %s\n", cpuinfo_packages[0].name);
-		printf("GPU name: %s\n", cpuinfo_packages[0].gpu_name);
+		printf("SoC name: %s\n", cpuinfo_get_package(0)->name);
+		printf("GPU name: %s\n", cpuinfo_get_package(0)->gpu_name);
 	#else
 		printf("Packages:\n");
-		for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
-			printf("\t%"PRIu32": %s\n", i, cpuinfo_packages[i].name);
+		for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+			printf("\t%"PRIu32": %s\n", i, cpuinfo_get_package(i)->name);
 		}
 	#endif
 	printf("Cores:\n");
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		if (cpuinfo_cores[i].processor_count == 1) {
-			printf("\t%"PRIu32": 1 processor (%"PRIu32")\n",
-				i, cpuinfo_cores[i].processor_start);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const struct cpuinfo_core* core = cpuinfo_get_core(i);
+		if (core->processor_count == 1) {
+			printf("\t%"PRIu32": 1 processor (%"PRIu32")\n", i, core->processor_start);
 		} else {
 			printf("\t%"PRIu32": %"PRIu32" processors (%"PRIu32"-%"PRIu32")\n",
-				i,
-				cpuinfo_cores[i].processor_count,
-				cpuinfo_cores[i].processor_start,
-				cpuinfo_cores[i].processor_start + cpuinfo_cores[i].processor_count - 1);
+				i, core->processor_count, core->processor_start, core->processor_start + core->processor_count - 1);
 		}
 	}
 	printf("Logical processors:\n");
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		const char* vendor_string = vendor_to_string(cpuinfo_processors[i].core->vendor);
-		const char* uarch_string = uarch_to_string(cpuinfo_processors[i].core->uarch);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const struct cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		const char* vendor_string = vendor_to_string(processor->core->vendor);
+		const char* uarch_string = uarch_to_string(processor->core->uarch);
 		if (vendor_string == NULL) {
 			printf("\t%"PRIu32": vendor 0x%08"PRIx32" uarch 0x%08"PRIx32"\n",
-				i, (uint32_t) cpuinfo_processors[i].core->vendor, (uint32_t) cpuinfo_processors[i].core->uarch);
+				i, (uint32_t) processor->core->vendor, (uint32_t) processor->core->uarch);
 		} else if (uarch_string == NULL) {
 			printf("\t%"PRIu32": %s uarch 0x%08"PRIx32"\n",
-				i, vendor_string, (uint32_t) cpuinfo_processors[i].core->uarch);
+				i, vendor_string, (uint32_t) processor->core->uarch);
 		} else {
 			printf("\t%"PRIu32": %s %s\n", i, vendor_string, uarch_string);
 		}

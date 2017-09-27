@@ -5,150 +5,150 @@
 
 
 TEST(PROCESSORS, count) {
-	ASSERT_EQ(4, cpuinfo_processors_count);
+	ASSERT_EQ(4, cpuinfo_get_processors_count());
 }
 
 TEST(PROCESSORS, non_null) {
-	ASSERT_TRUE(cpuinfo_processors);
+	ASSERT_TRUE(cpuinfo_get_processors());
 }
 
 TEST(PROCESSORS, smt_id) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(0, cpuinfo_processors[i].smt_id);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_processor(i)->smt_id);
 	}
 }
 
 TEST(PROCESSORS, core) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(&cpuinfo_cores[i], cpuinfo_processors[i].core);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_core(i), cpuinfo_get_processor(i)->core);
 	}
 }
 
 TEST(PROCESSORS, package) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(&cpuinfo_packages[0], cpuinfo_processors[i].package);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_package(0), cpuinfo_get_processor(i)->package);
 	}
 }
 
 TEST(PROCESSORS, linux_id) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(i, cpuinfo_processors[i].linux_id);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_EQ(i, cpuinfo_get_processor(i)->linux_id);
 	}
 }
 
 TEST(PROCESSORS, l1i) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(&cpuinfo_get_l1i_cache().instances[i], cpuinfo_processors[i].cache.l1i);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_l1i_cache(i), cpuinfo_get_processor(i)->cache.l1i);
 	}
 }
 
 TEST(PROCESSORS, l1d) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(&cpuinfo_get_l1d_cache().instances[i], cpuinfo_processors[i].cache.l1d);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_l1d_cache(i), cpuinfo_get_processor(i)->cache.l1d);
 	}
 }
 
 TEST(PROCESSORS, l2) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_EQ(&cpuinfo_get_l2_cache().instances[0], cpuinfo_processors[i].cache.l2);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_l2_cache(0), cpuinfo_get_processor(i)->cache.l2);
 	}
 }
 
 TEST(PROCESSORS, l3) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_FALSE(cpuinfo_processors[i].cache.l3);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_FALSE(cpuinfo_get_processor(i)->cache.l3);
 	}
 }
 
 TEST(PROCESSORS, l4) {
-	for (uint32_t i = 0; i < cpuinfo_processors_count; i++) {
-		ASSERT_FALSE(cpuinfo_processors[i].cache.l4);
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		ASSERT_FALSE(cpuinfo_get_processor(i)->cache.l4);
 	}
 }
 
 TEST(CORES, count) {
-	ASSERT_EQ(4, cpuinfo_cores_count);
+	ASSERT_EQ(4, cpuinfo_get_cores_count());
 }
 
 TEST(CORES, non_null) {
-	ASSERT_TRUE(cpuinfo_cores);
+	ASSERT_TRUE(cpuinfo_get_cores());
 }
 
 TEST(CORES, processor_start) {
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		ASSERT_EQ(i, cpuinfo_cores[i].processor_start);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(i, cpuinfo_get_core(i)->processor_start);
 	}
 }
 
 TEST(CORES, processor_count) {
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		ASSERT_EQ(1, cpuinfo_cores[i].processor_count);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(1, cpuinfo_get_core(i)->processor_count);
 	}
 }
 
 TEST(CORES, core_id) {
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		ASSERT_EQ(i, cpuinfo_cores[i].core_id);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(i, cpuinfo_get_core(i)->core_id);
 	}
 }
 
 TEST(CORES, package) {
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		ASSERT_EQ(&cpuinfo_packages[0], cpuinfo_cores[i].package);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_package(0), cpuinfo_get_core(i)->package);
 	}
 }
 
 TEST(CORES, vendor) {
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		ASSERT_EQ(cpuinfo_vendor_arm, cpuinfo_cores[i].vendor);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(cpuinfo_vendor_arm, cpuinfo_get_core(i)->vendor);
 	}
 }
 
 TEST(CORES, uarch) {
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		ASSERT_EQ(cpuinfo_uarch_cortex_a5, cpuinfo_cores[i].uarch);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(cpuinfo_uarch_cortex_a5, cpuinfo_get_core(i)->uarch);
 	}
 }
 
 TEST(CORES, midr) {
-	for (uint32_t i = 0; i < cpuinfo_cores_count; i++) {
-		ASSERT_EQ(UINT32_C(0x410FC051), cpuinfo_cores[i].midr);
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(UINT32_C(0x410FC051), cpuinfo_get_core(i)->midr);
 	}
 }
 
 TEST(PACKAGES, count) {
-	ASSERT_EQ(1, cpuinfo_packages_count);
+	ASSERT_EQ(1, cpuinfo_get_packages_count());
 }
 
 TEST(PACKAGES, name) {
-	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
 		ASSERT_EQ("Qualcomm MSM8625Q",
-			std::string(cpuinfo_packages[i].name,
-				strnlen(cpuinfo_packages[i].name, CPUINFO_PACKAGE_NAME_MAX)));
+			std::string(cpuinfo_get_package(i)->name,
+				strnlen(cpuinfo_get_package(i)->name, CPUINFO_PACKAGE_NAME_MAX)));
 	}
 }
 
 TEST(PACKAGES, processor_start) {
-	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
-		ASSERT_EQ(0, cpuinfo_packages[i].processor_start);
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_package(i)->processor_start);
 	}
 }
 
 TEST(PACKAGES, processor_count) {
-	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
-		ASSERT_EQ(4, cpuinfo_packages[i].processor_count);
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		ASSERT_EQ(4, cpuinfo_get_package(i)->processor_count);
 	}
 }
 
 TEST(PACKAGES, core_start) {
-	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
-		ASSERT_EQ(0, cpuinfo_packages[i].core_start);
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_package(i)->core_start);
 	}
 }
 
 TEST(PACKAGES, core_count) {
-	for (uint32_t i = 0; i < cpuinfo_packages_count; i++) {
-		ASSERT_EQ(4, cpuinfo_packages[i].core_count);
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		ASSERT_EQ(4, cpuinfo_get_package(i)->core_count);
 	}
 }
 
@@ -273,198 +273,169 @@ TEST(ISA, crc32) {
 }
 
 TEST(L1I, count) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	ASSERT_EQ(4, l1i.count);
+	ASSERT_EQ(4, cpuinfo_get_l1i_caches_count());
 }
 
 TEST(L1I, non_null) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	ASSERT_TRUE(l1i.instances);
+	ASSERT_TRUE(cpuinfo_get_l1i_caches());
 }
 
 TEST(L1I, size) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(32 * 1024, l1i.instances[k].size);
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		ASSERT_EQ(32 * 1024, cpuinfo_get_l1i_cache(i)->size);
 	}
 }
 
 TEST(L1I, associativity) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(2, l1i.instances[k].associativity);
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		ASSERT_EQ(2, cpuinfo_get_l1i_cache(i)->associativity);
 	}
 }
 
 TEST(L1I, sets) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(l1i.instances[k].size,
-			l1i.instances[k].sets * l1i.instances[k].line_size * l1i.instances[k].partitions * l1i.instances[k].associativity);
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_l1i_cache(i)->size,
+			cpuinfo_get_l1i_cache(i)->sets * cpuinfo_get_l1i_cache(i)->line_size * cpuinfo_get_l1i_cache(i)->partitions * cpuinfo_get_l1i_cache(i)->associativity);
 	}
 }
 
 TEST(L1I, partitions) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(1, l1i.instances[k].partitions);
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		ASSERT_EQ(1, cpuinfo_get_l1i_cache(i)->partitions);
 	}
 }
 
 TEST(L1I, line_size) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(32, l1i.instances[k].line_size);
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		ASSERT_EQ(32, cpuinfo_get_l1i_cache(i)->line_size);
 	}
 }
 
 TEST(L1I, flags) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(0, l1i.instances[k].flags);
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_l1i_cache(i)->flags);
 	}
 }
 
 TEST(L1I, processors) {
-	cpuinfo_caches l1i = cpuinfo_get_l1i_cache();
-	for (uint32_t k = 0; k < l1i.count; k++) {
-		ASSERT_EQ(k, l1i.instances[k].processor_start);
-		ASSERT_EQ(1, l1i.instances[k].processor_count);
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		ASSERT_EQ(i, cpuinfo_get_l1i_cache(i)->processor_start);
+		ASSERT_EQ(1, cpuinfo_get_l1i_cache(i)->processor_count);
 	}
 }
 
 TEST(L1D, count) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	ASSERT_EQ(4, l1d.count);
+	ASSERT_EQ(4, cpuinfo_get_l1d_caches_count());
 }
 
 TEST(L1D, non_null) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	ASSERT_TRUE(l1d.instances);
+	ASSERT_TRUE(cpuinfo_get_l1d_caches());
 }
 
 TEST(L1D, size) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(32 * 1024, l1d.instances[k].size);
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		ASSERT_EQ(32 * 1024, cpuinfo_get_l1d_cache(i)->size);
 	}
 }
 
 TEST(L1D, associativity) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(4, l1d.instances[k].associativity);
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		ASSERT_EQ(4, cpuinfo_get_l1d_cache(i)->associativity);
 	}
 }
 
 TEST(L1D, sets) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(l1d.instances[k].size,
-			l1d.instances[k].sets * l1d.instances[k].line_size * l1d.instances[k].partitions * l1d.instances[k].associativity);
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_l1d_cache(i)->size,
+			cpuinfo_get_l1d_cache(i)->sets * cpuinfo_get_l1d_cache(i)->line_size * cpuinfo_get_l1d_cache(i)->partitions * cpuinfo_get_l1d_cache(i)->associativity);
 	}
 }
 
 TEST(L1D, partitions) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(1, l1d.instances[k].partitions);
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		ASSERT_EQ(1, cpuinfo_get_l1d_cache(i)->partitions);
 	}
 }
 
 TEST(L1D, line_size) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(32, l1d.instances[k].line_size);
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		ASSERT_EQ(32, cpuinfo_get_l1d_cache(i)->line_size);
 	}
 }
 
 TEST(L1D, flags) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(0, l1d.instances[k].flags);
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_l1d_cache(i)->flags);
 	}
 }
 
 TEST(L1D, processors) {
-	cpuinfo_caches l1d = cpuinfo_get_l1d_cache();
-	for (uint32_t k = 0; k < l1d.count; k++) {
-		ASSERT_EQ(k, l1d.instances[k].processor_start);
-		ASSERT_EQ(1, l1d.instances[k].processor_count);
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		ASSERT_EQ(i, cpuinfo_get_l1d_cache(i)->processor_start);
+		ASSERT_EQ(1, cpuinfo_get_l1d_cache(i)->processor_count);
 	}
 }
 
 TEST(L2, count) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	ASSERT_EQ(1, l2.count);
+	ASSERT_EQ(1, cpuinfo_get_l2_caches_count());
 }
 
 TEST(L2, non_null) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	ASSERT_TRUE(l2.instances);
+	ASSERT_TRUE(cpuinfo_get_l2_caches());
 }
 
 TEST(L2, size) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(256 * 1024, l2.instances[k].size);
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		ASSERT_EQ(256 * 1024, cpuinfo_get_l2_cache(i)->size);
 	}
 }
 
 TEST(L2, associativity) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(8, l2.instances[k].associativity);
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		ASSERT_EQ(8, cpuinfo_get_l2_cache(i)->associativity);
 	}
 }
 
 TEST(L2, sets) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(l2.instances[k].size,
-			l2.instances[k].sets * l2.instances[k].line_size * l2.instances[k].partitions * l2.instances[k].associativity);
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_l2_cache(i)->size,
+			cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->line_size * cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->associativity);
 	}
 }
 
 TEST(L2, partitions) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(1, l2.instances[k].partitions);
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		ASSERT_EQ(1, cpuinfo_get_l2_cache(i)->partitions);
 	}
 }
 
 TEST(L2, line_size) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(32, l2.instances[k].line_size);
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		ASSERT_EQ(32, cpuinfo_get_l2_cache(i)->line_size);
 	}
 }
 
 TEST(L2, flags) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(0, l2.instances[k].flags);
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_l2_cache(i)->flags);
 	}
 }
 
 TEST(L2, processors) {
-	cpuinfo_caches l2 = cpuinfo_get_l2_cache();
-	for (uint32_t k = 0; k < l2.count; k++) {
-		ASSERT_EQ(0, l2.instances[k].processor_start);
-		ASSERT_EQ(4, l2.instances[k].processor_count);
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_l2_cache(i)->processor_start);
+		ASSERT_EQ(4, cpuinfo_get_l2_cache(i)->processor_count);
 	}
 }
 
 TEST(L3, none) {
-	cpuinfo_caches l3 = cpuinfo_get_l3_cache();
-	ASSERT_EQ(0, l3.count);
-	ASSERT_FALSE(l3.instances);
+	ASSERT_EQ(0, cpuinfo_get_l3_caches_count());
+	ASSERT_FALSE(cpuinfo_get_l3_caches());
 }
 
 TEST(L4, none) {
-	cpuinfo_caches l4 = cpuinfo_get_l4_cache();
-	ASSERT_EQ(0, l4.count);
-	ASSERT_FALSE(l4.instances);
+	ASSERT_EQ(0, cpuinfo_get_l4_caches_count());
+	ASSERT_FALSE(cpuinfo_get_l4_caches());
 }
 
 #include <galaxy-win-duos.h>
