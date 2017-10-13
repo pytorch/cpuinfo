@@ -431,10 +431,28 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	isa.avx512vbmi = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00000002));
 
 	/*
-	 * AVX512_VPOPCNTDQ instructions:
+	 * AVX512VBMI2 instructions:
+	 * - Intel: ecx[bit 6] in structured feature info.
+	 */
+	isa.avx512vbmi2 = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00000040));
+
+	/*
+	 * AVX512BITALG instructions:
+	 * - Intel: ecx[bit 12] in structured feature info.
+	 */
+	isa.avx512bitalg = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00001000));
+
+	/*
+	 * AVX512VPOPCNTDQ instructions:
 	 * - Intel: ecx[bit 14] in structured feature info.
 	 */
 	isa.avx512vpopcntdq = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00004000));
+
+	/*
+	 * AVX512VNNI instructions:
+	 * - Intel: ecx[bit 11] in structured feature info.
+	 */
+	isa.avx512vnni = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00000800));
 
 	/*
 	 * AVX512_4VNNIW instructions:
@@ -564,10 +582,28 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	isa.aes = !!(basic_info.ecx & UINT32_C(0x02000000));
 
 	/*
+	 * VAES instructions:
+	 * - Intel: ecx[bit 9] in structured feature info.
+	 */
+	isa.vaes = !!(structured_feature_info.ecx & UINT32_C(0x00000200));
+
+	/*
 	 * PCLMULQDQ instruction:
 	 * - Intel: ecx[bit 1] in basic info (reserved bit on AMD CPUs).
 	 */
 	isa.pclmulqdq = !!(basic_info.ecx & UINT32_C(0x00000002));
+
+	/*
+	 * VPCLMULQDQ instruction:
+	 * - Intel: ecx[bit 10] in structured feature info.
+	 */
+	isa.vpclmulqdq = !!(structured_feature_info.ecx & UINT32_C(0x00000400));
+
+	/*
+	 * GFNI instructions:
+	 * - Intel: ecx[bit 8] in structured feature info.
+	 */
+	isa.gfni = !!(structured_feature_info.ecx & UINT32_C(0x00000100));
 
 	/*
 	 * RDRAND instruction:

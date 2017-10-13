@@ -59,7 +59,10 @@ int main(int argc, char** argv) {
 		printf("\tAVX512VL: %s\n", cpuinfo_has_x86_avx512vl() ? "yes" : "no");
 		printf("\tAVX512IFMA: %s\n", cpuinfo_has_x86_avx512ifma() ? "yes" : "no");
 		printf("\tAVX512VBMI: %s\n", cpuinfo_has_x86_avx512vbmi() ? "yes" : "no");
+		printf("\tAVX512VBMI2: %s\n", cpuinfo_has_x86_avx512vbmi2() ? "yes" : "no");
+		printf("\tAVX512BITALG: %s\n", cpuinfo_has_x86_avx512bitalg() ? "yes" : "no");
 		printf("\tAVX512VPOPCNTDQ: %s\n", cpuinfo_has_x86_avx512vpopcntdq() ? "yes" : "no");
+		printf("\tAVX512VNNI: %s\n", cpuinfo_has_x86_avx512vnni() ? "yes" : "no");
 		printf("\tAVX512_4VNNIW: %s\n", cpuinfo_has_x86_avx512_4vnniw() ? "yes" : "no");
 		printf("\tAVX512_4FMAPS: %s\n", cpuinfo_has_x86_avx512_4fmaps() ? "yes" : "no");
 
@@ -79,7 +82,10 @@ int main(int argc, char** argv) {
 
 	printf("Cryptography extensions:\n");
 		printf("\tAES: %s\n", cpuinfo_has_x86_aes() ? "yes" : "no");
+		printf("\tVAES: %s\n", cpuinfo_has_x86_vaes() ? "yes" : "no");
 		printf("\tPCLMULQDQ: %s\n", cpuinfo_has_x86_pclmulqdq() ? "yes" : "no");
+		printf("\tVPCLMULQDQ: %s\n", cpuinfo_has_x86_vpclmulqdq() ? "yes" : "no");
+		printf("\tGFNI: %s\n", cpuinfo_has_x86_gfni() ? "yes" : "no");
 		printf("\tRDRAND: %s\n", cpuinfo_has_x86_rdrand() ? "yes" : "no");
 		printf("\tRDSEED: %s\n", cpuinfo_has_x86_rdseed() ? "yes" : "no");
 		printf("\tSHA: %s\n", cpuinfo_has_x86_sha() ? "yes" : "no");

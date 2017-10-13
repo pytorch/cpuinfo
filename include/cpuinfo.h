@@ -546,7 +546,10 @@ void CPUINFO_ABI cpuinfo_deinitialize(void);
 		bool avx512vl;
 		bool avx512ifma;
 		bool avx512vbmi;
+		bool avx512vbmi2;
+		bool avx512bitalg;
 		bool avx512vpopcntdq;
+		bool avx512vnni;
 		bool avx512_4vnniw;
 		bool avx512_4fmaps;
 		bool hle;
@@ -571,7 +574,10 @@ void CPUINFO_ABI cpuinfo_deinitialize(void);
 		bool bmi2;
 		bool adx;
 		bool aes;
+		bool vaes;
 		bool pclmulqdq;
+		bool vpclmulqdq;
+		bool gfni;
 		bool rdrand;
 		bool rdseed;
 		bool sha;
@@ -982,9 +988,33 @@ static inline bool cpuinfo_has_x86_avx512vbmi(void) {
 	#endif
 }
 
+static inline bool cpuinfo_has_x86_avx512vbmi2(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512vbmi2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512bitalg(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512bitalg;
+	#else
+		return false;
+	#endif
+}
+
 static inline bool cpuinfo_has_x86_avx512vpopcntdq(void) {
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		return cpuinfo_isa.avx512vpopcntdq;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512vnni(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512vnni;
 	#else
 		return false;
 	#endif
@@ -1154,9 +1184,33 @@ static inline bool cpuinfo_has_x86_aes(void) {
 	#endif
 }
 
+static inline bool cpuinfo_has_x86_vaes(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.vaes;
+	#else
+		return false;
+	#endif
+}
+
 static inline bool cpuinfo_has_x86_pclmulqdq(void) {
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		return cpuinfo_isa.pclmulqdq;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_vpclmulqdq(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.vpclmulqdq;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_gfni(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.gfni;
 	#else
 		return false;
 	#endif
