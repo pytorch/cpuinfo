@@ -1013,7 +1013,7 @@ static inline bool cpuinfo_has_x86_avx512vpopcntdq(void) {
 }
 
 static inline bool cpuinfo_has_x86_avx512vnni(void) {
-	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_X86_64
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		return cpuinfo_isa.avx512vnni;
 	#else
 		return false;
