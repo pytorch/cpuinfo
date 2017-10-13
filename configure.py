@@ -32,7 +32,10 @@ def main(args):
             if build.target.is_macos:
                 sources += ["x86/mach/init.c"]
             elif build.target.is_linux:
-                sources += ["x86/linux/init.c"]
+                sources += [
+                    "x86/linux/init.c",
+                    "x86/linux/cpuinfo.c",
+                ]
             sources.append("x86/isa.c" if not build.target.is_nacl else "x86/nacl/isa.c")
         if build.target.is_arm or build.target.is_arm64:
             sources += ["arm/uarch.c", "arm/cache.c"]
@@ -40,8 +43,6 @@ def main(args):
                 sources += [
                     "arm/linux/init.c",
                     "arm/linux/cpuinfo.c",
-                    "linux/smallfile.c",
-                    "linux/multiline.c",
                 ]
                 if build.target.is_arm:
                     sources.append("arm/linux/arm32-isa.c")
@@ -54,6 +55,8 @@ def main(args):
             sources += [
                 "linux/current.c",
                 "linux/cpulist.c",
+                "linux/smallfile.c",
+                "linux/multiline.c",
                 "linux/processors.c",
             ]
             if options.mock:
