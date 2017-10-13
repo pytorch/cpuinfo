@@ -52,7 +52,7 @@ void cpuinfo_x86_mach_init(void) {
 
 	const uint32_t threads_per_core = mach_topology.threads / mach_topology.cores;
 	const uint32_t threads_per_package = mach_topology.threads / mach_topology.packages;
-	const uint32_t cores_per_package = mach_topology.packages / mach_topology.cores;
+	const uint32_t cores_per_package = mach_topology.cores / mach_topology.packages;
 	for (uint32_t i = 0; i < mach_topology.packages; i++) {
 		packages[i] = (struct cpuinfo_package) {
 			.processor_start = i * threads_per_package,
