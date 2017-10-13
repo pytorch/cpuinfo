@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0 FATAL_ERROR)
 INCLUDE(GNUInstallDirs)
 
 # ---[ Project and semantic versioning.
-PROJECT(cpuinfo VERSION 1.0.0 DESCRIPTION "CPU INFOrmation library")
+PROJECT(cpuinfo LANGUAGES C CXX VERSION 1.0.0 DESCRIPTION "CPU INFOrmation library")
 
 # ---[ Options.
 OPTION(BUILD_TOOLS "Build command-line tools" ON)
