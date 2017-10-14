@@ -2,6 +2,9 @@
 #ifndef CPUINFO_MOCK_H
 #define CPUINFO_MOCK_H
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <cpuinfo.h>
 #if defined(__linux__)
 	#include <sys/types.h>
