@@ -44,13 +44,13 @@ inline static const char* parse_number(const char* string, const char* end, uint
 	while (string != end) {
 		const uint32_t digit = (uint32_t) (*string) - (uint32_t) '0';
 		if (digit >= 10) {
-			return string;
+			break;
 		}
 		number = number * UINT32_C(10) + digit;
 		string += 1;
 	}
 	*number_ptr = number;
-	return end;
+	return string;
 }
 
 inline static bool parse_entry(const char* entry_start, const char* entry_end, cpuinfo_cpulist_callback callback, void* context) {
