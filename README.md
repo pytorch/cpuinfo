@@ -23,7 +23,7 @@ if (cpuinfo_has_arm_neon()) {
 Check if the host CPU supports x86 AVX
 ```c
 cpuinfo_initialize();
-if (cpuinfo_has_x86_avx) {
+if (cpuinfo_has_x86_avx()) {
     avx_implementation(arguments);
 }
 ```
