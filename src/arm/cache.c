@@ -446,7 +446,7 @@ void cpuinfo_arm_decode_cache(
 			if (midr_is_qualcomm_cortex_a53_silver(midr)) {
 				/* Qualcomm-modified Cortex-A53 in Snapdragon 630/660/835 */
 
-				size_t l2_size = 512 * 1024;
+				uint32_t l2_size = 512 * 1024;
 				if (chipset->series == cpuinfo_arm_chipset_series_qualcomm_msm && chipset->model == 8998) {
 					/* Snapdragon 835 (MSM8998): 1 MB L2 (little cores only) */
 					l2_size = 1024 * 1024;
@@ -474,8 +474,8 @@ void cpuinfo_arm_decode_cache(
 				/* Standard Cortex-A53 */
 
 				/* Use conservative values by default */
-				size_t l1_size = 16 * 1024;
-				size_t l2_size = 256 * 1024;
+				uint32_t l1_size = 16 * 1024;
+				uint32_t l2_size = 256 * 1024;
 				switch (chipset->series) {
 					case cpuinfo_arm_chipset_series_qualcomm_msm:
 						l1_size = 32 * 1024;
@@ -690,7 +690,7 @@ void cpuinfo_arm_decode_cache(
 			 * [2] http://www.anandtech.com/show/11088/hisilicon-kirin-960-performance-and-power/3
 			 * [3] https://arstechnica.com/gadgets/2017/05/qualcomms-snapdragon-660-and-630-bring-more-high-end-features-to-midrange-chips/
 			 */
-			size_t l2_size = 1024 * 1024;
+			uint32_t l2_size = 1024 * 1024;
 			switch (midr) {
 				case UINT32_C(0x51AF8001): /* Kryo 280 Gold */
 					l2_size = 2 * 1024 * 1024;

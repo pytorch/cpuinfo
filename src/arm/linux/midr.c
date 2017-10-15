@@ -380,7 +380,6 @@ static const struct hmp_config hmp_configs[] = {
 	},
 };
 
-#if defined(__ANDROID__)
 /*
  * Searches chipset name in mapping of chipset name to cores' MIDR values. If match is successful, initializes MIDR
  * for all clusters' leaders with tabulated values.
@@ -467,7 +466,6 @@ static bool cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
 	}
 	return false;
 }
-#endif
 
 /*
  * Initializes MIDR for leaders of core clusters using a heuristic for big.LITTLE systems:
@@ -615,9 +613,7 @@ static void cpuinfo_arm_linux_detect_cluster_midr_by_sequential_scan(
  * @returns The number of core clusters
  */
 uint32_t cpuinfo_arm_linux_detect_cluster_midr(
-#if defined(__ANDROID__)
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
-#endif
 	uint32_t max_processors,
 	uint32_t usable_processors,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors])
@@ -688,14 +684,11 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 		 */
 		cpuinfo_log_debug("the only reported MIDR can not be attributed to a particular processor");
 
-		#if defined(__ANDROID__)
-			if (cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
-				chipset, clusters_count, cluster_leaders, usable_processors, processors, false))
-			{
-				return clusters_count;
-			}
-		#endif
-
+		if (cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
+			chipset, clusters_count, cluster_leaders, usable_processors, processors, false))
+		{
+			return clusters_count;
+		}
 
 		/* Try big.LITTLE heuristic */
 		if (cpuinfo_arm_linux_detect_cluster_midr_by_big_little_heuristic(

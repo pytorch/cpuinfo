@@ -286,12 +286,15 @@ void cpuinfo_arm_linux_init(void) {
 #if defined(__ANDROID__)
 	const struct cpuinfo_arm_chipset chipset =
 		cpuinfo_arm_android_decode_chipset(&android_properties, usable_processors, 0);
+#else
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_unknown,
+		.series = cpuinfo_arm_chipset_series_unknown,
+	};
 #endif
 
 	const uint32_t cluster_count = cpuinfo_arm_linux_detect_cluster_midr(
-#if defined(__ANDROID__)
 		&chipset,
-#endif
 		arm_linux_processors_count, usable_processors, arm_linux_processors);
 
 	/* Initialize core vendor, uarch, MIDR, and frequency for every logical processor */
@@ -342,9 +345,7 @@ void cpuinfo_arm_linux_init(void) {
 	 * - Level 1 instruction and data caches are private to the core clusters.
 	 * - Level 2 cache is shared between cores in the same cluster.
 	 */
-#if defined(__ANDROID__)
 	cpuinfo_arm_chipset_to_string(&chipset, package.name);
-#endif
 	package.processor_count = package.core_count = usable_processors;
 
 	processors = calloc(usable_processors, sizeof(struct cpuinfo_processor));
@@ -427,10 +428,8 @@ void cpuinfo_arm_linux_init(void) {
 			arm_linux_processors[i].uarch,
 			arm_linux_processors[i].package_processor_count,
 			arm_linux_processors[i].midr,
-#if defined(__ANDROID__)
 			&chipset,
 			cluster_id,
-#endif
 			arm_linux_processors[i].architecture_version,
 			&l1i[i], &l1d[i], &shared_l2);
 		l1i[i].processor_start = l1d[i].processor_start = i;

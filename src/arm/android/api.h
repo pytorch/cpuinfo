@@ -26,23 +26,3 @@ enum cpuinfo_android_chipset_property {
 };
 
 void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties properties[restrict static 1]);
-
-
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset(
-	const struct cpuinfo_android_properties properties[restrict static 1],
-	uint32_t cores,
-	uint32_t max_cpu_freq_max);
-
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(
-	const char proc_cpuinfo_hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
-	uint32_t cores, uint32_t max_cpu_freq_max, bool is_tegra);
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_product_board(
-	const char ro_product_board[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
-	uint32_t cores, uint32_t max_cpu_freq_max);
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_board_platform(
-	const char ro_board_platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
-	uint32_t cores, uint32_t max_cpu_freq_max);
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(
-	const char ro_mediatek_platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_chipname(
-	const char ro_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);

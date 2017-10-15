@@ -2216,636 +2216,638 @@ struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_
 	};
 }
 
-static const struct special_map_entry special_board_map_entries[] = {
-	{
-		/* "hi6250" -> HiSilicon Kirin 650 */
-		.platform = "hi6250",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 650,
-	},
-	{
-		/* "hi6210sft" -> HiSilicon Kirin 620 */
-		.platform = "hi6210sft",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 620,
-	},
-	{
-		/* "hi3650" -> HiSilicon Kirin 950 */
-		.platform = "hi3650",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 950,
-	},
-	{
-		/* "hi3635" -> HiSilicon Kirin 930 */
-		.platform = "hi3635",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 930,
-	},
-	{
-		/* "hi3630" -> HiSilicon Kirin 920 */
-		.platform = "hi3630",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 920,
-	},
-	{
-		/* "mp523x" -> Renesas MP5232 */
-		.platform = "mp523x",
-		.series = cpuinfo_arm_chipset_series_renesas_mp,
-		.model = 5232,
-	},
-	{
-		/* "piranha" -> Texas Instruments OMAP4430 */
-		.platform = "piranha",
-		.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
-		.model = 4430,
-	},
-	{
-		/* "BEETHOVEN" (Huawei MadiaPad M3) -> HiSilicon Kirin 950 */
-		.platform = "BEETHOVEN",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 950,
-	},
-	{
-		/* "hws7701u" (Huawei MediaPad 7 Youth) -> Rockchip RK3168 */
-		.platform = "hws7701u",
-		.series = cpuinfo_arm_chipset_series_rockchip_rk,
-		.model = 3168,
-	},
-	{
-		/* "g2mv" (LG G2 mini LTE) -> nVidia Tegra SL460N */
-		.platform = "g2mv",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_sl,
-		.model = 460,
-		.suffix = 'N',
-	},
-	{
-		/* "K00F" (Asus MeMO Pad 10) -> Rockchip RK3188 */
-		.platform = "K00F",
-		.series = cpuinfo_arm_chipset_series_rockchip_rk,
-		.model = 3188,
-	},
-	{
-		/* "T7H" (HP Slate 7) -> Rockchip RK3066 */
-		.platform = "T7H",
-		.series = cpuinfo_arm_chipset_series_rockchip_rk,
-		.model = 3066,
-	},
-	{
-		/* "tuna" (Samsung Galaxy Nexus) -> Texas Instruments OMAP4460 */
-		.platform = "tuna",
-		.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
-		.model = 4460,
-	},
-	{
-		/* "grouper" (Asus Nexus 7 2012) -> nVidia Tegra T30L */
-		.platform = "grouper",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 30,
-		.suffix = 'L',
-	},
-	{
-		/* "flounder" (HTC Nexus 9) -> nVidia Tegra T132 */
-		.platform = "flounder",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 132,
-	},
-	{
-		/* "dragon" (Google Pixel C) -> nVidia Tegra T210 */
-		.platform = "dragon",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 210,
-	},
-	{
-		/* "sailfish" (Google Pixel) -> Qualcomm MSM8996PRO */
-		.platform = "sailfish",
-		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
-		.model = 8996,
-		.suffix = 'P',
-	},
-	{
-		/* "marlin" (Google Pixel XL) -> Qualcomm MSM8996PRO */
-		.platform = "marlin",
-		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
-		.model = 8996,
-		.suffix = 'P',
-	},
-};
-
-/*
- * Decodes chipset name from ro.product.board Android system property.
- * For some chipsets, the function relies frequency and on number of cores for chipset detection.
- *
- * @param[in] platform - ro.product.board value.
- * @param cores - number of cores in the chipset.
- * @param max_cpu_freq_max - maximum of /sys/devices/system/cpu/cpu<number>/cpofreq/cpu_freq_max values.
- *
- * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
- *          and series identifiers.
- */
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_product_board(
-	const char ro_product_board[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
-	uint32_t cores, uint32_t max_cpu_freq_max)
-{
-	struct cpuinfo_arm_chipset chipset;
-	const char* board = ro_product_board;
-	const size_t board_length = strnlen(ro_product_board, CPUINFO_BUILD_PROP_VALUE_MAX);
-	const char* board_end = ro_product_board + board_length;
-
-	/* Check Qualcomm MSM/APQ signature */
-	if (match_msm_apq(board, board_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Qualcomm MSM/APQ signature in ro.product.board string \"%.*s\"", (int) board_length, board);
-		return chipset;
-	}
-
-	/* Check universaXXXX (Samsung Exynos) signature */
-	if (match_universal(board, board_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched UNIVERSAL (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/* Check SMDK (Samsung Exynos) signature */
-	if (match_and_parse_smdk(board, board_end, cores, &chipset)) {
-		cpuinfo_log_debug(
-			"matched SMDK (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/* Check MediaTek MT signature */
-	if (match_mt(board, board_end, true, &chipset)) {
-		cpuinfo_log_debug(
-			"matched MediaTek MT signature in ro.product.board string \"%.*s\"",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/* Check Spreadtrum SC signature */
-	if (match_sc(board, board_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Spreadtrum SC signature in ro.product.board string \"%.*s\"",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/* Check Marvell PXA signature */
-	if (match_pxa(board, board_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Marvell PXA signature in ro.product.board string \"%.*s\"",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/* Check Leadcore LCxxxx signature */
-	if (match_lc(board, board_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Leadcore LC signature in ro.product.board string \"%.*s\"",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/*
-	 * Compare to tabulated ro.product.board values for Broadcom chipsets and decode chipset from frequency and
-	 * number of cores.
-	 */
-	if (match_and_parse_broadcom(board, board_end, cores, max_cpu_freq_max, &chipset)) {
-		cpuinfo_log_debug(
-			"found ro.product.board string \"%.*s\" in Broadcom chipset table",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/* Compare to tabulated ro.product.board values for Huawei devices which don't report chipset elsewhere */
-	if (match_and_parse_huawei(board, board_end, &chipset)) {
-		cpuinfo_log_debug(
-			"found ro.product.board string \"%.*s\" in Huawei chipset table",
-			(int) board_length, board);
-		return chipset;
-	}
-
-	/* Compare to tabulated ro.product.board values for popular chipsets/devices which can't be otherwise detected */
-	for (size_t i = 0; i < CPUINFO_COUNT_OF(special_board_map_entries); i++) {
-		if (strncmp(special_board_map_entries[i].platform, board, board_length) == 0 &&
-				special_board_map_entries[i].platform[board_length] == 0)
+#ifdef __ANDROID__
+	static const struct special_map_entry special_board_map_entries[] = {
 		{
-			cpuinfo_log_debug(
-				"found ro.product.board string \"%.*s\" in special chipset table",
-				(int) board_length, board);
-			/* Create chipset name from entry */
-			return (struct cpuinfo_arm_chipset) {
-				.vendor = chipset_series_vendor[special_board_map_entries[i].series],
-				.series = (enum cpuinfo_arm_chipset_series) special_board_map_entries[i].series,
-				.model = special_board_map_entries[i].model,
-				.suffix = {
-					[0] = special_board_map_entries[i].suffix,
-					/* The suffix of MSM8996PRO is truncated at the first letter, reconstruct it here. */
-					[1] = special_board_map_entries[i].suffix == 'P' ? 'R' : 0,
-					[2] = special_board_map_entries[i].suffix == 'P' ? 'O' : 0,
-				},
-			};
-		}
-	}
-
-	return (struct cpuinfo_arm_chipset) {
-		.vendor = cpuinfo_arm_chipset_vendor_unknown,
-		.series = cpuinfo_arm_chipset_series_unknown,
-	};
-}
-
-struct amlogic_map_entry {
-	char ro_board_platform[6];
-	uint16_t model;
-	uint8_t series;
-	char suffix[3];
-};
-
-static const struct amlogic_map_entry amlogic_map_entries[] = {
-	{
-		/* "meson3" -> Amlogic AML8726-M */
-		.ro_board_platform = "meson3",
-		.series = cpuinfo_arm_chipset_series_amlogic_aml,
-		.model = 8726,
-		.suffix = "-M",
-	},
-	{
-		/* "meson6" -> Amlogic AML8726-MX */
-		.ro_board_platform = "meson6",
-		.series = cpuinfo_arm_chipset_series_amlogic_aml,
-		.model = 8726,
-		.suffix = "-MX",
-	},
-	{
-		/* "meson8" -> Amlogic S805 */
-		.ro_board_platform = "meson8",
-		.series = cpuinfo_arm_chipset_series_amlogic_s,
-		.model = 805,
-	},
-	{
-		/* "gxbaby" -> Amlogic S905 */
-		.ro_board_platform = "gxbaby",
-		.series = cpuinfo_arm_chipset_series_amlogic_s,
-		.model = 905,
-	},
-	{
-		/* "gxl" -> Amlogic S905X */
-		.ro_board_platform = "gxl",
-		.series = cpuinfo_arm_chipset_series_amlogic_s,
-		.model = 905,
-		.suffix = "X",
-	},
-	{
-		/* "gxm" -> Amlogic S912 */
-		.ro_board_platform = "gxm",
-		.series = cpuinfo_arm_chipset_series_amlogic_s,
-		.model = 912,
-	},
-};
-
-static const struct special_map_entry special_platform_map_entries[] = {
-	{
-		/* "hi6620oem" -> HiSilicon Kirin 910T */
-		.platform = "hi6620oem",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 910,
-		.suffix = 'T',
-	},
-	{
-		/* "hi6250" -> HiSilicon Kirin 650 */
-		.platform = "hi6250",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 650,
-	},
-	{
-		/* "hi6210sft" -> HiSilicon Kirin 620 */
-		.platform = "hi6210sft",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 620,
-	},
-	{
-		/* "hi3650" -> HiSilicon Kirin 950 */
-		.platform = "hi3650",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 950,
-	},
-	{
-		/* "hi3635" -> HiSilicon Kirin 930 */
-		.platform = "hi3635",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 930,
-	},
-	{
-		/* "hi3630" -> HiSilicon Kirin 920 */
-		.platform = "hi3630",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 920,
-	},
-	{
-		/* "k3v2oem1" -> HiSilicon K3V2 */
-		.platform = "k3v2oem1",
-		.series = cpuinfo_arm_chipset_series_hisilicon_k3v,
-		.model = 2,
-	},
-	{
-		/* "k3v200" -> HiSilicon K3V2 */
-		.platform = "k3v200",
-		.series = cpuinfo_arm_chipset_series_hisilicon_k3v,
-		.model = 2,
-	},
-	{
-		/* "montblanc" -> NovaThor U8500 */
-		.platform = "montblanc",
-		.series = cpuinfo_arm_chipset_series_novathor_u,
-		.model = 8500,
-	},
-	{
-		/* "song" -> Pinecone Surge S1 */
-		.platform = "song",
-		.series = cpuinfo_arm_chipset_series_pinecone_surge_s,
-		.model = 1,
-	},
-	{
-		/* "tegra132" -> nVidia Tegra T132 */
-		.platform = "tegra132",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 132,
-	},
-	{
-		/* "tegra210_dragon" -> nVidia Tegra T210 */
-		.platform = "tegra210_dragon",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 210,
-	},
-	{
-		/* "tegra4" -> nVidia Tegra T114 */
-		.platform = "tegra4",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 114,
-	},
-	{
-		/* "s5pc110" -> Samsung Exynos 3110 */
-		.platform = "s5pc110",
-		.series = cpuinfo_arm_chipset_series_samsung_exynos,
-		.model = 3110,
-	},
-};
-
-/*
- * Decodes chipset name from ro.board.platform Android system property.
- * For some chipsets, the function relies frequency and on number of cores for chipset detection.
- *
- * @param[in] platform - ro.board.platform value.
- * @param cores - number of cores in the chipset.
- * @param max_cpu_freq_max - maximum of /sys/devices/system/cpu/cpu<number>/cpofreq/cpu_freq_max values.
- *
- * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
- *          and series identifiers.
- */
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_board_platform(
-	const char platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
-	uint32_t cores, uint32_t max_cpu_freq_max)
-{
-	struct cpuinfo_arm_chipset chipset;
-	const size_t platform_length = strnlen(platform, CPUINFO_BUILD_PROP_VALUE_MAX);
-	const char* platform_end = platform + platform_length;
-
-	/* Check Qualcomm MSM/APQ signature */
-	if (match_msm_apq(platform, platform_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Qualcomm MSM/APQ signature in ro.board.platform string \"%.*s\"",
-			(int) platform_length, platform);
-		return chipset;
-	}
-
-	/* Check exynosXXXX (Samsung Exynos) signature */
-	if (match_exynos(platform, platform_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched exynosXXXX (Samsung Exynos) signature in ro.board.platform string \"%.*s\"",
-			(int) platform_length, platform);
-		return chipset;
-	}
-
-	/* Check MediaTek MT signature */
-	if (match_mt(platform, platform_end, true, &chipset)) {
-		cpuinfo_log_debug(
-			"matched MediaTek MT signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
-		return chipset;
-	}
-
-	/* Check Spreadtrum SC signature */
-	if (match_sc(platform, platform_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Spreadtrum SC signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
-		return chipset;
-	}
-
-	/* Check Rockchip RK signature */
-	if (match_rk(platform, platform_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Rockchip RK signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
-		return chipset;
-	}
-
-	/* Check Leadcore LCxxxx signature */
-	if (match_lc(platform, platform_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Leadcore LC signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
-		return chipset;
-	}
-
-	/* Compare to tabulated ro.board.platform values for Huawei devices which don't report chipset elsewhere */
-	if (match_and_parse_huawei(platform, platform_end, &chipset)) {
-		cpuinfo_log_debug(
-			"found ro.board.platform string \"%.*s\" in Huawei chipset table",
-			(int) platform_length, platform);
-		return chipset;
-	}
-
-	/*
-	 * Compare to known ro.board.platform values for Broadcom devices and
-	 * detect chipset from frequency and number of cores
-	 */
-	if (match_and_parse_broadcom(platform, platform_end, cores, max_cpu_freq_max, &chipset)) {
-		cpuinfo_log_debug(
-			"found ro.board.platform string \"%.*s\" in Broadcom chipset table",
-			(int) platform_length, platform);
-		return chipset;
-	}
-
-	/*
-	 * Compare to ro.board.platform value ("omap4") for OMAP4xxx chipsets.
-	 * Upon successful match, detect OMAP4430 from frequency and number of cores.
-	 */
-	if (platform_length == 5 && cores == 2 && max_cpu_freq_max == 1008000 && memcmp(platform, "omap4", 5) == 0) {
-		cpuinfo_log_debug(
-			"matched Texas Instruments OMAP4 signature in ro.board.platform string \"%.*s\"",
-			(int) platform_length, platform);
-
-		return (struct cpuinfo_arm_chipset) {
-			.vendor = cpuinfo_arm_chipset_vendor_texas_instruments,
+			/* "hi6250" -> HiSilicon Kirin 650 */
+			.platform = "hi6250",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 650,
+		},
+		{
+			/* "hi6210sft" -> HiSilicon Kirin 620 */
+			.platform = "hi6210sft",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 620,
+		},
+		{
+			/* "hi3650" -> HiSilicon Kirin 950 */
+			.platform = "hi3650",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 950,
+		},
+		{
+			/* "hi3635" -> HiSilicon Kirin 930 */
+			.platform = "hi3635",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 930,
+		},
+		{
+			/* "hi3630" -> HiSilicon Kirin 920 */
+			.platform = "hi3630",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 920,
+		},
+		{
+			/* "mp523x" -> Renesas MP5232 */
+			.platform = "mp523x",
+			.series = cpuinfo_arm_chipset_series_renesas_mp,
+			.model = 5232,
+		},
+		{
+			/* "piranha" -> Texas Instruments OMAP4430 */
+			.platform = "piranha",
 			.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
 			.model = 4430,
-		};
-	}
+		},
+		{
+			/* "BEETHOVEN" (Huawei MadiaPad M3) -> HiSilicon Kirin 950 */
+			.platform = "BEETHOVEN",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 950,
+		},
+		{
+			/* "hws7701u" (Huawei MediaPad 7 Youth) -> Rockchip RK3168 */
+			.platform = "hws7701u",
+			.series = cpuinfo_arm_chipset_series_rockchip_rk,
+			.model = 3168,
+		},
+		{
+			/* "g2mv" (LG G2 mini LTE) -> nVidia Tegra SL460N */
+			.platform = "g2mv",
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_sl,
+			.model = 460,
+			.suffix = 'N',
+		},
+		{
+			/* "K00F" (Asus MeMO Pad 10) -> Rockchip RK3188 */
+			.platform = "K00F",
+			.series = cpuinfo_arm_chipset_series_rockchip_rk,
+			.model = 3188,
+		},
+		{
+			/* "T7H" (HP Slate 7) -> Rockchip RK3066 */
+			.platform = "T7H",
+			.series = cpuinfo_arm_chipset_series_rockchip_rk,
+			.model = 3066,
+		},
+		{
+			/* "tuna" (Samsung Galaxy Nexus) -> Texas Instruments OMAP4460 */
+			.platform = "tuna",
+			.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
+			.model = 4460,
+		},
+		{
+			/* "grouper" (Asus Nexus 7 2012) -> nVidia Tegra T30L */
+			.platform = "grouper",
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 30,
+			.suffix = 'L',
+		},
+		{
+			/* "flounder" (HTC Nexus 9) -> nVidia Tegra T132 */
+			.platform = "flounder",
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 132,
+		},
+		{
+			/* "dragon" (Google Pixel C) -> nVidia Tegra T210 */
+			.platform = "dragon",
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 210,
+		},
+		{
+			/* "sailfish" (Google Pixel) -> Qualcomm MSM8996PRO */
+			.platform = "sailfish",
+			.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+			.model = 8996,
+			.suffix = 'P',
+		},
+		{
+			/* "marlin" (Google Pixel XL) -> Qualcomm MSM8996PRO */
+			.platform = "marlin",
+			.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+			.model = 8996,
+			.suffix = 'P',
+		},
+	};
 
 	/*
-	 * Compare to tabulated ro.board.platform values for Amlogic chipsets/devices which can't be otherwise detected.
-	 * The tabulated Amlogic ro.board.platform values have not more than 6 characters.
+	 * Decodes chipset name from ro.product.board Android system property.
+	 * For some chipsets, the function relies frequency and on number of cores for chipset detection.
+	 *
+	 * @param[in] platform - ro.product.board value.
+	 * @param cores - number of cores in the chipset.
+	 * @param max_cpu_freq_max - maximum of /sys/devices/system/cpu/cpu<number>/cpofreq/cpu_freq_max values.
+	 *
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
+	 *          and series identifiers.
 	 */
-	if (platform_length <= 6) {
-		for (size_t i = 0; i < CPUINFO_COUNT_OF(amlogic_map_entries); i++) {
-			if (strncmp(amlogic_map_entries[i].ro_board_platform, platform, 6) == 0) {
+	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_product_board(
+		const char ro_product_board[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
+		uint32_t cores, uint32_t max_cpu_freq_max)
+	{
+		struct cpuinfo_arm_chipset chipset;
+		const char* board = ro_product_board;
+		const size_t board_length = strnlen(ro_product_board, CPUINFO_BUILD_PROP_VALUE_MAX);
+		const char* board_end = ro_product_board + board_length;
+
+		/* Check Qualcomm MSM/APQ signature */
+		if (match_msm_apq(board, board_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Qualcomm MSM/APQ signature in ro.product.board string \"%.*s\"", (int) board_length, board);
+			return chipset;
+		}
+
+		/* Check universaXXXX (Samsung Exynos) signature */
+		if (match_universal(board, board_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched UNIVERSAL (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/* Check SMDK (Samsung Exynos) signature */
+		if (match_and_parse_smdk(board, board_end, cores, &chipset)) {
+			cpuinfo_log_debug(
+				"matched SMDK (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/* Check MediaTek MT signature */
+		if (match_mt(board, board_end, true, &chipset)) {
+			cpuinfo_log_debug(
+				"matched MediaTek MT signature in ro.product.board string \"%.*s\"",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/* Check Spreadtrum SC signature */
+		if (match_sc(board, board_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Spreadtrum SC signature in ro.product.board string \"%.*s\"",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/* Check Marvell PXA signature */
+		if (match_pxa(board, board_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Marvell PXA signature in ro.product.board string \"%.*s\"",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/* Check Leadcore LCxxxx signature */
+		if (match_lc(board, board_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Leadcore LC signature in ro.product.board string \"%.*s\"",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/*
+		 * Compare to tabulated ro.product.board values for Broadcom chipsets and decode chipset from frequency and
+		 * number of cores.
+		 */
+		if (match_and_parse_broadcom(board, board_end, cores, max_cpu_freq_max, &chipset)) {
+			cpuinfo_log_debug(
+				"found ro.product.board string \"%.*s\" in Broadcom chipset table",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/* Compare to tabulated ro.product.board values for Huawei devices which don't report chipset elsewhere */
+		if (match_and_parse_huawei(board, board_end, &chipset)) {
+			cpuinfo_log_debug(
+				"found ro.product.board string \"%.*s\" in Huawei chipset table",
+				(int) board_length, board);
+			return chipset;
+		}
+
+		/* Compare to tabulated ro.product.board values for popular chipsets/devices which can't be otherwise detected */
+		for (size_t i = 0; i < CPUINFO_COUNT_OF(special_board_map_entries); i++) {
+			if (strncmp(special_board_map_entries[i].platform, board, board_length) == 0 &&
+					special_board_map_entries[i].platform[board_length] == 0)
+			{
 				cpuinfo_log_debug(
-					"found ro.board.platform string \"%.*s\" in Amlogic chipset table",
-					(int) platform_length, platform);
+					"found ro.product.board string \"%.*s\" in special chipset table",
+					(int) board_length, board);
 				/* Create chipset name from entry */
 				return (struct cpuinfo_arm_chipset) {
-					.vendor = cpuinfo_arm_chipset_vendor_amlogic,
-					.series = (enum cpuinfo_arm_chipset_series) amlogic_map_entries[i].series,
-					.model = amlogic_map_entries[i].model,
+					.vendor = chipset_series_vendor[special_board_map_entries[i].series],
+					.series = (enum cpuinfo_arm_chipset_series) special_board_map_entries[i].series,
+					.model = special_board_map_entries[i].model,
 					.suffix = {
-						[0] = amlogic_map_entries[i].suffix[0],
-						[1] = amlogic_map_entries[i].suffix[1],
-						[2] = amlogic_map_entries[i].suffix[2],
+						[0] = special_board_map_entries[i].suffix,
+						/* The suffix of MSM8996PRO is truncated at the first letter, reconstruct it here. */
+						[1] = special_board_map_entries[i].suffix == 'P' ? 'R' : 0,
+						[2] = special_board_map_entries[i].suffix == 'P' ? 'O' : 0,
 					},
 				};
 			}
 		}
-	}
-
-	/* Compare to tabulated ro.board.platform values for popular chipsets/devices which can't be otherwise detected */
-	for (size_t i = 0; i < CPUINFO_COUNT_OF(special_platform_map_entries); i++) {
-		if (strncmp(special_platform_map_entries[i].platform, platform, platform_length) == 0 &&
-				special_platform_map_entries[i].platform[platform_length] == 0)
-		{
-			/* Create chipset name from entry */
-			cpuinfo_log_debug(
-				"found ro.board.platform string \"%.*s\" in special chipset table", (int) platform_length, platform);
-			return (struct cpuinfo_arm_chipset) {
-				.vendor = chipset_series_vendor[special_platform_map_entries[i].series],
-				.series = (enum cpuinfo_arm_chipset_series) special_platform_map_entries[i].series,
-				.model = special_platform_map_entries[i].model,
-				.suffix = {
-					[0] = special_platform_map_entries[i].suffix,
-				},
-			};
-		}
-	}
-
-	/* None of the ro.board.platform signatures matched, indicate unknown chipset */
-	return (struct cpuinfo_arm_chipset) {
-		.vendor = cpuinfo_arm_chipset_vendor_unknown,
-		.series = cpuinfo_arm_chipset_series_unknown,
-	};
-}
-
-/*
- * Decodes chipset name from ro.mediatek.platform Android system property.
- *
- * @param[in] platform - ro.mediatek.platform value.
- *
- * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
- *          and series identifiers.
- */
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(
-	const char platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
-{
-	struct cpuinfo_arm_chipset chipset;
-	const char* platform_end = platform + strnlen(platform, CPUINFO_BUILD_PROP_VALUE_MAX);;
-
-	/* Check MediaTek MT signature */
-	if (match_mt(platform, platform_end, false, &chipset)) {
-		return chipset;
-	}
-
-	return (struct cpuinfo_arm_chipset) {
-		.vendor = cpuinfo_arm_chipset_vendor_unknown,
-		.series = cpuinfo_arm_chipset_series_unknown,
-	};
-}
-
-/*
- * Decodes chipset name from ro.chipname Android system property.
- *
- * @param[in] chipname - ro.chipname value.
- *
- * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
- *          and series identifiers.
- */
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_chipname(
-	const char chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
-{
-	struct cpuinfo_arm_chipset chipset;
-	const size_t chipname_length = strnlen(chipname, CPUINFO_BUILD_PROP_VALUE_MAX);
-	const char* chipname_end = chipname + chipname_length;
-
-	/* Check Qualcomm MSM/APQ signatures */
-	if (match_msm_apq(chipname, chipname_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Qualcomm MSM/APQ signature in ro.chipname string \"%.*s\"",
-			(int) chipname_length, chipname);
-		return chipset;
-	}
-
-	/* Check exynosXXXX (Samsung Exynos) signature */
-	if (match_exynos(chipname, chipname_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched exynosXXXX (Samsung Exynos) signature in ro.chipname string \"%.*s\"",
-			(int) chipname_length, chipname);
-		return chipset;
-	}
-
-	/* Check universalXXXX (Samsung Exynos) signature */
-	if (match_universal(chipname, chipname_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched UNIVERSAL (Samsung Exynos) signature in ro.chipname Hardware string \"%.*s\"",
-			(int) chipname_length, chipname);
-		return chipset;
-	}
-
-	/* Check MediaTek MT signature */
-	if (match_mt(chipname, chipname_end, true, &chipset)) {
-		cpuinfo_log_debug(
-			"matched MediaTek MT signature in ro.chipname string \"%.*s\"",
-			(int) chipname_length, chipname);
-		return chipset;
-	}
-
-	/* Check Spreadtrum SC signature */
-	if (match_sc(chipname, chipname_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Spreadtrum SC signature in ro.chipname string \"%.*s\"",
-			(int) chipname_length, chipname);
-		return chipset;
-	}
-
-	/* Check Marvell PXA signature */
-	if (match_pxa(chipname, chipname_end, &chipset)) {
-		cpuinfo_log_debug(
-			"matched Marvell PXA signature in ro.chipname string \"%.*s\"",
-			(int) chipname_length, chipname);
-		return chipset;
-	}
-
-	/* Compare to ro.chipname value ("mp523x") for Renesas MP5232 which can't be otherwise detected */
-	if (chipname_length == 6 && memcmp(chipname, "mp523x", 6) == 0) {
-		cpuinfo_log_debug(
-			"matched Renesas MP5232 signature in ro.chipname string \"%.*s\"",
-			(int) chipname_length, chipname);
 
 		return (struct cpuinfo_arm_chipset) {
-			.vendor = cpuinfo_arm_chipset_vendor_renesas,
-			.series = cpuinfo_arm_chipset_series_renesas_mp,
-			.model = 5232,
+			.vendor = cpuinfo_arm_chipset_vendor_unknown,
+			.series = cpuinfo_arm_chipset_series_unknown,
 		};
 	}
 
-	return (struct cpuinfo_arm_chipset) {
-		.vendor = cpuinfo_arm_chipset_vendor_unknown,
-		.series = cpuinfo_arm_chipset_series_unknown,
+	struct amlogic_map_entry {
+		char ro_board_platform[6];
+		uint16_t model;
+		uint8_t series;
+		char suffix[3];
 	};
-}
+
+	static const struct amlogic_map_entry amlogic_map_entries[] = {
+		{
+			/* "meson3" -> Amlogic AML8726-M */
+			.ro_board_platform = "meson3",
+			.series = cpuinfo_arm_chipset_series_amlogic_aml,
+			.model = 8726,
+			.suffix = "-M",
+		},
+		{
+			/* "meson6" -> Amlogic AML8726-MX */
+			.ro_board_platform = "meson6",
+			.series = cpuinfo_arm_chipset_series_amlogic_aml,
+			.model = 8726,
+			.suffix = "-MX",
+		},
+		{
+			/* "meson8" -> Amlogic S805 */
+			.ro_board_platform = "meson8",
+			.series = cpuinfo_arm_chipset_series_amlogic_s,
+			.model = 805,
+		},
+		{
+			/* "gxbaby" -> Amlogic S905 */
+			.ro_board_platform = "gxbaby",
+			.series = cpuinfo_arm_chipset_series_amlogic_s,
+			.model = 905,
+		},
+		{
+			/* "gxl" -> Amlogic S905X */
+			.ro_board_platform = "gxl",
+			.series = cpuinfo_arm_chipset_series_amlogic_s,
+			.model = 905,
+			.suffix = "X",
+		},
+		{
+			/* "gxm" -> Amlogic S912 */
+			.ro_board_platform = "gxm",
+			.series = cpuinfo_arm_chipset_series_amlogic_s,
+			.model = 912,
+		},
+	};
+
+	static const struct special_map_entry special_platform_map_entries[] = {
+		{
+			/* "hi6620oem" -> HiSilicon Kirin 910T */
+			.platform = "hi6620oem",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 910,
+			.suffix = 'T',
+		},
+		{
+			/* "hi6250" -> HiSilicon Kirin 650 */
+			.platform = "hi6250",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 650,
+		},
+		{
+			/* "hi6210sft" -> HiSilicon Kirin 620 */
+			.platform = "hi6210sft",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 620,
+		},
+		{
+			/* "hi3650" -> HiSilicon Kirin 950 */
+			.platform = "hi3650",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 950,
+		},
+		{
+			/* "hi3635" -> HiSilicon Kirin 930 */
+			.platform = "hi3635",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 930,
+		},
+		{
+			/* "hi3630" -> HiSilicon Kirin 920 */
+			.platform = "hi3630",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 920,
+		},
+		{
+			/* "k3v2oem1" -> HiSilicon K3V2 */
+			.platform = "k3v2oem1",
+			.series = cpuinfo_arm_chipset_series_hisilicon_k3v,
+			.model = 2,
+		},
+		{
+			/* "k3v200" -> HiSilicon K3V2 */
+			.platform = "k3v200",
+			.series = cpuinfo_arm_chipset_series_hisilicon_k3v,
+			.model = 2,
+		},
+		{
+			/* "montblanc" -> NovaThor U8500 */
+			.platform = "montblanc",
+			.series = cpuinfo_arm_chipset_series_novathor_u,
+			.model = 8500,
+		},
+		{
+			/* "song" -> Pinecone Surge S1 */
+			.platform = "song",
+			.series = cpuinfo_arm_chipset_series_pinecone_surge_s,
+			.model = 1,
+		},
+		{
+			/* "tegra132" -> nVidia Tegra T132 */
+			.platform = "tegra132",
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 132,
+		},
+		{
+			/* "tegra210_dragon" -> nVidia Tegra T210 */
+			.platform = "tegra210_dragon",
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 210,
+		},
+		{
+			/* "tegra4" -> nVidia Tegra T114 */
+			.platform = "tegra4",
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 114,
+		},
+		{
+			/* "s5pc110" -> Samsung Exynos 3110 */
+			.platform = "s5pc110",
+			.series = cpuinfo_arm_chipset_series_samsung_exynos,
+			.model = 3110,
+		},
+	};
+
+	/*
+	 * Decodes chipset name from ro.board.platform Android system property.
+	 * For some chipsets, the function relies frequency and on number of cores for chipset detection.
+	 *
+	 * @param[in] platform - ro.board.platform value.
+	 * @param cores - number of cores in the chipset.
+	 * @param max_cpu_freq_max - maximum of /sys/devices/system/cpu/cpu<number>/cpofreq/cpu_freq_max values.
+	 *
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
+	 *          and series identifiers.
+	 */
+	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_board_platform(
+		const char platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
+		uint32_t cores, uint32_t max_cpu_freq_max)
+	{
+		struct cpuinfo_arm_chipset chipset;
+		const size_t platform_length = strnlen(platform, CPUINFO_BUILD_PROP_VALUE_MAX);
+		const char* platform_end = platform + platform_length;
+
+		/* Check Qualcomm MSM/APQ signature */
+		if (match_msm_apq(platform, platform_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Qualcomm MSM/APQ signature in ro.board.platform string \"%.*s\"",
+				(int) platform_length, platform);
+			return chipset;
+		}
+
+		/* Check exynosXXXX (Samsung Exynos) signature */
+		if (match_exynos(platform, platform_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched exynosXXXX (Samsung Exynos) signature in ro.board.platform string \"%.*s\"",
+				(int) platform_length, platform);
+			return chipset;
+		}
+
+		/* Check MediaTek MT signature */
+		if (match_mt(platform, platform_end, true, &chipset)) {
+			cpuinfo_log_debug(
+				"matched MediaTek MT signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
+			return chipset;
+		}
+
+		/* Check Spreadtrum SC signature */
+		if (match_sc(platform, platform_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Spreadtrum SC signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
+			return chipset;
+		}
+
+		/* Check Rockchip RK signature */
+		if (match_rk(platform, platform_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Rockchip RK signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
+			return chipset;
+		}
+
+		/* Check Leadcore LCxxxx signature */
+		if (match_lc(platform, platform_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Leadcore LC signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
+			return chipset;
+		}
+
+		/* Compare to tabulated ro.board.platform values for Huawei devices which don't report chipset elsewhere */
+		if (match_and_parse_huawei(platform, platform_end, &chipset)) {
+			cpuinfo_log_debug(
+				"found ro.board.platform string \"%.*s\" in Huawei chipset table",
+				(int) platform_length, platform);
+			return chipset;
+		}
+
+		/*
+		 * Compare to known ro.board.platform values for Broadcom devices and
+		 * detect chipset from frequency and number of cores
+		 */
+		if (match_and_parse_broadcom(platform, platform_end, cores, max_cpu_freq_max, &chipset)) {
+			cpuinfo_log_debug(
+				"found ro.board.platform string \"%.*s\" in Broadcom chipset table",
+				(int) platform_length, platform);
+			return chipset;
+		}
+
+		/*
+		 * Compare to ro.board.platform value ("omap4") for OMAP4xxx chipsets.
+		 * Upon successful match, detect OMAP4430 from frequency and number of cores.
+		 */
+		if (platform_length == 5 && cores == 2 && max_cpu_freq_max == 1008000 && memcmp(platform, "omap4", 5) == 0) {
+			cpuinfo_log_debug(
+				"matched Texas Instruments OMAP4 signature in ro.board.platform string \"%.*s\"",
+				(int) platform_length, platform);
+
+			return (struct cpuinfo_arm_chipset) {
+				.vendor = cpuinfo_arm_chipset_vendor_texas_instruments,
+				.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
+				.model = 4430,
+			};
+		}
+
+		/*
+		 * Compare to tabulated ro.board.platform values for Amlogic chipsets/devices which can't be otherwise detected.
+		 * The tabulated Amlogic ro.board.platform values have not more than 6 characters.
+		 */
+		if (platform_length <= 6) {
+			for (size_t i = 0; i < CPUINFO_COUNT_OF(amlogic_map_entries); i++) {
+				if (strncmp(amlogic_map_entries[i].ro_board_platform, platform, 6) == 0) {
+					cpuinfo_log_debug(
+						"found ro.board.platform string \"%.*s\" in Amlogic chipset table",
+						(int) platform_length, platform);
+					/* Create chipset name from entry */
+					return (struct cpuinfo_arm_chipset) {
+						.vendor = cpuinfo_arm_chipset_vendor_amlogic,
+						.series = (enum cpuinfo_arm_chipset_series) amlogic_map_entries[i].series,
+						.model = amlogic_map_entries[i].model,
+						.suffix = {
+							[0] = amlogic_map_entries[i].suffix[0],
+							[1] = amlogic_map_entries[i].suffix[1],
+							[2] = amlogic_map_entries[i].suffix[2],
+						},
+					};
+				}
+			}
+		}
+
+		/* Compare to tabulated ro.board.platform values for popular chipsets/devices which can't be otherwise detected */
+		for (size_t i = 0; i < CPUINFO_COUNT_OF(special_platform_map_entries); i++) {
+			if (strncmp(special_platform_map_entries[i].platform, platform, platform_length) == 0 &&
+					special_platform_map_entries[i].platform[platform_length] == 0)
+			{
+				/* Create chipset name from entry */
+				cpuinfo_log_debug(
+					"found ro.board.platform string \"%.*s\" in special chipset table", (int) platform_length, platform);
+				return (struct cpuinfo_arm_chipset) {
+					.vendor = chipset_series_vendor[special_platform_map_entries[i].series],
+					.series = (enum cpuinfo_arm_chipset_series) special_platform_map_entries[i].series,
+					.model = special_platform_map_entries[i].model,
+					.suffix = {
+						[0] = special_platform_map_entries[i].suffix,
+					},
+				};
+			}
+		}
+
+		/* None of the ro.board.platform signatures matched, indicate unknown chipset */
+		return (struct cpuinfo_arm_chipset) {
+			.vendor = cpuinfo_arm_chipset_vendor_unknown,
+			.series = cpuinfo_arm_chipset_series_unknown,
+		};
+	}
+
+	/*
+	 * Decodes chipset name from ro.mediatek.platform Android system property.
+	 *
+	 * @param[in] platform - ro.mediatek.platform value.
+	 *
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
+	 *          and series identifiers.
+	 */
+	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(
+		const char platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
+	{
+		struct cpuinfo_arm_chipset chipset;
+		const char* platform_end = platform + strnlen(platform, CPUINFO_BUILD_PROP_VALUE_MAX);;
+
+		/* Check MediaTek MT signature */
+		if (match_mt(platform, platform_end, false, &chipset)) {
+			return chipset;
+		}
+
+		return (struct cpuinfo_arm_chipset) {
+			.vendor = cpuinfo_arm_chipset_vendor_unknown,
+			.series = cpuinfo_arm_chipset_series_unknown,
+		};
+	}
+
+	/*
+	 * Decodes chipset name from ro.chipname Android system property.
+	 *
+	 * @param[in] chipname - ro.chipname value.
+	 *
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
+	 *          and series identifiers.
+	 */
+	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_chipname(
+		const char chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
+	{
+		struct cpuinfo_arm_chipset chipset;
+		const size_t chipname_length = strnlen(chipname, CPUINFO_BUILD_PROP_VALUE_MAX);
+		const char* chipname_end = chipname + chipname_length;
+
+		/* Check Qualcomm MSM/APQ signatures */
+		if (match_msm_apq(chipname, chipname_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Qualcomm MSM/APQ signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Check exynosXXXX (Samsung Exynos) signature */
+		if (match_exynos(chipname, chipname_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched exynosXXXX (Samsung Exynos) signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Check universalXXXX (Samsung Exynos) signature */
+		if (match_universal(chipname, chipname_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched UNIVERSAL (Samsung Exynos) signature in ro.chipname Hardware string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Check MediaTek MT signature */
+		if (match_mt(chipname, chipname_end, true, &chipset)) {
+			cpuinfo_log_debug(
+				"matched MediaTek MT signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Check Spreadtrum SC signature */
+		if (match_sc(chipname, chipname_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Spreadtrum SC signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Check Marvell PXA signature */
+		if (match_pxa(chipname, chipname_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Marvell PXA signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Compare to ro.chipname value ("mp523x") for Renesas MP5232 which can't be otherwise detected */
+		if (chipname_length == 6 && memcmp(chipname, "mp523x", 6) == 0) {
+			cpuinfo_log_debug(
+				"matched Renesas MP5232 signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+
+			return (struct cpuinfo_arm_chipset) {
+				.vendor = cpuinfo_arm_chipset_vendor_renesas,
+				.series = cpuinfo_arm_chipset_series_renesas_mp,
+				.model = 5232,
+			};
+		}
+
+		return (struct cpuinfo_arm_chipset) {
+			.vendor = cpuinfo_arm_chipset_vendor_unknown,
+			.series = cpuinfo_arm_chipset_series_unknown,
+		};
+	}
+#endif /* __ANDROID__ */
 
 /*
  * Fix common bugs, typos, and renames in chipset name.
@@ -3135,276 +3137,308 @@ void cpuinfo_arm_chipset_to_string(
 	}
 }
 
-static inline struct cpuinfo_arm_chipset disambiguate_qualcomm_chipset(
-	const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
-{
-	if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_chipname_chipset;
-	}
-	if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *proc_cpuinfo_hardware_chipset;
-	}
-	if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_product_board_chipset;
-	}
-	return *ro_board_platform_chipset;
-}
-
-static inline struct cpuinfo_arm_chipset disambiguate_mediatek_chipset(
-	const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_mediatek_platform_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
-{
-	if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_chipname_chipset;
-	}
-	if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *proc_cpuinfo_hardware_chipset;
-	}
-	if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_product_board_chipset;
-	}
-	if (ro_board_platform_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+#ifdef __ANDROID__
+	static inline struct cpuinfo_arm_chipset disambiguate_qualcomm_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
+	{
+		if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_chipname_chipset;
+		}
+		if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *proc_cpuinfo_hardware_chipset;
+		}
+		if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_product_board_chipset;
+		}
 		return *ro_board_platform_chipset;
 	}
-	return *ro_mediatek_platform_chipset;
-}
 
-static inline struct cpuinfo_arm_chipset disambiguate_hisilicon_chipset(
-	const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1])
-{
-	if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *proc_cpuinfo_hardware_chipset;
-	}
-	if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_product_board_chipset;
-	}
-	return *ro_board_platform_chipset;
-}
-
-static inline struct cpuinfo_arm_chipset disambiguate_amlogic_chipset(
-	const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1])
-{
-	if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *proc_cpuinfo_hardware_chipset;
-	}
-	return *ro_board_platform_chipset;
-}
-
-static inline struct cpuinfo_arm_chipset disambiguate_marvell_chipset(
-	const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
-{
-	if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_chipname_chipset;
-	}
-	if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_product_board_chipset;
-	}
-	return *proc_cpuinfo_hardware_chipset;
-}
-
-static inline struct cpuinfo_arm_chipset disambiguate_rockchip_chipset(
-	const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1])
-{
-	if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_product_board_chipset;
-	}
-	if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *proc_cpuinfo_hardware_chipset;
-	}
-	return *ro_board_platform_chipset;
-}
-
-static inline struct cpuinfo_arm_chipset disambiguate_spreadtrum_chipset(
-	const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
-	const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
-{
-	if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_chipname_chipset;
-	}
-	if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *ro_product_board_chipset;
-	}
-	if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
-		return *proc_cpuinfo_hardware_chipset;
-	}
-	return *ro_board_platform_chipset;
-}
-
-/*
- * Decodes chipset name from Android system properties:
- * - /proc/cpuinfo Hardware string
- * - ro.product.board
- * - ro.board.platform
- * - ro.mediatek.platform
- * - ro.chipname
- * For some chipsets, the function relies frequency and on number of cores for chipset detection.
- *
- * @param[in] properties - structure with the Android system properties described above.
- * @param cores - number of cores in the chipset.
- * @param max_cpu_freq_max - maximum of /sys/devices/system/cpu/cpu<number>/cpofreq/cpu_freq_max values.
- *
- * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
- *          and series identifiers.
- */
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset(
-	const struct cpuinfo_android_properties properties[restrict static 1],
-	uint32_t cores,
-	uint32_t max_cpu_freq_max)
-{
-	struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_unknown,
-		.series = cpuinfo_arm_chipset_series_unknown,
-	};
-
-	const bool tegra_platform = is_tegra(
-		properties->ro_board_platform,
-		properties->ro_board_platform + strnlen(properties->ro_board_platform, CPUINFO_BUILD_PROP_VALUE_MAX));
-
-	struct cpuinfo_arm_chipset chipsets[cpuinfo_android_chipset_property_max] = {
-		[cpuinfo_android_chipset_property_proc_cpuinfo_hardware] =
-			cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(
-				properties->proc_cpuinfo_hardware, cores, max_cpu_freq_max, tegra_platform),
-		[cpuinfo_android_chipset_property_ro_product_board] =
-			cpuinfo_arm_android_decode_chipset_from_ro_product_board(
-				properties->ro_product_board, cores, max_cpu_freq_max),
-		[cpuinfo_android_chipset_property_ro_board_platform] =
-			cpuinfo_arm_android_decode_chipset_from_ro_board_platform(
-				properties->ro_board_platform, cores, max_cpu_freq_max),
-		[cpuinfo_android_chipset_property_ro_mediatek_platform] =
-			cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(properties->ro_mediatek_platform),
-		[cpuinfo_android_chipset_property_ro_chipname] =
-			cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname),
-	};
-	enum cpuinfo_arm_chipset_vendor vendor = cpuinfo_arm_chipset_vendor_unknown;
-	for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
-		const enum cpuinfo_arm_chipset_vendor decoded_vendor = chipsets[i].vendor;
-		if (decoded_vendor != cpuinfo_arm_chipset_vendor_unknown) {
-			if (vendor == cpuinfo_arm_chipset_vendor_unknown) {
-				vendor = decoded_vendor;
-			} else if (vendor != decoded_vendor) {
-				/* Parsing different system properties produces different chipset vendors. This situation is rare. */
-				cpuinfo_log_error(
-					"chipset detection failed: different chipset vendors reported in different system properties");
-				goto finish;
-			}
+	static inline struct cpuinfo_arm_chipset disambiguate_mediatek_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_mediatek_platform_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
+	{
+		if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_chipname_chipset;
 		}
-	}
-	if (vendor == cpuinfo_arm_chipset_vendor_unknown) {
-		cpuinfo_log_warning(
-			"chipset detection failed: none of the system properties matched known signatures");
-		goto finish;
+		if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *proc_cpuinfo_hardware_chipset;
+		}
+		if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_product_board_chipset;
+		}
+		if (ro_board_platform_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_board_platform_chipset;
+		}
+		return *ro_mediatek_platform_chipset;
 	}
 
-	/* Fix common bugs in reported chipsets */
-	for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
-		cpuinfo_arm_fixup_chipset(&chipsets[i], cores, max_cpu_freq_max);
+	static inline struct cpuinfo_arm_chipset disambiguate_hisilicon_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1])
+	{
+		if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *proc_cpuinfo_hardware_chipset;
+		}
+		if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_product_board_chipset;
+		}
+		return *ro_board_platform_chipset;
+	}
+
+	static inline struct cpuinfo_arm_chipset disambiguate_amlogic_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1])
+	{
+		if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *proc_cpuinfo_hardware_chipset;
+		}
+		return *ro_board_platform_chipset;
+	}
+
+	static inline struct cpuinfo_arm_chipset disambiguate_marvell_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
+	{
+		if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_chipname_chipset;
+		}
+		if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_product_board_chipset;
+		}
+		return *proc_cpuinfo_hardware_chipset;
+	}
+
+	static inline struct cpuinfo_arm_chipset disambiguate_rockchip_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1])
+	{
+		if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_product_board_chipset;
+		}
+		if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *proc_cpuinfo_hardware_chipset;
+		}
+		return *ro_board_platform_chipset;
+	}
+
+	static inline struct cpuinfo_arm_chipset disambiguate_spreadtrum_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
+	{
+		if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_chipname_chipset;
+		}
+		if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_product_board_chipset;
+		}
+		if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *proc_cpuinfo_hardware_chipset;
+		}
+		return *ro_board_platform_chipset;
 	}
 
 	/*
-	 * Propagate suffixes: consider all pairs of chipsets, if both chipsets in the pair are from the same series,
-	 * and one's suffix is a prefix of another's chipset suffix, use the longest suffix.
+	 * Decodes chipset name from Android system properties:
+	 * - /proc/cpuinfo Hardware string
+	 * - ro.product.board
+	 * - ro.board.platform
+	 * - ro.mediatek.platform
+	 * - ro.chipname
+	 * For some chipsets, the function relies frequency and on number of cores for chipset detection.
+	 *
+	 * @param[in] properties - structure with the Android system properties described above.
+	 * @param cores - number of cores in the chipset.
+	 * @param max_cpu_freq_max - maximum of /sys/devices/system/cpu/cpu<number>/cpofreq/cpu_freq_max values.
+	 *
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
+	 *          and series identifiers.
 	 */
-	for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
-		const size_t chipset_i_suffix_length = strnlen(chipsets[i].suffix, CPUINFO_ARM_CHIPSET_SUFFIX_MAX);
-		for (size_t j = 0; j < i; j++) {
-			if (chipsets[i].series == chipsets[j].series) {
-				const size_t chipset_j_suffix_length = strnlen(chipsets[j].suffix, CPUINFO_ARM_CHIPSET_SUFFIX_MAX);
-				if (chipset_i_suffix_length != chipset_j_suffix_length) {
-					const size_t common_prefix_length = (chipset_i_suffix_length < chipset_j_suffix_length) ?
-						chipset_i_suffix_length : chipset_j_suffix_length;
-					if (common_prefix_length == 0 ||
-						memcmp(chipsets[i].suffix, chipsets[j].suffix, common_prefix_length) == 0)
-					{
-						if (chipset_i_suffix_length > chipset_j_suffix_length) {
-							memcpy(chipsets[j].suffix, chipsets[i].suffix, chipset_i_suffix_length);
-						} else {
-							memcpy(chipsets[i].suffix, chipsets[j].suffix, chipset_j_suffix_length);
+	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset(
+		const struct cpuinfo_android_properties properties[restrict static 1],
+		uint32_t cores,
+		uint32_t max_cpu_freq_max)
+	{
+		struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_unknown,
+			.series = cpuinfo_arm_chipset_series_unknown,
+		};
+
+		const bool tegra_platform = is_tegra(
+			properties->ro_board_platform,
+			properties->ro_board_platform + strnlen(properties->ro_board_platform, CPUINFO_BUILD_PROP_VALUE_MAX));
+
+		struct cpuinfo_arm_chipset chipsets[cpuinfo_android_chipset_property_max] = {
+			[cpuinfo_android_chipset_property_proc_cpuinfo_hardware] =
+				cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(
+					properties->proc_cpuinfo_hardware, cores, max_cpu_freq_max, tegra_platform),
+			[cpuinfo_android_chipset_property_ro_product_board] =
+				cpuinfo_arm_android_decode_chipset_from_ro_product_board(
+					properties->ro_product_board, cores, max_cpu_freq_max),
+			[cpuinfo_android_chipset_property_ro_board_platform] =
+				cpuinfo_arm_android_decode_chipset_from_ro_board_platform(
+					properties->ro_board_platform, cores, max_cpu_freq_max),
+			[cpuinfo_android_chipset_property_ro_mediatek_platform] =
+				cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(properties->ro_mediatek_platform),
+			[cpuinfo_android_chipset_property_ro_chipname] =
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname),
+		};
+		enum cpuinfo_arm_chipset_vendor vendor = cpuinfo_arm_chipset_vendor_unknown;
+		for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
+			const enum cpuinfo_arm_chipset_vendor decoded_vendor = chipsets[i].vendor;
+			if (decoded_vendor != cpuinfo_arm_chipset_vendor_unknown) {
+				if (vendor == cpuinfo_arm_chipset_vendor_unknown) {
+					vendor = decoded_vendor;
+				} else if (vendor != decoded_vendor) {
+					/* Parsing different system properties produces different chipset vendors. This situation is rare. */
+					cpuinfo_log_error(
+						"chipset detection failed: different chipset vendors reported in different system properties");
+					goto finish;
+				}
+			}
+		}
+		if (vendor == cpuinfo_arm_chipset_vendor_unknown) {
+			cpuinfo_log_warning(
+				"chipset detection failed: none of the system properties matched known signatures");
+			goto finish;
+		}
+
+		/* Fix common bugs in reported chipsets */
+		for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
+			cpuinfo_arm_fixup_chipset(&chipsets[i], cores, max_cpu_freq_max);
+		}
+
+		/*
+		 * Propagate suffixes: consider all pairs of chipsets, if both chipsets in the pair are from the same series,
+		 * and one's suffix is a prefix of another's chipset suffix, use the longest suffix.
+		 */
+		for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
+			const size_t chipset_i_suffix_length = strnlen(chipsets[i].suffix, CPUINFO_ARM_CHIPSET_SUFFIX_MAX);
+			for (size_t j = 0; j < i; j++) {
+				if (chipsets[i].series == chipsets[j].series) {
+					const size_t chipset_j_suffix_length = strnlen(chipsets[j].suffix, CPUINFO_ARM_CHIPSET_SUFFIX_MAX);
+					if (chipset_i_suffix_length != chipset_j_suffix_length) {
+						const size_t common_prefix_length = (chipset_i_suffix_length < chipset_j_suffix_length) ?
+							chipset_i_suffix_length : chipset_j_suffix_length;
+						if (common_prefix_length == 0 ||
+							memcmp(chipsets[i].suffix, chipsets[j].suffix, common_prefix_length) == 0)
+						{
+							if (chipset_i_suffix_length > chipset_j_suffix_length) {
+								memcpy(chipsets[j].suffix, chipsets[i].suffix, chipset_i_suffix_length);
+							} else {
+								memcpy(chipsets[i].suffix, chipsets[j].suffix, chipset_j_suffix_length);
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
-	for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
-		if (chipsets[i].series != cpuinfo_arm_chipset_series_unknown) {
-			if (chipset.series == cpuinfo_arm_chipset_series_unknown) {
-				chipset = chipsets[i];
-			} else if (chipsets[i].series != chipset.series || chipsets[i].model != chipset.model ||
-				strncmp(chipsets[i].suffix, chipset.suffix, CPUINFO_ARM_CHIPSET_SUFFIX_MAX) != 0)
-			{
-				cpuinfo_log_info(
-					"different chipsets reported in different system properties; "
-					"vendor-specific disambiguation heuristic would be used");
-				switch (vendor) {
-					case cpuinfo_arm_chipset_vendor_qualcomm:
-						return disambiguate_qualcomm_chipset(
-							&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
-							&chipsets[cpuinfo_android_chipset_property_ro_product_board],
-							&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
-							&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
-					case cpuinfo_arm_chipset_vendor_mediatek:
-						return disambiguate_mediatek_chipset(
-							&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
-							&chipsets[cpuinfo_android_chipset_property_ro_product_board],
-							&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
-							&chipsets[cpuinfo_android_chipset_property_ro_mediatek_platform],
-							&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
-					case cpuinfo_arm_chipset_vendor_hisilicon:
-						return disambiguate_hisilicon_chipset(
-							&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
-							&chipsets[cpuinfo_android_chipset_property_ro_product_board],
-							&chipsets[cpuinfo_android_chipset_property_ro_board_platform]);
-					case cpuinfo_arm_chipset_vendor_amlogic:
-						return disambiguate_amlogic_chipset(
-							&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
-							&chipsets[cpuinfo_android_chipset_property_ro_board_platform]);
-					case cpuinfo_arm_chipset_vendor_marvell:
-						return disambiguate_marvell_chipset(
-							&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
-							&chipsets[cpuinfo_android_chipset_property_ro_product_board],
-							&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
-					case cpuinfo_arm_chipset_vendor_rockchip:
-						return disambiguate_rockchip_chipset(
-							&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
-							&chipsets[cpuinfo_android_chipset_property_ro_product_board],
-							&chipsets[cpuinfo_android_chipset_property_ro_board_platform]);
-					case cpuinfo_arm_chipset_vendor_spreadtrum:
-						return disambiguate_spreadtrum_chipset(
-							&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
-							&chipsets[cpuinfo_android_chipset_property_ro_product_board],
-							&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
-							&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
-					default:
-						cpuinfo_log_error(
-							"chipset detection failed: "
-							"could not disambiguate different chipsets reported in different system properties");
-						/* chipset variable contains valid, but inconsistent chipset information, overwrite it */
-						chipset = (struct cpuinfo_arm_chipset) {
-							.vendor = cpuinfo_arm_chipset_vendor_unknown,
-							.series = cpuinfo_arm_chipset_series_unknown,
-						};
-						goto finish;
+		for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
+			if (chipsets[i].series != cpuinfo_arm_chipset_series_unknown) {
+				if (chipset.series == cpuinfo_arm_chipset_series_unknown) {
+					chipset = chipsets[i];
+				} else if (chipsets[i].series != chipset.series || chipsets[i].model != chipset.model ||
+					strncmp(chipsets[i].suffix, chipset.suffix, CPUINFO_ARM_CHIPSET_SUFFIX_MAX) != 0)
+				{
+					cpuinfo_log_info(
+						"different chipsets reported in different system properties; "
+						"vendor-specific disambiguation heuristic would be used");
+					switch (vendor) {
+						case cpuinfo_arm_chipset_vendor_qualcomm:
+							return disambiguate_qualcomm_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
+								&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
+								&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
+						case cpuinfo_arm_chipset_vendor_mediatek:
+							return disambiguate_mediatek_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
+								&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
+								&chipsets[cpuinfo_android_chipset_property_ro_mediatek_platform],
+								&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
+						case cpuinfo_arm_chipset_vendor_hisilicon:
+							return disambiguate_hisilicon_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
+								&chipsets[cpuinfo_android_chipset_property_ro_board_platform]);
+						case cpuinfo_arm_chipset_vendor_amlogic:
+							return disambiguate_amlogic_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_board_platform]);
+						case cpuinfo_arm_chipset_vendor_marvell:
+							return disambiguate_marvell_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
+								&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
+						case cpuinfo_arm_chipset_vendor_rockchip:
+							return disambiguate_rockchip_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
+								&chipsets[cpuinfo_android_chipset_property_ro_board_platform]);
+						case cpuinfo_arm_chipset_vendor_spreadtrum:
+							return disambiguate_spreadtrum_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
+								&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
+								&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
+						default:
+							cpuinfo_log_error(
+								"chipset detection failed: "
+								"could not disambiguate different chipsets reported in different system properties");
+							/* chipset variable contains valid, but inconsistent chipset information, overwrite it */
+							chipset = (struct cpuinfo_arm_chipset) {
+								.vendor = cpuinfo_arm_chipset_vendor_unknown,
+								.series = cpuinfo_arm_chipset_series_unknown,
+							};
+							goto finish;
+					}
 				}
 			}
 		}
+
+	finish:
+		return chipset;
+	}
+#else /* !defined(__ANDROID__) */
+
+	/*
+	 * Decodes chipset name from /proc/cpuinfo Hardware string.
+	 * For some chipsets, the function relies frequency and on number of cores for chipset detection.
+	 *
+	 * @param[in] hardware - /proc/cpuinfo Hardware string.
+	 * @param cores - number of cores in the chipset.
+	 * @param max_cpu_freq_max - maximum of /sys/devices/system/cpu/cpu<number>/cpofreq/cpu_freq_max values.
+	 *
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
+	 *          and series identifiers.
+	 */
+	struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset(
+		const char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+		uint32_t cores,
+		uint32_t max_cpu_freq_max)
+	{
+		struct cpuinfo_arm_chipset chipset =
+			cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(
+				hardware, cores, max_cpu_freq_max, false);
+		if (chipset.vendor == cpuinfo_arm_chipset_vendor_unknown) {
+			cpuinfo_log_warning(
+				"chipset detection failed: /proc/cpuinfo Hardware string did not match known signatures");
+		} else {
+			cpuinfo_arm_fixup_chipset(&chipset, cores, max_cpu_freq_max);
+		}
+		return chipset;
 	}
 
-finish:
-	return chipset;
-}
+#endif

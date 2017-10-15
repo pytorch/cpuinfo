@@ -43,6 +43,9 @@ def main(args):
                 sources += [
                     "arm/linux/init.c",
                     "arm/linux/cpuinfo.c",
+                    "arm/linux/clusters.c",
+                    "arm/linux/midr.c",
+                    "arm/linux/chipset.c",
                 ]
                 if build.target.is_arm:
                     sources.append("arm/linux/arm32-isa.c")

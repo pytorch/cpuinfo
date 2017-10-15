@@ -630,9 +630,7 @@ static void parse_cache_number(
 #endif /* CPUINFO_ARCH_ARM */
 
 struct proc_cpuinfo_parser_state {
-#if defined(__ANDROID__)
 	char* hardware;
-#endif
 	uint32_t processor_index;
 	uint32_t max_processors_count;
 	struct cpuinfo_arm_linux_processor* processors;
