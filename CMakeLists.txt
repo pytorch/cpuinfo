@@ -18,7 +18,7 @@ ENDIF()
 
 IF(NOT CMAKE_SYSTEM_PROCESSOR)
   MESSAGE(FATAL_ERROR "CMAKE_SYSTEM_PROCESSOR not defined")
-ELSEIF(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64|armv5te|armv7-a|aarch64)$")
+ELSEIF(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64|armv5te|armv7-a|armv7l|aarch64)$")
   MESSAGE(FATAL_ERROR "Unrecognized CMAKE_SYSTEM_PROCESSOR = ${CMAKE_SYSTEM_PROCESSOR}")
 ENDIF()
 
@@ -55,7 +55,7 @@ IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64)$")
   ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     LIST(APPEND CPUINFO_SRCS src/x86/mach/init.c)
   ENDIF()
-ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a|aarch64)$")
+ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a|armv7l|aarch64)$")
   LIST(APPEND CPUINFO_SRCS
     src/arm/uarch.c
     src/arm/cache.c)
@@ -64,14 +64,14 @@ ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a|aarch64)$")
       src/arm/linux/init.c
       src/arm/linux/cpuinfo.c
       src/arm/linux/clusters.c
+      src/arm/linux/chipset.c
       src/arm/linux/midr.c)
   ENDIF()
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
     LIST(APPEND CPUINFO_SRCS
-      src/arm/Android/chipset.c
       src/arm/Android/properties.c)
   ENDIF()
-  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a)$")
+  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7l|armv7-a)$")
     LIST(APPEND CPUINFO_SRCS src/arm/linux/arm32-isa.c)
     IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND ANDROID_ABI STREQUAL "armeabi")
       SET_SOURCE_FILES_PROPERTIES(src/arm/linux/arm32-isa.c PROPERTIES COMPILE_FLAGS -marm)
