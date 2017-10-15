@@ -16,8 +16,6 @@ def main(args):
         "CPUINFO_LOG_LEVEL": {"none": 0, "error": 1, "warning": 2, "info": 3, "debug": 4}[options.log_level],
         "CPUINFO_MOCK": int(options.mock)
     }
-    if build.target.is_linux:
-        macros["_GNU_SOURCE"] = 1
 
     build.export_cpath("include", ["cpuinfo.h"])
 
