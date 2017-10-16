@@ -404,6 +404,57 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
+		case cpuinfo_uarch_cortex_a35:
+			/*
+			 * ARM Cortex‑A35 Processor Technical Reference Manual:
+			 * 6.1. About the L1 memory system
+			 *   The L1 memory system includes several power-saving and performance-enhancing features.
+			 *   These include separate instruction and data caches, which can be configured
+			 *   independently during implementation to sizes of 8KB, 16KB, 32KB, or 64KB.
+			 *
+			 *   L1 instruction-side memory system
+			 *     A dedicated instruction cache that:
+			 *      - is virtually indexed and physically tagged.
+			 *      - is 2-way set associative.
+			 *      - is configurable to be 8KB, 16KB, 32KB, or 64KB.
+			 *      - uses a cache line length of 64 bytes.
+			 *
+			 *   L1 data-side memory system
+			 *     A dedicated data cache that:
+			 *      - is physically indexed and physically tagged.
+			 *      - is 4-way set associative.
+			 *      - is configurable to be 8KB, 16KB, 32KB, or 64KB.
+			 *      - uses a cache line length of 64 bytes.
+			 *
+			 * 7.1. About the L2 memory system
+			 *   The L2 cache is 8-way set associative.
+			 *   Further features of the L2 cache are:
+			 *    - Configurable size of 128KB, 256KB, 512KB, and 1MB.
+			 *    - Fixed line length of 64 bytes.
+			 *    - Physically indexed and tagged.
+			 *
+			 *  +-----------------+---------+-----------+-----------+-----------+-----------+
+			 *  | Processor model |  Cores  | L1D cache | L1I cache | L2 cache  | Reference |
+			 *  +-----------------+---------+-----------+-----------+-----------+-----------+
+			 *  | MediaTek MT6599 | 4(+4+2) |     ?     |     ?     |     ?     |           |
+			 *  +-----------------+---------+-----------+-----------+-----------+-----------+
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 16 * 1024, /* assumption based on low-end Cortex-A53 */
+				.associativity = 2,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 16 * 1024, /* assumption based on low-end Cortex-A53 */
+				.associativity = 4,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = 256 * 1024, /* assumption based on low-end Cortex-A53 */
+				.associativity = 8,
+				.line_size = 64
+			};
+			break;
 		case cpuinfo_uarch_cortex_a53:
 			/*
 			 * ARM Cortex-A53 MPCore Processor Technical Reference Manual:
@@ -901,7 +952,6 @@ void cpuinfo_arm_decode_cache(
 			break;
 		case cpuinfo_uarch_cortex_a12:
 		case cpuinfo_uarch_cortex_a32:
-		case cpuinfo_uarch_cortex_a35:
 		default:
 			cpuinfo_log_warning("target uarch not recognized; using generic cache parameters");
 			/* Follow OpenBLAS */
