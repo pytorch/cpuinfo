@@ -2025,7 +2025,7 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
  * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
  *          and series identifiers.
  */
-struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(
+struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_hardware(
 	const char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
 	uint32_t cores, uint32_t max_cpu_freq_max, bool is_tegra)
 {
@@ -3280,7 +3280,7 @@ void cpuinfo_arm_chipset_to_string(
 
 		struct cpuinfo_arm_chipset chipsets[cpuinfo_android_chipset_property_max] = {
 			[cpuinfo_android_chipset_property_proc_cpuinfo_hardware] =
-				cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(
+				cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_hardware(
 					properties->proc_cpuinfo_hardware, cores, max_cpu_freq_max, tegra_platform),
 			[cpuinfo_android_chipset_property_ro_product_board] =
 				cpuinfo_arm_android_decode_chipset_from_ro_product_board(
@@ -3430,7 +3430,7 @@ void cpuinfo_arm_chipset_to_string(
 		uint32_t max_cpu_freq_max)
 	{
 		struct cpuinfo_arm_chipset chipset =
-			cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(
+			cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_hardware(
 				hardware, cores, max_cpu_freq_max, false);
 		if (chipset.vendor == cpuinfo_arm_chipset_vendor_unknown) {
 			cpuinfo_log_warning(

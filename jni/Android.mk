@@ -18,9 +18,9 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/linux/init.c \
 	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c \
 	$(LOCAL_PATH)/src/arm/linux/clusters.c \
+	$(LOCAL_PATH)/src/arm/linux/chipset.c \
 	$(LOCAL_PATH)/src/arm/linux/midr.c \
-	$(LOCAL_PATH)/src/arm/android/properties.c \
-	$(LOCAL_PATH)/src/arm/android/chipset.c
+	$(LOCAL_PATH)/src/arm/android/properties.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
 LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c.arm
 endif # armeabi
@@ -70,9 +70,9 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/linux/init.c \
 	$(LOCAL_PATH)/src/arm/linux/cpuinfo.c \
 	$(LOCAL_PATH)/src/arm/linux/clusters.c \
+	$(LOCAL_PATH)/src/arm/linux/chipset.c \
 	$(LOCAL_PATH)/src/arm/linux/midr.c \
-	$(LOCAL_PATH)/src/arm/android/properties.c \
-	$(LOCAL_PATH)/src/arm/android/chipset.c
+	$(LOCAL_PATH)/src/arm/android/properties.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
 LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c.arm
 endif # armeabi

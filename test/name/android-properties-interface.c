@@ -36,7 +36,7 @@ void cpuinfo_arm_android_parse_proc_cpuinfo_hardware(
 	char chipset_name[CPUINFO_ARM_CHIPSET_NAME_MAX])
 {
 	struct cpuinfo_arm_chipset chipset =
-		cpuinfo_arm_android_decode_chipset_from_proc_cpuinfo_hardware(hardware, cores, max_cpu_freq_max, is_tegra);
+		cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_hardware(hardware, cores, max_cpu_freq_max, is_tegra);
 	if (chipset.series == cpuinfo_arm_chipset_series_unknown) {
 		chipset_name[0] = 0;
 	} else {

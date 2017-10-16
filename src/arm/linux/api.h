@@ -11,6 +11,20 @@
 /* No hard limit in the kernel, maximum length observed on non-rogue kernels is 64 */
 #define CPUINFO_HARDWARE_VALUE_MAX 64
 
+#ifdef __ANDROID__
+	/* As per include/sys/system_properties.h in Android NDK */
+	#define CPUINFO_BUILD_PROP_NAME_MAX  32
+	#define CPUINFO_BUILD_PROP_VALUE_MAX 92
+
+	struct cpuinfo_android_properties {
+		char proc_cpuinfo_hardware[CPUINFO_HARDWARE_VALUE_MAX];
+		char ro_product_board[CPUINFO_BUILD_PROP_VALUE_MAX];
+		char ro_board_platform[CPUINFO_BUILD_PROP_VALUE_MAX];
+		char ro_mediatek_platform[CPUINFO_BUILD_PROP_VALUE_MAX];
+		char ro_chipname[CPUINFO_BUILD_PROP_VALUE_MAX];
+	};
+#endif
+
 #define CPUINFO_ARM_LINUX_ARCH_T   UINT32_C(0x00000001)
 #define CPUINFO_ARM_LINUX_ARCH_E   UINT32_C(0x00000002)
 #define CPUINFO_ARM_LINUX_ARCH_J   UINT32_C(0x00000004)
