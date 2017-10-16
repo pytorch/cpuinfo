@@ -3,7 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <arm/android/api.h>
+#include <arm/linux/api.h>
+#ifdef __ANDROID__
+	#include <arm/android/api.h>
+#endif
 #include <log.h>
 
 
