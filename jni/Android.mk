@@ -414,6 +414,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := meizu-pro-7-plus-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/meizu-pro-7-plus.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := nexus5x-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus5x.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
