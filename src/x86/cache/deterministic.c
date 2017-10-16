@@ -33,7 +33,7 @@ bool cpuinfo_x86_decode_deterministic_cache_parameters(
 
 	*package_cores_max = 1 + (regs.eax >> 26);
 	const uint32_t processors = 1 + ((regs.eax >> 14) & UINT32_C(0x00000FFF));
-	const uint32_t apic_bits = bit_length(processors - 1);
+	const uint32_t apic_bits = bit_length(processors);
 
 	uint32_t flags = 0;
 	if (regs.edx & UINT32_C(0x00000002)) {
