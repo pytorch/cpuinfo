@@ -17,6 +17,8 @@
 #include <log.h>
 
 
+struct cpuinfo_arm_isa cpuinfo_isa = { 0 };
+
 static uint32_t get_sys_info(int type_specifier, char* name) {
 	size_t size = 0;
 	uint32_t result = 0;
@@ -58,7 +60,12 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 			return cpuinfo_uarch_twister;
 		case CPUFAMILY_ARM_HURRICANE:
 			return cpuinfo_uarch_hurricane;
+#ifdef CPUFAMILY_ARM_MONSOON_MISTRAL
 		case CPUFAMILY_ARM_MONSOON_MISTRAL:
+#else
+		case 0xe81e7ef6:
+			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_MONSOON_MISTRAL */
+#endif
 			/* 2x Monsoon + 4x Mistral cores */
 			return core_index < 2 ? cpuinfo_uarch_monsoon : cpuinfo_uarch_mistral;
 		default:
