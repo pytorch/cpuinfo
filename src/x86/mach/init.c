@@ -210,7 +210,7 @@ void cpuinfo_x86_mach_init(void) {
 
 	if (l2_count != 0) {
 		l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
-		if (l1d == NULL) {
+		if (l2 == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
 				l2_count * sizeof(struct cpuinfo_cache), l2_count);
 			return;
