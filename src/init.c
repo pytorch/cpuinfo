@@ -3,6 +3,10 @@
 #include <cpuinfo.h>
 #include <api.h>
 
+#ifdef __APPLE__
+	#include "TargetConditionals.h"
+#endif
+
 
 struct cpuinfo_processor* cpuinfo_processors = NULL;
 struct cpuinfo_core* cpuinfo_cores = NULL;
@@ -27,6 +31,8 @@ void CPUINFO_ABI cpuinfo_initialize(void) {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	#if defined(__linux__)
 		pthread_once(&init_guard, &cpuinfo_arm_linux_init);
+	#elif defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
+		pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 	#else
 		#error Unsupported target OS
 	#endif

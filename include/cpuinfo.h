@@ -387,12 +387,16 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_swift     = 0x00700100,
 	/** Apple A7 processor. */
 	cpuinfo_uarch_cyclone   = 0x00700101,
-	/** Apple A8 processor. */
+	/** Apple A8 and A8X processor. */
 	cpuinfo_uarch_typhoon   = 0x00700102,
-	/** Apple A9 processor. */
+	/** Apple A9 and A9X processor. */
 	cpuinfo_uarch_twister   = 0x00700103,
-	/** Apple A10 processor. */
+	/** Apple A10 and A10X processor. */
 	cpuinfo_uarch_hurricane = 0x00700104,
+	/** Apple A11 processor (big cores). */
+	cpuinfo_uarch_monsoon   = 0x00700105,
+	/** Apple A11 processor (little cores). */
+	cpuinfo_uarch_mistral   = 0x00700106,
 
 	/** Cavium ThunderX. */
 	cpuinfo_uarch_thunderx = 0x00800100,
