@@ -126,6 +126,13 @@ LOCAL_CFLAGS := -std=gnu99
 LOCAL_STATIC_LIBRARIES := cpuinfo
 include $(BUILD_EXECUTABLE)
 
+# include $(CLEAR_VARS)
+# LOCAL_MODULE := gpu-dump
+# LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/gpu-dump.c
+# LOCAL_CFLAGS := -std=gnu99
+# LOCAL_LDLIBS := -ldl -lEGL -lGLESv2
+# include $(BUILD_EXECUTABLE)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := size-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/size.c
@@ -229,6 +236,13 @@ include $(BUILD_EXECUTABLE)
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-win-duos-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-win-duos.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := huawei-ascend-p7-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/huawei-ascend-p7.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
