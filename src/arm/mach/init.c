@@ -17,7 +17,31 @@
 #include <log.h>
 
 
-struct cpuinfo_arm_isa cpuinfo_isa = { 0 };
+struct cpuinfo_arm_isa cpuinfo_isa = {
+#if CPUINFO_ARCH_ARM
+	.thumb = true,
+	.thumb2 = true,
+	.thumbee = false,
+	.jazelle = false,
+	.armv5e = true,
+	.armv6 = true,
+	.armv6k = true,
+	.armv7 = true,
+	.vfpv2 = false,
+	.vfpv3 = true,
+	.d32 = true,
+	.wmmx = false,
+	.wmmx2 = false,
+	.neon = true,
+#endif
+#if CPUINFO_ARCH_ARM64
+	.aes = true,
+	.sha1 = true,
+	.sha2 = true,
+	.pmull = true,
+	.crc32 = true,
+#endif
+};
 
 static uint32_t get_sys_info(int type_specifier, char* name) {
 	size_t size = 0;
@@ -247,9 +271,46 @@ void cpuinfo_arm_mach_init(void) {
 		};
 		decode_package_name(packages[i].name);
 	}
-	
+
+
 	const uint32_t cpu_family = get_sys_info_by_name("hw.cpufamily");
+	const uint32_t cpu_type = get_sys_info_by_name("hw.cputype");
 	const uint32_t cpu_subtype = get_sys_info_by_name("hw.cpusubtype");
+	switch (cpu_type) {
+		case CPU_TYPE_ARM64:
+			cpuinfo_isa.aes = true;
+			cpuinfo_isa.sha1 = true;
+			cpuinfo_isa.sha2 = true;
+			cpuinfo_isa.pmull = true;
+			cpuinfo_isa.crc32 = true;
+			break;
+#if CPUINFO_ARCH_ARM
+		case CPU_TYPE_ARM:
+			switch (cpu_subtype) {
+				case CPU_SUBTYPE_ARM_V8:
+					cpuinfo_isa.aes = true;
+					cpuinfo_isa.sha1 = true;
+					cpuinfo_isa.sha2 = true;
+					cpuinfo_isa.pmull = true;
+					cpuinfo_isa.crc32 = true;
+					/* Fall-through to add ARMv7S features */
+				case CPU_SUBTYPE_ARM_V7S:
+				case CPU_SUBTYPE_ARM_V7K:
+					cpuinfo_isa.fma = true;
+					/* Fall-through to add ARMv7F features */
+				case CPU_SUBTYPE_ARM_V7F:
+					cpuinfo_isa.armv7mp = true;
+					cpuinfo_isa.fp16 = true;
+					/* Fall-through to add ARMv7 features */
+				case CPU_SUBTYPE_ARM_V7:
+					break;
+				default:
+					break;
+			}
+			break;
+#endif
+	}
+
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		cores[i] = (struct cpuinfo_core) {
 			.processor_start = i * threads_per_core,
