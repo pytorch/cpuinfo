@@ -112,7 +112,7 @@ TEST(CORES, uarch) {
 
 TEST(CORES, midr) {
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
-		ASSERT_EQ(UINT32_C(0x413FC090), cpuinfo_get_core(i)->midr);
+		ASSERT_EQ(UINT32_C(0x414FC091), cpuinfo_get_core(i)->midr);
 	}
 }
 
