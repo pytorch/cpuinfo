@@ -97,9 +97,9 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] 32-bit ARM (ARMv5T and later)
   - [x] ARM64
   - [ ] PowerPC64
-- [ ] iOS
-  - [ ] ARMv7
-  - [ ] ARM64
+- [x] iOS
+  - [x] ARMv7
+  - [x] ARM64
 - [x] OS X
   - [x] x86
   - [x] x86-64
