@@ -325,6 +325,31 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-1\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+		.size = 9,
+		.content = "msm_idle\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+		.size = 5,
+		.content = "menu\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
 		.size = 8,
 		.content = "1190400\n",
@@ -333,6 +358,57 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq",
 		.size = 7,
 		.content = "300000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+		.size = 44,
+		.content = "300000 384000 600000 787200 998400 1190400 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+		.size = 54,
+		.content = "interactive ondemand userspace powersave performance \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+		.size = 7,
+		.content = "300000\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+		.size = 4,
+		.content = "msm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+		.size = 12,
+		.content = "interactive\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+		.size = 69,
+		.content =
+			"300000 226957\n"
+			"384000 42\n"
+			"600000 89\n"
+			"787200 17\n"
+			"998400 3281\n"
+			"1190400 4758\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+		.size = 4,
+		.content = "764\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
@@ -345,6 +421,11 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-1\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 2,
+		.content = "3\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
 		.size = 2,
 		.content = "0\n",
@@ -354,5 +435,1412 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "0\n",
 	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+		.size = 2,
+		.content = "1\n",
+	},
 	{ NULL },
 };
+
+#ifdef __ANDROID__
+struct cpuinfo_mock_property properties[] = {
+	{
+		.key = "DEVICE_PROVISIONED",
+		.value = "1",
+	},
+	{
+		.key = "af.resampler.quality",
+		.value = "4",
+	},
+	{
+		.key = "audio.offload.buffer.size.kb",
+		.value = "32",
+	},
+	{
+		.key = "audio.offload.disable",
+		.value = "1",
+	},
+	{
+		.key = "audio.offload.gapless.enabled",
+		.value = "true",
+	},
+	{
+		.key = "av.offload.enable",
+		.value = "false",
+	},
+	{
+		.key = "dalvik.vm.heapgrowthlimit",
+		.value = "96m",
+	},
+	{
+		.key = "dalvik.vm.heapmaxfree",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heapminfree",
+		.value = "2m",
+	},
+	{
+		.key = "dalvik.vm.heapsize",
+		.value = "128m",
+	},
+	{
+		.key = "dalvik.vm.heapstartsize",
+		.value = "8m",
+	},
+	{
+		.key = "dalvik.vm.heaptargetutilization",
+		.value = "0.75",
+	},
+	{
+		.key = "dalvik.vm.stack-trace-file",
+		.value = "/data/anr/traces.txt",
+	},
+	{
+		.key = "debug.composition.type",
+		.value = "gpu",
+	},
+	{
+		.key = "debug.force_rtl",
+		.value = "0",
+	},
+	{
+		.key = "debug.gralloc.map_fb_memory",
+		.value = "0",
+	},
+	{
+		.key = "debug.hwc.dynThreshold",
+		.value = "1.5",
+	},
+	{
+		.key = "debug.sf.fb_always_on",
+		.value = "1",
+	},
+	{
+		.key = "dev.bootcomplete",
+		.value = "1",
+	},
+	{
+		.key = "dev.pm.dyn_samplingrate",
+		.value = "1",
+	},
+	{
+		.key = "drm.service.enabled",
+		.value = "true",
+	},
+	{
+		.key = "gsm.current.phone-type",
+		.value = "1",
+	},
+	{
+		.key = "gsm.network.type",
+		.value = "Unknown",
+	},
+	{
+		.key = "gsm.operator.alpha",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.iso-country",
+		.value = "",
+	},
+	{
+		.key = "gsm.operator.isroaming",
+		.value = "false",
+	},
+	{
+		.key = "gsm.operator.numeric",
+		.value = "",
+	},
+	{
+		.key = "gsm.sim.state",
+		.value = "ABSENT",
+	},
+	{
+		.key = "gsm.version.baseband",
+		.value = "MSM8610BP_1034.307.26.02P, RETUSA_GLB_CUST",
+	},
+	{
+		.key = "gsm.version.ril-impl",
+		.value = "Qualcomm RIL 1.0",
+	},
+	{
+		.key = "hw.cabl.version",
+		.value = "1.1.20130401",
+	},
+	{
+		.key = "hw.cabl.yuv",
+		.value = "0",
+	},
+	{
+		.key = "hw.pp.cfg",
+		.value = "/data/pp_data.cfg",
+	},
+	{
+		.key = "init.svc.adbd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.adsprpcd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.atfwd",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.atvc",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.atvc_core",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.batt_health",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.bootanim",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.config_bluetooth",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.debuggerd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.drm",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.dropboxd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.flash_recovery",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.healthd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.hw_revs",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.installd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.irsc_util",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.keystore",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.kpgather",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.location_mq",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mbm_spy",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.media",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.mmi-boot-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mmi-radio-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mmi-touch-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mmi-usb-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.mpdecision",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.netmgrd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.p2p_supplicant",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ppd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ptt_socket_app",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcamerasvr",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qcom-c_core-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcom-c_main-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcom-post-boot",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qcom-sh",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qe",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.qmuxd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.qseecomd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.rfs_access",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ril-daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ril-qmi",
+		.value = "stopped",
+	},
+	{
+		.key = "init.svc.rmt_storage",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.sdcard",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.servicemanager",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ss_rdump",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.surfaceflinger",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.tcmd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.thermal-engine",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.time_daemon",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.ueventd",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.vold",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.wcnss-service",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.xtwifi_client",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.xtwifi_inet",
+		.value = "running",
+	},
+	{
+		.key = "init.svc.zygote",
+		.value = "running",
+	},
+	{
+		.key = "installd.post_fs_data_ready",
+		.value = "1",
+	},
+	{
+		.key = "keyguard.no_require_sim",
+		.value = "true",
+	},
+	{
+		.key = "mdc_initial_max_retry",
+		.value = "10",
+	},
+	{
+		.key = "media.aac_51_output_enabled",
+		.value = "true",
+	},
+	{
+		.key = "media.stagefright.enable-aac",
+		.value = "true",
+	},
+	{
+		.key = "media.stagefright.enable-fma2dp",
+		.value = "true",
+	},
+	{
+		.key = "media.stagefright.enable-http",
+		.value = "true",
+	},
+	{
+		.key = "media.stagefright.enable-player",
+		.value = "true",
+	},
+	{
+		.key = "media.stagefright.enable-qcp",
+		.value = "true",
+	},
+	{
+		.key = "media.stagefright.enable-scan",
+		.value = "true",
+	},
+	{
+		.key = "mm.enable.qcom_parser",
+		.value = "37491",
+	},
+	{
+		.key = "mmp.enable.3g2",
+		.value = "true",
+	},
+	{
+		.key = "net.bt.name",
+		.value = "Android",
+	},
+	{
+		.key = "net.change",
+		.value = "net.qtaguid_enabled",
+	},
+	{
+		.key = "net.early.sockets",
+		.value = "0",
+	},
+	{
+		.key = "net.hostname",
+		.value = "android-29075d76e9f04227",
+	},
+	{
+		.key = "net.qtaguid_enabled",
+		.value = "1",
+	},
+	{
+		.key = "net.tcp.buffersize.1xrtt",
+		.value = "16384,32768,131072,4096,16384,102400",
+	},
+	{
+		.key = "net.tcp.buffersize.2ghotspot2",
+		.value = "4096,16384,102400,16384,32768,131072",
+	},
+	{
+		.key = "net.tcp.buffersize.2ghotspot",
+		.value = "4096,16384,65536,16384,32768,131072",
+	},
+	{
+		.key = "net.tcp.buffersize.3ghotspot2",
+		.value = "4096,16384,524288,131072,262144,1048576",
+	},
+	{
+		.key = "net.tcp.buffersize.3ghotspot",
+		.value = "4096,16384,399360,131072,262144,2441216",
+	},
+	{
+		.key = "net.tcp.buffersize.cdma",
+		.value = "4096,12288,49152,4096,12288,49152",
+	},
+	{
+		.key = "net.tcp.buffersize.default",
+		.value = "131072,262144,1048576,4096,16384,262144",
+	},
+	{
+		.key = "net.tcp.buffersize.edge",
+		.value = "16384,32768,131072,4096,16384,65536",
+	},
+	{
+		.key = "net.tcp.buffersize.ehrpd",
+		.value = "131072,262144,1048576,4096,16384,524288",
+	},
+	{
+		.key = "net.tcp.buffersize.evdo",
+		.value = "16384,32768,131072,4096,16384,102400",
+	},
+	{
+		.key = "net.tcp.buffersize.evdo_b",
+		.value = "131072,262144,1048576,4096,16384,524288",
+	},
+	{
+		.key = "net.tcp.buffersize.gprs",
+		.value = "4096,8192,24576,4096,8192,24576",
+	},
+	{
+		.key = "net.tcp.buffersize.hsdpa",
+		.value = "131072,262144,2441216,4096,16384,399360",
+	},
+	{
+		.key = "net.tcp.buffersize.hspa",
+		.value = "131072,262144,2441216,4096,16384,399360",
+	},
+	{
+		.key = "net.tcp.buffersize.hspap",
+		.value = "131072,262144,2441216,4096,16384,399360",
+	},
+	{
+		.key = "net.tcp.buffersize.hsupa",
+		.value = "131072,262144,2441216,4096,16384,399360",
+	},
+	{
+		.key = "net.tcp.buffersize.lte",
+		.value = "524288,1048576,2097152,262144,524288,1048576",
+	},
+	{
+		.key = "net.tcp.buffersize.umts",
+		.value = "131072,262144,1452032,4096,16384,399360",
+	},
+	{
+		.key = "net.tcp.buffersize.wifi",
+		.value = "131072,262144,3145728,4096,221184,3145728",
+	},
+	{
+		.key = "net.tcp.default_init_rwnd",
+		.value = "60",
+	},
+	{
+		.key = "net.tethering.on",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.adb",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.allow_all_core",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.allow_res_core",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.allow_res_panic",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.log",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.netmon_ih",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.netmon_usb",
+		.value = "0",
+	},
+	{
+		.key = "persist.atvc.simswap",
+		.value = "0",
+	},
+	{
+		.key = "persist.audio.calfile0",
+		.value = "/etc/Bluetooth_cal.acdb",
+	},
+	{
+		.key = "persist.audio.calfile1",
+		.value = "/etc/General_cal.acdb",
+	},
+	{
+		.key = "persist.audio.calfile2",
+		.value = "/etc/Global_cal.acdb",
+	},
+	{
+		.key = "persist.audio.calfile3",
+		.value = "/etc/Handset_cal.acdb",
+	},
+	{
+		.key = "persist.audio.calfile4",
+		.value = "/etc/Hdmi_cal.acdb",
+	},
+	{
+		.key = "persist.audio.calfile5",
+		.value = "/etc/Headset_cal.acdb",
+	},
+	{
+		.key = "persist.audio.calfile6",
+		.value = "/etc/Speaker_cal.acdb",
+	},
+	{
+		.key = "persist.audio.fluence.speaker",
+		.value = "false",
+	},
+	{
+		.key = "persist.audio.fluence.voicecall",
+		.value = "true",
+	},
+	{
+		.key = "persist.audio.fluence.voicerec",
+		.value = "false",
+	},
+	{
+		.key = "persist.cne.feature",
+		.value = "0",
+	},
+	{
+		.key = "persist.dash.avsync.window.msec",
+		.value = "100",
+	},
+	{
+		.key = "persist.dash.max.rep.bandwidth",
+		.value = "4000000",
+	},
+	{
+		.key = "persist.dash.max.rep.resolution",
+		.value = "1280*720",
+	},
+	{
+		.key = "persist.env.phone.global",
+		.value = "false",
+	},
+	{
+		.key = "persist.env.plmn.update",
+		.value = "false",
+	},
+	{
+		.key = "persist.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "persist.gps.qc_nlp_in_use",
+		.value = "1",
+	},
+	{
+		.key = "persist.gralloc.cp.level3",
+		.value = "1",
+	},
+	{
+		.key = "persist.loc.nlp_name",
+		.value = "com.qualcomm.services.location",
+	},
+	{
+		.key = "persist.mot.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "persist.qe",
+		.value = "qe 0/0",
+	},
+	{
+		.key = "persist.radio.adb_log_on",
+		.value = "0",
+	},
+	{
+		.key = "persist.radio.apm_sim_not_pwdn",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.apn_delay",
+		.value = "5000",
+	},
+	{
+		.key = "persist.radio.atfwd.start",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.call_type",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.dfr_mode_set",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.dont_use_dsd",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.eons.enabled",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.msgtunnel.start",
+		.value = "false",
+	},
+	{
+		.key = "persist.radio.no_wait_for_card",
+		.value = "1",
+	},
+	{
+		.key = "persist.radio.relay_oprt_change",
+		.value = "1",
+	},
+	{
+		.key = "persist.rild.nitz_long_ons_0",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_long_ons_1",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_long_ons_2",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_long_ons_3",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_plmn",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_short_ons_0",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_short_ons_1",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_short_ons_2",
+		.value = "",
+	},
+	{
+		.key = "persist.rild.nitz_short_ons_3",
+		.value = "",
+	},
+	{
+		.key = "persist.service.bdroid.bdaddr",
+		.value = "22:22:a4:8d:db:97",
+	},
+	{
+		.key = "persist.sys.country",
+		.value = "US",
+	},
+	{
+		.key = "persist.sys.dalvik.vm.lib",
+		.value = "libdvm.so",
+	},
+	{
+		.key = "persist.sys.language",
+		.value = "en",
+	},
+	{
+		.key = "persist.sys.localevar",
+		.value = "",
+	},
+	{
+		.key = "persist.sys.logkit.ctrlcode",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.phonelock.mode",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.profiler_ms",
+		.value = "0",
+	},
+	{
+		.key = "persist.sys.qc.sub.rdump.max",
+		.value = "3",
+	},
+	{
+		.key = "persist.sys.qc.sub.rdump.on",
+		.value = "1",
+	},
+	{
+		.key = "persist.sys.ssr.restart_level",
+		.value = "3",
+	},
+	{
+		.key = "persist.sys.strict_op_enable",
+		.value = "false",
+	},
+	{
+		.key = "persist.sys.timezone",
+		.value = "America/Los_Angeles",
+	},
+	{
+		.key = "persist.sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "persist.sys.whitelist",
+		.value = "/system/etc/whitelist_appops.xml",
+	},
+	{
+		.key = "persist.tcmd.log.limit",
+		.value = "0",
+	},
+	{
+		.key = "persist.timed.enable",
+		.value = "true",
+	},
+	{
+		.key = "qcom.audio.init",
+		.value = "complete",
+	},
+	{
+		.key = "qcom.bt.le_dev_pwr_class",
+		.value = "1",
+	},
+	{
+		.key = "qemu.hw.mainkeys",
+		.value = "0",
+	},
+	{
+		.key = "ril.baseband.config.version",
+		.value = "RETUSA_GLB_CUST",
+	},
+	{
+		.key = "ril.ecclist",
+		.value = "911,112,000,08,110,999,118,119,#911,*911",
+	},
+	{
+		.key = "ril.lte.bc.config",
+		.value = "0",
+	},
+	{
+		.key = "ril.qcril_pre_init_lock_held",
+		.value = "0",
+	},
+	{
+		.key = "ril.radio.ctbk_inst",
+		.value = "259",
+	},
+	{
+		.key = "ril.radio.ctbk_val",
+		.value = "1,0,0,0,0,0,0,0,0,0,1,0",
+	},
+	{
+		.key = "ril.subscription.types",
+		.value = "NV,RUIM",
+	},
+	{
+		.key = "rild.libargs",
+		.value = "-d /dev/smd0",
+	},
+	{
+		.key = "rild.libpath",
+		.value = "/vendor/lib/libril-qc-qmi-1.so",
+	},
+	{
+		.key = "ro.MAX_HIDDEN_APPS",
+		.value = "12",
+	},
+	{
+		.key = "ro.adb.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.allow.mock.location",
+		.value = "0",
+	},
+	{
+		.key = "ro.audio.fm_max_volume",
+		.value = "2624",
+	},
+	{
+		.key = "ro.baseband",
+		.value = "msm",
+	},
+	{
+		.key = "ro.bluetooth.hfp.ver",
+		.value = "1.6",
+	},
+	{
+		.key = "ro.board.platform",
+		.value = "msm8610",
+	},
+	{
+		.key = "ro.boot.baseband",
+		.value = "msm",
+	},
+	{
+		.key = "ro.boot.bootloader",
+		.value = "0x5009",
+	},
+	{
+		.key = "ro.boot.carrier",
+		.value = "retus",
+	},
+	{
+		.key = "ro.boot.cid",
+		.value = "0x9",
+	},
+	{
+		.key = "ro.boot.device",
+		.value = "condor",
+	},
+	{
+		.key = "ro.boot.emmc",
+		.value = "true",
+	},
+	{
+		.key = "ro.boot.fsg-id",
+		.value = "",
+	},
+	{
+		.key = "ro.boot.hardware",
+		.value = "qcom",
+	},
+	{
+		.key = "ro.boot.hwrev",
+		.value = "0x82B0",
+	},
+	{
+		.key = "ro.boot.mode",
+		.value = "normal",
+	},
+	{
+		.key = "ro.boot.powerup_reason",
+		.value = "0x00000010",
+	},
+	{
+		.key = "ro.boot.radio",
+		.value = "0x1",
+	},
+	{
+		.key = "ro.boot.secure_hardware",
+		.value = "1",
+	},
+	{
+		.key = "ro.boot.serialno",
+		.value = "ZX1B22CZ24",
+	},
+	{
+		.key = "ro.boot.write_protect",
+		.value = "1",
+	},
+	{
+		.key = "ro.bootloader",
+		.value = "0x5009",
+	},
+	{
+		.key = "ro.bootmode",
+		.value = "normal",
+	},
+	{
+		.key = "ro.bug2go.magickeys",
+		.value = "24,26",
+	},
+	{
+		.key = "ro.build.characteristics",
+		.value = "default",
+	},
+	{
+		.key = "ro.build.date.utc",
+		.value = "1408659458",
+	},
+	{
+		.key = "ro.build.date",
+		.value = "Thu Aug 21 17:17:38 CDT 2014",
+	},
+	{
+		.key = "ro.build.description",
+		.value = "condor_retuglb-user 4.4.4 KXC21.5-53 45 release-keys",
+	},
+	{
+		.key = "ro.build.display.id",
+		.value = "KXC21.5-53",
+	},
+	{
+		.key = "ro.build.fingerprint",
+		.value = "motorola/condor_retuglb/condor_umts:4.4.4/KXC21.5-53/45:user/release-keys",
+	},
+	{
+		.key = "ro.build.host",
+		.value = "ilclbld35",
+	},
+	{
+		.key = "ro.build.id",
+		.value = "KXC21.5-53",
+	},
+	{
+		.key = "ro.build.product",
+		.value = "condor_umts",
+	},
+	{
+		.key = "ro.build.tags",
+		.value = "release-keys",
+	},
+	{
+		.key = "ro.build.type",
+		.value = "user",
+	},
+	{
+		.key = "ro.build.user",
+		.value = "hudsoncm",
+	},
+	{
+		.key = "ro.build.version.codename",
+		.value = "REL",
+	},
+	{
+		.key = "ro.build.version.full",
+		.value = "Blur_Version.21.12.53.condor_retuglb.retuglb.en.US",
+	},
+	{
+		.key = "ro.build.version.incremental",
+		.value = "45",
+	},
+	{
+		.key = "ro.build.version.qcom",
+		.value = "AU_LINUX_ANDROID_LNX.LA.3.5.1_RB1.04.04.02.048.020",
+	},
+	{
+		.key = "ro.build.version.release",
+		.value = "4.4.4",
+	},
+	{
+		.key = "ro.build.version.sdk",
+		.value = "19",
+	},
+	{
+		.key = "ro.carrier",
+		.value = "retus",
+	},
+	{
+		.key = "ro.com.android.dataroaming",
+		.value = "false",
+	},
+	{
+		.key = "ro.com.google.clientidbase.am",
+		.value = "android-motorola",
+	},
+	{
+		.key = "ro.com.google.clientidbase.gmm",
+		.value = "android-motorola",
+	},
+	{
+		.key = "ro.com.google.clientidbase.ms",
+		.value = "android-motorola",
+	},
+	{
+		.key = "ro.com.google.clientidbase.yt",
+		.value = "android-motorola",
+	},
+	{
+		.key = "ro.com.google.clientidbase",
+		.value = "android-motorola",
+	},
+	{
+		.key = "ro.com.google.gmsversion",
+		.value = "4.4.3_r1",
+	},
+	{
+		.key = "ro.config.alarm_alert",
+		.value = "Oxygen.ogg",
+	},
+	{
+		.key = "ro.config.notification_sound",
+		.value = "Moto.ogg",
+	},
+	{
+		.key = "ro.config.ringtone",
+		.value = "Moto.ogg",
+	},
+	{
+		.key = "ro.config.vc_call_vol_steps",
+		.value = "7",
+	},
+	{
+		.key = "ro.crypto.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "ro.crypto.state",
+		.value = "unencrypted",
+	},
+	{
+		.key = "ro.debuggable",
+		.value = "0",
+	},
+	{
+		.key = "ro.factorytest",
+		.value = "0",
+	},
+	{
+		.key = "ro.fm.transmitter",
+		.value = "false",
+	},
+	{
+		.key = "ro.fuse_sdcard",
+		.value = "true",
+	},
+	{
+		.key = "ro.gps.agps_provider",
+		.value = "1",
+	},
+	{
+		.key = "ro.hardware",
+		.value = "qcom",
+	},
+	{
+		.key = "ro.hdmi.enable",
+		.value = "true",
+	},
+	{
+		.key = "ro.hw.device",
+		.value = "condor",
+	},
+	{
+		.key = "ro.hw.hwrev",
+		.value = "0x82B0",
+	},
+	{
+		.key = "ro.hw.radio",
+		.value = "0x1",
+	},
+	{
+		.key = "ro.hw.revision",
+		.value = "p2b",
+	},
+	{
+		.key = "ro.manufacturedate",
+		.value = "5/16/2014",
+	},
+	{
+		.key = "ro.media.enc.aud.codec",
+		.value = "amrnb",
+	},
+	{
+		.key = "ro.media.enc.aud.fileformat",
+		.value = "amr",
+	},
+	{
+		.key = "ro.mot.build.customerid",
+		.value = "retusa_glb",
+	},
+	{
+		.key = "ro.mot.build.version.sdk_int",
+		.value = "19",
+	},
+	{
+		.key = "ro.mvp.features",
+		.value = "srvc,grbks,vpncrt,vpn,mvpdsec,ftx",
+	},
+	{
+		.key = "ro.opengles.version",
+		.value = "196608",
+	},
+	{
+		.key = "ro.product.board",
+		.value = "MSM8610",
+	},
+	{
+		.key = "ro.product.brand",
+		.value = "motorola",
+	},
+	{
+		.key = "ro.product.cpu.abi2",
+		.value = "armeabi",
+	},
+	{
+		.key = "ro.product.cpu.abi",
+		.value = "armeabi-v7a",
+	},
+	{
+		.key = "ro.product.device",
+		.value = "condor_umts",
+	},
+	{
+		.key = "ro.product.display",
+		.value = "Moto E",
+	},
+	{
+		.key = "ro.product.locale.language",
+		.value = "en",
+	},
+	{
+		.key = "ro.product.locale.region",
+		.value = "US",
+	},
+	{
+		.key = "ro.product.manufacturer",
+		.value = "motorola",
+	},
+	{
+		.key = "ro.product.model",
+		.value = "XT1021",
+	},
+	{
+		.key = "ro.product.name",
+		.value = "condor_retuglb",
+	},
+	{
+		.key = "ro.qc.sdk.audio.fluencetype",
+		.value = "none",
+	},
+	{
+		.key = "ro.qc.sdk.audio.ssr",
+		.value = "false",
+	},
+	{
+		.key = "ro.qc.sdk.izat.premium_enabled",
+		.value = "1",
+	},
+	{
+		.key = "ro.qc.sdk.izat.service_mask",
+		.value = "0x5",
+	},
+	{
+		.key = "ro.qualcomm.bluetooth.sap",
+		.value = "false",
+	},
+	{
+		.key = "ro.qualcomm.bt.hci_transport",
+		.value = "smd",
+	},
+	{
+		.key = "ro.qualcomm.cabl",
+		.value = "0",
+	},
+	{
+		.key = "ro.revision",
+		.value = "p2b0",
+	},
+	{
+		.key = "ro.ril.svdo",
+		.value = "false",
+	},
+	{
+		.key = "ro.ril.svlte1x",
+		.value = "false",
+	},
+	{
+		.key = "ro.runtime.firstboot",
+		.value = "1498273564677",
+	},
+	{
+		.key = "ro.secure",
+		.value = "1",
+	},
+	{
+		.key = "ro.serialno",
+		.value = "ZX1B22CZ24",
+	},
+	{
+		.key = "ro.setupwizard.mode",
+		.value = "OPTIONAL",
+	},
+	{
+		.key = "ro.sf.lcd_density",
+		.value = "240",
+	},
+	{
+		.key = "ro.sys.atvc_allow_all_core",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_ap_mot_log",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_bp_log",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_gki_log",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_netmon_ih",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_netmon_usb",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_res_core",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_res_panic",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.atvc_allow_simswap",
+		.value = "0",
+	},
+	{
+		.key = "ro.sys.fw.bg_apps_limit",
+		.value = "20",
+	},
+	{
+		.key = "ro.telephony.call_ring.multiple",
+		.value = "false",
+	},
+	{
+		.key = "ro.telephony.default_network",
+		.value = "0",
+	},
+	{
+		.key = "ro.url.legal.android_privacy",
+		.value = "http://www.google.com/intl/%s/mobile/android/basic/privacy.html",
+	},
+	{
+		.key = "ro.url.legal",
+		.value = "http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html",
+	},
+	{
+		.key = "ro.usb.bpt",
+		.value = "0x2e28",
+	},
+	{
+		.key = "ro.usb.bpt_adb",
+		.value = "0x2e29",
+	},
+	{
+		.key = "ro.usb.bpteth",
+		.value = "0x2e2a",
+	},
+	{
+		.key = "ro.usb.bpteth_adb",
+		.value = "0x2e2b",
+	},
+	{
+		.key = "ro.usb.mtp",
+		.value = "0x2e82",
+	},
+	{
+		.key = "ro.usb.mtp_adb",
+		.value = "0x2e76",
+	},
+	{
+		.key = "ro.usb.ptp",
+		.value = "0x2e83",
+	},
+	{
+		.key = "ro.usb.ptp_adb",
+		.value = "0x2e84",
+	},
+	{
+		.key = "ro.use_data_netmgrd",
+		.value = "true",
+	},
+	{
+		.key = "ro.vendor.extension_library",
+		.value = "/vendor/lib/libqc-opt.so",
+	},
+	{
+		.key = "ro.wifi.channels",
+		.value = "",
+	},
+	{
+		.key = "ro.zygote.capsuid",
+		.value = "0",
+	},
+	{
+		.key = "service.bootanim.exit",
+		.value = "1",
+	},
+	{
+		.key = "sys.boot_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.bootbroadcast_completed",
+		.value = "1",
+	},
+	{
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "6075",
+	},
+	{
+		.key = "sys.usb.config",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "sys.usb.state",
+		.value = "mtp,adb",
+	},
+	{
+		.key = "tcmd.blan.interface",
+		.value = "usb0",
+	},
+	{
+		.key = "telephony.lteOnCdmaDevice",
+		.value = "0",
+	},
+	{
+		.key = "tunnel.audio.encode",
+		.value = "false",
+	},
+	{
+		.key = "use.voice.path.for.pcm.voip",
+		.value = "true",
+	},
+	{
+		.key = "vidc.debug.level",
+		.value = "1",
+	},
+	{
+		.key = "vold.post_fs_data_done",
+		.value = "1",
+	},
+	{
+		.key = "wifi.interface",
+		.value = "wlan0",
+	},
+	{
+		.key = "wlan.driver.ath",
+		.value = "0",
+	},
+	{
+		.key = "wlan.driver.config",
+		.value = "/system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini",
+	},
+	{
+		.key = "wlan.driver.status",
+		.value = "ok",
+	},
+	{ NULL },
+};
+#endif /* __ANDROID__ */
