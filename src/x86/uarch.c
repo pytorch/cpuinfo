@@ -96,7 +96,7 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x5A: // Moorefield
 							return cpuinfo_uarch_silvermont;
 						case 0x4C: // Braswell
-						case 0x5D: // Denverton
+						case 0x5F: // Denverton
 							return cpuinfo_uarch_airmont;
 
 						/* Knights-series cores */
