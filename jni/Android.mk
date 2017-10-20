@@ -533,6 +533,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := zenfone-c-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/zenfone-c.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := zenfone-2-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/zenfone-2.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
