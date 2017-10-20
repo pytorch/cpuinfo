@@ -498,6 +498,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := xiaomi-mi-5c-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/xiaomi-mi-5c.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := xiaomi-redmi-note-3-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/xiaomi-redmi-note-3.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
