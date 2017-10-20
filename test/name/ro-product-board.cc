@@ -395,13 +395,13 @@ TEST(RO_PRODUCT_BOARD, marvell_pxa) {
 }
 
 TEST(RO_PRODUCT_BOARD, nvidia) {
-	EXPECT_EQ("nVidia Tegra SL460N",
+	EXPECT_EQ("Nvidia Tegra SL460N",
 		parse_ro_product_board("g2mv"));
-	EXPECT_EQ("nVidia Tegra T132",
+	EXPECT_EQ("Nvidia Tegra T132",
 		parse_ro_product_board("flounder"));
-	EXPECT_EQ("nVidia Tegra T210",
+	EXPECT_EQ("Nvidia Tegra T210",
 		parse_ro_product_board("dragon"));
-	EXPECT_EQ("nVidia Tegra T30L",
+	EXPECT_EQ("Nvidia Tegra T30L",
 		parse_ro_product_board("grouper"));
 }
 

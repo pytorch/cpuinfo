@@ -22,7 +22,7 @@ static const char* vendor_to_string(enum cpuinfo_vendor vendor) {
 		case cpuinfo_vendor_samsung:
 			return "Samsung";
 		case cpuinfo_vendor_nvidia:
-			return "nVidia";
+			return "Nvidia";
 		case cpuinfo_vendor_mips:
 			return "MIPS";
 		case cpuinfo_vendor_ibm:

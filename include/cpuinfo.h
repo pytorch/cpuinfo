@@ -144,7 +144,7 @@ enum cpuinfo_vendor {
 	cpuinfo_vendor_apple    = 5,
 	/** Samsung Electronics Co., Ltd. Vendir if ARM64 processor microarchitectures. */
 	cpuinfo_vendor_samsung  = 6,
-	/** nVidia Corporation. Vendor of ARM64-compatible processor microarchitectures. */
+	/** Nvidia Corporation. Vendor of ARM64-compatible processor microarchitectures. */
 	cpuinfo_vendor_nvidia   = 7,
 	/** MIPS Technologies, Inc. Vendor of MIPS processor microarchitectures. */
 	cpuinfo_vendor_mips     = 8,
@@ -377,7 +377,7 @@ enum cpuinfo_uarch {
 	/** Qualcomm Kryo. */
 	cpuinfo_uarch_kryo     = 0x00400102,
 
-	/** nVidia Denver. */
+	/** Nvidia Denver. */
 	cpuinfo_uarch_denver   = 0x00500100,
 
 	/** Samsung Mongoose. */

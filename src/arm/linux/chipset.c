@@ -1546,13 +1546,13 @@ static bool match_tcc(
 }
 
 /*
- * Compares ro.board.platform string to nVidia Tegra signatures ("tegra" and "tegra3")
+ * Compares ro.board.platform string to Nvidia Tegra signatures ("tegra" and "tegra3")
  * This check has effect on how /proc/cpuinfo Hardware string is interpreted.
  *
  * @param start - start of the ro.board.platform string to check.
  * @param end - end of the ro.board.platform string to check.
  *
- * @returns true if the string matches an nVidia Tegra signature, and false otherwise
+ * @returns true if the string matches an Nvidia Tegra signature, and false otherwise
  */
 static bool is_tegra(const char* start, const char* end) {
 	/* Expect 5 ("tegra") or 6 ("tegra3") symbols */
@@ -1695,7 +1695,7 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 
 static const struct special_map_entry tegra_hardware_map_entries[] = {
 	{
-		/* "cardhu" (nVidia Cardhu developer tablet) -> Tegra T30 */
+		/* "cardhu" (Nvidia Cardhu developer tablet) -> Tegra T30 */
 		.platform = "cardhu",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 30,
@@ -1764,31 +1764,31 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.model = 114,
 	},
 	{
-		/* "tn8" (nVidia Shield Tablet K1) -> Tegra T124 */
+		/* "tn8" (Nvidia Shield Tablet K1) -> Tegra T124 */
 		.platform = "tn8",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 124,
 	},
 	{
-		/* "roth" (nVidia Shield Portable) -> Tegra T114 */
+		/* "roth" (Nvidia Shield Portable) -> Tegra T114 */
 		.platform = "roth",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 114,
 	},
 	{
-		/* "foster_e" (nVidia Shield TV, Flash) -> Tegra T210 */
+		/* "foster_e" (Nvidia Shield TV, Flash) -> Tegra T210 */
 		.platform = "foster_e",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 210,
 	},
 	{
-		/* "foster_e_hdd" (nVidia Shield TV, HDD) -> Tegra T210 */
+		/* "foster_e_hdd" (Nvidia Shield TV, HDD) -> Tegra T210 */
 		.platform = "foster_e_hdd",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 210,
 	},
 	{
-		/* "darcy" (nVidia Shield TV 2017) -> Tegra T210 */
+		/* "darcy" (Nvidia Shield TV 2017) -> Tegra T210 */
 		.platform = "darcy",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 210,
@@ -2038,7 +2038,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 
 	if (is_tegra) {
 		/*
-		 * nVidia Tegra-specific path: compare /proc/cpuinfo Hardware string to
+		 * Nvidia Tegra-specific path: compare /proc/cpuinfo Hardware string to
 		 * tabulated Hardware values for popular chipsets/devices with Tegra chipsets.
 		 * This path is only used when ro.board.platform indicates a Tegra chipset
 		 * (albeit does not indicate which exactly Tegra chipset).
@@ -2048,7 +2048,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 					tegra_hardware_map_entries[i].platform[hardware_length] == 0)
 			{
 				cpuinfo_log_debug(
-					"found /proc/cpuinfo Hardware string \"%.*s\" in nVidia Tegra chipset table",
+					"found /proc/cpuinfo Hardware string \"%.*s\" in Nvidia Tegra chipset table",
 					(int) hardware_length, hardware);
 				/* Create chipset name from entry */
 				return (struct cpuinfo_arm_chipset) {
@@ -2276,7 +2276,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 3168,
 		},
 		{
-			/* "g2mv" (LG G2 mini LTE) -> nVidia Tegra SL460N */
+			/* "g2mv" (LG G2 mini LTE) -> Nvidia Tegra SL460N */
 			.platform = "g2mv",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_sl,
 			.model = 460,
@@ -2301,20 +2301,20 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 4460,
 		},
 		{
-			/* "grouper" (Asus Nexus 7 2012) -> nVidia Tegra T30L */
+			/* "grouper" (Asus Nexus 7 2012) -> Nvidia Tegra T30L */
 			.platform = "grouper",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 			.model = 30,
 			.suffix = 'L',
 		},
 		{
-			/* "flounder" (HTC Nexus 9) -> nVidia Tegra T132 */
+			/* "flounder" (HTC Nexus 9) -> Nvidia Tegra T132 */
 			.platform = "flounder",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 			.model = 132,
 		},
 		{
-			/* "dragon" (Google Pixel C) -> nVidia Tegra T210 */
+			/* "dragon" (Google Pixel C) -> Nvidia Tegra T210 */
 			.platform = "dragon",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 			.model = 210,
@@ -2570,19 +2570,19 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 1,
 		},
 		{
-			/* "tegra132" -> nVidia Tegra T132 */
+			/* "tegra132" -> Nvidia Tegra T132 */
 			.platform = "tegra132",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 			.model = 132,
 		},
 		{
-			/* "tegra210_dragon" -> nVidia Tegra T210 */
+			/* "tegra210_dragon" -> Nvidia Tegra T210 */
 			.platform = "tegra210_dragon",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 			.model = 210,
 		},
 		{
-			/* "tegra4" -> nVidia Tegra T114 */
+			/* "tegra4" -> Nvidia Tegra T114 */
 			.platform = "tegra4",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 			.model = 114,
@@ -3066,7 +3066,7 @@ static const char* chipset_vendor_string[cpuinfo_arm_chipset_vendor_max] = {
 	[cpuinfo_arm_chipset_vendor_marvell]           = "Marvell",
 	[cpuinfo_arm_chipset_vendor_mstar]             = "MStar",
 	[cpuinfo_arm_chipset_vendor_novathor]          = "NovaThor",
-	[cpuinfo_arm_chipset_vendor_nvidia]            = "nVidia",
+	[cpuinfo_arm_chipset_vendor_nvidia]            = "Nvidia",
 	[cpuinfo_arm_chipset_vendor_pinecone]          = "Pinecone",
 	[cpuinfo_arm_chipset_vendor_renesas]           = "Renesas",
 	[cpuinfo_arm_chipset_vendor_rockchip]          = "Rockchip",

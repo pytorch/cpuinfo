@@ -636,61 +636,61 @@ TEST(PROC_CPUINFO_HARDWARE, mstar) {
 }
 
 TEST(PROC_CPUINFO_HARDWARE, nvidia) {
-	EXPECT_EQ("nVidia Tegra AP20H",
+	EXPECT_EQ("Nvidia Tegra AP20H",
 		parse_proc_cpuinfo_hardware_tegra("picasso"));
-	EXPECT_EQ("nVidia Tegra AP20H",
+	EXPECT_EQ("Nvidia Tegra AP20H",
 		parse_proc_cpuinfo_hardware_tegra("picasso_e"));
-	EXPECT_EQ("nVidia Tegra AP20H",
+	EXPECT_EQ("Nvidia Tegra AP20H",
 		parse_proc_cpuinfo_hardware_tegra("stingray"));
-	EXPECT_EQ("nVidia Tegra AP33",
+	EXPECT_EQ("Nvidia Tegra AP33",
 		parse_proc_cpuinfo_hardware_tegra("endeavoru"));
-	EXPECT_EQ("nVidia Tegra AP33",
+	EXPECT_EQ("Nvidia Tegra AP33",
 		parse_proc_cpuinfo_hardware_tegra("x3"));
-	EXPECT_EQ("nVidia Tegra SL460N",
+	EXPECT_EQ("Nvidia Tegra SL460N",
 		parse_proc_cpuinfo_hardware_tegra("Ceres"));
-	EXPECT_EQ("nVidia Tegra T114",
+	EXPECT_EQ("Nvidia Tegra T114",
 		parse_proc_cpuinfo_hardware_tegra("macallan"));
-	EXPECT_EQ("nVidia Tegra T114",
+	EXPECT_EQ("Nvidia Tegra T114",
 		parse_proc_cpuinfo_hardware_tegra("mozart"));
-	EXPECT_EQ("nVidia Tegra T114",
+	EXPECT_EQ("Nvidia Tegra T114",
 		parse_proc_cpuinfo_hardware_tegra("tostab12BA"));
-	EXPECT_EQ("nVidia Tegra T124",
+	EXPECT_EQ("Nvidia Tegra T124",
 		parse_proc_cpuinfo_hardware_tegra("mocha"));
-	EXPECT_EQ("nVidia Tegra T124",
+	EXPECT_EQ("Nvidia Tegra T124",
 		parse_proc_cpuinfo_hardware_tegra("tn8"));
-	EXPECT_EQ("nVidia Tegra T20",
+	EXPECT_EQ("Nvidia Tegra T20",
 		parse_proc_cpuinfo_hardware_tegra("nbx03"));
-	EXPECT_EQ("nVidia Tegra T20",
+	EXPECT_EQ("Nvidia Tegra T20",
 		parse_proc_cpuinfo_hardware_tegra("p3"));
-	EXPECT_EQ("nVidia Tegra T20",
+	EXPECT_EQ("Nvidia Tegra T20",
 		parse_proc_cpuinfo_hardware_tegra("ventana"));
-	EXPECT_EQ("nVidia Tegra T30",
+	EXPECT_EQ("Nvidia Tegra T30",
 		parse_proc_cpuinfo_hardware_tegra("cardhu"));
-	EXPECT_EQ("nVidia Tegra T30",
+	EXPECT_EQ("Nvidia Tegra T30",
 		parse_proc_cpuinfo_hardware_tegra("chagall"));
-	EXPECT_EQ("nVidia Tegra T30",
+	EXPECT_EQ("Nvidia Tegra T30",
 		parse_proc_cpuinfo_hardware_tegra("picasso_m"));
-	EXPECT_EQ("nVidia Tegra T30",
+	EXPECT_EQ("Nvidia Tegra T30",
 		parse_proc_cpuinfo_hardware_tegra("picasso_mf"));
-	EXPECT_EQ("nVidia Tegra T30L",
+	EXPECT_EQ("Nvidia Tegra T30L",
 		parse_proc_cpuinfo_hardware_tegra("BIRCH"));
-	EXPECT_EQ("nVidia Tegra T30L",
+	EXPECT_EQ("Nvidia Tegra T30L",
 		parse_proc_cpuinfo_hardware_tegra("NS_14T004"));
-	EXPECT_EQ("nVidia Tegra T30L",
+	EXPECT_EQ("Nvidia Tegra T30L",
 		parse_proc_cpuinfo_hardware_tegra("avalon"));
-	EXPECT_EQ("nVidia Tegra T30L",
+	EXPECT_EQ("Nvidia Tegra T30L",
 		parse_proc_cpuinfo_hardware_tegra("picasso_e2"));
-	EXPECT_EQ("nVidia Tegra T30L",
+	EXPECT_EQ("Nvidia Tegra T30L",
 		parse_proc_cpuinfo_hardware_tegra("tostab12BL"));
-	EXPECT_EQ("nVidia Tegra T30L",
+	EXPECT_EQ("Nvidia Tegra T30L",
 		parse_proc_cpuinfo_hardware_tegra("txs03"));
-	EXPECT_EQ("nVidia Tegra T33",
+	EXPECT_EQ("Nvidia Tegra T33",
 		parse_proc_cpuinfo_hardware_tegra("bobsleigh"));
-	EXPECT_EQ("nVidia Tegra T33",
+	EXPECT_EQ("Nvidia Tegra T33",
 		parse_proc_cpuinfo_hardware_tegra("enrc2b"));
-	EXPECT_EQ("nVidia Tegra T33",
+	EXPECT_EQ("Nvidia Tegra T33",
 		parse_proc_cpuinfo_hardware_tegra("evitareul"));
-	EXPECT_EQ("nVidia Tegra T33",
+	EXPECT_EQ("Nvidia Tegra T33",
 		parse_proc_cpuinfo_hardware_tegra("tegra_fjdev103"));
 }
 

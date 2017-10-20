@@ -231,11 +231,11 @@ TEST(RO_BOARD_PLATFORM, novathor) {
 }
 
 TEST(RO_BOARD_PLATFORM, nvidia) {
-	EXPECT_EQ("nVidia Tegra T114",
+	EXPECT_EQ("Nvidia Tegra T114",
 		parse_ro_board_platform("tegra4"));
-	EXPECT_EQ("nVidia Tegra T132",
+	EXPECT_EQ("Nvidia Tegra T132",
 		parse_ro_board_platform("tegra132"));
-	EXPECT_EQ("nVidia Tegra T210",
+	EXPECT_EQ("Nvidia Tegra T210",
 		parse_ro_board_platform("tegra210_dragon"));
 }
 

@@ -127,7 +127,7 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [ ] Other x86 cores (DM&P, RDC, Transmeta, Cyrix, Rise)
   - [x] ARM-designed ARM cores (up to Cortex-A17, Cortex-75)
   - [x] Qualcomm-designed ARM cores (up to Kryo and Kryo-280)
-  - [x] nVidia-designed ARM cores (Denver)
+  - [x] Nvidia-designed ARM cores (Denver)
   - [x] Samsung-designed ARM cores (Mongoose)
   - [x] Intel-designed ARM cores (XScale up to 3rd-gen)
   - [ ] Apple-designed ARM cores (up to Hurricane)
