@@ -106,12 +106,6 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 - [ ] Windows
   - [ ] x86
   - [ ] x86-64
-- [ ] Native Client
-  - [ ] x86
-  - [x] x86-64
-  - [ ] ARMv7-A
-- [ ] Portable Native Client
-- [ ] Emscripten
 
 ## Features
 
@@ -130,7 +124,7 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] Nvidia-designed ARM cores (Denver)
   - [x] Samsung-designed ARM cores (Mongoose)
   - [x] Intel-designed ARM cores (XScale up to 3rd-gen)
-  - [ ] Apple-designed ARM cores (up to Hurricane)
+  - [x] Apple-designed ARM cores (up to Hurricane)
   - [x] Cavium-designed ARM cores (ThunderX)
   - [ ] AppliedMicro-designed ARM cores
 - Instruction set detection
@@ -162,6 +156,7 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] Using CPUID leaf 0x00000001 on x86/x86-64 (legacy APIC ID)
   - [x] Using CPUID leaf 0x0000000B on x86/x86-64 (Intel APIC ID)
   - [ ] Using CPUID leaf 0x8000001E on x86/x86-64 (AMD APIC ID)
+  - [x] Using `/proc/cpuinfo` (Linux)
   - [x] Using `host_info` (Mach)
   - [x] Using sysfs (Linux)
   - [x] Using chipset name (ARM/Linux)
