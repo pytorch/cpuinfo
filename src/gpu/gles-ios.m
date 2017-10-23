@@ -6,6 +6,10 @@
 #import <gpu/api.h>
 
 
+#if ! __has_feature(objc_arc)
+	#error "This file must be built with Automatic Reference Counting (-fobjc-arc option)"
+#endif
+
 void cpuinfo_gpu_ios_query_gles2(char gpu_name[restrict static CPUINFO_GPU_NAME_MAX]) {
 	EAGLContext* existing_context = [EAGLContext currentContext];
 	EAGLContext* current_context = nil;

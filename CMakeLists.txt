@@ -78,6 +78,7 @@ ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7f|armv7s|armv7k|armv
     LIST(APPEND CPUINFO_SRCS
       src/arm/mach/init.c
       src/gpu/gles-ios.m)
+    SET_SOURCE_FILES_PROPERTIES(src/gpu/gles-ios.m PROPERTIES COMPILE_FLAGS -fobjc-arc)
   ENDIF()
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
     LIST(APPEND CPUINFO_SRCS
