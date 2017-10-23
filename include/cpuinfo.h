@@ -6,6 +6,10 @@
 	#include <stdbool.h>
 #endif
 
+#ifdef __APPLE__
+	#include <TargetConditionals.h>
+#endif
+
 #include <stdint.h>
 
 /* Identify architecture and define corresponding macro */
@@ -466,7 +470,7 @@ struct cpuinfo_core {
 struct cpuinfo_package {
 	/** SoC or processor chip model name */
 	char name[CPUINFO_PACKAGE_NAME_MAX];
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || (defined(__APPLE__) && TARGET_OS_IPHONE)
 	/** Integrated GPU model name */
 	char gpu_name[CPUINFO_GPU_NAME_MAX];
 #endif

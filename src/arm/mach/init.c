@@ -13,6 +13,7 @@
 
 #include <cpuinfo.h>
 #include <mach/api.h>
+#include <gpu/api.h>
 #include <api.h>
 #include <log.h>
 
@@ -270,6 +271,7 @@ void cpuinfo_arm_mach_init(void) {
 			.core_count = cores_per_package,
 		};
 		decode_package_name(packages[i].name);
+		cpuinfo_gpu_ios_query_gles2(packages[i].gpu_name);
 	}
 
 
@@ -344,7 +346,7 @@ void cpuinfo_arm_mach_init(void) {
 
 	uint32_t threads_per_l1 = 0, l1_count = 0;
 	if (l1i_cache_size != 0 || l1d_cache_size != 0) {
-		/* Assume that L1 caches are private to each core */
+		/* Assume L1 caches are private to each core */
 		threads_per_l1 = 1;
 		l1_count = mach_topology.threads / threads_per_l1;
 		cpuinfo_log_debug("detected %"PRIu32" L1 caches", l1_count);
@@ -352,7 +354,7 @@ void cpuinfo_arm_mach_init(void) {
 
 	uint32_t threads_per_l2 = 0, l2_count = 0;
 	if (l2_cache_size != 0) {
-		/* L2 cache is shared between all cores */
+		/* Assume L2 cache is shared between all cores */
 		threads_per_l2 = mach_topology.cores;
 		l2_count = 1;
 		cpuinfo_log_debug("detected %"PRIu32" L2 caches", l2_count);
@@ -360,7 +362,7 @@ void cpuinfo_arm_mach_init(void) {
 	
 	uint32_t threads_per_l3 = 0, l3_count = 0;
 	if (l3_cache_size != 0) {
-		/* L3 cache is shared between all cores */
+		/* Assume L3 cache is shared between all cores */
 		threads_per_l3 = mach_topology.cores;
 		l3_count = 1;
 		cpuinfo_log_debug("detected %"PRIu32" L3 caches", l3_count);
