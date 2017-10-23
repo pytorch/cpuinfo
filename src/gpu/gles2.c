@@ -228,7 +228,7 @@ bool cpuinfo_gpu_query_gles2(char gpu_name[restrict static CPUINFO_GPU_NAME_MAX]
 	cpuinfo_log_debug("GL_VENDOR = \"%s\"", vendor);
 
 	const char* renderer = (const char*) gles2.get_string(GL_RENDERER);
-	if (vendor == NULL) {
+	if (renderer == NULL) {
 		cpuinfo_log_warning("failed to get GL_RENDERER for OpenGL ES2 context");
 		goto cleanup;
 	}
