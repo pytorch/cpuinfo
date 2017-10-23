@@ -61,7 +61,7 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 
 ## Exposed information
 - [x] Processor (SoC) name
-  - [x] Integrated GPU name (Android only)
+  - [x] Integrated GPU name (Android and iOS only)
 - [x] Microarchitecture
 - [x] Usable instruction sets
 - [ ] CPU frequency
