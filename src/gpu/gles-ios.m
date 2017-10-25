@@ -28,8 +28,8 @@ void cpuinfo_gpu_ios_query_gles2(char gpu_name[restrict static CPUINFO_GPU_NAME_
 		}
 	}
 
-	const char* renderer_str = (const char*)glGetString(GL_RENDERER);
-	if (renderer_str) {
+	const char* renderer_str = (const char*) glGetString(GL_RENDERER);
+	if (renderer_str != NULL) {
 		strncpy(gpu_name, renderer_str, CPUINFO_GPU_NAME_MAX - 1);
 		gpu_name[CPUINFO_GPU_NAME_MAX - 1] = '\0';
 		cpuinfo_log_debug("GL_RENDERER: %s", renderer_str);
