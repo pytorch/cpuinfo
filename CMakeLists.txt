@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12 FATAL_ERROR)
 INCLUDE(GNUInstallDirs)
 
 # ---[ Project and semantic versioning.
-PROJECT(cpuinfo LANGUAGES C CXX)
+PROJECT(cpuinfo C CXX)
 
 # ---[ Options.
 OPTION(CPUINFO_BUILD_TOOLS "Build command-line tools" ON)
