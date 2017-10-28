@@ -210,17 +210,19 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_log_debug("detected %"PRIu32" L3 caches", l3_count);
 	cpuinfo_log_debug("detected %"PRIu32" L4 caches", l4_count);
 
-	linux_cpu_to_processor_map = calloc(processors_count, sizeof(struct cpuinfo_processor*));
+	linux_cpu_to_processor_map = calloc(x86_linux_processors_count, sizeof(struct cpuinfo_processor*));
 	if (linux_cpu_to_processor_map == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for mapping entries of %"PRIu32" logical processors",
-			processors_count * sizeof(struct cpuinfo_processor*), processors_count);
+			x86_linux_processors_count * sizeof(struct cpuinfo_processor*),
+			x86_linux_processors_count);
 		goto cleanup;
 	}
 
-	linux_cpu_to_core_map = calloc(cores_count, sizeof(struct cpuinfo_core*));
+	linux_cpu_to_core_map = calloc(x86_linux_processors_count, sizeof(struct cpuinfo_core*));
 	if (linux_cpu_to_core_map == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for mapping entries of %"PRIu32" cores",
-			cores_count * sizeof(struct cpuinfo_core*), cores_count);
+			x86_linux_processors_count * sizeof(struct cpuinfo_core*),
+			x86_linux_processors_count);
 		goto cleanup;
 	}
 
