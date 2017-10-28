@@ -446,7 +446,7 @@ void cpuinfo_arm_linux_init(void) {
 				};
 			}
 			/* L1D reported in /proc/cpuinfo overrides defaults */
-			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_ICACHE)) {
+			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_DCACHE)) {
 				l1d[i] = (struct cpuinfo_cache) {
 					.size = arm_linux_processors[i].proc_cpuinfo_cache.d_size,
 					.associativity = arm_linux_processors[i].proc_cpuinfo_cache.d_assoc,
