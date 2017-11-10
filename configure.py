@@ -84,6 +84,11 @@ def main(args):
             if build.target.is_arm64 and build.target.is_linux:
                 build.unittest("scaleway-test", build.cxx("scaleway.cc"))
 
+    if not options.mock:
+        with build.options(source_dir="bench", deps=[build, build.deps.googlebenchmark]):
+            if not build.target.is_macos:
+                build.benchmark("get-current-bench", build.cxx("get-current.cc"))
+
     return build
 
 
