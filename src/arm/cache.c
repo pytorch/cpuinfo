@@ -564,9 +564,19 @@ void cpuinfo_arm_decode_cache(
 						}
 						break;
 					case cpuinfo_arm_chipset_series_hisilicon_hi:
-					case cpuinfo_arm_chipset_series_hisilicon_kirin:
 						l1_size = 32 * 1024;
 						l2_size = 512 * 1024;
+						break;
+					case cpuinfo_arm_chipset_series_hisilicon_kirin:
+						l1_size = 32 * 1024;
+						switch (chipset->model) {
+							case 970: /* Kirin 970 */
+								l2_size = 1024 * 1024;
+								break;
+							default:
+								l2_size = 512 * 1024;
+								break;
+						}
 						break;
 					case cpuinfo_arm_chipset_series_samsung_exynos:
 						l1_size = 32 * 1024;
@@ -643,6 +653,7 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		case cpuinfo_uarch_cortex_a72:
+		{
 			/*
 			 * ARM Cortex-A72 MPCore Processor Technical Reference Manual
 			 * 6.1. About the L1 memory system
@@ -682,6 +693,16 @@ void cpuinfo_arm_decode_cache(
 			 * [2] http://pdadb.net/index.php?m=processor&id=667&c=qualcomm_snapdragon_620_apq8076__snapdragon_652
 			 * [3] http://pdadb.net/index.php?m=processor&id=692&c=qualcomm_snapdragon_653_msm8976sg__msm8976_pro
 			 */
+			uint32_t l2_size;
+			switch (chipset->series) {
+				case cpuinfo_arm_chipset_series_hisilicon_kirin:
+					l2_size = 2 * 1024 * 1024;
+					break;
+				default:
+					l2_size = 1024 * 1024;
+					break;
+			}
+
 			*l1i = (struct cpuinfo_cache) {
 				.size = 48 * 1024,
 				.associativity = 3,
@@ -693,12 +714,13 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
-				.size = 1024 * 1024,
+				.size = l2_size,
 				.associativity = 16,
 				.line_size = 64,
 				.flags = CPUINFO_CACHE_INCLUSIVE
 			};
 			break;
+		}
 		case cpuinfo_uarch_cortex_a73:
 		{
 			/*
@@ -742,13 +764,19 @@ void cpuinfo_arm_decode_cache(
 			 * [3] https://arstechnica.com/gadgets/2017/05/qualcomms-snapdragon-660-and-630-bring-more-high-end-features-to-midrange-chips/
 			 */
 			uint32_t l2_size = 1024 * 1024;
-			switch (midr) {
-				case UINT32_C(0x51AF8001): /* Kryo 280 Gold */
+			switch (chipset->series) {
+				case cpuinfo_arm_chipset_series_hisilicon_kirin:
 					l2_size = 2 * 1024 * 1024;
 					break;
-				case UINT32_C(0x51AF8002): /* Kryo 260 Gold */
 				default:
-					break;
+					switch (midr) {
+						case UINT32_C(0x51AF8001): /* Kryo 280 Gold */
+							l2_size = 2 * 1024 * 1024;
+							break;
+						case UINT32_C(0x51AF8002): /* Kryo 260 Gold */
+						default:
+							break;
+					}
 			}
 
 			*l1i = (struct cpuinfo_cache) {
