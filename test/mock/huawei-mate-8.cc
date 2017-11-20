@@ -507,7 +507,7 @@ TEST(L2, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
 		switch (i) {
 			case 0:
-				ASSERT_EQ(1 * 1024 * 1024, cpuinfo_get_l2_cache(i)->size);
+				ASSERT_EQ(2 * 1024 * 1024, cpuinfo_get_l2_cache(i)->size);
 				break;
 			case 1:
 				ASSERT_EQ(512 * 1024, cpuinfo_get_l2_cache(i)->size);
