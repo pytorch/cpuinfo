@@ -330,6 +330,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(huawei-mate-9-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(huawei-mate-9-test huawei-mate-9-test)
 
+    ADD_EXECUTABLE(huawei-mate-10-test test/mock/huawei-mate-10.cc)
+    TARGET_INCLUDE_DIRECTORIES(huawei-mate-10-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(huawei-mate-10-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(huawei-mate-10-test huawei-mate-10-test)
+
     ADD_EXECUTABLE(meizu-pro-6-test test/mock/meizu-pro-6.cc)
     TARGET_INCLUDE_DIRECTORIES(meizu-pro-6-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(meizu-pro-6-test PRIVATE cpuinfo_mock gtest)

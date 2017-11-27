@@ -12,6 +12,7 @@ adb push libs/arm64-v8a/galaxy-s8-global-test /data/local/tmp/galaxy-s8-global-t
 adb push libs/arm64-v8a/galaxy-s8-us-test /data/local/tmp/galaxy-s8-us-test
 adb push libs/arm64-v8a/huawei-mate-8-test /data/local/tmp/huawei-mate-8-test
 adb push libs/arm64-v8a/huawei-mate-9-test /data/local/tmp/huawei-mate-9-test
+adb push libs/arm64-v8a/huawei-mate-10-test /data/local/tmp/huawei-mate-10-test
 adb push libs/arm64-v8a/huawei-p9-lite-test /data/local/tmp/huawei-p9-lite-test
 adb push libs/arm64-v8a/meizu-pro-6-test /data/local/tmp/meizu-pro-6-test
 adb push libs/arm64-v8a/meizu-pro-6s-test /data/local/tmp/meizu-pro-6s-test
@@ -37,6 +38,7 @@ adb shell "/data/local/tmp/galaxy-s8-global-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s8-us-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-8-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-9-test --gtest_color=yes"
+adb shell "/data/local/tmp/huawei-mate-10-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-p9-lite-test --gtest_color=yes"
 adb shell "/data/local/tmp/meizu-pro-6-test --gtest_color=yes"
 adb shell "/data/local/tmp/meizu-pro-6s-test --gtest_color=yes"

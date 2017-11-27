@@ -22,6 +22,7 @@ adb push libs/armeabi-v7a/galaxy-win-duos-test /data/local/tmp/galaxy-win-duos-t
 adb push libs/armeabi-v7a/huawei-ascend-p7-test /data/local/tmp/huawei-ascend-p7-test
 adb push libs/armeabi-v7a/huawei-mate-8-test /data/local/tmp/huawei-mate-8-test
 adb push libs/armeabi-v7a/huawei-mate-9-test /data/local/tmp/huawei-mate-9-test
+adb push libs/armeabi-v7a/huawei-mate-10-test /data/local/tmp/huawei-mate-10-test
 adb push libs/armeabi-v7a/huawei-p9-lite-test /data/local/tmp/huawei-p9-lite-test
 adb push libs/armeabi-v7a/lenovo-a6600-plus-test /data/local/tmp/lenovo-a6600-plus-test
 adb push libs/armeabi-v7a/lenovo-vibe-x2-test /data/local/tmp/lenovo-vibe-x2-test
@@ -67,6 +68,7 @@ adb shell "/data/local/tmp/galaxy-win-duos-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-ascend-p7-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-8-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-9-test --gtest_color=yes"
+adb shell "/data/local/tmp/huawei-mate-10-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-p9-lite-test --gtest_color=yes"
 adb shell "/data/local/tmp/lenovo-a6600-plus-test --gtest_color=yes"
 adb shell "/data/local/tmp/lenovo-vibe-x2-test --gtest_color=yes"
