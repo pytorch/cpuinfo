@@ -3,6 +3,7 @@
 set -e
 
 adb push libs/armeabi-v7a/blu-r1-hd-test /data/local/tmp/blu-r1-hd-test
+adb push libs/armeabi-v7a/galaxy-a8-2016-duos-test /data/local/tmp/galaxy-a8-2016-duos-test
 adb push libs/armeabi-v7a/galaxy-c9-pro-test /data/local/tmp/galaxy-c9-pro-test
 adb push libs/armeabi-v7a/galaxy-grand-prime-value-edition-test /data/local/tmp/galaxy-grand-prime-value-edition-test
 adb push libs/armeabi-v7a/galaxy-j7-tmobile-test /data/local/tmp/galaxy-j7-tmobile-test
@@ -49,6 +50,7 @@ adb push libs/armeabi-v7a/xiaomi-redmi-note-3-test /data/local/tmp/xiaomi-redmi-
 adb push libs/armeabi-v7a/xperia-c4-dual-test /data/local/tmp/xperia-c4-dual-test
 
 adb shell "/data/local/tmp/blu-r1-hd-test --gtest_color=yes"
+adb shell "/data/local/tmp/galaxy-a8-2016-duos-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-c9-pro-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-grand-prime-value-edition-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-j7-tmobile-test --gtest_color=yes"

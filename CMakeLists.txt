@@ -178,6 +178,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(blu-r1-hd-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(blu-r1-hd-test blu-r1-hd-test)
 
+    ADD_EXECUTABLE(galaxy-a8-2016-duos-test test/mock/galaxy-a8-2016-duos.cc)
+    TARGET_INCLUDE_DIRECTORIES(galaxy-a8-2016-duos-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(galaxy-a8-2016-duos-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(galaxy-a8-2016-duos-test galaxy-a8-2016-duos-test)
+
     ADD_EXECUTABLE(galaxy-grand-prime-value-edition-test test/mock/galaxy-grand-prime-value-edition.cc)
     TARGET_INCLUDE_DIRECTORIES(galaxy-grand-prime-value-edition-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(galaxy-grand-prime-value-edition-test PRIVATE cpuinfo_mock gtest)

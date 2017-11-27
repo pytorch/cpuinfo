@@ -192,6 +192,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := galaxy-a8-2016-duos-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-a8-2016-duos.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-grand-prime-value-edition-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-grand-prime-value-edition.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
