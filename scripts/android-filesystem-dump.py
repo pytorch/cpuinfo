@@ -139,6 +139,10 @@ def adb_getprop():
         prop = prop.strip()
         if prop:
             key, value = tuple(map(string.strip, prop.split(":", 1)))
+            assert key.startswith("[") and key.endswith("]")
+            key = key[1:-1]
+            assert value.startswith("[") and value.endswith("]")
+            value = value[1:-1]
             properties_list.append((key, value))
     return properties_list
 
@@ -170,6 +174,8 @@ def main(args):
     options = parser.parse_args(args)
 
     dmesg_content = adb_shell(["dmesg"])
+    if dmesg_content is not None and dmesg_content.strip() == "klogctl: Operation not permitted":
+        dmesg_content = None
     if dmesg_content is not None:
         with open(os.path.join("test", "dmesg", options.prefix + ".log"), "w") as dmesg_dump:
             dmesg_dump.write(dmesg_content)
