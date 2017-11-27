@@ -601,7 +601,7 @@ static bool match_mt(
 }
 
 /**
- * Tries to match /Kirin\s?\d{3}$/ signature for HiSilicon Kirin chipsets.
+ * Tries to match /[Kk]irin\s?\d{3}$/ signature for HiSilicon Kirin chipsets.
  * If match successful, extracts model information into \p chipset argument.
  *
  * @param start - start of the /proc/cpuinfo Hardware string to match.
@@ -624,10 +624,11 @@ static bool match_kirin(
 			return false;
 	}
 
-	/* Check that the string starts with "Kirin". Symbols 1-5 are loaded and compared as little-endian 32-bit word. */
-	if (start[0] != 'K') {
+	/* Check that the string starts with "Kirin" or "kirin". */
+	if (((uint8_t) start[0] | UINT8_C(0x20)) != (uint8_t) 'k') {
 		return false;
 	}
+	/* Symbols 1-5 are loaded and compared as little-endian 32-bit word. */
 	const uint32_t irin = load_u32le(start + 1);
 	if (irin != UINT32_C(0x6E697269) /* "niri" = reverse("irin") */) {
 		return false;
@@ -2634,6 +2635,13 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 		if (match_mt(platform, platform_end, true, &chipset)) {
 			cpuinfo_log_debug(
 				"matched MediaTek MT signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
+			return chipset;
+		}
+
+		/* Check HiSilicon Kirin signature */
+		if (match_kirin(platform, platform_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched HiSilicon Kirin signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
 			return chipset;
 		}
 
