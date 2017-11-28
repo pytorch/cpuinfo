@@ -1631,24 +1631,31 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 		.model = 920,
 	},
 	{
-		/* "gs705a" -> Actions ATM7059A */
-		.platform = "gs705a",
-		.series = cpuinfo_arm_chipset_series_actions_atm,
-		.model = 7059,
-		.suffix = 'A',
-	},
-	{
-		/* "gs702a" -> Actions ATM7029 */
+		/* "gs702a" -> Actions ATM7029 (Cortex-A5 + GC1000) */
 		.platform = "gs702a",
 		.series = cpuinfo_arm_chipset_series_actions_atm,
 		.model = 7029,
 	},
 	{
-		/* "gs702c" -> Actions ATM7029B */
+		/* "gs702c" -> Actions ATM7029B (Cortex-A5 + SGX540) */
 		.platform = "gs702c",
 		.series = cpuinfo_arm_chipset_series_actions_atm,
 		.model = 7029,
-		.suffix = 'B'
+		.suffix = 'B',
+	},
+	{
+		/* "gs703d" -> Actionns ATM7039S */
+		.platform = "gs703d",
+		.series = cpuinfo_arm_chipset_series_actions_atm,
+		.model = 7039,
+		.suffix = 'S',
+	},
+	{
+		/* "gs705a" -> Actions ATM7059A */
+		.platform = "gs705a",
+		.series = cpuinfo_arm_chipset_series_actions_atm,
+		.model = 7059,
+		.suffix = 'A',
 	},
 	{
 		/* "Amlogic Meson8" -> Amlogic S812 */
