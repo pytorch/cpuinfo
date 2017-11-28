@@ -135,15 +135,18 @@ def adb_shell(commands):
 def adb_getprop():
     properties = adb_shell(["getprop"])
     properties_list = list()
-    for prop in properties.splitlines():
-        prop = prop.strip()
-        if prop:
-            key, value = tuple(map(string.strip, prop.split(":", 1)))
-            assert key.startswith("[") and key.endswith("]")
-            key = key[1:-1]
-            assert value.startswith("[") and value.endswith("]")
-            value = value[1:-1]
-            properties_list.append((key, value))
+    while properties:
+        assert properties.startswith("[")
+        properties = properties[1:]
+        key, properties = properties.split("]", 1)
+        properties = properties.strip()
+        assert properties.startswith(":")
+        properties = properties[1:].strip()
+        assert properties.startswith("[")
+        properties = properties[1:]
+        value, properties = properties.split("]", 1)
+        properties = properties.strip()
+        properties_list.append((key, value))
     return properties_list
 
 def dump_device_file(stream, path):
