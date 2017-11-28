@@ -273,6 +273,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(nexus6-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(nexus6-test nexus6-test)
 
+    ADD_EXECUTABLE(padcod-10.1-test test/mock/padcod-10.1.cc)
+    TARGET_INCLUDE_DIRECTORIES(padcod-10.1-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(padcod-10.1-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(padcod-10.1-test padcod-10.1-test)
+
     ADD_EXECUTABLE(xiaomi-redmi-2a-test test/mock/xiaomi-redmi-2a.cc)
     TARGET_INCLUDE_DIRECTORIES(xiaomi-redmi-2a-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(xiaomi-redmi-2a-test PRIVATE cpuinfo_mock gtest)

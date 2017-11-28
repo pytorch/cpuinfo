@@ -41,6 +41,7 @@ adb push libs/armeabi-v7a/nexus6-test /data/local/tmp/nexus6-test
 adb push libs/armeabi-v7a/nexus6p-test /data/local/tmp/nexus6p-test
 adb push libs/armeabi-v7a/nexus9-test /data/local/tmp/nexus9-test
 adb push libs/armeabi-v7a/oppo-r9-test /data/local/tmp/oppo-r9-test
+adb push libs/armeabi-v7a/padcod-10.1-test /data/local/tmp/padcod-10.1-test
 adb push libs/armeabi-v7a/pixel-c-test /data/local/tmp/pixel-c-test
 adb push libs/armeabi-v7a/pixel-xl-test /data/local/tmp/pixel-xl-test
 adb push libs/armeabi-v7a/pixel-test /data/local/tmp/pixel-test
@@ -89,6 +90,7 @@ adb shell "/data/local/tmp/nexus6-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus6p-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus9-test --gtest_color=yes"
 adb shell "/data/local/tmp/oppo-r9-test --gtest_color=yes"
+adb shell "/data/local/tmp/padcod-10.1-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-c-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-xl-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-test --gtest_color=yes"
