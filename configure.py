@@ -46,9 +46,9 @@ def main(args):
                     "arm/linux/chipset.c",
                 ]
                 if build.target.is_arm:
-                    sources.append("arm/linux/arm32-isa.c")
+                    sources.append("arm/linux/aarch32-isa.c")
                 elif build.target.is_arm64:
-                    sources.append("arm/linux/arm64-isa.c")
+                    sources.append("arm/linux/aarch64-isa.c")
 
         if build.target.is_macos:
             sources += ["mach/topology.c"]

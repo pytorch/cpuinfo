@@ -5,10 +5,9 @@
 
 
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
-	const struct cpuinfo_arm_linux_processor processor[restrict static 1],
+	uint32_t features,
 	struct cpuinfo_arm_isa isa[restrict static 1])
 {
-	const uint32_t features = processor->features;
 	if (features & CPUINFO_ARM_LINUX_FEATURE_AES) {
 		isa->aes = true;
 	}

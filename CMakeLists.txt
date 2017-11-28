@@ -84,12 +84,12 @@ ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7f|armv7s|armv7k|armv
       src/arm/linux/chipset.c
       src/arm/linux/midr.c)
     IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7l|armv7-a)$")
-      LIST(APPEND CPUINFO_SRCS src/arm/linux/arm32-isa.c)
+      LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch32-isa.c)
       IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND ANDROID_ABI STREQUAL "armeabi")
-        SET_SOURCE_FILES_PROPERTIES(src/arm/linux/arm32-isa.c PROPERTIES COMPILE_FLAGS -marm)
+        SET_SOURCE_FILES_PROPERTIES(src/arm/linux/aarch32-isa.c PROPERTIES COMPILE_FLAGS -marm)
       ENDIF()
     ELSEIF(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
-      LIST(APPEND CPUINFO_SRCS src/arm/linux/arm64-isa.c)
+      LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch64-isa.c)
     ENDIF()
   ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     LIST(APPEND CPUINFO_SRCS

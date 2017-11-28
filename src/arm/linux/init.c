@@ -169,7 +169,9 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 	uint32_t usable_processors = 0;
-	uint32_t known_processors = 0;
+	#if CPUINFO_ARCH_ARM
+	uint32_t last_midr = 0, last_architecture_version = 0, last_architecture_flags = 0;
+	#endif
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		arm_linux_processors[i].system_processor_id = i;
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
@@ -183,25 +185,15 @@ void cpuinfo_arm_linux_init(void) {
 				cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
 			}
 
-			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_INFO)) {
-				if (known_processors == 0) {
-					/*
-					 * This is the first processor for which we have complete information.
-					 * Use it to detect instruction set architecture.
-					 * If there are several cores with different microarchitecture, we expect
-					 * Linux kernel to report the same ISA extensions for each of them.
-					 */
-					#if CPUINFO_ARCH_ARM
-						cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
-							&arm_linux_processors[i], &cpuinfo_isa);
-					#elif CPUINFO_ARCH_ARM64
-						cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
-							&arm_linux_processors[i], &cpuinfo_isa);
-					#endif
+			#if CPUINFO_ARCH_ARM
+				if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
+					last_midr = arm_linux_processors[i].midr;
 				}
-
-				known_processors += 1;
-			}
+				if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_ARCHITECTURE)) {
+					last_architecture_version = arm_linux_processors[i].architecture_version;
+					last_architecture_flags   = arm_linux_processors[i].architecture_flags;
+				}
+			#endif
 		} else {
 			/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore */
 			if (!(arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR)) {
@@ -209,6 +201,37 @@ void cpuinfo_arm_linux_init(void) {
 			}
 		}
 	}
+
+	/* Detect ISA. If different processors report different ISA features, take the intersection. */
+	uint32_t isa_features = 0, processors_with_features = 0;
+	#if CPUINFO_ARCH_ARM
+		uint32_t isa_features2 = 0;
+	#endif
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_ARM_LINUX_VALID_FEATURES)) {
+			if (processors_with_features == 0) {
+				isa_features = arm_linux_processors[i].features;
+				#if CPUINFO_ARCH_ARM
+					isa_features2 = arm_linux_processors[i].features2;
+				#endif
+			} else {
+				isa_features &= arm_linux_processors[i].features;
+				#if CPUINFO_ARCH_ARM
+					isa_features2 &= arm_linux_processors[i].features2;
+				#endif
+			}
+			processors_with_features += 1;
+		}
+	}
+	#if CPUINFO_ARCH_ARM
+		cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
+			isa_features, isa_features2,
+			last_midr, last_architecture_version, last_architecture_flags,
+			&cpuinfo_isa);
+	#elif CPUINFO_ARCH_ARM64
+		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
+			isa_features, &cpuinfo_isa);
+	#endif
 
 	/* Detect min/max frequency and package ID */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {

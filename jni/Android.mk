@@ -22,13 +22,13 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/linux/midr.c \
 	$(LOCAL_PATH)/src/arm/android/properties.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c.arm
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/aarch32-isa.c.arm
 endif # armeabi
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/aarch32-isa.c
 endif # armeabi-v7a
 ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm64-isa.c
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/aarch64-isa.c
 endif # arm64-v8a
 endif # armeabi, armeabi-v7a, or arm64-v8a
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
@@ -74,13 +74,13 @@ LOCAL_SRC_FILES += \
 	$(LOCAL_PATH)/src/arm/linux/midr.c \
 	$(LOCAL_PATH)/src/arm/android/properties.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c.arm
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/aarch32-isa.c.arm
 endif # armeabi
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm32-isa.c
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/aarch32-isa.c
 endif # armeabi-v7a
 ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/arm64-isa.c
+LOCAL_SRC_FILES += $(LOCAL_PATH)/src/arm/linux/aarch64-isa.c
 endif # arm64-v8a
 endif # armeabi, armeabi-v7a, or arm64-v8a
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))

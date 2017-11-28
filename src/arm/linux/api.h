@@ -247,11 +247,15 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 
 #if CPUINFO_ARCH_ARM
 	void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
-		const struct cpuinfo_arm_linux_processor processors[restrict static 1],
+		uint32_t features,
+		uint32_t features2,
+		uint32_t midr,
+		uint32_t architecture_version,
+		uint32_t architecture_flags,
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #elif CPUINFO_ARCH_ARM64
 	void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
-		const struct cpuinfo_arm_linux_processor processors[restrict static 1],
+		uint32_t features,
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #endif
 

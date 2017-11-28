@@ -25,11 +25,13 @@
 
 
 void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
-	const struct cpuinfo_arm_linux_processor processor[restrict static 1],
+	uint32_t features,
+	uint32_t features2,
+	uint32_t midr,
+	uint32_t architecture_version,
+	uint32_t architecture_flags,
 	struct cpuinfo_arm_isa isa[restrict static 1])
 {
-	const uint32_t midr = processor->midr;
-	uint32_t architecture_version = processor->architecture_version;
 	if (architecture_version >= 8) {
 		/*
 		 * ARMv7 code running on ARMv8: IDIV, VFP, NEON are always supported,
@@ -60,8 +62,13 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 			architecture_version = 6;
 		}
 
-		const uint32_t features = processor->features;
-		const uint32_t architecture_flags = processor->architecture_flags;
+		if (architecture_version < 7) {
+			const uint32_t armv7_features_mask = CPUINFO_ARM_LINUX_FEATURE_VFPV3 | CPUINFO_ARM_LINUX_FEATURE_VFPV3D16 | CPUINFO_ARM_LINUX_FEATURE_VFPD32 |
+				CPUINFO_ARM_LINUX_FEATURE_VFPV4 | CPUINFO_ARM_LINUX_FEATURE_NEON | CPUINFO_ARM_LINUX_FEATURE_IDIVT | CPUINFO_ARM_LINUX_FEATURE_IDIVA;
+			if (features & armv7_features_mask) {
+				architecture_version = 7;
+			}
+		}
 		if ((architecture_version >= 6) || (features & CPUINFO_ARM_LINUX_FEATURE_EDSP) || (architecture_flags & CPUINFO_ARM_LINUX_ARCH_E)) {
 			isa->armv5e = true;
 		}
@@ -175,7 +182,6 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		}
 	}
 
-	const uint32_t features2 = processor->features2;
 	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_AES) {
 		isa->aes = true;
 	}
