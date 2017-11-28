@@ -24,6 +24,7 @@ adb push libs/arm64-v8a/oppo-r9-test /data/local/tmp/oppo-r9-test
 adb push libs/arm64-v8a/pixel-c-test /data/local/tmp/pixel-c-test
 adb push libs/arm64-v8a/pixel-xl-test /data/local/tmp/pixel-xl-test
 adb push libs/arm64-v8a/pixel-test /data/local/tmp/pixel-test
+adb push libs/arm64-v8a/pixel-2-xl-test /data/local/tmp/pixel-2-xl-test
 adb push libs/arm64-v8a/xiaomi-mi-5c-test /data/local/tmp/xiaomi-mi-5c-test
 adb push libs/arm64-v8a/xiaomi-redmi-note-3-test /data/local/tmp/xiaomi-redmi-note-3-test
 adb push libs/arm64-v8a/xperia-c4-dual-test /data/local/tmp/xperia-c4-dual-test
@@ -50,6 +51,7 @@ adb shell "/data/local/tmp/oppo-r9-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-c-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-xl-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-test --gtest_color=yes"
+adb shell "/data/local/tmp/pixel-2-xl-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-mi-5c-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-redmi-note-3-test --gtest_color=yes"
 adb shell "/data/local/tmp/xperia-c4-dual-test --gtest_color=yes"

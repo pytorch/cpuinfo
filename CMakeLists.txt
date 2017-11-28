@@ -390,6 +390,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(pixel-xl-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(pixel-xl-test pixel-xl-test)
 
+    ADD_EXECUTABLE(pixel-2-xl-test test/mock/pixel-2-xl.cc)
+    TARGET_INCLUDE_DIRECTORIES(pixel-2-xl-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(pixel-2-xl-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(pixel-2-xl-test pixel-2-xl-test)
+
     ADD_EXECUTABLE(xiaomi-mi-5c-test test/mock/xiaomi-mi-5c.cc)
     TARGET_INCLUDE_DIRECTORIES(xiaomi-mi-5c-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(xiaomi-mi-5c-test PRIVATE cpuinfo_mock gtest)

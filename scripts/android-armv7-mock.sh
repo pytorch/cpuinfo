@@ -44,6 +44,7 @@ adb push libs/armeabi-v7a/oppo-r9-test /data/local/tmp/oppo-r9-test
 adb push libs/armeabi-v7a/pixel-c-test /data/local/tmp/pixel-c-test
 adb push libs/armeabi-v7a/pixel-xl-test /data/local/tmp/pixel-xl-test
 adb push libs/armeabi-v7a/pixel-test /data/local/tmp/pixel-test
+adb push libs/armeabi-v7a/pixel-2-xl-test /data/local/tmp/pixel-2-xl-test
 adb push libs/armeabi-v7a/xiaomi-mi-5c-test /data/local/tmp/xiaomi-mi-5c-test
 adb push libs/armeabi-v7a/xiaomi-redmi-2a-test /data/local/tmp/xiaomi-redmi-2a-test
 adb push libs/armeabi-v7a/xiaomi-redmi-note-3-test /data/local/tmp/xiaomi-redmi-note-3-test
@@ -91,6 +92,7 @@ adb shell "/data/local/tmp/oppo-r9-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-c-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-xl-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-test --gtest_color=yes"
+adb shell "/data/local/tmp/pixel-2-xl-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-mi-5c-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-redmi-2a-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-redmi-note-3-test --gtest_color=yes"
