@@ -185,6 +185,13 @@ include $(BUILD_EXECUTABLE)
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a))
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := atm7029b-tablet-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/atm7029b-tablet.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := blu-r1-hd-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/blu-r1-hd.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

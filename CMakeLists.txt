@@ -173,6 +173,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
   ENDIF()
 
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a)$")
+    ADD_EXECUTABLE(atm7029b-tablet-test test/mock/atm7029b-tablet.cc)
+    TARGET_INCLUDE_DIRECTORIES(atm7029b-tablet-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(atm7029b-tablet-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(atm7029b-tablet-test atm7029b-tablet-test)
+
     ADD_EXECUTABLE(blu-r1-hd-test test/mock/blu-r1-hd.cc)
     TARGET_INCLUDE_DIRECTORIES(blu-r1-hd-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(blu-r1-hd-test PRIVATE cpuinfo_mock gtest)
