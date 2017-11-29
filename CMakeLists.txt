@@ -194,6 +194,16 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(galaxy-grand-prime-value-edition-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(galaxy-grand-prime-value-edition-test galaxy-grand-prime-value-edition-test)
 
+    ADD_EXECUTABLE(galaxy-j7-tmobile-test test/mock/galaxy-j7-tmobile.cc)
+    TARGET_INCLUDE_DIRECTORIES(galaxy-j7-tmobile-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(galaxy-j7-tmobile-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(galaxy-j7-tmobile-test galaxy-j7-tmobile-test)
+
+    ADD_EXECUTABLE(galaxy-j7-uae-test test/mock/galaxy-j7-uae.cc)
+    TARGET_INCLUDE_DIRECTORIES(galaxy-j7-uae-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(galaxy-j7-uae-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(galaxy-j7-uae-test galaxy-j7-uae-test)
+
     ADD_EXECUTABLE(galaxy-s3-us-test test/mock/galaxy-s3-us.cc)
     TARGET_INCLUDE_DIRECTORIES(galaxy-s3-us-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(galaxy-s3-us-test PRIVATE cpuinfo_mock gtest)
@@ -295,16 +305,6 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_INCLUDE_DIRECTORIES(galaxy-c9-pro-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(galaxy-c9-pro-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(galaxy-c9-pro-test galaxy-c9-pro-test)
-
-    ADD_EXECUTABLE(galaxy-j7-tmobile-test test/mock/galaxy-j7-tmobile.cc)
-    TARGET_INCLUDE_DIRECTORIES(galaxy-j7-tmobile-test PRIVATE test/mock)
-    TARGET_LINK_LIBRARIES(galaxy-j7-tmobile-test PRIVATE cpuinfo_mock gtest)
-    ADD_TEST(galaxy-j7-tmobile-test galaxy-j7-tmobile-test)
-
-    ADD_EXECUTABLE(galaxy-j7-uae-test test/mock/galaxy-j7-uae.cc)
-    TARGET_INCLUDE_DIRECTORIES(galaxy-j7-uae-test PRIVATE test/mock)
-    TARGET_LINK_LIBRARIES(galaxy-j7-uae-test PRIVATE cpuinfo_mock gtest)
-    ADD_TEST(galaxy-j7-uae-test galaxy-j7-uae-test)
 
     ADD_EXECUTABLE(galaxy-s6-test test/mock/galaxy-s6.cc)
     TARGET_INCLUDE_DIRECTORIES(galaxy-s6-test PRIVATE test/mock)

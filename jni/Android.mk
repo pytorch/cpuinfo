@@ -226,6 +226,20 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := galaxy-j7-tmobile-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-tmobile.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := galaxy-j7-uae-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-uae.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-s3-us-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-s3-us.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
@@ -394,20 +408,6 @@ include $(BUILD_EXECUTABLE)
 include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-c9-pro-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-c9-pro.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
-LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
-include $(BUILD_EXECUTABLE)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := galaxy-j7-tmobile-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-tmobile.cc
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
-LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
-include $(BUILD_EXECUTABLE)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := galaxy-j7-uae-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-uae.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
