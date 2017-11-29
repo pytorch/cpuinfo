@@ -23,8 +23,8 @@ static inline bool bitmask_all(uint32_t bitfield, uint32_t mask) {
 	return (bitfield & mask) == mask;
 }
 
-/* Description of heterogeneous multi-processing core configuration in a chipset (identified by series and model number) */
-struct hmp_config {
+/* Description of core clusters configuration in a chipset (identified by series and model number) */
+struct cluster_config {
 	/* Number of cores (logical processors) */
 	uint8_t cores;
 	/* ARM chipset series (see cpuinfo_arm_chipset_series enum) */
@@ -35,12 +35,14 @@ struct hmp_config {
 	uint8_t clusters;
 	/*
 	 * Number of cores in each cluster:
+	 # - Symmetric configurations: [0] = # cores
 	 * - big.LITTLE configurations: [0] = # LITTLE cores, [1] = # big cores
 	 * - Max.Med.Min configurations: [0] = # Min cores, [1] = # Med cores, [2] = # Max cores
 	 */
 	uint8_t cluster_cores[CLUSTERS_MAX];
 	/*
 	 * MIDR of cores in each cluster:
+	 * - Symmetric configurations: [0] = core MIDR
 	 * - big.LITTLE configurations: [0] = LITTLE core MIDR, [1] = big core MIDR
 	 * - Max.Med.Min configurations: [0] = Min core MIDR, [1] = Med core MIDR, [2] = Max core MIDR
 	 */
@@ -48,10 +50,13 @@ struct hmp_config {
 };
 
 /*
- * The list of chipsets with more than one type of cores (i.e. 4x Cortex-A53 + 4x Cortex-A53 is out) and buggy kernels
- * which report MIDR information only about some cores in /proc/cpuinfo (either only online cores, or only the core
- * that reads /proc/cpuinfo). On these kernels, it is not possible to detect all core types by just parsing
- * /proc/cpuinfo, so we use chipset name and this table to find their MIDR (and thus microarchitecture, cache, etc).
+ * The list of chipsets where MIDR may not be unambigiously decoded at least on some devices.
+ * The typical reasons for impossibility to decoded MIDRs are buggy kernels, which either do not report all MIDR
+ * information (e.g. on ATM7029 kernel doesn't report CPU Part), or chipsets have more than one type of cores
+ * (i.e. 4x Cortex-A53 + 4x Cortex-A53 is out) and buggy kernels report MIDR information only about some cores
+ * in /proc/cpuinfo (either only online cores, or only the core that reads /proc/cpuinfo). On these kernels/chipsets,
+ * it is not possible to detect all core types by just parsing /proc/cpuinfo, so we use chipset name and this table to
+ * find their MIDR (and thus microarchitecture, cache, etc).
  *
  * Note: not all chipsets with heterogeneous multiprocessing need an entry in this table. The following HMP
  * chipsets always list information about all cores in /proc/cpuinfo:
@@ -65,7 +70,43 @@ struct hmp_config {
  *
  * As these are all new processors, there is hope that this table won't uncontrollably grow over time.
  */
-static const struct hmp_config hmp_configs[] = {
+static const struct cluster_config cluster_configs[] = {
+#if CPUINFO_ARCH_ARM
+	{
+		/*
+		 * MSM8916 (Snapdragon 410): 4x Cortex-A53
+		 * Some AArch32 phones use non-standard /proc/cpuinfo format.
+		 */
+		.cores = 4,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = UINT16_C(8916),
+		.clusters = 1,
+		.cluster_cores = {
+			[0] = 4,
+		},
+		.cluster_midr = {
+			[0] = UINT32_C(0x410FD030),
+		},
+	},
+	{
+		/*
+		 * MSM8939 (Snapdragon 615): 4x Cortex-A53 + 4x Cortex-A53
+		 * Some AArch32 phones use non-standard /proc/cpuinfo format.
+		 */
+		.cores = 8,
+		.series = cpuinfo_arm_chipset_series_qualcomm_msm,
+		.model = UINT16_C(8939),
+		.clusters = 2,
+		.cluster_cores = {
+			[0] = 4,
+			[1] = 4,
+		},
+		.cluster_midr = {
+			[0] = UINT32_C(0x410FD034),
+			[1] = UINT32_C(0x410FD034),
+		},
+	},
+#endif
 	{
 		/* MSM8956 (Snapdragon 650): 2x Cortex-A72 + 4x Cortex-A53 */
 		.cores = 6,
@@ -312,7 +353,43 @@ static const struct hmp_config hmp_configs[] = {
 			[1] = UINT32_C(0x410FD080),
 		},
 	},
+#if CPUINFO_ARCH_ARM64
+	{
+		/*
+		 * MediaTek MT8735: 4x Cortex-A53
+		 * Some AArch64 phones use non-standard /proc/cpuinfo format.
+		 */
+		.cores = 4,
+		.series = cpuinfo_arm_chipset_series_mediatek_mt,
+		.model = UINT16_C(8735),
+		.clusters = 1,
+		.cluster_cores = {
+			[0] = 4,
+		},
+		.cluster_midr = {
+			[0] = UINT32_C(0x410FD034),
+		},
+	},
+#endif
 #if CPUINFO_ARCH_ARM
+	{
+		/*
+		 * MediaTek MT6592: 4x Cortex-A7 + 4x Cortex-A7
+		 * Some phones use non-standard /proc/cpuinfo format.
+		 */
+		.cores = 4,
+		.series = cpuinfo_arm_chipset_series_mediatek_mt,
+		.model = UINT16_C(6592),
+		.clusters = 2,
+		.cluster_cores = {
+			[0] = 4,
+			[1] = 4,
+		},
+		.cluster_midr = {
+			[0] = UINT32_C(0x410FC074),
+			[1] = UINT32_C(0x410FC074),
+		},
+	},
 	{
 		/* MediaTek MT6595: 4x Cortex-A17 + 4x Cortex-A7 */
 		.cores = 8,
@@ -378,6 +455,23 @@ static const struct hmp_config hmp_configs[] = {
 			[1] = UINT32_C(0x410FD082),
 		},
 	},
+#if CPUINFO_ARCH_ARM
+	{
+		/* Actions ATM8029: 4x Cortex-A5
+		 * Most devices use non-standard /proc/cpuinfo format.
+		 */
+		.cores = 4,
+		.series = cpuinfo_arm_chipset_series_actions_atm,
+		.model = UINT16_C(7029),
+		.clusters = 1,
+		.cluster_cores = {
+			[0] = 4,
+		},
+		.cluster_midr = {
+			[0] = UINT32_C(0x410FC051),
+		},
+	},
+#endif
 };
 
 /*
@@ -409,17 +503,17 @@ static bool cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
 	bool verify_midr)
 {
 	if (clusters_count <= CLUSTERS_MAX) {
-		for (uint32_t c = 0; c < CPUINFO_COUNT_OF(hmp_configs); c++) {
-			if (hmp_configs[c].model == chipset->model && hmp_configs[c].series == chipset->series) {
+		for (uint32_t c = 0; c < CPUINFO_COUNT_OF(cluster_configs); c++) {
+			if (cluster_configs[c].model == chipset->model && cluster_configs[c].series == chipset->series) {
 				/* Verify that the total number of cores and clusters of cores matches expectation */
-				if (hmp_configs[c].cores != processors_count || hmp_configs[c].clusters != clusters_count) {
+				if (cluster_configs[c].cores != processors_count || cluster_configs[c].clusters != clusters_count) {
 					return false;
 				}
 
 				/* Verify that core cluster configuration matches expectation */
 				for (uint32_t cluster = 0; cluster < clusters_count; cluster++) {
 					const uint32_t cluster_leader = cluster_leaders[cluster];
-					if (hmp_configs[c].cluster_cores[cluster] != processors[cluster_leader].package_processor_count) {
+					if (cluster_configs[c].cluster_cores[cluster] != processors[cluster_leader].package_processor_count) {
 						return false;
 					}
 				}
@@ -445,9 +539,9 @@ static bool cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
 						}
 
 						/* Verify the bits under the mask */
-						if ((processors[cluster_leader].midr ^ hmp_configs[c].cluster_midr[cluster]) & midr_mask) {
+						if ((processors[cluster_leader].midr ^ cluster_configs[c].cluster_midr[cluster]) & midr_mask) {
 							cpuinfo_log_debug("parsed MIDR of cluster %08"PRIu32" does not match tabulated value %08"PRIu32,
-								processors[cluster_leader].midr, hmp_configs[c].cluster_midr[cluster]);
+								processors[cluster_leader].midr, cluster_configs[c].cluster_midr[cluster]);
 							return false;
 						}
 					}
@@ -456,9 +550,9 @@ static bool cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
 				/* Assign MIDRs according to tabulated configurations */
 				for (uint32_t cluster = 0; cluster < clusters_count; cluster++) {
 					const uint32_t cluster_leader = cluster_leaders[cluster];
-					processors[cluster_leader].midr = hmp_configs[c].cluster_midr[cluster];
+					processors[cluster_leader].midr = cluster_configs[c].cluster_midr[cluster];
 					processors[cluster_leader].flags |= CPUINFO_ARM_LINUX_VALID_MIDR;
-					cpuinfo_log_debug("cluster %"PRIu32" MIDR = 0x%08"PRIx32, cluster, hmp_configs[c].cluster_midr[cluster]);
+					cpuinfo_log_debug("cluster %"PRIu32" MIDR = 0x%08"PRIx32, cluster, cluster_configs[c].cluster_midr[cluster]);
 				}
 				return true;
 			}
