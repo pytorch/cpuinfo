@@ -582,6 +582,12 @@ TEST(L4, none) {
 #include <galaxy-s6.h>
 
 int main(int argc, char* argv[]) {
+#if CPUINFO_ARCH_ARM
+	cpuinfo_set_hwcap(UINT32_C(0x0007B0D6));
+	cpuinfo_set_hwcap2(UINT32_C(0x0000001F));
+#elif CPUINFO_ARCH_ARM64
+	cpuinfo_set_hwcap(UINT32_C(0x000000FB));
+#endif
 	cpuinfo_mock_filesystem(filesystem);
 #ifdef __ANDROID__
 	cpuinfo_mock_android_properties(properties);

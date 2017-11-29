@@ -441,6 +441,9 @@ TEST(L4, none) {
 #include <atm7029b-tablet.h>
 
 int main(int argc, char* argv[]) {
+#if CPUINFO_ARCH_ARM
+	cpuinfo_set_hwcap(UINT32_C(0x0001B0D7));
+#endif
 	cpuinfo_mock_filesystem(filesystem);
 #ifdef __ANDROID__
 	cpuinfo_mock_android_properties(properties);

@@ -57,6 +57,13 @@ struct cpuinfo_mock_property {
 	int CPUINFO_ABI cpuinfo_mock_open(const char* path, int oflag);
 	int CPUINFO_ABI cpuinfo_mock_close(int fd);
 	ssize_t CPUINFO_ABI cpuinfo_mock_read(int fd, void* buffer, size_t capacity);
+
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		void CPUINFO_ABI cpuinfo_set_hwcap(uint32_t hwcap);
+	#endif
+	#if CPUINFO_ARCH_ARM
+		void CPUINFO_ABI cpuinfo_set_hwcap2(uint32_t hwcap2);
+	#endif
 #endif
 
 #if defined(__ANDROID__)

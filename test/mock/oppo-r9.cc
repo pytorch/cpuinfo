@@ -307,23 +307,43 @@ TEST(ISA, fcma) {
 }
 
 TEST(ISA, aes) {
-	ASSERT_TRUE(cpuinfo_has_arm_aes());
+	#if CPUINFO_ARCH_ARM64
+		ASSERT_TRUE(cpuinfo_has_arm_aes());
+	#elif CPUINFO_ARCH_ARM
+		ASSERT_FALSE(cpuinfo_has_arm_aes());
+	#endif
 }
 
 TEST(ISA, sha1) {
-	ASSERT_TRUE(cpuinfo_has_arm_sha1());
+	#if CPUINFO_ARCH_ARM64
+		ASSERT_TRUE(cpuinfo_has_arm_sha1());
+	#elif CPUINFO_ARCH_ARM
+		ASSERT_FALSE(cpuinfo_has_arm_sha1());
+	#endif
 }
 
 TEST(ISA, sha2) {
-	ASSERT_TRUE(cpuinfo_has_arm_sha2());
+	#if CPUINFO_ARCH_ARM64
+		ASSERT_TRUE(cpuinfo_has_arm_sha2());
+	#elif CPUINFO_ARCH_ARM
+		ASSERT_FALSE(cpuinfo_has_arm_sha2());
+	#endif
 }
 
 TEST(ISA, pmull) {
-	ASSERT_TRUE(cpuinfo_has_arm_pmull());
+	#if CPUINFO_ARCH_ARM64
+		ASSERT_TRUE(cpuinfo_has_arm_pmull());
+	#elif CPUINFO_ARCH_ARM
+		ASSERT_FALSE(cpuinfo_has_arm_pmull());
+	#endif
 }
 
 TEST(ISA, crc32) {
-	ASSERT_TRUE(cpuinfo_has_arm_crc32());
+	#if CPUINFO_ARCH_ARM64
+		ASSERT_TRUE(cpuinfo_has_arm_crc32());
+	#elif CPUINFO_ARCH_ARM
+		ASSERT_FALSE(cpuinfo_has_arm_crc32());
+	#endif
 }
 
 TEST(L1I, count) {
@@ -503,6 +523,12 @@ TEST(L4, none) {
 #include <oppo-r9.h>
 
 int main(int argc, char* argv[]) {
+#if CPUINFO_ARCH_ARM
+	cpuinfo_set_hwcap(UINT32_C(0x0007B0D6));
+	cpuinfo_set_hwcap2(UINT32_C(0x00000000));
+#elif CPUINFO_ARCH_ARM64
+	cpuinfo_set_hwcap(UINT32_C(0x000000FB));
+#endif
 	cpuinfo_mock_filesystem(filesystem);
 #ifdef __ANDROID__
 	cpuinfo_mock_android_properties(properties);

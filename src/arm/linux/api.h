@@ -246,6 +246,13 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count]);
 
 #if CPUINFO_ARCH_ARM
+	bool cpuinfo_arm_linux_hwcap_from_getauxval(
+		uint32_t hwcap[restrict static 1],
+		uint32_t hwcap2[restrict static 1]);
+	bool cpuinfo_arm_linux_hwcap_from_procfs(
+		uint32_t hwcap[restrict static 1],
+		uint32_t hwcap2[restrict static 1]);
+
 	void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		uint32_t features,
 		uint32_t features2,
@@ -254,6 +261,7 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 		uint32_t architecture_flags,
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #elif CPUINFO_ARCH_ARM64
+	uint32_t cpuinfo_arm_linux_hwcap_from_getauxval(void);
 	void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		uint32_t features,
 		struct cpuinfo_arm_isa isa[restrict static 1]);

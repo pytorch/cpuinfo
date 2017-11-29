@@ -133,7 +133,8 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] Using `/proc/cpuinfo` on 32-bit ARM EABI (Linux)
   - [x] Using microarchitecture heuristics on (32-bit ARM)
   - [x] Using `FPSID` and `WCID` registers (32-bit ARM)
-  - [ ] Using `getauxval` or `/proc/self/auxv` (Linux)
+  - [x] Using `getauxval` (Linux/ARM)
+  - [x] Using `/proc/self/auxv` (Android/ARM)
   - [ ] Using instruction probing on ARM (Linux)
   - [ ] Using CPUID registers on ARM64 (Linux)
 - Cache detection

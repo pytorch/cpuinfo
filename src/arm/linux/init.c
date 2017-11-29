@@ -202,35 +202,56 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
-	/* Detect ISA. If different processors report different ISA features, take the intersection. */
-	uint32_t isa_features = 0, processors_with_features = 0;
 	#if CPUINFO_ARCH_ARM
-		uint32_t isa_features2 = 0;
-	#endif
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_ARM_LINUX_VALID_FEATURES)) {
-			if (processors_with_features == 0) {
-				isa_features = arm_linux_processors[i].features;
-				#if CPUINFO_ARCH_ARM
-					isa_features2 = arm_linux_processors[i].features2;
-				#endif
-			} else {
-				isa_features &= arm_linux_processors[i].features;
-				#if CPUINFO_ARCH_ARM
-					isa_features2 &= arm_linux_processors[i].features2;
-				#endif
+		uint32_t isa_features = 0, isa_features2 = 0;
+		#ifdef __ANDROID__
+			/*
+			 * On Android before API 20, libc.so does not provide getauxval function.
+			 * Thus, we try to dynamically find it, or use two fallback mechanisms:
+			 * 1. dlopen libc.so, and try to find getauxval
+			 * 2. Parse /proc/self/auxv procfs file
+			 * 3. Use features reported in /proc/cpuinfo
+			 */
+			if (!cpuinfo_arm_linux_hwcap_from_getauxval(&isa_features, &isa_features2)) {
+				/* getauxval can't be used, fall back to parsing /proc/self/auxv */
+				if (!cpuinfo_arm_linux_hwcap_from_procfs(&isa_features, &isa_features2)) {
+					/*
+					 * Reading /proc/self/auxv failed, probably due to file permissions.
+					 * Use information from /proc/cpuinfo to detect ISA.
+					 *
+					 * If different processors report different ISA features, take the intersection.
+					 */
+					uint32_t processors_with_features = 0;
+					for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+						if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_ARM_LINUX_VALID_FEATURES)) {
+							if (processors_with_features == 0) {
+								isa_features = arm_linux_processors[i].features;
+								#if CPUINFO_ARCH_ARM
+									isa_features2 = arm_linux_processors[i].features2;
+								#endif
+							} else {
+								isa_features &= arm_linux_processors[i].features;
+								#if CPUINFO_ARCH_ARM
+									isa_features2 &= arm_linux_processors[i].features2;
+								#endif
+							}
+							processors_with_features += 1;
+						}
+					}
+				}
 			}
-			processors_with_features += 1;
-		}
-	}
-	#if CPUINFO_ARCH_ARM
+		#else
+			/* On GNU/Linux getauxval is always available */
+			cpuinfo_arm_linux_hwcap_from_getauxval(&isa_features, &isa_features2);
+		#endif
 		cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 			isa_features, isa_features2,
 			last_midr, last_architecture_version, last_architecture_flags,
 			&cpuinfo_isa);
 	#elif CPUINFO_ARCH_ARM64
-		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
-			isa_features, &cpuinfo_isa);
+		/* getauxval is always available on ARM64 Android */
+		const uint32_t isa_features = cpuinfo_arm_linux_hwcap_from_getauxval();
+		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(isa_features, &cpuinfo_isa);
 	#endif
 
 	/* Detect min/max frequency and package ID */

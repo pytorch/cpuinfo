@@ -445,6 +445,10 @@ TEST(L4, none) {
 #include <blu-r1-hd.h>
 
 int main(int argc, char* argv[]) {
+#if CPUINFO_ARCH_ARM
+	cpuinfo_set_hwcap(UINT32_C(0x003FB0D6));
+	cpuinfo_set_hwcap2(UINT32_C(0x00000008));
+#endif
 	cpuinfo_mock_filesystem(filesystem);
 #ifdef __ANDROID__
 	cpuinfo_mock_android_properties(properties);

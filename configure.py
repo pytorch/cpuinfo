@@ -44,6 +44,7 @@ def main(args):
                     "arm/linux/clusters.c",
                     "arm/linux/midr.c",
                     "arm/linux/chipset.c",
+                    "arm/linux/hwcap.c",
                 ]
                 if build.target.is_arm:
                     sources.append("arm/linux/aarch32-isa.c")

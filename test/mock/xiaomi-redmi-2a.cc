@@ -466,6 +466,9 @@ TEST(L4, none) {
 #include <xiaomi-redmi-2a.h>
 
 int main(int argc, char* argv[]) {
+#if CPUINFO_ARCH_ARM
+	cpuinfo_set_hwcap(UINT32_C(0x0007B0D7));
+#endif
 	cpuinfo_mock_filesystem(filesystem);
 #ifdef __ANDROID__
 	cpuinfo_mock_android_properties(properties);

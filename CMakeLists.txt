@@ -82,7 +82,8 @@ ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7f|armv7s|armv7k|armv
       src/arm/linux/cpuinfo.c
       src/arm/linux/clusters.c
       src/arm/linux/chipset.c
-      src/arm/linux/midr.c)
+      src/arm/linux/midr.c
+      src/arm/linux/hwcap.c)
     IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7l|armv7-a)$")
       LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch32-isa.c)
       IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND ANDROID_ABI STREQUAL "armeabi")
