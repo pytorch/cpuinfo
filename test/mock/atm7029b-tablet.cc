@@ -104,15 +104,15 @@ TEST(CORES, vendor) {
 	}
 }
 
-TEST(CORES, DISABLED_uarch) {
+TEST(CORES, uarch) {
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
 		ASSERT_EQ(cpuinfo_uarch_cortex_a5, cpuinfo_get_core(i)->uarch);
 	}
 }
 
-TEST(CORES, DISABLED_midr) {
+TEST(CORES, midr) {
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
-		ASSERT_EQ(UINT32_C(0x410FC075), cpuinfo_get_core(i)->midr);
+		ASSERT_EQ(UINT32_C(0x410FC051), cpuinfo_get_core(i)->midr);
 	}
 }
 
@@ -280,13 +280,13 @@ TEST(L1I, non_null) {
 	ASSERT_TRUE(cpuinfo_get_l1i_caches());
 }
 
-TEST(L1I, DISABLED_size) {
+TEST(L1I, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
 		ASSERT_EQ(32 * 1024, cpuinfo_get_l1i_cache(i)->size);
 	}
 }
 
-TEST(L1I, DISABLED_associativity) {
+TEST(L1I, associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
 		ASSERT_EQ(2, cpuinfo_get_l1i_cache(i)->associativity);
 	}
@@ -332,7 +332,7 @@ TEST(L1D, non_null) {
 	ASSERT_TRUE(cpuinfo_get_l1d_caches());
 }
 
-TEST(L1D, DISABLED_size) {
+TEST(L1D, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
 		ASSERT_EQ(32 * 1024, cpuinfo_get_l1d_cache(i)->size);
 	}
@@ -384,7 +384,7 @@ TEST(L2, non_null) {
 	ASSERT_TRUE(cpuinfo_get_l2_caches());
 }
 
-TEST(L2, DISABLED_size) {
+TEST(L2, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
 		ASSERT_EQ(256 * 1024, cpuinfo_get_l2_cache(i)->size);
 	}
