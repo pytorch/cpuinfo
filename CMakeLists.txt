@@ -497,6 +497,12 @@ IF(CPUINFO_BUILD_TOOLS)
   ADD_EXECUTABLE(cache-info tools/cache-info.c)
   TARGET_LINK_LIBRARIES(cache-info PRIVATE cpuinfo)
 
+  IF(CMAKE_SYSTEM_NAME MATCHES "^(Android|Linux)$" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7-a|armv7l|arm64|aarch64)$")
+    ADD_EXECUTABLE(auxv-dump tools/auxv-dump.c)
+    TARGET_INCLUDE_DIRECTORIES(auxv-dump PRIVATE src)
+    TARGET_INCLUDE_DIRECTORIES(auxv-dump PRIVATE include)
+  ENDIF()
+
   IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64)$")
     ADD_EXECUTABLE(cpuid-dump tools/cpuid-dump.c)
     TARGET_INCLUDE_DIRECTORIES(cpuid-dump PRIVATE src)
