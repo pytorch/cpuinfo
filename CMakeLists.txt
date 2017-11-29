@@ -194,6 +194,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(galaxy-grand-prime-value-edition-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(galaxy-grand-prime-value-edition-test galaxy-grand-prime-value-edition-test)
 
+    ADD_EXECUTABLE(galaxy-j7-prime-test test/mock/galaxy-j7-prime.cc)
+    TARGET_INCLUDE_DIRECTORIES(galaxy-j7-prime-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(galaxy-j7-prime-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(galaxy-j7-prime-test galaxy-j7-prime-test)
+
     ADD_EXECUTABLE(galaxy-j7-tmobile-test test/mock/galaxy-j7-tmobile.cc)
     TARGET_INCLUDE_DIRECTORIES(galaxy-j7-tmobile-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(galaxy-j7-tmobile-test PRIVATE cpuinfo_mock gtest)

@@ -226,6 +226,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := galaxy-j7-prime-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-prime.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-j7-tmobile-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-j7-tmobile.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
