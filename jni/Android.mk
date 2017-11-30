@@ -455,6 +455,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := huawei-p8-lite-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/huawei-p8-lite.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := huawei-p9-lite-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/huawei-p9-lite.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

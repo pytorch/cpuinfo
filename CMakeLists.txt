@@ -336,6 +336,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(galaxy-s8-global-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(galaxy-s8-global-test galaxy-s8-global-test)
 
+    ADD_EXECUTABLE(huawei-p8-lite-test test/mock/huawei-p8-lite.cc)
+    TARGET_INCLUDE_DIRECTORIES(huawei-p8-lite-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(huawei-p8-lite-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(huawei-p8-lite-test huawei-p8-lite-test)
+
     ADD_EXECUTABLE(huawei-p9-lite-test test/mock/huawei-p9-lite.cc)
     TARGET_INCLUDE_DIRECTORIES(huawei-p9-lite-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(huawei-p9-lite-test PRIVATE cpuinfo_mock gtest)
