@@ -1644,7 +1644,7 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 		.suffix = 'B',
 	},
 	{
-		/* "gs703d" -> Actionns ATM7039S */
+		/* "gs703d" -> Actions ATM7039S */
 		.platform = "gs703d",
 		.series = cpuinfo_arm_chipset_series_actions_atm,
 		.model = 7039,
