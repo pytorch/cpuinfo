@@ -329,8 +329,8 @@ void cpuinfo_arm_mach_init(void) {
 		const uint32_t package_id = i / threads_per_package;
 
 		processors[i].smt_id = smt_id;
-		processors[i].core = cores + i / threads_per_core;
-		processors[i].package = packages + i / threads_per_package;
+		processors[i].core = &cores[core_id];
+		processors[i].package = &packages[package_id];
 	}
 
 	const uint32_t cacheline_size = get_sys_info(HW_CACHELINE, "HW_CACHELINE");
