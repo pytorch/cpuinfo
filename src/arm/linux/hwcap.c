@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/auxv.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <dlfcn.h>
@@ -15,6 +14,13 @@
 #include <cpuinfo.h>
 #include <arm/linux/api.h>
 #include <log.h>
+
+#if CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_ARM && !defined(__ANDROID__)
+	#include <sys/auxv.h>
+#else
+	#define AT_HWCAP 16
+	#define AT_HWCAP2 26
+#endif
 
 
 #if CPUINFO_MOCK
