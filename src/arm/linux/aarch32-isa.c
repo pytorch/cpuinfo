@@ -148,7 +148,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		if (features & vfp_mask) {
 			const uint32_t vfpv3_mask = CPUINFO_ARM_LINUX_FEATURE_VFPV3 | CPUINFO_ARM_LINUX_FEATURE_VFPV3D16 | \
 				CPUINFO_ARM_LINUX_FEATURE_VFPD32 | CPUINFO_ARM_LINUX_FEATURE_VFPV4 | CPUINFO_ARM_LINUX_FEATURE_NEON;
-			if ((architecture_version >= 7) | (features & vfpv3_mask)) {
+			if ((architecture_version >= 7) || (features & vfpv3_mask)) {
 				isa->vfpv3 = true;
 			
 				const uint32_t d32_mask = CPUINFO_ARM_LINUX_FEATURE_VFPD32 | CPUINFO_ARM_LINUX_FEATURE_NEON;
@@ -156,12 +156,16 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 					isa->d32 = true;
 				}
 			} else {
-				const uint32_t fpsid = read_fpsid();
-				cpuinfo_log_debug("FPSID = 0x%08"PRIx32, fpsid);
-				const uint32_t subarchitecture = (fpsid >> 16) & UINT32_C(0x7F);
-				if (subarchitecture >= 0x01) {
-					isa->vfpv2 = true;
-				}
+				#if defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_8A__) || defined(__ARM_ARCH) && (__ARM_ARCH >= 7)
+					isa->vfpv3 = true;
+				#else
+					const uint32_t fpsid = read_fpsid();
+					cpuinfo_log_debug("FPSID = 0x%08"PRIx32, fpsid);
+					const uint32_t subarchitecture = (fpsid >> 16) & UINT32_C(0x7F);
+					if (subarchitecture >= 0x01) {
+						isa->vfpv2 = true;
+					}
+				#endif
 			}
 		}
 		if (features & CPUINFO_ARM_LINUX_FEATURE_NEON) {
