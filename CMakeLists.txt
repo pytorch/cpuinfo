@@ -303,6 +303,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_INCLUDE_DIRECTORIES(xiaomi-redmi-2a-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(xiaomi-redmi-2a-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(xiaomi-redmi-2a-test xiaomi-redmi-2a-test)
+
+    ADD_EXECUTABLE(xperia-sl-test test/mock/xperia-sl.cc)
+    TARGET_INCLUDE_DIRECTORIES(xperia-sl-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(xperia-sl-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(xperia-sl-test xperia-sl-test)
   ENDIF()
 
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a|aarch64)$")

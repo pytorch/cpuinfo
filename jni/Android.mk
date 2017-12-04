@@ -379,6 +379,13 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := xperia-sl-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/xperia-sl.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
 endif # armeabi, armeabi-v7a
 
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v8a))
