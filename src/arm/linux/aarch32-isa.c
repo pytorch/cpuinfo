@@ -85,13 +85,15 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 			 * - Processors supporting UDIV/SDIV instructions ("idiva" + "idivt" features in /proc/cpuinfo)
 			 * - Cortex-A5
 			 * - Cortex-A9
+			 * - Dual-Core Scorpion
 			 * - Krait (supports UDIV/SDIV, but kernels may not report it in /proc/cpuinfo)
 			 *
-			 * TODO: check Qualcomm Scorpion.
+			 * TODO: check single-core Qualcomm Scorpion.
 			 */
 			switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 				case UINT32_C(0x4100C050): /* Cortex-A5 */
 				case UINT32_C(0x4100C0A0): /* Cortex-A9 */
+				case UINT32_C(0x510002D0): /* Scorpion (dual-core) */
 				case UINT32_C(0x510004D0): /* Krait (dual-core) */
 				case UINT32_C(0x510006F0): /* Krait (quad-core) */
 					isa->armv7mp = true;
