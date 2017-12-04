@@ -109,6 +109,16 @@ inline static bool midr_is_cortex_a9(uint32_t midr) {
 	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_CORTEX_A9 & uarch_mask);
 }
 
+inline static bool midr_is_scorpion(uint32_t midr) {
+	switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+		case UINT32_C(0x510000F0):
+		case UINT32_C(0x510002D0):
+			return true;
+		default:
+			return false;
+	}
+}
+
 inline static bool midr_is_krait(uint32_t midr) {
 	switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 		case UINT32_C(0x510004D0):

@@ -175,9 +175,9 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		/*
 		 * There is no separate feature flag for FP16 support.
 		 * VFPv4 implies VFPv3-FP16 support (and in practice, NEON-HP as well).
-		 * Additionally, ARM Cortex-A9 supports FP16.
+		 * Additionally, ARM Cortex-A9 and Qualcomm Scorpion support FP16.
 		 */
-		if ((features & CPUINFO_ARM_LINUX_FEATURE_VFPV4) || midr_is_cortex_a9(midr)) {
+		if ((features & CPUINFO_ARM_LINUX_FEATURE_VFPV4) || midr_is_cortex_a9(midr) || midr_is_scorpion(midr)) {
 			isa->fp16 = true;
 		}
 
