@@ -176,7 +176,7 @@ TEST(ISA, armv7) {
 	ASSERT_TRUE(cpuinfo_has_arm_v7());
 }
 
-TEST(ISA, DISABLED_armv7mp) {
+TEST(ISA, armv7mp) {
 	ASSERT_TRUE(cpuinfo_has_arm_v7mp());
 }
 
