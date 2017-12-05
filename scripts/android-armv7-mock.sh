@@ -53,6 +53,7 @@ adb push libs/armeabi-v7a/pixel-2-xl-test /data/local/tmp/pixel-2-xl-test
 adb push libs/armeabi-v7a/xiaomi-mi-5c-test /data/local/tmp/xiaomi-mi-5c-test
 adb push libs/armeabi-v7a/xiaomi-redmi-2a-test /data/local/tmp/xiaomi-redmi-2a-test
 adb push libs/armeabi-v7a/xiaomi-redmi-note-3-test /data/local/tmp/xiaomi-redmi-note-3-test
+adb push libs/armeabi-v7a/xiaomi-redmi-note-4-test /data/local/tmp/xiaomi-redmi-note-4-test
 adb push libs/armeabi-v7a/xperia-c4-dual-test /data/local/tmp/xperia-c4-dual-test
 adb push libs/armeabi-v7a/xperia-sl-test /data/local/tmp/xperia-sl-test
 
@@ -107,5 +108,6 @@ adb shell "/data/local/tmp/pixel-2-xl-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-mi-5c-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-redmi-2a-test --gtest_color=yes"
 adb shell "/data/local/tmp/xiaomi-redmi-note-3-test --gtest_color=yes"
+adb shell "/data/local/tmp/xiaomi-redmi-note-4-test --gtest_color=yes"
 adb shell "/data/local/tmp/xperia-c4-dual-test --gtest_color=yes"
 adb shell "/data/local/tmp/xperia-sl-test --gtest_color=yes"

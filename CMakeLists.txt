@@ -436,6 +436,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(xiaomi-redmi-note-3-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(xiaomi-redmi-note-3-test xiaomi-redmi-note-3-test)
 
+    ADD_EXECUTABLE(xiaomi-redmi-note-4-test test/mock/xiaomi-redmi-note-4.cc)
+    TARGET_INCLUDE_DIRECTORIES(xiaomi-redmi-note-4-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(xiaomi-redmi-note-4-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(xiaomi-redmi-note-4-test xiaomi-redmi-note-4-test)
+
     ADD_EXECUTABLE(xperia-c4-dual-test test/mock/xperia-c4-dual.cc)
     TARGET_INCLUDE_DIRECTORIES(xperia-c4-dual-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(xperia-c4-dual-test PRIVATE cpuinfo_mock gtest)
