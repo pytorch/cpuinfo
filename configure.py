@@ -87,6 +87,7 @@ def main(args):
 
     if not options.mock:
         with build.options(source_dir="bench", deps=[build, build.deps.googlebenchmark]):
+            build.benchmark("init-bench", build.cxx("init.cc"))
             if not build.target.is_macos:
                 build.benchmark("get-current-bench", build.cxx("get-current.cc"))
 
