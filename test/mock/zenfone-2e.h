@@ -9,7 +9,7 @@ struct cpuinfo_mock_cpuid cpuid_dump[] = {
 	{
 		.input_eax = 0x00000001,
 		.eax = 0x00030651,
-		.ebx = 0x01040800,
+		.ebx = 0x02040800,
 		.ecx = 0x0040C3BD,
 		.edx = 0xBFE9FBFF,
 	},
