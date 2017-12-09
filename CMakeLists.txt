@@ -458,6 +458,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
   ENDIF()
 
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64)$")
+    ADD_EXECUTABLE(alldocube-iwork8-test test/mock/alldocube-iwork8.cc)
+    TARGET_INCLUDE_DIRECTORIES(alldocube-iwork8-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(alldocube-iwork8-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(alldocube-iwork8-test alldocube-iwork8-test)
+
     ADD_EXECUTABLE(memo-pad-7-test test/mock/memo-pad-7.cc)
     TARGET_INCLUDE_DIRECTORIES(memo-pad-7-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(memo-pad-7-test PRIVATE cpuinfo_mock gtest)

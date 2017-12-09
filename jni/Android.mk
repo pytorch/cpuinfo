@@ -637,6 +637,13 @@ endif # x86, or x86_64
 ifeq ($(TARGET_ARCH_ABI),x86)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := alldocube-iwork8-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/alldocube-iwork8.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := memo-pad-7-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/memo-pad-7.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
