@@ -2972,13 +2972,13 @@ void cpuinfo_arm_fixup_chipset(
 						}
 						break;
 					case 8610:
-						/* Common bug: MSM8212 (Quad-core) reported as MSM8610 (Dual-core) */
+						/* Common bug: MSM8612 (Quad-core) reported as MSM8610 (Dual-core) */
 						switch (cores) {
 							case 2:
 								break;
 							case 4:
-								cpuinfo_log_info("reinterpreted MSM8610 chipset with 4 cores as MSM8212");
-								chipset->model = 8212;
+								cpuinfo_log_info("reinterpreted MSM8610 chipset with 4 cores as MSM8612");
+								chipset->model = 8612;
 								break;
 							default:
 								cpuinfo_log_warning("system reported invalid %"PRIu32"-core MSM%"PRIu32" chipset",
