@@ -1352,9 +1352,19 @@ struct huawei_map_entry {
 
 static const struct huawei_map_entry huawei_platform_map[] = {
 	{
+		/* "ALP" -> Kirin 970 */
+		.platform = UINT32_C(0x00504C41), /* "\0PLA" = reverse("ALP\0") */
+		.model = 970,
+	},
+	{
 		/* "BAC" -> Kirin 659 */
 		.platform = UINT32_C(0x00434142), /* "\0CAB" = reverse("BAC\0") */
 		.model = 659,
+	},
+	{
+		/* "BLA" -> Kirin 970 */
+		.platform = UINT32_C(0x00414C42), /* "\0ALB" = reverse("BLA\0") */
+		.model = 970,
 	},
 	{
 		/* "DUK" -> Kirin 960 */
@@ -1417,7 +1427,7 @@ static const struct huawei_map_entry huawei_platform_map[] = {
  * Tries to match ro.product.board string to Huawei /([A-Z]{3})(\-[A-Z]?L\d{2})$/ signature where \1 is one of the
  * known values for Huawei devices, which do not report chipset name elsewhere.
  * If the string matches signature, the function decodes chipset (always HiSilicon Kirin for matched devices) from
- * the number in the signature and stores it in \p chipset argument.
+ * the Huawei platform ID in the signature and stores it in \p chipset argument.
  *
  * @param start - start of the ro.product.board string to match.
  * @param end - end of the ro.product.board string to match.
@@ -1619,16 +1629,16 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 		.model = 3751,
 	},
 	{
-		/* "hi3635" -> HiSilicon Kirin 930 */
-		.platform = "hi3635",
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 930,
-	},
-	{
 		/* "hi3630" -> HiSilicon Kirin 920 */
 		.platform = "hi3630",
 		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 		.model = 920,
+	},
+	{
+		/* "hi3635" -> HiSilicon Kirin 930 */
+		.platform = "hi3635",
+		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+		.model = 930,
 	},
 	{
 		/* "gs702a" -> Actions ATM7029 (Cortex-A5 + GC1000) */
@@ -2242,10 +2252,10 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 620,
 		},
 		{
-			/* "hi3650" -> HiSilicon Kirin 950 */
-			.platform = "hi3650",
+			/* "hi3630" -> HiSilicon Kirin 920 */
+			.platform = "hi3630",
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-			.model = 950,
+			.model = 920,
 		},
 		{
 			/* "hi3635" -> HiSilicon Kirin 930 */
@@ -2254,10 +2264,16 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 930,
 		},
 		{
-			/* "hi3630" -> HiSilicon Kirin 920 */
-			.platform = "hi3630",
+			/* "hi3650" -> HiSilicon Kirin 950 */
+			.platform = "hi3650",
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-			.model = 920,
+			.model = 950,
+		},
+		{
+			/* "hi3660" -> HiSilicon Kirin 960 */
+			.platform = "hi3660",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 960,
 		},
 		{
 			/* "mp523x" -> Renesas MP5232 */
@@ -2536,10 +2552,10 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 620,
 		},
 		{
-			/* "hi3650" -> HiSilicon Kirin 950 */
-			.platform = "hi3650",
+			/* "hi3630" -> HiSilicon Kirin 920 */
+			.platform = "hi3630",
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-			.model = 950,
+			.model = 920,
 		},
 		{
 			/* "hi3635" -> HiSilicon Kirin 930 */
@@ -2548,10 +2564,16 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 930,
 		},
 		{
-			/* "hi3630" -> HiSilicon Kirin 920 */
-			.platform = "hi3630",
+			/* "hi3650" -> HiSilicon Kirin 950 */
+			.platform = "hi3650",
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-			.model = 920,
+			.model = 950,
+		},
+		{
+			/* "hi3660" -> HiSilicon Kirin 960 */
+			.platform = "hi3660",
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 960,
 		},
 		{
 			/* "k3v2oem1" -> HiSilicon K3V2 */

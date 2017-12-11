@@ -184,6 +184,8 @@ TEST(RO_BOARD_PLATFORM, hisilicon) {
 		parse_ro_board_platform("hi3635"));
 	EXPECT_EQ("HiSilicon Kirin 950",
 		parse_ro_board_platform("hi3650"));
+	EXPECT_EQ("HiSilicon Kirin 960",
+		parse_ro_board_platform("hi3660"));
 	EXPECT_EQ("HiSilicon Kirin 970",
 		parse_ro_board_platform("kirin970"));
 }

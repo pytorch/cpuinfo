@@ -349,8 +349,18 @@ TEST(RO_PRODUCT_BOARD, hisilicon_huawei) {
 }
 
 TEST(RO_PRODUCT_BOARD, hisilicon_special) {
+	EXPECT_EQ("HiSilicon Kirin 620",
+		parse_ro_product_board("hi6210sft"));
 	EXPECT_EQ("HiSilicon Kirin 650",
 		parse_ro_product_board("hi6250"));
+	EXPECT_EQ("HiSilicon Kirin 920",
+		parse_ro_product_board("hi3630"));
+	EXPECT_EQ("HiSilicon Kirin 930",
+		parse_ro_product_board("hi3635"));
+	EXPECT_EQ("HiSilicon Kirin 950",
+		parse_ro_product_board("hi3650"));
+	EXPECT_EQ("HiSilicon Kirin 960",
+		parse_ro_product_board("hi3660"));
 	EXPECT_EQ("HiSilicon Kirin 950",
 		parse_ro_product_board("BEETHOVEN"));
 }
