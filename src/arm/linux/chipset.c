@@ -1686,6 +1686,12 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 		.model = 4430,
 	},
 	{
+		/* "Superior" -> Texas Instruments OMAP4470 */
+		.platform = "Superior",
+		.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
+		.model = 4470,
+	},
+	{
 		/* "Tuna" (Samsung Galaxy Nexus) -> Texas Instruments OMAP4460 */
 		.platform = "Tuna",
 		.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
@@ -2280,12 +2286,6 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.platform = "mp523x",
 			.series = cpuinfo_arm_chipset_series_renesas_mp,
 			.model = 5232,
-		},
-		{
-			/* "piranha" -> Texas Instruments OMAP4430 */
-			.platform = "piranha",
-			.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
-			.model = 4430,
 		},
 		{
 			/* "BEETHOVEN" (Huawei MadiaPad M3) -> HiSilicon Kirin 950 */
