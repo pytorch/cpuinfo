@@ -3036,19 +3036,25 @@ void cpuinfo_arm_fixup_chipset(
 			break;
 		}
 		case cpuinfo_arm_chipset_series_samsung_exynos:
-			if (chipset->model == 7580) {
-				/* Common bug: Exynos 7578 (Quad-core) reported as Exynos 7580 (Octa-core) */
-				switch (cores) {
-					case 4:
-						cpuinfo_log_info("reinterpreted Exynos 7580 chipset with 4 cores as Exynos 7578");
-						chipset->model = 7578;
-						break;
-					case 8:
-						break;
-					default:
-						cpuinfo_log_warning("system reported invalid %"PRIu32"-core Exynos 7580 chipset", cores);
-						chipset->model = 0;
-				}
+			switch (chipset->model) {
+				case 4410:
+					/* Exynos 4410 was renamed to Exynos 4412 */
+					chipset->model = 4412;
+					break;
+				case 7580:
+					/* Common bug: Exynos 7578 (Quad-core) reported as Exynos 7580 (Octa-core) */
+					switch (cores) {
+						case 4:
+							cpuinfo_log_info("reinterpreted Exynos 7580 chipset with 4 cores as Exynos 7578");
+							chipset->model = 7578;
+							break;
+						case 8:
+							break;
+						default:
+							cpuinfo_log_warning("system reported invalid %"PRIu32"-core Exynos 7580 chipset", cores);
+							chipset->model = 0;
+					}
+					break;
 			}
 			break;
 		case cpuinfo_arm_chipset_series_mediatek_mt:
