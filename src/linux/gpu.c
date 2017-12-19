@@ -82,7 +82,7 @@ void cpuinfo_android_gpu_to_string(
 	const char* series_string = gpu_series_string[series];
 	const uint32_t model = gpu->model;
 	if (model == 0) {
-		if (series == cpuinfo_arm_chipset_series_unknown) {
+		if (series == cpuinfo_android_gpu_series_unknown) {
 			strncpy(name, vendor_string, CPUINFO_GPU_NAME_MAX);
 		} else {
 			snprintf(name, CPUINFO_GPU_NAME_MAX,

@@ -543,7 +543,7 @@ void cpuinfo_arm_linux_init(void) {
 		} else {
 			cpuinfo_log_info("GPU name needs to be queries from OpenGL ES");
 			cpuinfo_gpu_query_gles2(package.gpu_name);
-			struct cpuinfo_android_gpu gpu = cpuinfo_android_decode_gpu(package.gpu_name);
+			gpu = cpuinfo_android_decode_gpu(package.gpu_name);
 			if (gpu.series != cpuinfo_android_gpu_series_unknown) {
 				cpuinfo_android_gpu_to_string(&gpu, package.gpu_name);
 			}
