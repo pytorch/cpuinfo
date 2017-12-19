@@ -130,7 +130,7 @@ TEST(PACKAGES, name) {
 
 TEST(PACKAGES, gpu_name) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
-		ASSERT_EQ("Nvidia Tegra ",
+		ASSERT_EQ("Nvidia Tegra K1",
 			std::string(cpuinfo_get_package(i)->gpu_name,
 				strnlen(cpuinfo_get_package(i)->gpu_name, CPUINFO_GPU_NAME_MAX)));
 	}
