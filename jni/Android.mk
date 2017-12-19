@@ -6,6 +6,7 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
 	$(LOCAL_PATH)/src/api.c \
 	$(LOCAL_PATH)/src/log.c \
 	$(LOCAL_PATH)/src/gpu/gles2.c \
+	$(LOCAL_PATH)/src/linux/gpu.c \
 	$(LOCAL_PATH)/src/linux/current.c \
 	$(LOCAL_PATH)/src/linux/processors.c \
 	$(LOCAL_PATH)/src/linux/smallfile.c \
@@ -57,7 +58,8 @@ LOCAL_MODULE := cpuinfo_mock
 LOCAL_SRC_FILES := $(LOCAL_PATH)/src/init.c \
 	$(LOCAL_PATH)/src/api.c \
 	$(LOCAL_PATH)/src/log.c \
-	$(LOCAL_PATH)/src/gpu/gles2.c \
+	$(LOCAL_PATH)/src/gpu/gles2-mock.c \
+	$(LOCAL_PATH)/src/linux/gpu.c \
 	$(LOCAL_PATH)/src/linux/current.c \
 	$(LOCAL_PATH)/src/linux/mockfile.c \
 	$(LOCAL_PATH)/src/linux/processors.c \

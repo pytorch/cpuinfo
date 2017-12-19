@@ -154,6 +154,14 @@ TEST(PACKAGES, name) {
 	}
 }
 
+TEST(PACKAGES, gpu_name) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		ASSERT_EQ("ARM Mali-T860",
+			std::string(cpuinfo_get_package(i)->gpu_name,
+				strnlen(cpuinfo_get_package(i)->gpu_name, CPUINFO_GPU_NAME_MAX)));
+	}
+}
+
 TEST(PACKAGES, processor_start) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
 		ASSERT_EQ(0, cpuinfo_get_package(i)->processor_start);
@@ -532,6 +540,7 @@ int main(int argc, char* argv[]) {
 	cpuinfo_mock_filesystem(filesystem);
 #ifdef __ANDROID__
 	cpuinfo_mock_android_properties(properties);
+	cpuinfo_mock_gl_renderer("Mali-T860");
 #endif
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);

@@ -477,6 +477,10 @@ void cpuinfo_x86_linux_init(void) {
 
 	#ifdef __ANDROID__
 		cpuinfo_gpu_query_gles2(packages[0].gpu_name);
+		struct cpuinfo_android_gpu gpu = cpuinfo_android_decode_gpu(packages[0].gpu_name);
+		if (gpu.series != cpuinfo_android_gpu_series_unknown) {
+			cpuinfo_android_gpu_to_string(&gpu, packages[0].gpu_name);
+		}
 	#endif
 
 	/* Commit changes */

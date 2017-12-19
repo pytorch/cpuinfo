@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include <cpuinfo.h>
+
 
 #define CPUINFO_LINUX_FLAG_PRESENT            UINT32_C(0x00000001)
 #define CPUINFO_LINUX_FLAG_POSSIBLE           UINT32_C(0x00000002)
@@ -51,6 +53,53 @@ bool cpuinfo_linux_detect_thread_siblings(
 	cpuinfo_siblings_callback callback,
 	void* context);
 
+enum cpuinfo_android_gpu_vendor {
+	cpuinfo_android_gpu_vendor_unknown = 0,
+	cpuinfo_android_gpu_vendor_arm,
+	cpuinfo_android_gpu_vendor_broadcom,
+	cpuinfo_android_gpu_vendor_intel,
+	cpuinfo_android_gpu_vendor_nvidia,
+	cpuinfo_android_gpu_vendor_powervr,
+	cpuinfo_android_gpu_vendor_qualcomm,
+	cpuinfo_android_gpu_vendor_vivante,
+	cpuinfo_android_gpu_vendor_max,
+};
+
+enum cpuinfo_android_gpu_series {
+	cpuinfo_android_gpu_series_unknown = 0,
+	cpuinfo_android_gpu_series_arm_mali,
+	cpuinfo_android_gpu_series_arm_mali_t,
+	cpuinfo_android_gpu_series_arm_mali_g,
+	cpuinfo_android_gpu_series_broadcom_videocore,
+	cpuinfo_android_gpu_series_intel_gen,
+	cpuinfo_android_gpu_series_intel_hd_graphics,
+	cpuinfo_android_gpu_series_nvidia_tegra,
+	cpuinfo_android_gpu_series_nvidia_tegra_k,
+	cpuinfo_android_gpu_series_nvidia_tegra_x,
+	cpuinfo_android_gpu_series_powervr_sgx,
+	cpuinfo_android_gpu_series_powervr_rogue_g,
+	cpuinfo_android_gpu_series_powervr_rogue_ge,
+	cpuinfo_android_gpu_series_powervr_rogue_gm,
+	cpuinfo_android_gpu_series_powervr_rogue_gt,
+	cpuinfo_android_gpu_series_powervr_rogue_gx,
+	cpuinfo_android_gpu_series_qualcomm_adreno,
+	cpuinfo_android_gpu_series_vivante_gc,
+	cpuinfo_android_gpu_series_max,
+};
+
+#define CPUINFO_ANDROID_GPU_SUFFIX_MAX 8
+
+struct cpuinfo_android_gpu {
+	enum cpuinfo_android_gpu_vendor vendor;
+	enum cpuinfo_android_gpu_series series;
+	uint32_t model;
+	char suffix[CPUINFO_ANDROID_GPU_SUFFIX_MAX];
+};
+
+struct cpuinfo_android_gpu cpuinfo_android_decode_gpu(const char* renderer);
+void cpuinfo_android_gpu_to_string(
+	const struct cpuinfo_android_gpu gpu[restrict static 1],
+	char name[restrict static CPUINFO_GPU_NAME_MAX]);
 
 extern const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map;
 extern const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map;

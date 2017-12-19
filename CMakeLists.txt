@@ -112,7 +112,9 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
     src/linux/cpulist.c
     src/linux/processors.c)
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    LIST(APPEND CPUINFO_SRCS src/gpu/gles2.c)
+    LIST(APPEND CPUINFO_SRCS
+      src/gpu/gles2.c
+      src/linux/gpu.c)
   ENDIF()
 ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   LIST(APPEND CPUINFO_SRCS src/mach/topology.c)
@@ -157,6 +159,10 @@ ENDIF()
 # ---[ cpuinfo mock library and mock tests
 IF(CPUINFO_BUILD_MOCK_TESTS)
   SET(CPUINFO_MOCK_SRCS "${CPUINFO_SRCS}")
+  IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
+    LIST(REMOVE_ITEM CPUINFO_MOCK_SRCS src/gpu/gles2.c)
+    LIST(APPEND CPUINFO_MOCK_SRCS src/gpu/gles2-mock.c)
+  ENDIF()
   IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
     LIST(APPEND CPUINFO_MOCK_SRCS src/linux/mockfile.c)
   ENDIF()

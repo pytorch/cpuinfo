@@ -220,13 +220,6 @@ bool cpuinfo_gpu_query_gles2(char gpu_name[restrict static CPUINFO_GPU_NAME_MAX]
 		goto cleanup;
 	}
 
-	const char* vendor = (const char*) gles2.get_string(GL_VENDOR);
-	if (vendor == NULL) {
-		cpuinfo_log_warning("failed to get GL_VENDOR for OpenGL ES2 context");
-		goto cleanup;
-	}
-	cpuinfo_log_debug("GL_VENDOR = \"%s\"", vendor);
-
 	const char* renderer = (const char*) gles2.get_string(GL_RENDERER);
 	if (renderer == NULL) {
 		cpuinfo_log_warning("failed to get GL_RENDERER for OpenGL ES2 context");
@@ -234,7 +227,7 @@ bool cpuinfo_gpu_query_gles2(char gpu_name[restrict static CPUINFO_GPU_NAME_MAX]
 	}
 	cpuinfo_log_debug("GL_RENDERER = \"%s\"", renderer);
 
-	snprintf(gpu_name, CPUINFO_GPU_NAME_MAX, "%s %s", vendor, renderer);
+	strncpy(gpu_name, renderer, CPUINFO_GPU_NAME_MAX);
 	success = true;
 
 cleanup:
