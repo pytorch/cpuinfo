@@ -7,8 +7,9 @@ PROJECT(cpuinfo C CXX)
 
 # ---[ Options.
 OPTION(CPUINFO_BUILD_TOOLS "Build command-line tools" ON)
-OPTION(CPUINFO_BUILD_UNIT_TESTS "Build C++ unit tests" ON)
-OPTION(CPUINFO_BUILD_MOCK_TESTS "Build C++ mock tests" ON)
+OPTION(CPUINFO_BUILD_UNIT_TESTS "Build cpuinfo unit tests" ON)
+OPTION(CPUINFO_BUILD_MOCK_TESTS "Build cpuinfo mock tests" ON)
+OPTION(CPUINFO_BUILD_BENCHMARKS "Build cpuinfo micro-benchmarks" ON)
 
 # ---[ CMake options
 IF(CPUINFO_BUILD_UNIT_TESTS OR CPUINFO_BUILD_MOCK_TESTS)
@@ -45,6 +46,14 @@ IF(NOT TARGET gtest)
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download")
   EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download")
+ENDIF()
+
+IF(NOT TARGET benchmark)
+  CONFIGURE_FILE(cmake/DownloadGoogleBenchmark.cmake "${CMAKE_BINARY_DIR}/googlebenchmark-download/CMakeLists.txt")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googlebenchmark-download")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googlebenchmark-download")
 ENDIF()
 
 # ---[ cpuinfo library
@@ -145,6 +154,25 @@ INSTALL(TARGETS cpuinfo
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# ---[ cpuinfo micro-benchmarks
+IF(CPUINFO_BUILD_BENCHMARKS)
+  # ---[ Build google benchmark
+  IF(NOT TARGET benchmark)
+    SET(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "")
+    ADD_SUBDIRECTORY(
+      "${CONFU_DEPENDENCIES_SOURCE_DIR}/googlebenchmark"
+      "${CONFU_DEPENDENCIES_BINARY_DIR}/googlebenchmark")
+  ENDIF()
+
+  IF(CMAKE_SYSTEM_NAME MATCHES "^(Linux|Android)$")
+    ADD_EXECUTABLE(get-current-bench bench/get-current.cc)
+    TARGET_LINK_LIBRARIES(get-current-bench cpuinfo benchmark)
+  ENDIF()
+
+  ADD_EXECUTABLE(init-bench bench/init.cc)
+  TARGET_LINK_LIBRARIES(init-bench cpuinfo benchmark)
+ENDIF()
 
 IF(CPUINFO_BUILD_MOCK_TESTS OR CPUINFO_BUILD_UNIT_TESTS)
   # ---[ Build google test
