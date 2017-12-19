@@ -8,6 +8,6 @@ static void cpuinfo_initialize(benchmark::State& state) {
 		cpuinfo_initialize();
 	}
 }
-BENCHMARK(cpuinfo_initialize)->Iterations(1);
+BENCHMARK(cpuinfo_initialize)->Iterations(1)->Unit(benchmark::kMillisecond);
 
 BENCHMARK_MAIN();

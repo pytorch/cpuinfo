@@ -10,7 +10,7 @@ static void cpuinfo_get_current_processor(benchmark::State& state) {
 		benchmark::DoNotOptimize(current_processor);
 	}
 }
-BENCHMARK(cpuinfo_get_current_processor);
+BENCHMARK(cpuinfo_get_current_processor)->Unit(benchmark::kNanosecond);
 
 static void cpuinfo_get_current_core(benchmark::State& state) {
 	cpuinfo_initialize();
@@ -19,6 +19,6 @@ static void cpuinfo_get_current_core(benchmark::State& state) {
 		benchmark::DoNotOptimize(current_core);
 	}
 }
-BENCHMARK(cpuinfo_get_current_core);
+BENCHMARK(cpuinfo_get_current_core)->Unit(benchmark::kNanosecond);
 
 BENCHMARK_MAIN();
