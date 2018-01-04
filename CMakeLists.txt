@@ -391,16 +391,6 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(galaxy-s8-global-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(galaxy-s8-global-test galaxy-s8-global-test)
 
-    ADD_EXECUTABLE(huawei-p8-lite-test test/mock/huawei-p8-lite.cc)
-    TARGET_INCLUDE_DIRECTORIES(huawei-p8-lite-test PRIVATE test/mock)
-    TARGET_LINK_LIBRARIES(huawei-p8-lite-test PRIVATE cpuinfo_mock gtest)
-    ADD_TEST(huawei-p8-lite-test huawei-p8-lite-test)
-
-    ADD_EXECUTABLE(huawei-p9-lite-test test/mock/huawei-p9-lite.cc)
-    TARGET_INCLUDE_DIRECTORIES(huawei-p9-lite-test PRIVATE test/mock)
-    TARGET_LINK_LIBRARIES(huawei-p9-lite-test PRIVATE cpuinfo_mock gtest)
-    ADD_TEST(huawei-p9-lite-test huawei-p9-lite-test)
-
     ADD_EXECUTABLE(huawei-mate-8-test test/mock/huawei-mate-8.cc)
     TARGET_INCLUDE_DIRECTORIES(huawei-mate-8-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(huawei-mate-8-test PRIVATE cpuinfo_mock gtest)
@@ -415,6 +405,21 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_INCLUDE_DIRECTORIES(huawei-mate-10-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(huawei-mate-10-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(huawei-mate-10-test huawei-mate-10-test)
+
+    ADD_EXECUTABLE(huawei-p8-lite-test test/mock/huawei-p8-lite.cc)
+    TARGET_INCLUDE_DIRECTORIES(huawei-p8-lite-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(huawei-p8-lite-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(huawei-p8-lite-test huawei-p8-lite-test)
+
+    ADD_EXECUTABLE(huawei-p9-lite-test test/mock/huawei-p9-lite.cc)
+    TARGET_INCLUDE_DIRECTORIES(huawei-p9-lite-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(huawei-p9-lite-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(huawei-p9-lite-test huawei-p9-lite-test)
+
+    ADD_EXECUTABLE(iconia-one-10-test test/mock/iconia-one-10.cc)
+    TARGET_INCLUDE_DIRECTORIES(iconia-one-10-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(iconia-one-10-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(iconia-one-10-test iconia-one-10-test)
 
     ADD_EXECUTABLE(meizu-pro-6-test test/mock/meizu-pro-6.cc)
     TARGET_INCLUDE_DIRECTORIES(meizu-pro-6-test PRIVATE test/mock)
