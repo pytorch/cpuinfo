@@ -239,6 +239,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(galaxy-grand-prime-value-edition-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(galaxy-grand-prime-value-edition-test galaxy-grand-prime-value-edition-test)
 
+    ADD_EXECUTABLE(galaxy-j1-2016-test test/mock/galaxy-j1-2016.cc)
+    TARGET_INCLUDE_DIRECTORIES(galaxy-j1-2016-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(galaxy-j1-2016-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(galaxy-j1-2016-test galaxy-j1-2016-test)
+
     ADD_EXECUTABLE(galaxy-j5-test test/mock/galaxy-j5.cc)
     TARGET_INCLUDE_DIRECTORIES(galaxy-j5-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(galaxy-j5-test PRIVATE cpuinfo_mock gtest)
