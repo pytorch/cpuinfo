@@ -319,6 +319,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(lg-k10-eu-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(lg-k10-eu-test lg-k10-eu-test)
 
+    ADD_EXECUTABLE(lg-optimus-g-pro-test test/mock/lg-optimus-g-pro.cc)
+    TARGET_INCLUDE_DIRECTORIES(lg-optimus-g-pro-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(lg-optimus-g-pro-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(lg-optimus-g-pro-test lg-optimus-g-pro-test)
+
     ADD_EXECUTABLE(moto-e-gen1-test test/mock/moto-e-gen1.cc)
     TARGET_INCLUDE_DIRECTORIES(moto-e-gen1-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(moto-e-gen1-test PRIVATE cpuinfo_mock gtest)

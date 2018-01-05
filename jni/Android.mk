@@ -349,6 +349,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := lg-optimus-g-pro-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/lg-optimus-g-pro.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := moto-e-gen1-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/moto-e-gen1.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

@@ -35,6 +35,7 @@ adb push libs/armeabi-v7a/iconia-one-10-test /data/local/tmp/iconia-one-10-test
 adb push libs/armeabi-v7a/lenovo-a6600-plus-test /data/local/tmp/lenovo-a6600-plus-test
 adb push libs/armeabi-v7a/lenovo-vibe-x2-test /data/local/tmp/lenovo-vibe-x2-test
 adb push libs/armeabi-v7a/lg-k10-eu-test /data/local/tmp/lg-k10-eu-test
+adb push libs/armeabi-v7a/lg-optimus-g-pro-test /data/local/tmp/lg-optimus-g-pro-test
 adb push libs/armeabi-v7a/meizu-pro-6-test /data/local/tmp/meizu-pro-6-test
 adb push libs/armeabi-v7a/meizu-pro-6s-test /data/local/tmp/meizu-pro-6s-test
 adb push libs/armeabi-v7a/meizu-pro-7-plus-test /data/local/tmp/meizu-pro-7-plus-test
@@ -95,6 +96,7 @@ adb shell "/data/local/tmp/iconia-one-10-test --gtest_color=yes"
 adb shell "/data/local/tmp/lenovo-a6600-plus-test --gtest_color=yes"
 adb shell "/data/local/tmp/lenovo-vibe-x2-test --gtest_color=yes"
 adb shell "/data/local/tmp/lg-k10-eu-test --gtest_color=yes"
+adb shell "/data/local/tmp/lg-optimus-g-pro-test --gtest_color=yes"
 adb shell "/data/local/tmp/meizu-pro-6-test --gtest_color=yes"
 adb shell "/data/local/tmp/meizu-pro-6s-test --gtest_color=yes"
 adb shell "/data/local/tmp/meizu-pro-7-plus-test --gtest_color=yes"
