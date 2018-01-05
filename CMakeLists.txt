@@ -344,6 +344,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(nexus6-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(nexus6-test nexus6-test)
 
+    ADD_EXECUTABLE(nexus10-test test/mock/nexus10.cc)
+    TARGET_INCLUDE_DIRECTORIES(nexus10-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(nexus10-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(nexus10-test nexus10-test)
+
     ADD_EXECUTABLE(padcod-10.1-test test/mock/padcod-10.1.cc)
     TARGET_INCLUDE_DIRECTORIES(padcod-10.1-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(padcod-10.1-test PRIVATE cpuinfo_mock gtest)
