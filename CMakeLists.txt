@@ -329,6 +329,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(moto-e-gen1-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(moto-e-gen1-test moto-e-gen1-test)
 
+    ADD_EXECUTABLE(moto-g-gen1-test test/mock/moto-g-gen1.cc)
+    TARGET_INCLUDE_DIRECTORIES(moto-g-gen1-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(moto-g-gen1-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(moto-g-gen1-test moto-g-gen1-test)
+
     ADD_EXECUTABLE(moto-g-gen2-test test/mock/moto-g-gen2.cc)
     TARGET_INCLUDE_DIRECTORIES(moto-g-gen2-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(moto-g-gen2-test PRIVATE cpuinfo_mock gtest)

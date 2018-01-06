@@ -40,6 +40,7 @@ adb push libs/armeabi-v7a/meizu-pro-6-test /data/local/tmp/meizu-pro-6-test
 adb push libs/armeabi-v7a/meizu-pro-6s-test /data/local/tmp/meizu-pro-6s-test
 adb push libs/armeabi-v7a/meizu-pro-7-plus-test /data/local/tmp/meizu-pro-7-plus-test
 adb push libs/armeabi-v7a/moto-e-gen1-test /data/local/tmp/moto-e-gen1-test
+adb push libs/armeabi-v7a/moto-g-gen1-test /data/local/tmp/moto-g-gen1-test
 adb push libs/armeabi-v7a/moto-g-gen2-test /data/local/tmp/moto-g-gen2-test
 adb push libs/armeabi-v7a/moto-g-gen3-test /data/local/tmp/moto-g-gen3-test
 adb push libs/armeabi-v7a/nexus-s-test /data/local/tmp/nexus-s-test
@@ -101,6 +102,7 @@ adb shell "/data/local/tmp/meizu-pro-6-test --gtest_color=yes"
 adb shell "/data/local/tmp/meizu-pro-6s-test --gtest_color=yes"
 adb shell "/data/local/tmp/meizu-pro-7-plus-test --gtest_color=yes"
 adb shell "/data/local/tmp/moto-e-gen1-test --gtest_color=yes"
+adb shell "/data/local/tmp/moto-g-gen1-test --gtest_color=yes"
 adb shell "/data/local/tmp/moto-g-gen2-test --gtest_color=yes"
 adb shell "/data/local/tmp/moto-g-gen3-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus-s-test --gtest_color=yes"
