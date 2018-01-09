@@ -147,7 +147,7 @@ void cpuinfo_x86_linux_init(void) {
 		cpuinfo_linux_get_max_possible_processor(max_processors_count);
 	cpuinfo_log_debug("maximum possible processors count: %"PRIu32, max_possible_processors_count);
 	const uint32_t max_present_processors_count = 1 +
-		cpuinfo_linux_get_max_possible_processor(max_processors_count);
+		cpuinfo_linux_get_max_present_processor(max_processors_count);
 	cpuinfo_log_debug("maximum present processors count: %"PRIu32, max_present_processors_count);
 
 	const uint32_t x86_linux_processors_count = min(max_possible_processors_count, max_present_processors_count);
