@@ -381,6 +381,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
   ENDIF()
 
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a|aarch64)$")
+    ADD_EXECUTABLE(alcatel-revvl-test test/mock/alcatel-revvl.cc)
+    TARGET_INCLUDE_DIRECTORIES(alcatel-revvl-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(alcatel-revvl-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(alcatel-revvl-test alcatel-revvl-test)
+
     ADD_EXECUTABLE(galaxy-c9-pro-test test/mock/galaxy-c9-pro.cc)
     TARGET_INCLUDE_DIRECTORIES(galaxy-c9-pro-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(galaxy-c9-pro-test PRIVATE cpuinfo_mock gtest)

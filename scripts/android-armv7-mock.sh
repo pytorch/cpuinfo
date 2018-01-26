@@ -2,6 +2,7 @@
 
 set -e
 
+adb push libs/armeabi-v7a/alcatel-revvl-test /data/local/tmp/alcatel-revvl-test
 adb push libs/armeabi-v7a/atm7029b-tablet-test /data/local/tmp/atm7029b-tablet-test
 adb push libs/armeabi-v7a/blu-r1-hd-test /data/local/tmp/blu-r1-hd-test
 adb push libs/armeabi-v7a/galaxy-a3-2016-eu-test /data/local/tmp/galaxy-a3-2016-eu-test
@@ -64,6 +65,7 @@ adb push libs/armeabi-v7a/xiaomi-redmi-note-4-test /data/local/tmp/xiaomi-redmi-
 adb push libs/armeabi-v7a/xperia-c4-dual-test /data/local/tmp/xperia-c4-dual-test
 adb push libs/armeabi-v7a/xperia-sl-test /data/local/tmp/xperia-sl-test
 
+adb shell "/data/local/tmp/alcatel-revvl-test --gtest_color=yes"
 adb shell "/data/local/tmp/atm7029b-tablet-test --gtest_color=yes"
 adb shell "/data/local/tmp/blu-r1-hd-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-a3-2016-eu-test --gtest_color=yes"

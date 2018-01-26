@@ -466,6 +466,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo gtest gtest_main
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := alcatel-revvl-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/alcatel-revvl.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := galaxy-c9-pro-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/galaxy-c9-pro.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

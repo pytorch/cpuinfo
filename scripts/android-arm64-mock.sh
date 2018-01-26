@@ -2,6 +2,7 @@
 
 set -e
 
+adb push libs/arm64-v8a/alcatel-revvl-test /data/local/tmp/alcatel-revvl-test
 adb push libs/arm64-v8a/galaxy-c9-pro-test /data/local/tmp/galaxy-c9-pro-test
 adb push libs/arm64-v8a/galaxy-s6-test /data/local/tmp/galaxy-s6-test
 adb push libs/arm64-v8a/galaxy-s7-global-test /data/local/tmp/galaxy-s7-global-test
@@ -31,6 +32,7 @@ adb push libs/arm64-v8a/xiaomi-redmi-note-3-test /data/local/tmp/xiaomi-redmi-no
 adb push libs/arm64-v8a/xiaomi-redmi-note-4-test /data/local/tmp/xiaomi-redmi-note-4-test
 adb push libs/arm64-v8a/xperia-c4-dual-test /data/local/tmp/xperia-c4-dual-test
 
+adb shell "/data/local/tmp/alcatel-revvl-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-c9-pro-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s6-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s7-global-test --gtest_color=yes"
