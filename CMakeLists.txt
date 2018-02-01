@@ -118,7 +118,7 @@ ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7f|armv7s|armv7k|armv
   ENDIF()
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
     LIST(APPEND CPUINFO_SRCS
-      src/arm/Android/properties.c)
+      src/arm/android/properties.c)
   ENDIF()
 ENDIF()
 
