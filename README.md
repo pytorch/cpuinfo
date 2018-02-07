@@ -18,6 +18,7 @@ cpuinfo is a library to detect essential for performance optimization informatio
 - Well-tested production-quality code:
   - 60+ mock tests based on data from real devices
   - Includes work-arounds for common bugs in hardware and OS kernels
+  - Supports systems with heterogenous cores, such as big.LITTLE and Max.Med.Min
 - Permissive open-source license (Simplified BSD)
 
 ## Examples
