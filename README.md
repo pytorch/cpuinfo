@@ -12,8 +12,8 @@ cpuinfo is a library to detect essential for performance optimization informatio
   - Vendor, microarchitecture, and ID (MIDR on ARM, CPUID leaf 1 EAX value on x86) for each CPU core
 - Detection of cache information:
   - Cache type (instruction/data/unified), size and line size
-  - Associativity
-  - Cores and logica processors (hyper-threads) sharing the cache
+  - Cache associativity
+  - Cores and logical processors (hyper-threads) sharing the cache
 - Detection of topology information (relative between logical processors, cores, and processor packages)
 - Well-tested production-quality code:
   - 60+ mock tests based on data from real devices
