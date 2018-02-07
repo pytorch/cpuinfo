@@ -4,22 +4,28 @@ cpuinfo is a library to detect essential for performance optimization informatio
 
 ## Features
 
-- Cross-platform (Linux, macOS, Android, and iOS) library with C/C++ interface
-- Detection of supported instruction sets, up to AVX512 (x86) and ARMv8.3 extensions
+- **Cross-platform** availability:
+  - Linux, macOS, Android, and iOS operating systems
+  - x86, x86-64, ARM, and ARM64 architectures
+- Modern **C/C++ interface**
+  - Thread-safe
+  - No memory allocation after initialization
+  - No exceptions thrown
+- Detection of **supported instruction sets**, up to AVX512 (x86) and ARMv8.3 extensions
 - Detection of SoC and core information:
-  - Processor (SoC) name
-  - Integrated GPU name (Android/iOS only)
-  - Vendor, microarchitecture, and ID (MIDR on ARM, CPUID leaf 1 EAX value on x86) for each CPU core
-- Detection of cache information:
+  - **Processor (SoC) name**
+  - Integrated **GPU name** (Android/iOS only)
+  - Vendor, **microarchitecture**, and ID (**MIDR** on ARM, **CPUID** leaf 1 EAX value on x86) for each CPU core
+- Detection of **cache information**:
   - Cache type (instruction/data/unified), size and line size
   - Cache associativity
   - Cores and logical processors (hyper-threads) sharing the cache
-- Detection of topology information (relative between logical processors, cores, and processor packages)
-- Well-tested production-quality code:
+- Detection of **topology information** (relative between logical processors, cores, and processor packages)
+- Well-tested **production-quality** code:
   - 60+ mock tests based on data from real devices
   - Includes work-arounds for common bugs in hardware and OS kernels
-  - Supports systems with heterogenous cores, such as big.LITTLE and Max.Med.Min
-- Permissive open-source license (Simplified BSD)
+  - Supports systems with heterogenous cores, such as **big.LITTLE** and Max.Med.Min
+- Permissive **open-source** license (Simplified BSD)
 
 ## Examples
 
