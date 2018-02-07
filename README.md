@@ -2,7 +2,32 @@
 
 cpuinfo is a library to detect essential for performance optimization information about host CPU.
 
+## Features
+
+- Cross-platform (Linux, macOS, Android, and iOS) library with C/C++ interface
+- Detection of supported instruction sets, up to AVX512 (x86) and ARMv8.3 extensions
+- Detection of SoC and core information:
+  - Processor (SoC) name
+  - Integrated GPU name (Android/iOS only)
+  - Vendor, microarchitecture, and ID (MIDR on ARM, CPUID leaf 1 EAX value on x86) for each CPU core
+- Detection of cache information:
+  - Cache type (instruction/data/unified), size and line size
+  - Associativity
+  - Cores and logica processors (hyper-threads) sharing the cache
+- Detection of topology information (relative between logical processors, cores, and processor packages)
+- Well-tested production-quality code:
+  - 60+ mock tests based on data from real devices
+  - Includes work-arounds for common bugs in hardware and OS kernels
+- Permissive open-source license (Simplified BSD)
+
 ## Examples
+
+Log processor name:
+
+```c
+cpuinfo_initialize();
+printf("Running on %s CPU\n", cpuinfo_get_package(0)->name);
+```
 
 Detect if target is a 32-bit or 64-bit ARM system:
 
@@ -107,7 +132,7 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [ ] x86
   - [ ] x86-64
 
-## Features
+## Methods
 
 - Processor (SoC) name detection
   - [x] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
@@ -119,7 +144,7 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen)
   - [ ] VIA-designed x86/x86-64 cores
   - [ ] Other x86 cores (DM&P, RDC, Transmeta, Cyrix, Rise)
-  - [x] ARM-designed ARM cores (up to Cortex-A17, Cortex-75)
+  - [x] ARM-designed ARM cores (up to Cortex-A17, Cortex-A75)
   - [x] Qualcomm-designed ARM cores (up to Kryo and Kryo-280)
   - [x] Nvidia-designed ARM cores (Denver)
   - [x] Samsung-designed ARM cores (Mongoose)
