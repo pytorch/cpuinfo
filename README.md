@@ -5,7 +5,7 @@ cpuinfo is a library to detect essential for performance optimization informatio
 ## Features
 
 - **Cross-platform** availability:
-  - Linux, macOS, Android, and iOS operating systems
+  - Linux, Windows, macOS, Android, and iOS operating systems
   - x86, x86-64, ARM, and ARM64 architectures
 - Modern **C/C++ interface**
   - Thread-safe
@@ -135,9 +135,9 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 - [x] OS X
   - [x] x86
   - [x] x86-64
-- [ ] Windows
-  - [ ] x86
-  - [ ] x86-64
+- [x] Windows
+  - [x] x86
+  - [x] x86-64
 
 ## Methods
 
@@ -191,5 +191,6 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [ ] Using CPUID leaf 0x8000001E on x86/x86-64 (AMD APIC ID)
   - [x] Using `/proc/cpuinfo` (Linux)
   - [x] Using `host_info` (Mach)
+  - [x] Using `GetLogicalProcessorInformationEx` (Windows)
   - [x] Using sysfs (Linux)
   - [x] Using chipset name (ARM/Linux)
