@@ -5,7 +5,7 @@
 
 
 void report_cache(
-	uint32_t count, const struct cpuinfo_cache cache[restrict static 1],
+	uint32_t count, const struct cpuinfo_cache* cache,
 	uint32_t level, const char* nonunified_type)
 {
 	const char* type = (cache->flags & CPUINFO_CACHE_UNIFIED) ? "unified" : nonunified_type;

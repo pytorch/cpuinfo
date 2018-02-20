@@ -1,4 +1,8 @@
-#include <pthread.h>
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <pthread.h>
+#endif
 
 #include <cpuinfo.h>
 #include <api.h>
@@ -17,7 +21,11 @@ uint32_t cpuinfo_cores_count = 0;
 uint32_t cpuinfo_packages_count = 0;
 
 
-static pthread_once_t init_guard = PTHREAD_ONCE_INIT;
+#ifdef _WIN32
+	static INIT_ONCE init_guard = INIT_ONCE_STATIC_INIT;
+#else
+	static pthread_once_t init_guard = PTHREAD_ONCE_INIT;
+#endif
 
 void CPUINFO_ABI cpuinfo_initialize(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
@@ -25,6 +33,8 @@ void CPUINFO_ABI cpuinfo_initialize(void) {
 		pthread_once(&init_guard, &cpuinfo_x86_mach_init);
 	#elif defined(__linux__)
 		pthread_once(&init_guard, &cpuinfo_x86_linux_init);
+	#elif defined(_WIN32)
+		InitOnceExecuteOnce(&init_guard, &cpuinfo_x86_windows_init, NULL, NULL);
 	#else
 		#error Unsupported target OS
 	#endif

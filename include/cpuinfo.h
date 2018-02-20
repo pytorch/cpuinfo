@@ -424,6 +424,15 @@ struct cpuinfo_processor {
 	 */
 	int linux_id;
 #endif
+#if defined(_WIN32)
+	/** Windows-specific ID for the group containing the logical processor. */
+	uint16_t windows_group_id;
+	/**
+	 * Windows-specific ID of the logical processor within its group:
+	 * - Bit <windows_processor_id> in the KAFFINITY mask identifies this logical processor within its group.
+	 */
+	uint16_t windows_processor_id;
+#endif
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	/** APIC ID (unique x86-specific ID of the logical processor) */
 	uint32_t apic_id;

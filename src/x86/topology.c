@@ -18,7 +18,7 @@ void cpuinfo_x86_detect_topology(
 	uint32_t max_base_index,
 	uint32_t max_extended_index,
 	struct cpuid_regs leaf1,
-	struct cpuinfo_x86_topology topology[restrict static 1])
+	struct cpuinfo_x86_topology* topology)
 {
 	/*
 	 * HTT: indicates multi-core/hyper-threading support on this core.

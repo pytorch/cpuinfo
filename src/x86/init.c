@@ -11,7 +11,7 @@
 struct cpuinfo_x86_isa cpuinfo_isa = { 0 };
 uint32_t cpuinfo_x86_clflush_size = 0;
 
-void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor processor[restrict static 1]) {
+void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 	const struct cpuid_regs leaf0 = cpuid(0);
 	const uint32_t max_base_index = leaf0.eax;
 	const enum cpuinfo_vendor vendor = processor->vendor =

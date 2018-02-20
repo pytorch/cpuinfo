@@ -1,6 +1,8 @@
 #include <stdarg.h>
 #include <stdio.h>
-#include <unistd.h>
+#ifndef _WIN32
+	#include <unistd.h>
+#endif
 
 #include <log.h>
 
@@ -9,7 +11,7 @@
 		va_list args;
 		va_start(args, format);
 
-		#ifdef __ANDROID__
+		#if defined(__ANDROID__) || defined(_WIN32)
 			fprintf(stderr, "Error: ");
 			vfprintf(stderr, format, args);
 			fprintf(stderr, "\n");
@@ -29,7 +31,7 @@
 		va_list args;
 		va_start(args, format);
 
-		#ifdef __ANDROID__
+		#if defined(__ANDROID__) || defined(_WIN32)
 			fprintf(stderr, "Warning: ");
 			vfprintf(stderr, format, args);
 			fprintf(stderr, "\n");
@@ -49,7 +51,7 @@
 		va_list args;
 		va_start(args, format);
 
-		#ifdef __ANDROID__
+		#if defined(__ANDROID__) || defined(_WIN32)
 			printf("Note: ");
 			vprintf(format, args);
 			printf("\n");
@@ -68,7 +70,7 @@
 		va_list args;
 		va_start(args, format);
 
-		#ifdef __ANDROID__
+		#if defined(__ANDROID__) || defined(_WIN32)
 			printf("Debug: ");
 			vprintf(format, args);
 			printf("\n");

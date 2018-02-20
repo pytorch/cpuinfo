@@ -47,7 +47,7 @@ struct parser_state {
 };
 
 /** @brief	Resets information about the previous token. Keeps all other state information. */
-static void reset_context(struct parser_state state[restrict static 1]) {
+static void reset_context(struct parser_state* state) {
 	state->context_model = NULL;
 	state->context_upper_letter = NULL;
 	state->context_dual = NULL;
@@ -148,7 +148,7 @@ static inline char* move_token(const char* token_start, const char* token_end, c
 	return output_ptr + token_length;
 }
 
-static bool transform_token(char* token_start, char* token_end, struct parser_state state[restrict static 1]) {
+static bool transform_token(char* token_start, char* token_end, struct parser_state* state) {
 	const struct parser_state previousState = *state;
 	reset_context(state);
 
@@ -521,8 +521,8 @@ static bool transform_token(char* token_start, char* token_end, struct parser_st
 }
 
 uint32_t cpuinfo_x86_normalize_brand_string(
-	const char raw_name[restrict static 48],
-	char normalized_name[restrict static 48])
+	const char raw_name[48],
+	char normalized_name[48])
 {
 	normalized_name[0] = '\0';
 	char name[48];

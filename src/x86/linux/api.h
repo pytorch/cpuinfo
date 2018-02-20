@@ -4,8 +4,7 @@
 #include <stdint.h>
 
 #include <cpuinfo.h>
-#include <arm/midr.h>
-#include <arm/api.h>
+#include <x86/api.h>
 #include <linux/api.h>
 
 

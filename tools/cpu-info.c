@@ -196,25 +196,32 @@ int main(int argc, char** argv) {
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
 		const struct cpuinfo_core* core = cpuinfo_get_core(i);
 		if (core->processor_count == 1) {
-			printf("\t%"PRIu32": 1 processor (%"PRIu32")\n", i, core->processor_start);
+			printf("\t%"PRIu32": 1 processor (%"PRIu32")", i, core->processor_start);
 		} else {
-			printf("\t%"PRIu32": %"PRIu32" processors (%"PRIu32"-%"PRIu32")\n",
+			printf("\t%"PRIu32": %"PRIu32" processors (%"PRIu32"-%"PRIu32")",
 				i, core->processor_count, core->processor_start, core->processor_start + core->processor_count - 1);
+		}
+		const char* vendor_string = vendor_to_string(core->vendor);
+		const char* uarch_string = uarch_to_string(core->uarch);
+		if (vendor_string == NULL) {
+			printf(", vendor 0x%08"PRIx32" uarch 0x%08"PRIx32"\n",
+				(uint32_t) core->vendor, (uint32_t) core->uarch);
+		}
+		else if (uarch_string == NULL) {
+			printf(", %s uarch 0x%08"PRIx32"\n",
+				vendor_string, (uint32_t) core->uarch);
+		}
+		else {
+			printf(", %s %s\n", vendor_string, uarch_string);
 		}
 	}
 	printf("Logical processors:\n");
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
 		const struct cpuinfo_processor* processor = cpuinfo_get_processor(i);
-		const char* vendor_string = vendor_to_string(processor->core->vendor);
-		const char* uarch_string = uarch_to_string(processor->core->uarch);
-		if (vendor_string == NULL) {
-			printf("\t%"PRIu32": vendor 0x%08"PRIx32" uarch 0x%08"PRIx32"\n",
-				i, (uint32_t) processor->core->vendor, (uint32_t) processor->core->uarch);
-		} else if (uarch_string == NULL) {
-			printf("\t%"PRIu32": %s uarch 0x%08"PRIx32"\n",
-				i, vendor_string, (uint32_t) processor->core->uarch);
-		} else {
-			printf("\t%"PRIu32": %s %s\n", i, vendor_string, uarch_string);
-		}
+		#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+			printf("\t%"PRIu32": APIC ID 0x%08"PRIx32"\n", i, processor->apic_id);
+		#else
+			printf("\t%"PRIu32"\n", i);
+		#endif
 	}
 }

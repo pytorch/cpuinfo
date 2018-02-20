@@ -73,8 +73,12 @@
  */
 #ifndef __native_client__
 	static inline uint64_t xgetbv(uint32_t ext_ctrl_reg) {
-		uint32_t lo, hi;
-		__asm__(".byte 0x0F, 0x01, 0xD0" : "=a" (lo), "=d" (hi) : "c" (ext_ctrl_reg));
-		return ((uint64_t) hi << 32) | (uint64_t) lo;
+		#ifdef _MSC_VER
+			return (uint64_t)_xgetbv((unsigned int)ext_ctrl_reg);
+		#else
+			uint32_t lo, hi;
+			__asm__(".byte 0x0F, 0x01, 0xD0" : "=a" (lo), "=d" (hi) : "c" (ext_ctrl_reg));
+			return ((uint64_t) hi << 32) | (uint64_t) lo;
+		#endif
 	}
 #endif

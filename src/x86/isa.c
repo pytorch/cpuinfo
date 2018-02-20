@@ -7,6 +7,9 @@
 
 
 #if CPUINFO_ARCH_X86
+	#ifdef _MSC_VER
+		#pragma pack(push, 2)
+	#endif
 	struct fxsave_region {
 		uint16_t fpu_control_word;
 		uint16_t fpu_status_word;
@@ -21,7 +24,14 @@
 		uint64_t fpu_registers[8 * 2];
 		uint64_t xmm_registers[8 * 2];
 		uint64_t padding[28];
-	} __attribute__((__aligned__(16), __packed__));
+	}
+	#ifndef _MSC_VER
+		__attribute__((__aligned__(16), __packed__))
+	#endif
+	; /* end of fxsave_region structure */
+	#ifdef _MSC_VER
+		#pragma pack(pop, 2)
+	#endif
 #endif
 
 
@@ -298,7 +308,11 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 		/* Detect DAZ support from masked MXCSR bits */
 		if (isa.sse && isa.fxsave) {
 			struct fxsave_region region = { 0 };
-			__asm__ __volatile__ ("fxsave %[region];" : [region] "+m" (region));
+			#ifdef _MSC_VER
+				_fxsave(&region);
+			#else
+				__asm__ __volatile__ ("fxsave %[region];" : [region] "+m" (region));
+			#endif
 
 			/*
 			 * Denormals-as-zero (DAZ) flag:

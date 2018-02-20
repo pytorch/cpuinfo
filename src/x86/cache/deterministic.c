@@ -15,8 +15,8 @@ enum cache_type {
 
 bool cpuinfo_x86_decode_deterministic_cache_parameters(
 	struct cpuid_regs regs,
-	struct cpuinfo_x86_caches cache[restrict static 1],
-	uint32_t package_cores_max[restrict static 1])
+	struct cpuinfo_x86_caches* cache,
+	uint32_t* package_cores_max)
 {
 	const uint32_t type = regs.eax & UINT32_C(0x1F);
 	if (type == cache_type_none) {
@@ -150,7 +150,7 @@ bool cpuinfo_x86_decode_deterministic_cache_parameters(
 
 bool cpuinfo_x86_decode_cache_properties(
 	struct cpuid_regs regs,
-	struct cpuinfo_x86_caches cache[restrict static 1])
+	struct cpuinfo_x86_caches* cache)
 {
 	const uint32_t type = regs.eax & UINT32_C(0x1F);
 	if (type == cache_type_none) {

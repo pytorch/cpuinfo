@@ -6,22 +6,22 @@
 
 void cpuinfo_x86_decode_cache_descriptor(
 	uint8_t descriptor, enum cpuinfo_vendor vendor,
-	const struct cpuinfo_x86_model_info model_info[restrict static 1],
-	struct cpuinfo_x86_caches cache[restrict static 1],
-	struct cpuinfo_tlb itlb_4KB[restrict static 1],
-	struct cpuinfo_tlb itlb_2MB[restrict static 1],
-	struct cpuinfo_tlb itlb_4MB[restrict static 1],
-	struct cpuinfo_tlb dtlb0_4KB[restrict static 1],
-	struct cpuinfo_tlb dtlb0_2MB[restrict static 1],
-	struct cpuinfo_tlb dtlb0_4MB[restrict static 1],
-	struct cpuinfo_tlb dtlb_4KB[restrict static 1],
-	struct cpuinfo_tlb dtlb_2MB[restrict static 1],
-	struct cpuinfo_tlb dtlb_4MB[restrict static 1],
-	struct cpuinfo_tlb dtlb_1GB[restrict static 1],
-	struct cpuinfo_tlb stlb2_4KB[restrict static 1],
-	struct cpuinfo_tlb stlb2_2MB[restrict static 1],
-	struct cpuinfo_tlb stlb2_1GB[restrict static 1],
-	uint32_t prefetch_size[restrict static 1])
+	const struct cpuinfo_x86_model_info* model_info,
+	struct cpuinfo_x86_caches* cache,
+	struct cpuinfo_tlb* itlb_4KB,
+	struct cpuinfo_tlb* itlb_2MB,
+	struct cpuinfo_tlb* itlb_4MB,
+	struct cpuinfo_tlb* dtlb0_4KB,
+	struct cpuinfo_tlb* dtlb0_2MB,
+	struct cpuinfo_tlb* dtlb0_4MB,
+	struct cpuinfo_tlb* dtlb_4KB,
+	struct cpuinfo_tlb* dtlb_2MB,
+	struct cpuinfo_tlb* dtlb_4MB,
+	struct cpuinfo_tlb* dtlb_1GB,
+	struct cpuinfo_tlb* stlb2_4KB,
+	struct cpuinfo_tlb* stlb2_2MB,
+	struct cpuinfo_tlb* stlb2_1GB,
+	uint32_t* prefetch_size)
 {
 	/*
 	 * Descriptors are parsed according to:

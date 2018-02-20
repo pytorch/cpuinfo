@@ -6,7 +6,7 @@
 
 enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 	enum cpuinfo_vendor vendor,
-	const struct cpuinfo_x86_model_info model_info[restrict static 1])
+	const struct cpuinfo_x86_model_info* model_info)
 {
 	switch (vendor) {
 		case cpuinfo_vendor_intel:
