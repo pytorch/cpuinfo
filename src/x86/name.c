@@ -658,6 +658,6 @@ uint32_t cpuinfo_x86_normalize_brand_string(
 		} else {
 			normalized_name[47] = '\0';
 		}
-		return output_ptr - normalized_name;
+		return (uint32_t) (output_ptr - normalized_name);
 	}
 }
