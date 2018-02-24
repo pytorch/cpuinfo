@@ -187,7 +187,6 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						return cpuinfo_uarch_jaguar;
 					}
 				case 0x17:
-					// TODO: revise when CPUs are out
 					return cpuinfo_uarch_zen;
 			}
 			break;
