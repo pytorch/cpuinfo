@@ -334,6 +334,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_bobcat = 0x00200201,
 	/** AMD Jaguar mobile microarchitecture. */
 	cpuinfo_uarch_jaguar = 0x00200202,
+	/** AMD Puma mobile microarchitecture. */
+	cpuinfo_uarch_puma   = 0x00200203,
 
 	/** ARM7 series. */
 	cpuinfo_uarch_arm7  = 0x00300100,

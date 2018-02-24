@@ -117,7 +117,9 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 		case cpuinfo_uarch_bobcat:
 			return "Bobcat";
 		case cpuinfo_uarch_jaguar:
-			return "Jaguar/Puma";
+			return "Jaguar";
+		case cpuinfo_uarch_puma:
+			return "Puma";
 		case cpuinfo_uarch_xscale:
 			return "XScale";
 		case cpuinfo_uarch_arm7:

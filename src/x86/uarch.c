@@ -181,8 +181,11 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 					}
 					break;
 				case 0x16:
-					return cpuinfo_uarch_jaguar;
-					break;
+					if (model_info->model >= 0x03) {
+						return cpuinfo_uarch_puma;
+					} else {
+						return cpuinfo_uarch_jaguar;
+					}
 				case 0x17:
 					// TODO: revise when CPUs are out
 					return cpuinfo_uarch_zen;
