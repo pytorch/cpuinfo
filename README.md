@@ -1,5 +1,8 @@
 # CPU INFOrmation library
 
+[![BSD (2 clause) License](https://img.shields.io/badge/License-BSD%202--Clause%20%22Simplified%22%20License-blue.svg)](https://github.com/Maratyszcza/cpuinfo/blob/master/LICENSE)
+[![Linux/Mac build status](https://img.shields.io/travis/Maratyszcza/cpuinfo.svg)](https://travis-ci.org/Maratyszcza/cpuinfo)
+
 cpuinfo is a library to detect essential for performance optimization information about host CPU.
 
 ## Features
