@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <inttypes.h>
 
 #include <cpuinfo.h>
@@ -55,7 +56,10 @@ void report_cache(
 }
 
 int main(int argc, char** argv) {
-	cpuinfo_initialize();
+	if (!cpuinfo_initialize()) {
+		fprintf(stderr, "failed to initialize CPU information\n");
+		exit(EXIT_FAILURE);
+	}
 	if (cpuinfo_get_l1i_caches_count() != 0 && (cpuinfo_get_l1i_cache(0)->flags & CPUINFO_CACHE_UNIFIED) == 0) {
 		report_cache(cpuinfo_get_l1i_caches_count(), cpuinfo_get_l1i_cache(0), 1, "instruction");
 	}

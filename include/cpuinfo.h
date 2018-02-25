@@ -499,7 +499,7 @@ struct cpuinfo_package {
 extern "C" {
 #endif
 
-void CPUINFO_ABI cpuinfo_initialize(void);
+bool CPUINFO_ABI cpuinfo_initialize(void);
 
 void CPUINFO_ABI cpuinfo_deinitialize(void);
 

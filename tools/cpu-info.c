@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <inttypes.h>
 
 #include <cpuinfo.h>
@@ -184,7 +185,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 }
 
 int main(int argc, char** argv) {
-	cpuinfo_initialize();
+	if (!cpuinfo_initialize()) {
+		fprintf(stderr, "failed to initialize CPU information\n");
+		exit(EXIT_FAILURE);
+	}
 	#ifdef __ANDROID__
 		printf("SoC name: %s\n", cpuinfo_get_package(0)->name);
 		printf("GPU name: %s\n", cpuinfo_get_package(0)->gpu_name);

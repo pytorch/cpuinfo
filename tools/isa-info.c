@@ -1,9 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <cpuinfo.h>
 
 int main(int argc, char** argv) {
-	cpuinfo_initialize();
+	if (!cpuinfo_initialize()) {
+		fprintf(stderr, "failed to initialize CPU information\n");
+		exit(EXIT_FAILURE);
+	}
 
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 

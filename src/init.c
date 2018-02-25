@@ -27,7 +27,7 @@ uint32_t cpuinfo_packages_count = 0;
 	static pthread_once_t init_guard = PTHREAD_ONCE_INIT;
 #endif
 
-void CPUINFO_ABI cpuinfo_initialize(void) {
+bool CPUINFO_ABI cpuinfo_initialize(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	#if defined(__MACH__) && defined(__APPLE__)
 		pthread_once(&init_guard, &cpuinfo_x86_mach_init);
@@ -49,6 +49,7 @@ void CPUINFO_ABI cpuinfo_initialize(void) {
 #else
 	#error Unsupported target architecture
 #endif
+	return (cpuinfo_processors != NULL) && (cpuinfo_cores != NULL) && (cpuinfo_packages != NULL);
 }
 
 void CPUINFO_ABI cpuinfo_deinitialize(void) {
