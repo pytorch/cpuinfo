@@ -606,6 +606,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := oneplus-5-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/oneplus-5.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := oppo-a37-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/oppo-a37.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

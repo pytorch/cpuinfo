@@ -22,6 +22,7 @@ adb push libs/arm64-v8a/nexus5x-test /data/local/tmp/nexus5x-test
 adb push libs/arm64-v8a/nexus6p-test /data/local/tmp/nexus6p-test
 adb push libs/arm64-v8a/nexus9-test /data/local/tmp/nexus9-test
 adb push libs/arm64-v8a/oneplus-3t-test /data/local/tmp/oneplus-3t-test
+adb push libs/arm64-v8a/oneplus-5-test /data/local/tmp/oneplus-5-test
 adb push libs/arm64-v8a/oppo-a37-test /data/local/tmp/oppo-a37-test
 adb push libs/arm64-v8a/oppo-r9-test /data/local/tmp/oppo-r9-test
 adb push libs/arm64-v8a/pixel-c-test /data/local/tmp/pixel-c-test
@@ -53,6 +54,7 @@ adb shell "/data/local/tmp/nexus5x-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus6p-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus9-test --gtest_color=yes"
 adb shell "/data/local/tmp/oneplus-3t-test --gtest_color=yes"
+adb shell "/data/local/tmp/oneplus-5-test --gtest_color=yes"
 adb shell "/data/local/tmp/oppo-a37-test --gtest_color=yes"
 adb shell "/data/local/tmp/oppo-r9-test --gtest_color=yes"
 adb shell "/data/local/tmp/pixel-c-test --gtest_color=yes"
