@@ -385,6 +385,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(moto-g-gen3-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(moto-g-gen3-test moto-g-gen3-test)
 
+    ADD_EXECUTABLE(moto-g-gen4-test test/mock/moto-g-gen4.cc)
+    TARGET_INCLUDE_DIRECTORIES(moto-g-gen4-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(moto-g-gen4-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(moto-g-gen4-test moto-g-gen4-test)
+
     ADD_EXECUTABLE(nexus-s-test test/mock/nexus-s.cc)
     TARGET_INCLUDE_DIRECTORIES(nexus-s-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(nexus-s-test PRIVATE cpuinfo_mock gtest)

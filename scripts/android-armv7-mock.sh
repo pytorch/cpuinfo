@@ -44,6 +44,7 @@ adb push libs/armeabi-v7a/moto-e-gen1-test /data/local/tmp/moto-e-gen1-test
 adb push libs/armeabi-v7a/moto-g-gen1-test /data/local/tmp/moto-g-gen1-test
 adb push libs/armeabi-v7a/moto-g-gen2-test /data/local/tmp/moto-g-gen2-test
 adb push libs/armeabi-v7a/moto-g-gen3-test /data/local/tmp/moto-g-gen3-test
+adb push libs/armeabi-v7a/moto-g-gen4-test /data/local/tmp/moto-g-gen4-test
 adb push libs/armeabi-v7a/nexus-s-test /data/local/tmp/nexus-s-test
 adb push libs/armeabi-v7a/nexus4-test /data/local/tmp/nexus4-test
 adb push libs/armeabi-v7a/nexus5x-test /data/local/tmp/nexus5x-test
@@ -110,6 +111,7 @@ adb shell "/data/local/tmp/moto-e-gen1-test --gtest_color=yes"
 adb shell "/data/local/tmp/moto-g-gen1-test --gtest_color=yes"
 adb shell "/data/local/tmp/moto-g-gen2-test --gtest_color=yes"
 adb shell "/data/local/tmp/moto-g-gen3-test --gtest_color=yes"
+adb shell "/data/local/tmp/moto-g-gen4-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus-s-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus4-test --gtest_color=yes"
 adb shell "/data/local/tmp/nexus5x-test --gtest_color=yes"
