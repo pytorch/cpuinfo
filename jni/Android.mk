@@ -599,8 +599,8 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := oppo-r9-test
-LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/oppo-r9.cc
+LOCAL_MODULE := oneplus-3t-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/oneplus-3t.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
@@ -608,6 +608,13 @@ include $(BUILD_EXECUTABLE)
 include $(CLEAR_VARS)
 LOCAL_MODULE := oppo-a37-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/oppo-a37.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := oppo-r9-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/oppo-r9.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
 LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)

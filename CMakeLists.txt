@@ -517,6 +517,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(nexus9-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(nexus9-test nexus9-test)
 
+    ADD_EXECUTABLE(oneplus-3t-test test/mock/oneplus-3t.cc)
+    TARGET_INCLUDE_DIRECTORIES(oneplus-3t-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(oneplus-3t-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(oneplus-3t-test oneplus-3t-test)
+
     ADD_EXECUTABLE(oppo-a37-test test/mock/oppo-a37.cc)
     TARGET_INCLUDE_DIRECTORIES(oppo-a37-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(oppo-a37-test PRIVATE cpuinfo_mock gtest)
