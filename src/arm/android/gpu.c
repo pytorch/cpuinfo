@@ -492,6 +492,14 @@ static const struct cpuinfo_chipset_gpu_entry chipset_gpu_map[] = {
 		.gpu_model = 880,
 	},
 	{
+		/* MediaTek MT6758* -> ARM Mali-G71 */
+		.chipset_series = cpuinfo_arm_chipset_series_mediatek_mt,
+		.chipset_model = 6758,
+		.chipset_suffix = '*',
+		.gpu_series = cpuinfo_android_gpu_series_arm_mali_g,
+		.gpu_model = 71,
+	},
+	{
 		/* MediaTek MT6763 -> ARM Mali-G71 */
 		.chipset_series = cpuinfo_arm_chipset_series_mediatek_mt,
 		.chipset_model = 6763,
@@ -1214,6 +1222,13 @@ static const struct cpuinfo_chipset_gpu_entry chipset_gpu_map[] = {
 		.gpu_model = 512,
 	},
 	{
+		/* Qualcomm Snapdragon 670 -> Qualcomm Adreno 615 */
+		.chipset_series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+		.chipset_model = 670,
+		.gpu_series = cpuinfo_android_gpu_series_qualcomm_adreno,
+		.gpu_model = 615,
+	},
+	{
 		/* Qualcomm Snapdragon 845 -> Qualcomm Adreno 630 */
 		.chipset_series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
 		.chipset_model = 845,
@@ -1458,6 +1473,13 @@ static const struct cpuinfo_chipset_gpu_entry chipset_gpu_map[] = {
 		.chipset_model = 8895,
 		.gpu_series = cpuinfo_android_gpu_series_arm_mali_g,
 		.gpu_model = 71,
+	},
+	{
+		/* Samsung Exynos 9810 -> ARM Mali-G72 */
+		.chipset_series = cpuinfo_arm_chipset_series_samsung_exynos,
+		.chipset_model = 9810,
+		.gpu_series = cpuinfo_android_gpu_series_arm_mali_g,
+		.gpu_model = 72,
 	},
 	{
 		/* Spreadtrum SC5735 -> ARM Mali-400 */
