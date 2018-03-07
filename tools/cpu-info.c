@@ -163,8 +163,12 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Kryo";
 		case cpuinfo_uarch_denver:
 			return "Denver";
-		case cpuinfo_uarch_mongoose:
-			return "Mongoose";
+		case cpuinfo_uarch_mongoose_m1:
+			return "Mongoose M1";
+		case cpuinfo_uarch_mongoose_m2:
+			return "Mongoose M2";
+		case cpuinfo_uarch_mongoose_m3:
+			return "Mongoose M3";
 		case cpuinfo_uarch_swift:
 			return "Swift";
 		case cpuinfo_uarch_cyclone:

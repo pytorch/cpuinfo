@@ -922,7 +922,8 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
-		case cpuinfo_uarch_mongoose:
+		case cpuinfo_uarch_mongoose_m1:
+		case cpuinfo_uarch_mongoose_m2:
 			/*
 			 * - "Moving past branch prediction we can see some elements of how the cache is set up for the L1 I$,
 			 *    namely 64 KB split into four sets with 128-byte line sizes for 128 cache lines per set" [1]

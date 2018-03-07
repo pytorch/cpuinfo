@@ -150,7 +150,7 @@ TEST(CORES, uarch) {
 			case 1:
 			case 2:
 			case 3:
-				ASSERT_EQ(cpuinfo_uarch_mongoose, cpuinfo_get_core(i)->uarch);
+				ASSERT_EQ(cpuinfo_uarch_mongoose_m1, cpuinfo_get_core(i)->uarch);
 				break;
 			case 4:
 			case 5:

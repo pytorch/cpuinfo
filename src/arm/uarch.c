@@ -184,18 +184,48 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a53;
 					break;
+				case 0x802: /* High-performance Kryo 385 "Gold" -> Cortex-A75 */
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a75;
+					break;
+				case 0x803: /* Low-power Kryo 385 "Silver" -> Cortex-A55 */
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a55;
+					break;
 				default:
 					cpuinfo_log_warning("unknown Qualcomm CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
 		case 'S':
 			*vendor = cpuinfo_vendor_samsung;
-			switch (midr_get_part(midr)) {
-				case 0x001:
-					*uarch = cpuinfo_uarch_mongoose;
+			switch (midr & (CPUINFO_ARM_MIDR_VARIANT_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+				case 0x00100010:
+					/*
+					 * Exynos 8890 MIDR = 0x531F0011, assume Mongoose M1 has:
+					 * - CPU variant 0x1
+					 * - CPU part 0x001
+					 */
+					*uarch = cpuinfo_uarch_mongoose_m1;
+					break;
+				case 0x00400010:
+					/*
+					 * Exynos 8895 MIDR = 0x534F0010, assume Mongoose M2 has:
+					 * - CPU variant 0x4
+					 * - CPU part 0x001
+					 */
+					*uarch = cpuinfo_uarch_mongoose_m2;
+					break;
+				case 0x00100020:
+					/*
+					 * Exynos 9810 MIDR = 0x531F0020, assume Mongoose M3 has:
+					 * - CPU variant 0x1
+					 * - CPU part 0x002
+					 */
+					*uarch = cpuinfo_uarch_mongoose_m3;
 					break;
 				default:
-					cpuinfo_log_warning("unknown Samsung CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
+					cpuinfo_log_warning("unknown Samsung CPU variant 0x%01"PRIx32" part 0x%03"PRIx32" ignored",
+						midr_get_variant(midr), midr_get_part(midr));
 			}
 			break;
 #if CPUINFO_ARCH_ARM

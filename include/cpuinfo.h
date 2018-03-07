@@ -387,7 +387,9 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_denver   = 0x00500100,
 
 	/** Samsung Mongoose. */
-	cpuinfo_uarch_mongoose = 0x00600100,
+	cpuinfo_uarch_mongoose_m1 = 0x00600100,
+	cpuinfo_uarch_mongoose_m2 = 0x00600101,
+	cpuinfo_uarch_mongoose_m3 = 0x00600102,
 
 	/** Apple A6 and A6X processors. */
 	cpuinfo_uarch_swift     = 0x00700100,
