@@ -259,6 +259,8 @@ TEST(RO_BOARD_PLATFORM, rockchip_rk) {
 		parse_ro_board_platform("rk3188"));
 	EXPECT_EQ("Rockchip RK3228",
 		parse_ro_board_platform("rk3228"));
+	EXPECT_EQ("Rockchip RK3229",
+		parse_ro_board_platform("rk322x"));
 	EXPECT_EQ("Rockchip RK3288",
 		parse_ro_board_platform("rk3288"));
 	EXPECT_EQ("Rockchip RK3328",

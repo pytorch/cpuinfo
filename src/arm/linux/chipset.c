@@ -2600,6 +2600,12 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 1,
 		},
 		{
+			/* "rk322x" -> RockChip RK3229 */
+			.platform = "rk322x",
+			.series = cpuinfo_arm_chipset_series_rockchip_rk,
+			.model = 3229,
+		},
+		{
 			/* "tegra132" -> Nvidia Tegra T132 */
 			.platform = "tegra132",
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
