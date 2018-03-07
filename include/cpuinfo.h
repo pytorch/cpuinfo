@@ -386,9 +386,11 @@ enum cpuinfo_uarch {
 	/** Nvidia Denver. */
 	cpuinfo_uarch_denver   = 0x00500100,
 
-	/** Samsung Mongoose. */
+	/** Samsung Mongoose M1 (Exynos 8890 big cores). */
 	cpuinfo_uarch_mongoose_m1 = 0x00600100,
+	/** Samsung Mongoose M2 (Exynos 8895 big cores). */
 	cpuinfo_uarch_mongoose_m2 = 0x00600101,
+	/** Samsung Mongoose M3 (Exynos 9810 big cores). */
 	cpuinfo_uarch_mongoose_m3 = 0x00600102,
 
 	/** Apple A6 and A6X processors. */
