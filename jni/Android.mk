@@ -458,6 +458,7 @@ LOCAL_SRC_FILES := \
 	$(LOCAL_PATH)/test/name/ro-product-board.cc \
 	$(LOCAL_PATH)/test/name/ro-board-platform.cc \
 	$(LOCAL_PATH)/test/name/ro-mediatek-platform.cc \
+	$(LOCAL_PATH)/test/name/ro-arch.cc \
 	$(LOCAL_PATH)/test/name/ro-chipname.cc \
 	$(LOCAL_PATH)/test/name/android-properties.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/src

@@ -648,6 +648,7 @@ IF(CPUINFO_BUILD_UNIT_TESTS)
       test/name/ro-product-board.cc
       test/name/ro-board-platform.cc
       test/name/ro-mediatek-platform.cc
+      test/name/ro-arch.cc
       test/name/ro-chipname.cc
       test/name/android-properties.cc)
     CPUINFO_TARGET_ENABLE_CXX11(chipset-test)

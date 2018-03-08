@@ -53,6 +53,10 @@ void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties prop
 	cpuinfo_log_debug("read ro.mediatek.platform = \"%.*s\"",
 		ro_mediatek_platform_length, properties->ro_mediatek_platform);
 
+	const int ro_arch_length =
+		cpuinfo_android_property_get("ro.arch", properties->ro_arch);
+	cpuinfo_log_debug("read ro.arch = \"%.*s\"", ro_arch_length, properties->ro_arch);
+
 	const int ro_chipname_length =
 		cpuinfo_android_property_get("ro.chipname", properties->ro_chipname);
 	cpuinfo_log_debug("read ro.chipname = \"%.*s\"", ro_chipname_length, properties->ro_chipname);

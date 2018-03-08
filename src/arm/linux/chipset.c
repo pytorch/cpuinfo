@@ -2792,17 +2792,47 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 	 *
 	 * @param[in] platform - ro.mediatek.platform value.
 	 *
-	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
-	 *          and series identifiers.
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown`
+	 *          vendor and series identifiers.
 	 */
 	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(
 		const char platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
 	{
 		struct cpuinfo_arm_chipset chipset;
-		const char* platform_end = platform + strnlen(platform, CPUINFO_BUILD_PROP_VALUE_MAX);;
+		const char* platform_end = platform + strnlen(platform, CPUINFO_BUILD_PROP_VALUE_MAX);
 
 		/* Check MediaTek MT signature */
 		if (match_mt(platform, platform_end, false, &chipset)) {
+			return chipset;
+		}
+
+		return (struct cpuinfo_arm_chipset) {
+			.vendor = cpuinfo_arm_chipset_vendor_unknown,
+			.series = cpuinfo_arm_chipset_series_unknown,
+		};
+	}
+
+
+	/*
+	 * Decodes chipset name from ro.arch Android system property.
+	 *
+	 * The ro.arch property is matched only against Samsung Exynos signature. Systems with other chipset rarely
+	 * configure ro.arch Android system property, and can be decoded through other properties, but some Exynos
+	 * chipsets are identified only in ro.arch.
+	 *
+	 * @param[in] arch - ro.arch value.
+	 *
+	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown`
+	 *          vendor and series identifiers.
+	 */
+	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_arch(
+		const char arch[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
+	{
+		struct cpuinfo_arm_chipset chipset;
+		const char* arch_end = arch + strnlen(arch, CPUINFO_BUILD_PROP_VALUE_MAX);
+
+		/* Check Samsung exynosXXXX signature */
+		if (match_exynos(arch, arch_end, &chipset)) {
 			return chipset;
 		}
 
@@ -3348,6 +3378,8 @@ void cpuinfo_arm_chipset_to_string(
 					properties->ro_board_platform, cores, max_cpu_freq_max),
 			[cpuinfo_android_chipset_property_ro_mediatek_platform] =
 				cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(properties->ro_mediatek_platform),
+			[cpuinfo_android_chipset_property_ro_arch] =
+				cpuinfo_arm_android_decode_chipset_from_ro_arch(properties->ro_arch),
 			[cpuinfo_android_chipset_property_ro_chipname] =
 				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname),
 		};

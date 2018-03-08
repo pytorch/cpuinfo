@@ -10,6 +10,7 @@ void cpuinfo_arm_android_parse_chipset_properties(
 	const char ro_product_board[CPUINFO_BUILD_PROP_VALUE_MAX],
 	const char ro_board_platform[CPUINFO_BUILD_PROP_VALUE_MAX],
 	const char ro_mediatek_platform[CPUINFO_BUILD_PROP_VALUE_MAX],
+	const char ro_arch[CPUINFO_BUILD_PROP_VALUE_MAX],
 	const char ro_chipname[CPUINFO_BUILD_PROP_VALUE_MAX],
 	uint32_t cores,
 	uint32_t max_cpu_freq_max,
@@ -20,6 +21,7 @@ void cpuinfo_arm_android_parse_chipset_properties(
 	strncpy(properties.ro_product_board, ro_product_board, CPUINFO_BUILD_PROP_VALUE_MAX);
 	strncpy(properties.ro_board_platform, ro_board_platform, CPUINFO_BUILD_PROP_VALUE_MAX);
 	strncpy(properties.ro_mediatek_platform, ro_mediatek_platform, CPUINFO_BUILD_PROP_VALUE_MAX);
+	strncpy(properties.ro_arch, ro_arch, CPUINFO_BUILD_PROP_VALUE_MAX);
 	strncpy(properties.ro_chipname, ro_chipname, CPUINFO_BUILD_PROP_VALUE_MAX);
 
 	struct cpuinfo_arm_chipset chipset =
@@ -78,6 +80,19 @@ void cpuinfo_arm_android_parse_ro_mediatek_platform(
 	char chipset_name[CPUINFO_ARM_CHIPSET_NAME_MAX])
 {
 	struct cpuinfo_arm_chipset chipset = cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(platform);
+	if (chipset.series == cpuinfo_arm_chipset_series_unknown) {
+		chipset_name[0] = 0;
+	} else {
+		cpuinfo_arm_fixup_chipset(&chipset, cores, max_cpu_freq_max);
+		cpuinfo_arm_chipset_to_string(&chipset, chipset_name);
+	}
+}
+
+void cpuinfo_arm_android_parse_ro_arch(
+	const char arch[CPUINFO_BUILD_PROP_VALUE_MAX], uint32_t cores, uint32_t max_cpu_freq_max,
+	char chipset_name[CPUINFO_ARM_CHIPSET_NAME_MAX])
+{
+	struct cpuinfo_arm_chipset chipset = cpuinfo_arm_android_decode_chipset_from_ro_arch(arch);
 	if (chipset.series == cpuinfo_arm_chipset_series_unknown) {
 		chipset_name[0] = 0;
 	} else {
