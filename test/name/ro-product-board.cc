@@ -36,8 +36,6 @@ TEST(RO_PRODUCT_BOARD, qualcomm_msm) {
 		parse_ro_product_board("MSM8210"));
 	EXPECT_EQ("Qualcomm MSM8212",
 		parse_ro_product_board("MSM8212"));
-	EXPECT_EQ("Qualcomm MSM8212",
-		parse_ro_product_board("MSM8610", 4));
 	EXPECT_EQ("Qualcomm MSM8225",
 		parse_ro_product_board("MSM8225"));
 	EXPECT_EQ("Qualcomm MSM8226",
@@ -54,6 +52,8 @@ TEST(RO_PRODUCT_BOARD, qualcomm_msm) {
 		parse_ro_product_board("MSM8274"));
 	EXPECT_EQ("Qualcomm MSM8610",
 		parse_ro_product_board("MSM8610", 2));
+	EXPECT_EQ("Qualcomm MSM8612",
+		parse_ro_product_board("MSM8610", 4));
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_ro_product_board("MSM8612"));
 	EXPECT_EQ("Qualcomm MSM8625",
@@ -465,8 +465,6 @@ TEST(RO_PRODUCT_BOARD, spreadtrum) {
 }
 
 TEST(RO_PRODUCT_BOARD, texas_instruments) {
-	EXPECT_EQ("Texas Instruments OMAP4430",
-		parse_ro_product_board("piranha"));
 	EXPECT_EQ("Texas Instruments OMAP4460",
 		parse_ro_product_board("tuna"));
 }

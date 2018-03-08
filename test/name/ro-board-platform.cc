@@ -32,12 +32,12 @@ TEST(RO_BOARD_PLATFORM, qualcomm_msm) {
 		parse_ro_board_platform("msm7627a"));
 	EXPECT_EQ("Qualcomm MSM8084",
 		parse_ro_board_platform("msm8084"));
-	EXPECT_EQ("Qualcomm MSM8212",
-		parse_ro_board_platform("msm8610", 4));
 	EXPECT_EQ("Qualcomm MSM8226",
 		parse_ro_board_platform("msm8226"));
 	EXPECT_EQ("Qualcomm MSM8610",
 		parse_ro_board_platform("msm8610", 2));
+	EXPECT_EQ("Qualcomm MSM8612",
+		parse_ro_board_platform("msm8610", 4));
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_ro_board_platform("MSM8612"));
 	EXPECT_EQ("Qualcomm MSM8660",

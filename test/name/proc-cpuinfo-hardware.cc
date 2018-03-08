@@ -57,8 +57,6 @@ TEST(PROC_CPUINFO_HARDWARE, qualcomm_msm) {
 	EXPECT_EQ("Qualcomm MSM8212",
 		parse_proc_cpuinfo_hardware("Qualcomm MSM 8212 (Flattened Device Tree)"));
 	EXPECT_EQ("Qualcomm MSM8212",
-		parse_proc_cpuinfo_hardware("Qualcomm MSM 8610 (Flattened Device Tree)", 4));
-	EXPECT_EQ("Qualcomm MSM8212",
 		parse_proc_cpuinfo_hardware("Qualcomm MSM8212"));
 	EXPECT_EQ("Qualcomm MSM8225",
 		parse_proc_cpuinfo_hardware("QCT MSM8225 SURF"));
@@ -78,6 +76,8 @@ TEST(PROC_CPUINFO_HARDWARE, qualcomm_msm) {
 		parse_proc_cpuinfo_hardware("Qualcomm MSM 8610 (Flattened Device Tree)", 2));
 	EXPECT_EQ("Qualcomm MSM8610",
 		parse_proc_cpuinfo_hardware("Qualcomm MSM8610", 2));
+	EXPECT_EQ("Qualcomm MSM8612",
+		parse_proc_cpuinfo_hardware("Qualcomm MSM 8610 (Flattened Device Tree)", 4));
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_proc_cpuinfo_hardware("Qualcomm MSM 8612 (Flattened Device Tree)"));
 	EXPECT_EQ("Qualcomm MSM8625",
