@@ -3125,9 +3125,19 @@ void cpuinfo_arm_fixup_chipset(
 			}
 			break;
 		case cpuinfo_arm_chipset_series_rockchip_rk:
-			if (chipset->model == 3288 && cores == 6) {
+			if (chipset->model == 3288) {
 				/* Common bug: Rockchip RK3399 (Hexa-core) always reported as RK3288 (Quad-core) */
-				chipset->model = 3399;
+				switch (cores) {
+					case 4:
+						break;
+					case 6:
+						cpuinfo_log_info("reinterpreted RK3288 chipset with 6 cores as RK3399");
+						chipset->model = 3399;
+						break;
+					default:
+						cpuinfo_log_warning("system reported invalid %"PRIu32"-core RK3288 chipset", cores);
+						chipset->model = 0;
+				}
 			}
 			break;
 		default:
