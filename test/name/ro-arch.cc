@@ -37,7 +37,7 @@ TEST(RO_ARCH, samsung_exynos) {
 	EXPECT_EQ("Samsung Exynos 5410",
 		parse_ro_arch("exynos5410"));
 	EXPECT_EQ("Samsung Exynos 5420",
-		parse_ro_arch("exynos5420"));
+		parse_ro_arch("exynos5420", 4));
 	EXPECT_EQ("Samsung Exynos 5422",
 		parse_ro_arch("exynos5422"));
 	EXPECT_EQ("Samsung Exynos 5430",

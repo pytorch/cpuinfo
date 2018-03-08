@@ -495,7 +495,7 @@ TEST(PROC_CPUINFO_HARDWARE, samsung_exynos) {
 	EXPECT_EQ("Samsung Exynos 4415",
 		parse_proc_cpuinfo_hardware("Samsung EXYNOS4415"));
 	EXPECT_EQ("Samsung Exynos 5420",
-		parse_proc_cpuinfo_hardware("Samsung EXYNOS5420"));
+		parse_proc_cpuinfo_hardware("Samsung EXYNOS5420", 4));
 	EXPECT_EQ("Samsung Exynos 5430",
 		parse_proc_cpuinfo_hardware("Samsung EXYNOS5430"));
 	EXPECT_EQ("Samsung Exynos 5433",
@@ -518,7 +518,7 @@ TEST(PROC_CPUINFO_HARDWARE, samsung_universal) {
 	EXPECT_EQ("Samsung Exynos 5410",
 		parse_proc_cpuinfo_hardware("UNIVERSAL5410"));
 	EXPECT_EQ("Samsung Exynos 5420",
-		parse_proc_cpuinfo_hardware("UNIVERSAL5420"));
+		parse_proc_cpuinfo_hardware("UNIVERSAL5420", 4));
 	EXPECT_EQ("Samsung Exynos 5422",
 		parse_proc_cpuinfo_hardware("universal5422"));
 	EXPECT_EQ("Samsung Exynos 5430",

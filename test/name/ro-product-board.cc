@@ -275,7 +275,7 @@ TEST(RO_PRODUCT_BOARD, samsung_universal) {
 	EXPECT_EQ("Samsung Exynos 5410",
 		parse_ro_product_board("universal5410"));
 	EXPECT_EQ("Samsung Exynos 5420",
-		parse_ro_product_board("universal5420"));
+		parse_ro_product_board("universal5420", 4));
 	EXPECT_EQ("Samsung Exynos 5422",
 		parse_ro_product_board("universal5422"));
 	EXPECT_EQ("Samsung Exynos 5430",

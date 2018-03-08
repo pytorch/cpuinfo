@@ -3077,6 +3077,20 @@ void cpuinfo_arm_fixup_chipset(
 					/* Exynos 4410 was renamed to Exynos 4412 */
 					chipset->model = 4412;
 					break;
+				case 5420:
+					/* Common bug: Exynos 5260 (Hexa-core) reported as Exynos 5420 (Quad-core) */
+					switch (cores) {
+						case 4:
+							break;
+						case 6:
+							cpuinfo_log_info("reinterpreted Exynos 5420 chipset with 6 cores as Exynos 5260");
+							chipset->model = 5260;
+							break;
+						default:
+							cpuinfo_log_warning("system reported invalid %"PRIu32"-core Exynos 5420 chipset", cores);
+							chipset->model = 0;
+					}
+					break;
 				case 7580:
 					/* Common bug: Exynos 7578 (Quad-core) reported as Exynos 7580 (Octa-core) */
 					switch (cores) {
