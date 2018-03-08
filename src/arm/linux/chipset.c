@@ -303,7 +303,7 @@ static bool match_samsung_exynos(
 		const uint32_t digit = (uint32_t) (uint8_t) (*pos++) - '0';
 		if (digit >= 10) {
 			/* Not really a digit */
-			return start;
+			return false;
 		}
 		model = model * 10 + digit;
 	}
@@ -314,7 +314,7 @@ static bool match_samsung_exynos(
 		.series = cpuinfo_arm_chipset_series_samsung_exynos,
 		.model = model,
 	};
-	return pos;
+	return true;
 }
 
 /**
@@ -648,7 +648,7 @@ static bool match_kirin(
 		const uint32_t digit = (uint32_t) (uint8_t) end[i - 3] - '0';
 		if (digit >= 10) {
 			/* Not really a digit */
-			return start;
+			return false;
 		}
 		model = model * 10 + digit;
 	}
@@ -705,7 +705,7 @@ static bool match_rk(
 		const uint32_t digit = (uint32_t) (uint8_t) start[i] - '0';
 		if (digit >= 10) {
 			/* Not really a digit */
-			return start;
+			return false;
 		}
 		model = model * 10 + digit;
 	}
