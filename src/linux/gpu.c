@@ -138,6 +138,10 @@ struct cpuinfo_android_gpu cpuinfo_android_decode_gpu(const char* renderer) {
 					gpu.series = cpuinfo_android_gpu_series_arm_mali;
 				} else if (sscanf(renderer, "Mali-T%"SCNu32, &gpu.model) == 1 && gpu.model != 0) {
 					gpu.series = cpuinfo_android_gpu_series_arm_mali_t;
+					/* Common bug: Mali-T760 reported as Mali-T764 */
+					if (gpu.model == 764) {
+						gpu.model = 760;
+					}
 				} else if (sscanf(renderer, "Mali-G%"SCNu32, &gpu.model) == 1 && gpu.model != 0) {
 					gpu.series = cpuinfo_android_gpu_series_arm_mali_g;
 				} else if (sscanf(renderer, "Mesa DRI Intel(R) HD Graphics %"SCNu32, &gpu.model) == 1 && gpu.model != 0) {
