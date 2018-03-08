@@ -3094,6 +3094,12 @@ void cpuinfo_arm_fixup_chipset(
 				}
 			}
 			break;
+		case cpuinfo_arm_chipset_series_rockchip_rk:
+			if (chipset->model == 3288 && cores == 6) {
+				/* Common bug: Rockchip RK3399 (Hexa-core) always reported as RK3288 (Quad-core) */
+				chipset->model = 3399;
+			}
+			break;
 		default:
 			break;
 	}
