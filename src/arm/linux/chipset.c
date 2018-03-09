@@ -493,7 +493,7 @@ static bool match_and_parse_smdk(
 }
 
 /**
- * Tries to match /MTK?\d{4}[A-Z]*$/ signature for MediaTek MT chipsets.
+ * Tries to match /MTK?\d{4}[A-Z/]*$/ signature for MediaTek MT chipsets.
  * If match successful, extracts model information into \p chipset argument.
  *
  * @param start - start of the platform identifier (/proc/cpuinfo Hardware string, ro.product.board, ro.board.platform,
@@ -1364,6 +1364,11 @@ static const struct huawei_map_entry huawei_platform_map[] = {
 	{
 		/* "BLA" -> Kirin 970 */
 		.platform = UINT32_C(0x00414C42), /* "\0ALB" = reverse("BLA\0") */
+		.model = 970,
+	},
+	{
+		/* "BKL" -> Kirin 970 */
+		.platform = UINT32_C(0x004C4B42), /* "\0LKB" = reverse("BKL\0") */
 		.model = 970,
 	},
 	{
