@@ -477,6 +477,8 @@ struct cpuinfo_core {
 	/** Value of Main ID Register (MIDR) for this core */
 	uint32_t midr;
 #endif
+	/** Clock rate (non-Turbo) of the core, in Hz */
+	uint64_t frequency;
 };
 
 #define CPUINFO_PACKAGE_NAME_MAX 48
