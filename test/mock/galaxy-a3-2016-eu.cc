@@ -116,6 +116,12 @@ TEST(CORES, midr) {
 	}
 }
 
+TEST(CORES, DISABLED_frequency) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		ASSERT_EQ(UINT64_C(1500000000), cpuinfo_get_core(i)->frequency);
+	}
+}
+
 TEST(PACKAGES, count) {
 	ASSERT_EQ(1, cpuinfo_get_packages_count());
 }
