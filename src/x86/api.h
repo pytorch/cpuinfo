@@ -152,3 +152,8 @@ bool cpuinfo_x86_decode_cache_properties(
 uint32_t cpuinfo_x86_normalize_brand_string(
 	const char raw_name[48],
 	char normalized_name[48]);
+
+uint32_t cpuinfo_x86_format_package_name(
+	enum cpuinfo_vendor vendor,
+	const char normalized_brand_string[48],
+	char package_name[CPUINFO_PACKAGE_NAME_MAX]);

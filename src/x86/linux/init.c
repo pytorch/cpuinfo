@@ -178,6 +178,8 @@ void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_x86_processor x86_processor;
 	memset(&x86_processor, 0, sizeof(x86_processor));
 	cpuinfo_x86_init_processor(&x86_processor);
+	char brand_string[48];
+	cpuinfo_x86_normalize_brand_string(x86_processor.brand_string, brand_string);
 
 	uint32_t processors_count = 0;
 	for (uint32_t i = 0; i < x86_linux_processors_count; i++) {
@@ -337,7 +339,7 @@ void cpuinfo_x86_linux_init(void) {
 				packages[package_index].processor_start = processor_index;
 				packages[package_index].processor_count = 1;
 				packages[package_index].core_start = core_index;
-				cpuinfo_x86_normalize_brand_string(x86_processor.brand_string, packages[package_index].name);
+				cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[package_index].name);
 				last_apic_package_id = apic_package_id;
 			} else {
 				/* another logical processor on the same package */

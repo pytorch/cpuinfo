@@ -104,6 +104,8 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	struct cpuinfo_x86_processor x86_processor;
 	ZeroMemory(&x86_processor, sizeof(x86_processor));
 	cpuinfo_x86_init_processor(&x86_processor);
+	char brand_string[48];
+	cpuinfo_x86_normalize_brand_string(x86_processor.brand_string, brand_string);
 
 	const uint32_t thread_bits_mask = bit_mask(x86_processor.topology.thread_bits_length);
 	const uint32_t core_bits_mask   = bit_mask(x86_processor.topology.core_bits_length);
@@ -330,7 +332,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	}
 
 	for (uint32_t i = 0; i < packages_count; i++) {
-		cpuinfo_x86_normalize_brand_string(x86_processor.brand_string, packages[i].name);
+		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[i].name);
 	}
 
 	/* Count caches */

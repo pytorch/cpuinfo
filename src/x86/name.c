@@ -1,7 +1,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
+
+#include <cpuinfo.h>
+#include <x86/api.h>
 
 
 /* The state of the parser to be preserved between parsing different tokens. */
@@ -659,5 +663,47 @@ uint32_t cpuinfo_x86_normalize_brand_string(
 			normalized_name[47] = '\0';
 		}
 		return (uint32_t) (output_ptr - normalized_name);
+	}
+}
+
+#define CPUINFO_COUNT_OF(x) (sizeof(x) / sizeof(0[x]))
+
+static const char* vendor_string_map[] = {
+	[cpuinfo_vendor_intel] = "Intel",
+	[cpuinfo_vendor_amd] = "AMD",
+	[cpuinfo_vendor_via] = "VIA",
+	[cpuinfo_vendor_rdc] = "RDC",
+	[cpuinfo_vendor_dmp] = "DM&P",
+	[cpuinfo_vendor_transmeta] = "Transmeta",
+	[cpuinfo_vendor_cyrix] = "Cyrix",
+	[cpuinfo_vendor_rise] = "Rise",
+	[cpuinfo_vendor_nsc] = "NSC",
+	[cpuinfo_vendor_sis] = "SiS",
+	[cpuinfo_vendor_nexgen] = "NexGen",
+	[cpuinfo_vendor_umc] = "UMC",
+};
+
+uint32_t cpuinfo_x86_format_package_name(
+	enum cpuinfo_vendor vendor,
+	const char normalized_brand_string[48],
+	char package_name[CPUINFO_PACKAGE_NAME_MAX])
+{
+	if (normalized_brand_string[0] == '\0') {
+		package_name[0] = '\0';
+		return 0;
+	}
+
+	const char* vendor_string = NULL;
+	if ((uint32_t) vendor < (uint32_t) CPUINFO_COUNT_OF(vendor_string_map)) {
+		vendor_string = vendor_string_map[(uint32_t) vendor];
+	}
+	if (vendor_string == NULL) {
+		strncpy(package_name, normalized_brand_string, CPUINFO_PACKAGE_NAME_MAX);
+		package_name[CPUINFO_PACKAGE_NAME_MAX - 1] = '\0';
+		return 0;
+	} else {
+		snprintf(package_name, CPUINFO_PACKAGE_NAME_MAX,
+			"%s %s", vendor_string, normalized_brand_string);
+		return strlen(vendor_string) + 1;
 	}
 }
