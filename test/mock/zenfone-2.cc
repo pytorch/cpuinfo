@@ -128,7 +128,7 @@ TEST(PACKAGES, count) {
 
 TEST(PACKAGES, name) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
-		ASSERT_EQ("Atom Z3580",
+		ASSERT_EQ("Intel Atom Z3580",
 			std::string(cpuinfo_get_package(i)->name,
 				strnlen(cpuinfo_get_package(i)->name, CPUINFO_PACKAGE_NAME_MAX)));
 	}
