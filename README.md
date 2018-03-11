@@ -148,8 +148,8 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 - Processor (SoC) name detection
   - [x] Using CPUID leaves 0x80000002–0x80000004 on x86/x86-64
   - [x] Using `/proc/cpuinfo` on ARM
-  - [ ] Using kernel log (`dmesg`) on ARM
-  - [x] Using `ro.chipname`, `ro.board.platform`, `ro.product.board` properties (Android)
+  - [x] Using `ro.chipname`, `ro.board.platform`, `ro.product.board`, `ro.mediatek.platform`, `ro.arch` properties (Android)
+  - [ ] Using kernel log (`dmesg`) on ARM Linux
 - Vendor and microarchitecture detection
   - [x] Intel-designed x86/x86-64 cores (up to Kaby Lake, Airmont, and Knights Mill)
   - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen)
