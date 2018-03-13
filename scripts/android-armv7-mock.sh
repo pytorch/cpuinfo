@@ -7,6 +7,7 @@ adb push libs/armeabi-v7a/atm7029b-tablet-test /data/local/tmp/atm7029b-tablet-t
 adb push libs/armeabi-v7a/blu-r1-hd-test /data/local/tmp/blu-r1-hd-test
 adb push libs/armeabi-v7a/galaxy-a3-2016-eu-test /data/local/tmp/galaxy-a3-2016-eu-test
 adb push libs/armeabi-v7a/galaxy-a8-2016-duos-test /data/local/tmp/galaxy-a8-2016-duos-test
+adb push libs/armeabi-v7a/galaxy-a8-2018-test /data/local/tmp/galaxy-a8-2018-duos-test
 adb push libs/armeabi-v7a/galaxy-c9-pro-test /data/local/tmp/galaxy-c9-pro-test
 adb push libs/armeabi-v7a/galaxy-grand-prime-value-edition-test /data/local/tmp/galaxy-grand-prime-value-edition-test
 adb push libs/armeabi-v7a/galaxy-j1-2016-test /data/local/tmp/galaxy-j1-2016-test
@@ -74,6 +75,7 @@ adb shell "/data/local/tmp/atm7029b-tablet-test --gtest_color=yes"
 adb shell "/data/local/tmp/blu-r1-hd-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-a3-2016-eu-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-a8-2016-duos-test --gtest_color=yes"
+adb shell "/data/local/tmp/galaxy-a8-2018-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-c9-pro-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-grand-prime-value-edition-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-j1-2016-test --gtest_color=yes"

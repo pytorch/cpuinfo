@@ -432,6 +432,11 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(alcatel-revvl-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(alcatel-revvl-test alcatel-revvl-test)
 
+    ADD_EXECUTABLE(galaxy-a8-2018-test test/mock/galaxy-a8-2018.cc)
+    TARGET_INCLUDE_DIRECTORIES(galaxy-a8-2018-test PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(galaxy-a8-2018-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(galaxy-a8-2018-test galaxy-a8-2018-test)
+
     ADD_EXECUTABLE(galaxy-c9-pro-test test/mock/galaxy-c9-pro.cc)
     TARGET_INCLUDE_DIRECTORIES(galaxy-c9-pro-test PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(galaxy-c9-pro-test PRIVATE cpuinfo_mock gtest)
