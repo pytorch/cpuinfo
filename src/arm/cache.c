@@ -763,18 +763,26 @@ void cpuinfo_arm_decode_cache(
 			 * [2] http://www.anandtech.com/show/11088/hisilicon-kirin-960-performance-and-power/3
 			 * [3] https://arstechnica.com/gadgets/2017/05/qualcomms-snapdragon-660-and-630-bring-more-high-end-features-to-midrange-chips/
 			 */
-			uint32_t l2_size = 1024 * 1024;
+			uint32_t l1d_size = 32 * 1024;
+			uint32_t l2_size = 512 * 1024;
 			switch (chipset->series) {
 				case cpuinfo_arm_chipset_series_hisilicon_kirin:
+					l1d_size = 64 * 1024;
 					l2_size = 2 * 1024 * 1024;
+					break;
+				case cpuinfo_arm_chipset_series_mediatek_mt:
+					l1d_size = 64 * 1024;
+					l2_size = 1 * 1024 * 1024; /* TODO: verify assumption */
 					break;
 				default:
 					switch (midr) {
 						case UINT32_C(0x51AF8001): /* Kryo 280 Gold */
+							l1d_size = 64 * 1024;
 							l2_size = 2 * 1024 * 1024;
 							break;
 						case UINT32_C(0x51AF8002): /* Kryo 260 Gold */
-						default:
+							l1d_size = 64 * 1024;
+							l2_size = 1 * 1024 * 1024;
 							break;
 					}
 			}
@@ -785,8 +793,8 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l1d = (struct cpuinfo_cache) {
-				.size = 64 * 1024,
-				.associativity = 16,
+				.size = l1d_size,
+				.associativity = (l1d_size >> 12),
 				.line_size = 64
 			};
 			*l2 = (struct cpuinfo_cache) {
