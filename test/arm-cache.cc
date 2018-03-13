@@ -635,6 +635,38 @@ TEST(QUALCOMM, snapdragon_835) {
 	EXPECT_EQ(1024 * 1024, little_l2.size);
 }
 
+TEST(SAMSUNG, exynos_7885) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_samsung,
+		.series = cpuinfo_arm_chipset_series_samsung_exynos,
+		.model = 7885,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a73, 2, UINT32_C(0x410FD092),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 6, UINT32_C(0x410FD034),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(512 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(256 * 1024, little_l2.size);
+}
+
 TEST(SAMSUNG, exynos_8890) {
 	const struct cpuinfo_arm_chipset chipset = {
 		.vendor = cpuinfo_arm_chipset_vendor_samsung,
