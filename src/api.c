@@ -4,14 +4,14 @@
 #include <api.h>
 
 
-struct cpuinfo_processor* cpuinfo_processors;
-struct cpuinfo_core* cpuinfo_cores;
-struct cpuinfo_package* cpuinfo_packages;
+struct cpuinfo_processor* cpuinfo_processors = NULL;
+struct cpuinfo_core* cpuinfo_cores = NULL;
+struct cpuinfo_package* cpuinfo_packages = NULL;
 struct cpuinfo_cache* cpuinfo_cache[cpuinfo_cache_level_max] = { NULL };
 
-uint32_t cpuinfo_processors_count;
-uint32_t cpuinfo_cores_count;
-uint32_t cpuinfo_packages_count;
+uint32_t cpuinfo_processors_count = 0;
+uint32_t cpuinfo_cores_count = 0;
+uint32_t cpuinfo_packages_count = 0;
 uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max] = { 0 };
 
 

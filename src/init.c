@@ -12,15 +12,6 @@
 #endif
 
 
-struct cpuinfo_processor* cpuinfo_processors = NULL;
-struct cpuinfo_core* cpuinfo_cores = NULL;
-struct cpuinfo_package* cpuinfo_packages = NULL;
-
-uint32_t cpuinfo_processors_count = 0;
-uint32_t cpuinfo_cores_count = 0;
-uint32_t cpuinfo_packages_count = 0;
-
-
 #ifdef _WIN32
 	static INIT_ONCE init_guard = INIT_ONCE_STATIC_INIT;
 #else
