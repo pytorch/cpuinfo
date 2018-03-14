@@ -443,7 +443,6 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 	/* Populate cache infromation structures in l1i, l1d, and l2 */
-	struct cpuinfo_cache shared_l2;	
 	uint32_t cluster_id = UINT32_MAX;
 	for (uint32_t i = 0; i < usable_processors; i++) {
 		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
@@ -468,6 +467,7 @@ void cpuinfo_arm_linux_init(void) {
 		cores[i].midr = arm_linux_processors[i].midr;
 		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
 
+		struct cpuinfo_cache shared_l2 = { 0 };
 		cpuinfo_arm_decode_cache(
 			arm_linux_processors[i].uarch,
 			arm_linux_processors[i].package_processor_count,
