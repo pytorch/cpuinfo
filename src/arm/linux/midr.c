@@ -275,6 +275,21 @@ static const struct cluster_config cluster_configs[] = {
 			[1] = UINT32_C(0x410FC0F0) /* TODO: clarify */,
 		},
 	},
+	{
+		/* Kirin 928: 4x Cortex-A15 + 4x Cortex-A7 */
+		.cores = 8,
+		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+		.model = UINT16_C(928),
+		.clusters = 2,
+		.cluster_cores = {
+			[0] = 4,
+			[1] = 4,
+		},
+		.cluster_midr = {
+			[0] = UINT32_C(0x410FC070) /* TODO: clarify */,
+			[1] = UINT32_C(0x410FC0F0) /* TODO: clarify */,
+		},
+	},
 #endif /* CPUINFO_ARCH_ARM */
 	{
 		/* Kirin 950: 4x Cortex-A72 + 4x Cortex-A53 */
