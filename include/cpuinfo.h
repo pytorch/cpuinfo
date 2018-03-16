@@ -1568,27 +1568,27 @@ static inline bool cpuinfo_has_arm_crc32(void) {
 	#endif
 }
 
-const struct cpuinfo_processor* cpuinfo_get_processors(void);
-const struct cpuinfo_core* cpuinfo_get_cores(void);
-const struct cpuinfo_package* cpuinfo_get_packages(void);
+const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_processors(void);
+const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_cores(void);
+const struct cpuinfo_package* CPUINFO_ABI cpuinfo_get_packages(void);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_caches(void);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_caches(void);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l2_caches(void);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l3_caches(void);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_caches(void);
 
-const struct cpuinfo_processor* cpuinfo_get_processor(uint32_t index);
-const struct cpuinfo_core* cpuinfo_get_core(uint32_t index);
-const struct cpuinfo_package* cpuinfo_get_package(uint32_t index);
+const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_processor(uint32_t index);
+const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_core(uint32_t index);
+const struct cpuinfo_package* CPUINFO_ABI cpuinfo_get_package(uint32_t index);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_cache(uint32_t index);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_cache(uint32_t index);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l2_cache(uint32_t index);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l3_cache(uint32_t index);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_cache(uint32_t index);
 
-uint32_t cpuinfo_get_processors_count(void);
-uint32_t cpuinfo_get_cores_count(void);
-uint32_t cpuinfo_get_packages_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_processors_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_cores_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_packages_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l1i_caches_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l1d_caches_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l2_caches_count(void);
