@@ -43,18 +43,31 @@ MACRO(CPUINFO_TARGET_ENABLE_CXX11 target)
 ENDMACRO()
 
 # ---[ Build flags
+SET(CPUINFO_SUPPORTED_PLATFORM TRUE)
 IF(NOT CMAKE_SYSTEM_PROCESSOR)
   IF(NOT IOS)
-    MESSAGE(FATAL_ERROR "CMAKE_SYSTEM_PROCESSOR not defined")
+    MESSAGE(WARNING
+      "Target processor architecture is not specified. "
+      "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
+    SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
   ENDIF()
 ELSEIF(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|AMD64|x86_64|armv5te|armv7|armv7f|armv7s|armv7k|armv7-a|armv7l|arm64|aarch64)$")
-  MESSAGE(FATAL_ERROR "Unrecognized CMAKE_SYSTEM_PROCESSOR = ${CMAKE_SYSTEM_PROCESSOR}")
+  MESSAGE(WARNING
+    "Target processor architecture \"${CMAKE_SYSTEM_PROCESSOR}\" is not supported in cpuinfo. "
+    "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
+  SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
 ENDIF()
 
 IF(NOT CMAKE_SYSTEM_NAME)
-  MESSAGE(FATAL_ERROR "CMAKE_SYSTEM_NAME not defined")
+    MESSAGE(WARNING
+      "Target operating system is not specified. "
+      "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
+  SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
 ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|Darwin|Linux|Android)$")
-  MESSAGE(FATAL_ERROR "Unrecognized CMAKE_SYSTEM_NAME = ${CMAKE_SYSTEM_NAME}")
+  MESSAGE(WARNING
+    "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
+    "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
+  SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
 ENDIF()
 
 # ---[ Download deps
@@ -64,7 +77,7 @@ SET(CONFU_DEPENDENCIES_BINARY_DIR ${CMAKE_BINARY_DIR}/deps
   CACHE PATH "Confu-style dependencies binary directory")
 
 IF(CPUINFO_BUILD_MOCK_TESTS OR CPUINFO_BUILD_UNIT_TESTS)
-  IF(NOT DEFINED GOOGLETEST_SOURCE_DIR)
+  IF(CPUINFO_SUPPORTED_PLATFORM AND NOT DEFINED GOOGLETEST_SOURCE_DIR)
     MESSAGE(STATUS "Downloading Google Test to ${CONFU_DEPENDENCIES_SOURCE_DIR}/googletest (define GOOGLETEST_SOURCE_DIR to avoid it)")
     CONFIGURE_FILE(cmake/DownloadGoogleTest.cmake "${CONFU_DEPENDENCIES_BINARY_DIR}/googletest-download/CMakeLists.txt")
     EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
@@ -75,14 +88,16 @@ IF(CPUINFO_BUILD_MOCK_TESTS OR CPUINFO_BUILD_UNIT_TESTS)
   ENDIF()
 ENDIF()
 
-IF(CPUINFO_BUILD_BENCHMARKS AND NOT DEFINED GOOGLEBENCHMARK_SOURCE_DIR)
-  MESSAGE(STATUS "Downloading Google Benchmark to ${CONFU_DEPENDENCIES_SOURCE_DIR}/googlebenchmark (define GOOGLEBENCHMARK_SOURCE_DIR to avoid it)")
-  CONFIGURE_FILE(cmake/DownloadGoogleBenchmark.cmake "${CONFU_DEPENDENCIES_BINARY_DIR}/googlebenchmark-download/CMakeLists.txt")
-  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-    WORKING_DIRECTORY "${CONFU_DEPENDENCIES_BINARY_DIR}/googlebenchmark-download")
-  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
-    WORKING_DIRECTORY "${CONFU_DEPENDENCIES_BINARY_DIR}/googlebenchmark-download")
-  SET(GOOGLEBENCHMARK_SOURCE_DIR "${CONFU_DEPENDENCIES_SOURCE_DIR}/googlebenchmark" CACHE STRING "Google Benchmark source directory")
+IF(CPUINFO_BUILD_BENCHMARKS)
+  IF(CPUINFO_SUPPORTED_PLATFORM AND NOT DEFINED GOOGLEBENCHMARK_SOURCE_DIR)
+    MESSAGE(STATUS "Downloading Google Benchmark to ${CONFU_DEPENDENCIES_SOURCE_DIR}/googlebenchmark (define GOOGLEBENCHMARK_SOURCE_DIR to avoid it)")
+    CONFIGURE_FILE(cmake/DownloadGoogleBenchmark.cmake "${CONFU_DEPENDENCIES_BINARY_DIR}/googlebenchmark-download/CMakeLists.txt")
+    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+      WORKING_DIRECTORY "${CONFU_DEPENDENCIES_BINARY_DIR}/googlebenchmark-download")
+    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+      WORKING_DIRECTORY "${CONFU_DEPENDENCIES_BINARY_DIR}/googlebenchmark-download")
+    SET(GOOGLEBENCHMARK_SOURCE_DIR "${CONFU_DEPENDENCIES_SOURCE_DIR}/googlebenchmark" CACHE STRING "Google Benchmark source directory")
+  ENDIF()
 ENDIF()
 
 # ---[ cpuinfo library
@@ -91,82 +106,84 @@ SET(CPUINFO_SRCS
   src/api.c
   src/log.c)
 
-IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64|AMD64)$")
-  LIST(APPEND CPUINFO_SRCS
-    src/x86/init.c
-    src/x86/info.c
-    src/x86/vendor.c
-    src/x86/uarch.c
-    src/x86/name.c
-    src/x86/topology.c
-    src/x86/isa.c
-    src/x86/cache/init.c
-    src/x86/cache/descriptor.c
-    src/x86/cache/deterministic.c)
-  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+IF(CPUINFO_SUPPORTED_PLATFORM)
+  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64|AMD64)$")
     LIST(APPEND CPUINFO_SRCS
-      src/x86/linux/init.c
-      src/x86/linux/cpuinfo.c)
-  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    LIST(APPEND CPUINFO_SRCS src/x86/mach/init.c)
-  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    LIST(APPEND CPUINFO_SRCS src/x86/windows/init.c)
-  ENDIF()
-ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7f|armv7s|armv7k|armv7-a|armv7l|arm64|aarch64)$" OR IOS)
-  LIST(APPEND CPUINFO_SRCS
-    src/arm/uarch.c
-    src/arm/cache.c)
-  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
-    LIST(APPEND CPUINFO_SRCS
-      src/arm/linux/init.c
-      src/arm/linux/cpuinfo.c
-      src/arm/linux/clusters.c
-      src/arm/linux/chipset.c
-      src/arm/linux/midr.c
-      src/arm/linux/hwcap.c)
-    IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
-      LIST(APPEND CPUINFO_SRCS src/arm/android/gpu.c)
+      src/x86/init.c
+      src/x86/info.c
+      src/x86/vendor.c
+      src/x86/uarch.c
+      src/x86/name.c
+      src/x86/topology.c
+      src/x86/isa.c
+      src/x86/cache/init.c
+      src/x86/cache/descriptor.c
+      src/x86/cache/deterministic.c)
+    IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+      LIST(APPEND CPUINFO_SRCS
+        src/x86/linux/init.c
+        src/x86/linux/cpuinfo.c)
+    ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+      LIST(APPEND CPUINFO_SRCS src/x86/mach/init.c)
+    ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+      LIST(APPEND CPUINFO_SRCS src/x86/windows/init.c)
     ENDIF()
-    IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7l|armv7-a)$")
-      LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch32-isa.c)
-      IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND ANDROID_ABI STREQUAL "armeabi")
-        SET_SOURCE_FILES_PROPERTIES(src/arm/linux/aarch32-isa.c PROPERTIES COMPILE_FLAGS -marm)
+  ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7f|armv7s|armv7k|armv7-a|armv7l|arm64|aarch64)$" OR IOS)
+    LIST(APPEND CPUINFO_SRCS
+      src/arm/uarch.c
+      src/arm/cache.c)
+    IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+      LIST(APPEND CPUINFO_SRCS
+        src/arm/linux/init.c
+        src/arm/linux/cpuinfo.c
+        src/arm/linux/clusters.c
+        src/arm/linux/chipset.c
+        src/arm/linux/midr.c
+        src/arm/linux/hwcap.c)
+      IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
+        LIST(APPEND CPUINFO_SRCS src/arm/android/gpu.c)
       ENDIF()
-    ELSEIF(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
-      LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch64-isa.c)
+      IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7l|armv7-a)$")
+        LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch32-isa.c)
+        IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND ANDROID_ABI STREQUAL "armeabi")
+          SET_SOURCE_FILES_PROPERTIES(src/arm/linux/aarch32-isa.c PROPERTIES COMPILE_FLAGS -marm)
+        ENDIF()
+      ELSEIF(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
+        LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch64-isa.c)
+      ENDIF()
+    ELSEIF(IOS)
+      LIST(APPEND CPUINFO_SRCS
+        src/arm/mach/init.c
+        src/gpu/gles-ios.m)
+      SET_SOURCE_FILES_PROPERTIES(src/gpu/gles-ios.m PROPERTIES COMPILE_FLAGS -fobjc-arc)
     ENDIF()
-  ELSEIF(IOS)
-    LIST(APPEND CPUINFO_SRCS
-      src/arm/mach/init.c
-      src/gpu/gles-ios.m)
-    SET_SOURCE_FILES_PROPERTIES(src/gpu/gles-ios.m PROPERTIES COMPILE_FLAGS -fobjc-arc)
+    IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
+      LIST(APPEND CPUINFO_SRCS
+        src/arm/android/properties.c)
+    ENDIF()
   ENDIF()
-  IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    LIST(APPEND CPUINFO_SRCS
-      src/arm/android/properties.c)
-  ENDIF()
-ENDIF()
 
-IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
-  LIST(APPEND CPUINFO_SRCS  
-    src/linux/smallfile.c    
-    src/linux/multiline.c
-    src/linux/current.c
-    src/linux/cpulist.c
-    src/linux/processors.c)
-  IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    LIST(APPEND CPUINFO_SRCS
-      src/gpu/gles2.c
-      src/linux/gpu.c)
+  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+    LIST(APPEND CPUINFO_SRCS  
+      src/linux/smallfile.c    
+      src/linux/multiline.c
+      src/linux/current.c
+      src/linux/cpulist.c
+      src/linux/processors.c)
+    IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
+      LIST(APPEND CPUINFO_SRCS
+        src/gpu/gles2.c
+        src/linux/gpu.c)
+    ENDIF()
+  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    LIST(APPEND CPUINFO_SRCS src/mach/topology.c)
   ENDIF()
-ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  LIST(APPEND CPUINFO_SRCS src/mach/topology.c)
-ENDIF()
 
-IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
-  SET(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-  SET(THREADS_PREFER_PTHREAD_FLAG TRUE)
-  FIND_PACKAGE(Threads REQUIRED)
+  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+    SET(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+    SET(THREADS_PREFER_PTHREAD_FLAG TRUE)
+    FIND_PACKAGE(Threads REQUIRED)
+  ENDIF()
 ENDIF()
 
 IF(CPUINFO_LIBRARY_TYPE STREQUAL "default")
@@ -182,24 +199,29 @@ CPUINFO_TARGET_ENABLE_C99(cpuinfo)
 SET_TARGET_PROPERTIES(cpuinfo PROPERTIES PUBLIC_HEADER include/cpuinfo.h)
 TARGET_INCLUDE_DIRECTORIES(cpuinfo PUBLIC include)
 TARGET_INCLUDE_DIRECTORIES(cpuinfo PRIVATE src)
-IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
-  TARGET_LINK_LIBRARIES(cpuinfo PUBLIC ${CMAKE_THREAD_LIBS_INIT})
-ENDIF()
-IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  TARGET_COMPILE_DEFINITIONS(cpuinfo PRIVATE -D_GNU_SOURCE)
-ENDIF()
-IF(IOS)
-  TARGET_LINK_LIBRARIES(cpuinfo INTERFACE "-framework OpenGLES")
-  TARGET_LINK_LIBRARIES(cpuinfo INTERFACE "-framework Foundation")
+IF(CPUINFO_SUPPORTED_PLATFORM)
+  TARGET_COMPILE_DEFINITIONS(cpuinfo INTERFACE CPUINFO_SUPPORTED_PLATFORM=1)
+  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+    TARGET_LINK_LIBRARIES(cpuinfo PUBLIC ${CMAKE_THREAD_LIBS_INIT})
+  ENDIF()
+  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    TARGET_COMPILE_DEFINITIONS(cpuinfo PRIVATE _GNU_SOURCE=1)
+  ENDIF()
+  IF(IOS)
+    TARGET_LINK_LIBRARIES(cpuinfo INTERFACE "-framework OpenGLES")
+    TARGET_LINK_LIBRARIES(cpuinfo INTERFACE "-framework Foundation")
+  ENDIF()
+ELSE()
+  TARGET_COMPILE_DEFINITIONS(cpuinfo INTERFACE CPUINFO_SUPPORTED_PLATFORM=0)
 ENDIF()
 
 INSTALL(TARGETS cpuinfo
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # ---[ cpuinfo micro-benchmarks
-IF(CPUINFO_BUILD_BENCHMARKS)
+IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_BENCHMARKS)
   # ---[ Build google benchmark
   IF(NOT TARGET benchmark)
     SET(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "")
@@ -217,18 +239,20 @@ IF(CPUINFO_BUILD_BENCHMARKS)
   TARGET_LINK_LIBRARIES(init-bench cpuinfo benchmark)
 ENDIF()
 
-IF(CPUINFO_BUILD_MOCK_TESTS OR CPUINFO_BUILD_UNIT_TESTS)
-  # ---[ Build google test
-  IF(NOT TARGET gtest)
-    SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    ADD_SUBDIRECTORY(
-      "${GOOGLETEST_SOURCE_DIR}"
-      "${CONFU_DEPENDENCIES_BINARY_DIR}/googletest")
+IF(CPUINFO_SUPPORTED_PLATFORM)
+  IF(CPUINFO_BUILD_MOCK_TESTS OR CPUINFO_BUILD_UNIT_TESTS)
+    # ---[ Build google test
+    IF(NOT TARGET gtest)
+      SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+      ADD_SUBDIRECTORY(
+        "${GOOGLETEST_SOURCE_DIR}"
+        "${CONFU_DEPENDENCIES_BINARY_DIR}/googletest")
+    ENDIF()
   ENDIF()
 ENDIF()
 
 # ---[ cpuinfo mock library and mock tests
-IF(CPUINFO_BUILD_MOCK_TESTS)
+IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
   SET(CPUINFO_MOCK_SRCS "${CPUINFO_SRCS}")
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
     LIST(REMOVE_ITEM CPUINFO_MOCK_SRCS src/gpu/gles2.c)
@@ -622,7 +646,7 @@ IF(CPUINFO_BUILD_MOCK_TESTS)
 ENDIF()
 
 # ---[ cpuinfo unit tests
-IF(CPUINFO_BUILD_UNIT_TESTS)
+IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_UNIT_TESTS)
   ADD_EXECUTABLE(init-test test/init.cc)
   CPUINFO_TARGET_ENABLE_CXX11(init-test)
   TARGET_LINK_LIBRARIES(init-test PRIVATE cpuinfo gtest)
@@ -670,7 +694,7 @@ IF(CPUINFO_BUILD_UNIT_TESTS)
 ENDIF()
 
 # ---[ Helper and debug tools
-IF(CPUINFO_BUILD_TOOLS)
+IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_TOOLS)
   ADD_EXECUTABLE(isa-info tools/isa-info.c)
   CPUINFO_TARGET_ENABLE_C99(isa-info)
   TARGET_LINK_LIBRARIES(isa-info PRIVATE cpuinfo)

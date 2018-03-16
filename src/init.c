@@ -6,6 +6,7 @@
 
 #include <cpuinfo.h>
 #include <api.h>
+#include <log.h>
 
 #ifdef __APPLE__
 	#include "TargetConditionals.h"
@@ -27,7 +28,7 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	#elif defined(_WIN32)
 		InitOnceExecuteOnce(&init_guard, &cpuinfo_x86_windows_init, NULL, NULL);
 	#else
-		#error Unsupported target OS
+		cpuinfo_log_error("operating system is not supported in cpuinfo");
 	#endif
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	#if defined(__linux__)
@@ -35,10 +36,10 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	#elif defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 		pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 	#else
-		#error Unsupported target OS
+		cpuinfo_log_error("operating system is not supported in cpuinfo");
 	#endif
 #else
-	#error Unsupported target architecture
+	cpuinfo_log_error("processor architecture is not supported in cpuinfo");
 #endif
 	return (cpuinfo_processors != NULL) && (cpuinfo_cores != NULL) && (cpuinfo_packages != NULL);
 }
