@@ -13,10 +13,17 @@ parser.add_argument("-p", "--prefix", metavar="NAME", required=True,
                     help="Prefix for stored files, e.g. galaxy-s7-us")
 
 
+# System files which need to be read with `adb shell cat filename`
+# instead of `adb pull filename`
+SHELL_PREFIX = [
+    "/sys/class/kgsl/kgsl-3d0/",
+]
+
 SYSTEM_FILES = [
     "/proc/cpuinfo",
     "/system/build.prop",
     "/sys/class/kgsl/kgsl-3d0/bus_split",
+    "/sys/class/kgsl/kgsl-3d0/clock_mhz",
     "/sys/class/kgsl/kgsl-3d0/deep_nap_timer",
     "/sys/class/kgsl/kgsl-3d0/default_pwrlevel",
     "/sys/class/kgsl/kgsl-3d0/dev",
@@ -32,31 +39,40 @@ SYSTEM_FILES = [
     "/sys/class/kgsl/kgsl-3d0/devfreq/target_freq",
     "/sys/class/kgsl/kgsl-3d0/devfreq/trans_stat",
     "/sys/class/kgsl/kgsl-3d0/device/op_cpu_table",
-    "/sys/class/kgsl/kgsl-3d0/dispatch",
-    "/sys/class/kgsl/kgsl-3d0/force_bus_on",
-    "/sys/class/kgsl/kgsl-3d0/force_clk_on",
-    "/sys/class/kgsl/kgsl-3d0/force_non_retention_on",
-    "/sys/class/kgsl/kgsl-3d0/force_rail_on",
+    "/sys/class/kgsl/kgsl-3d0/freq_table_mhz",
     "/sys/class/kgsl/kgsl-3d0/ft_fast_hang_detect",
     "/sys/class/kgsl/kgsl-3d0/ft_hang_intr_status",
     "/sys/class/kgsl/kgsl-3d0/ft_long_ib_detect",
     "/sys/class/kgsl/kgsl-3d0/ft_pagefault_policy",
     "/sys/class/kgsl/kgsl-3d0/ft_policy",
     "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies",
+    "/sys/class/kgsl/kgsl-3d0/gpu_busy_percentage",
+    "/sys/class/kgsl/kgsl-3d0/gpu_clock_stats",
+    "/sys/class/kgsl/kgsl-3d0/gpu_llc_slice_enable",
+    "/sys/class/kgsl/kgsl-3d0/gpu_model",
     "/sys/class/kgsl/kgsl-3d0/gpubusy",
     "/sys/class/kgsl/kgsl-3d0/gpuclk",
+    "/sys/class/kgsl/kgsl-3d0/gpuhtw_llc_slice_enable",
+    "/sys/class/kgsl/kgsl-3d0/hwcg",
     "/sys/class/kgsl/kgsl-3d0/idle_timer",
     "/sys/class/kgsl/kgsl-3d0/lm",
     "/sys/class/kgsl/kgsl-3d0/max_gpuclk",
     "/sys/class/kgsl/kgsl-3d0/max_pwrlevel",
+    "/sys/class/kgsl/kgsl-3d0/min_clock_mhz",
     "/sys/class/kgsl/kgsl-3d0/min_pwrlevel",
     "/sys/class/kgsl/kgsl-3d0/num_pwrlevels",
     "/sys/class/kgsl/kgsl-3d0/pmqos_active_latency",
     "/sys/class/kgsl/kgsl-3d0/popp",
+    "/sys/class/kgsl/kgsl-3d0/preempt_count",
+    "/sys/class/kgsl/kgsl-3d0/preempt_level",
     "/sys/class/kgsl/kgsl-3d0/preemption",
+    "/sys/class/kgsl/kgsl-3d0/pwrscale",
     "/sys/class/kgsl/kgsl-3d0/reset_count",
+    "/sys/class/kgsl/kgsl-3d0/skipsaverestore",
     "/sys/class/kgsl/kgsl-3d0/sptp_pc",
     "/sys/class/kgsl/kgsl-3d0/thermal_pwrlevel",
+    "/sys/class/kgsl/kgsl-3d0/throttling",
+    "/sys/class/kgsl/kgsl-3d0/usesgmem",
     "/sys/class/kgsl/kgsl-3d0/wake_nice",
     "/sys/class/kgsl/kgsl-3d0/wake_timeout",
     "/sys/devices/soc0/accessory_chip",
@@ -217,14 +233,6 @@ def c_escape(string):
             c_string += "x%02X" % ord(c)
     return c_string
 
-def adb_pull(device_path, local_path):
-    env = os.environ.copy()
-    env["LC_ALL"] = "C"
-
-    adb = subprocess.Popen(["adb", "pull", device_path, local_path], env=env)
-    adb.communicate()
-    return adb.returncode == 0
-
 def adb_shell(commands):
     env = os.environ.copy()
     env["LC_ALL"] = "C"
@@ -233,6 +241,21 @@ def adb_shell(commands):
     stdout, _ = adb.communicate()
     if adb.returncode == 0:
         return stdout
+
+def adb_pull(device_path, local_path):
+    if any(device_path.startswith(prefix) for prefix in SHELL_PREFIX):
+        content = adb_shell(["cat", device_path])
+        if content is not None:
+            with open(local_path, "wb") as local_file:
+                local_file.write(content)
+        return content is not None
+    else:
+        env = os.environ.copy()
+        env["LC_ALL"] = "C"
+
+        adb = subprocess.Popen(["adb", "pull", device_path, local_path], env=env)
+        adb.communicate()
+        return adb.returncode == 0
 
 def adb_getprop():
     properties = adb_shell(["getprop"])
