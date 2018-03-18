@@ -335,6 +335,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		struct cpuinfo_package* package = (struct cpuinfo_package*) processor->package;
 		struct cpuinfo_cluster* cluster = (struct cpuinfo_cluster*) processor->cluster;
 
+		core->cluster = cluster;
 		core->package = package;
 		core->core_id = core_bits_mask &
 			(processor->apic_id >> x86_processor.topology.core_bits_offset);
@@ -556,6 +557,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
 	cpuinfo_packages = packages;
 
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
@@ -566,6 +568,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 
 	cpuinfo_processors_count = processors_count;
 	cpuinfo_cores_count = cores_count;
+	cpuinfo_clusters_count = packages_count;
 	cpuinfo_packages_count = packages_count;
 
 	processors = NULL;
