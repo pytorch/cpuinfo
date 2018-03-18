@@ -10,6 +10,7 @@ adb push libs/arm64-v8a/galaxy-s7-global-test /data/local/tmp/galaxy-s7-global-t
 adb push libs/arm64-v8a/galaxy-s7-us-test /data/local/tmp/galaxy-s7-us-test
 adb push libs/arm64-v8a/galaxy-s8-global-test /data/local/tmp/galaxy-s8-global-test
 adb push libs/arm64-v8a/galaxy-s8-us-test /data/local/tmp/galaxy-s8-us-test
+adb push libs/arm64-v8a/galaxy-s9-us-test /data/local/tmp/galaxy-s9-us-test
 adb push libs/arm64-v8a/huawei-mate-8-test /data/local/tmp/huawei-mate-8-test
 adb push libs/arm64-v8a/huawei-mate-9-test /data/local/tmp/huawei-mate-9-test
 adb push libs/arm64-v8a/huawei-mate-10-test /data/local/tmp/huawei-mate-10-test
@@ -44,6 +45,7 @@ adb shell "/data/local/tmp/galaxy-s7-global-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s7-us-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s8-global-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s8-us-test --gtest_color=yes"
+adb shell "/data/local/tmp/galaxy-s9-us-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-8-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-9-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-10-test --gtest_color=yes"
