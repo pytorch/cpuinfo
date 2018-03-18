@@ -350,13 +350,16 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	}
 
 	for (uint32_t i = 0; i < packages_count; i++) {
-		cluster->package = packages + i;
+		struct cpuinfo_package* package = packages + i;
+		struct cpuinfo_cluster* cluster = clusters + i;
+
+		cluster->package = package;
 		cluster->vendor = cores[cluster->core_start].vendor;
 		cluster->uarch = cores[cluster->core_start].uarch;
 		cluster->cpuid = cores[cluster->core_start].cpuid;
 		package->cluster_start = i;
 		package->cluster_count = 1;
-		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[i].name);
+		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, package->name);
 	}
 
 	/* Count caches */
