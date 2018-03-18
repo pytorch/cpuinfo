@@ -351,17 +351,13 @@ void cpuinfo_x86_linux_init(void) {
 			if (apic_package_id != last_apic_package_id) {
 				/* new cluster/package */
 
-				clusters[package_index] = (struct cpuinfo_cluster) {
-					.processor_start = processor_index,
-					.processor_count = 1,
-					.core_start = core_index,
-					.core_count = 0,
-					.cluster_id = 0,
-					.package = packages + package_index,
-					.vendor = x86_processor.vendor,
-					.uarch = x86_processor.uarch,
-					.cpuid = x86_processor.cpuid,
-				};
+				clusters[package_index].processor_start = processor_index;
+				clusters[package_index].processor_count = 1;
+				clusters[package_index].core_start = core_index;
+				clusters[package_index].package = packages + package_index;
+				clusters[package_index].vendor = x86_processor.vendor;
+				clusters[package_index].uarch = x86_processor.uarch;
+				clusters[package_index].cpuid = x86_processor.cpuid;
 				packages[package_index].processor_start = processor_index;
 				packages[package_index].processor_count = 1;
 				packages[package_index].core_start = core_index;
