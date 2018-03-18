@@ -4,416 +4,904 @@
 
 
 TEST(PROCESSORS_COUNT, non_zero) {
-	ASSERT_NE(0, cpuinfo_get_processors_count());
+	EXPECT_NE(0, cpuinfo_get_processors_count());
 }
 
 TEST(PROCESSORS, non_null) {
-	ASSERT_TRUE(cpuinfo_get_processors());
+	EXPECT_TRUE(cpuinfo_get_processors());
 }
 
-TEST(CORES_COUNT, non_zero) {
-	ASSERT_NE(0, cpuinfo_get_cores_count());
+TEST(PROCESSOR, non_null) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		EXPECT_TRUE(cpuinfo_get_processor(i));
+	}
+}
+
+TEST(PROCESSOR, valid_smt_id) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_core* core = processor->core;
+		ASSERT_TRUE(core);
+
+		EXPECT_LT(processor->smt_id, core->processor_count);
+	}
+}
+
+TEST(PROCESSOR, consistent_core) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_core* core = processor->core;
+		ASSERT_TRUE(core);
+
+		EXPECT_GE(i, core->processor_start);
+		EXPECT_LT(i, core->processor_start + core->processor_count);
+	}
+}
+
+TEST(PROCESSOR, consistent_package) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_package* package = processor->package;
+		ASSERT_TRUE(package);
+
+		EXPECT_GE(i, package->processor_start);
+		EXPECT_LT(i, package->processor_start + package->processor_count);
+	}
+}
+
+TEST(PROCESSOR, consistent_l1i) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_cache* l1i = processor->cache.l1i;
+		if (l1i != nullptr) {
+			EXPECT_GE(i, l1i->processor_start);
+			EXPECT_LT(i, l1i->processor_start + l1i->processor_count);
+		}
+	}
+}
+
+TEST(PROCESSOR, consistent_l1d) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_cache* l1d = processor->cache.l1d;
+		if (l1d != nullptr) {
+			EXPECT_GE(i, l1d->processor_start);
+			EXPECT_LT(i, l1d->processor_start + l1d->processor_count);
+		}
+	}
+}
+
+TEST(PROCESSOR, consistent_l2) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_cache* l2 = processor->cache.l2;
+		if (l2 != nullptr) {
+			EXPECT_GE(i, l2->processor_start);
+			EXPECT_LT(i, l2->processor_start + l2->processor_count);
+		}
+	}
+}
+
+TEST(PROCESSOR, consistent_l3) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_cache* l3 = processor->cache.l3;
+		if (l3 != nullptr) {
+			EXPECT_GE(i, l3->processor_start);
+			EXPECT_LT(i, l3->processor_start + l3->processor_count);
+		}
+	}
+}
+
+TEST(PROCESSOR, consistent_l4) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_cache* l4 = processor->cache.l4;
+		if (l4 != nullptr) {
+			EXPECT_GE(i, l4->processor_start);
+			EXPECT_LT(i, l4->processor_start + l4->processor_count);
+		}
+	}
+}
+
+TEST(CORES_COUNT, within_bounds) {
+	EXPECT_NE(0, cpuinfo_get_cores_count());
+	EXPECT_LE(cpuinfo_get_cores_count(), cpuinfo_get_processors_count());
+	EXPECT_GE(cpuinfo_get_cores_count(), cpuinfo_get_packages_count());
 }
 
 TEST(CORES, non_null) {
-	ASSERT_TRUE(cpuinfo_get_cores());
+	EXPECT_TRUE(cpuinfo_get_cores());
 }
 
-TEST(CORES, known_vendor) {
+TEST(CORE, non_null) {
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
-		ASSERT_NE(cpuinfo_vendor_unknown, cpuinfo_get_core(i)->vendor);
+		EXPECT_TRUE(cpuinfo_get_core(i));
 	}
 }
 
-TEST(CORES, known_uarch) {
+TEST(CORE, non_zero_processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
-		ASSERT_NE(cpuinfo_uarch_unknown, cpuinfo_get_core(i)->uarch);
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+
+		EXPECT_NE(0, core->processor_count);
 	}
 }
 
-TEST(L1I, non_zero_count) {
-	ASSERT_NE(0, cpuinfo_get_l1i_caches_count());
+TEST(CORE, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+
+		for (uint32_t i = 0; i < core->processor_count; i++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(core->processor_start + i);
+			EXPECT_EQ(core, processor->core);
+		}
+	}
 }
 
-TEST(L1I, valid_count) {
-	ASSERT_LE(cpuinfo_get_l1i_caches_count(), cpuinfo_get_processors_count());
+TEST(CORE, valid_core_id) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+		const cpuinfo_package* package = core->package;
+		ASSERT_TRUE(package);
+
+		EXPECT_LT(core->core_id, package->core_count);
+	}
 }
 
-TEST(L1I, non_null) {
-	ASSERT_TRUE(cpuinfo_get_l1i_caches());
+TEST(CORE, consistent_package) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+		const cpuinfo_package* package = core->package;
+		ASSERT_TRUE(package);
+
+		EXPECT_GE(i, package->core_start);
+		EXPECT_LT(i, package->core_start + package->core_count);
+	}
 }
 
-TEST(L1I, non_zero_size) {
+TEST(CORE, known_vendor) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+
+		EXPECT_NE(cpuinfo_vendor_unknown, core->vendor);
+	}
+}
+
+TEST(CORE, known_uarch) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+
+		EXPECT_NE(cpuinfo_uarch_unknown, core->uarch);
+	}
+}
+
+TEST(PACKAGES_COUNT, within_bounds) {
+	EXPECT_NE(0, cpuinfo_get_packages_count());
+	EXPECT_LE(cpuinfo_get_packages_count(), cpuinfo_get_cores_count());
+	EXPECT_LE(cpuinfo_get_packages_count(), cpuinfo_get_processors_count());
+}
+
+TEST(PACKAGES, non_null) {
+	EXPECT_TRUE(cpuinfo_get_packages());
+}
+
+TEST(PACKAGE, non_null) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		EXPECT_TRUE(cpuinfo_get_package(i));
+	}
+}
+
+TEST(PACKAGE, non_zero_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		EXPECT_NE(0, package->processor_count);
+	}
+}
+
+TEST(PACKAGE, valid_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		EXPECT_LT(package->processor_start, cpuinfo_get_processors_count());
+		EXPECT_LE(package->processor_start + package->processor_count, cpuinfo_get_processors_count());
+	}
+}
+
+TEST(PACKAGE, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		for (uint32_t j = 0; j < package->processor_count; j++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(package->processor_start + j);
+			EXPECT_EQ(package, processor->package);
+		}
+	}
+}
+
+TEST(PACKAGE, non_zero_cores) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		EXPECT_NE(0, package->processor_count);
+	}
+}
+
+TEST(PACKAGE, valid_cores) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		EXPECT_LT(package->core_start, cpuinfo_get_cores_count());
+		EXPECT_LE(package->core_start + package->core_count, cpuinfo_get_cores_count());
+	}
+}
+
+TEST(PACKAGE, consistent_cores) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		for (uint32_t j = 0; j < package->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(package->core_start + j);
+			EXPECT_EQ(package, core->package);
+		}
+	}
+}
+
+TEST(L1I_CACHES_COUNT, within_bounds) {
+	EXPECT_NE(0, cpuinfo_get_l1i_caches_count());
+	EXPECT_LE(cpuinfo_get_l1i_caches_count(), cpuinfo_get_processors_count());
+}
+
+TEST(L1I_CACHES, non_null) {
+	EXPECT_TRUE(cpuinfo_get_l1i_caches());
+}
+
+TEST(L1I_CACHE, non_null) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1i_cache(i)->size);
+		EXPECT_TRUE(cpuinfo_get_l1i_cache(i));
 	}
 }
 
-TEST(L1I, valid_size) {
+TEST(L1I_CACHE, non_zero_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l1i_cache(i)->size,
-			cpuinfo_get_l1i_cache(i)->associativity * cpuinfo_get_l1i_cache(i)->sets * cpuinfo_get_l1i_cache(i)->partitions * cpuinfo_get_l1i_cache(i)->line_size);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->size);
 	}
 }
 
-TEST(L1I, non_zero_associativity) {
+TEST(L1I_CACHE, valid_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1i_cache(i)->associativity);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(cache->size,
+			cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 }
 
-TEST(L1I, non_zero_partitions) {
+TEST(L1I_CACHE, non_zero_associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1i_cache(i)->partitions);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->associativity);
 	}
 }
 
-TEST(L1I, non_zero_line_size) {
+TEST(L1I_CACHE, non_zero_partitions) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1i_cache(i)->line_size);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->partitions);
 	}
 }
 
-TEST(L1I, power_of_2_line_size) {
+TEST(L1I_CACHE, non_zero_line_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_EQ(0, cpuinfo_get_l1i_cache(i)->line_size & (cpuinfo_get_l1i_cache(i)->line_size - 1));
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->line_size);
 	}
 }
 
-TEST(L1I, valid_line_size) {
+TEST(L1I_CACHE, power_of_2_line_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_GE(cpuinfo_get_l1i_cache(i)->line_size, 16);
-		ASSERT_LE(cpuinfo_get_l1i_cache(i)->line_size, 128);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		const uint32_t line_size = cache->line_size;
+		EXPECT_NE(0, line_size);
+		EXPECT_EQ(0, line_size & (line_size - 1));
 	}
 }
 
-TEST(L1I, valid_flags) {
+TEST(L1I_CACHE, reasonable_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_GE(cache->line_size, 16);
+		EXPECT_LE(cache->line_size, 128);
+	}
+}
+
+TEST(L1I_CACHE, valid_flags) {
 	const uint32_t valid_flags = CPUINFO_CACHE_UNIFIED | CPUINFO_CACHE_INCLUSIVE | CPUINFO_CACHE_COMPLEX_INDEXING;
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_EQ(0, cpuinfo_get_l1i_cache(i)->flags & ~valid_flags);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(0, cache->flags & ~valid_flags);
 	}
 }
 
-TEST(L1I, non_inclusive) {
+TEST(L1I_CACHE, non_inclusive) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_NE(CPUINFO_CACHE_INCLUSIVE, cpuinfo_get_l1i_cache(i)->flags & CPUINFO_CACHE_INCLUSIVE);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(CPUINFO_CACHE_INCLUSIVE, cache->flags & CPUINFO_CACHE_INCLUSIVE);
 	}
 }
 
-TEST(L1I, non_zero_processors) {
+TEST(L1I_CACHE, non_zero_processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1i_cache(i)->processor_count);
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->processor_count);
 	}
 }
 
-TEST(L1I, valid_processors) {
+TEST(L1I_CACHE, valid_processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_LT(cpuinfo_get_l1i_cache(i)->processor_start, cpuinfo_get_processors_count());
-		ASSERT_LE(cpuinfo_get_l1i_cache(i)->processor_start + cpuinfo_get_l1i_cache(i)->processor_count, cpuinfo_get_processors_count());
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_LT(cache->processor_start, cpuinfo_get_processors_count());
+		EXPECT_LE(cache->processor_start + cache->processor_count, cpuinfo_get_processors_count());
 	}
 }
 
-TEST(L1D, non_zero_count) {
-	ASSERT_NE(0, cpuinfo_get_l1d_caches_count());
+TEST(L1I_CACHE, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
+		ASSERT_TRUE(cache);
+
+		for (uint32_t j = 0; j < cache->processor_count; j++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(cache->processor_start + j);
+			ASSERT_TRUE(processor);
+
+			EXPECT_EQ(cache, processor->cache.l1i);
+		}
+	}
 }
 
-TEST(L1D, valid_count) {
-	ASSERT_LE(cpuinfo_get_l1d_caches_count(), cpuinfo_get_processors_count());
+TEST(L1D_CACHES_COUNT, within_bounds) {
+	EXPECT_NE(0, cpuinfo_get_l1d_caches_count());
+	EXPECT_LE(cpuinfo_get_l1d_caches_count(), cpuinfo_get_processors_count());
 }
 
-TEST(L1D, non_null) {
-	ASSERT_TRUE(cpuinfo_get_l1d_caches());
+TEST(L1D_CACHES, non_null) {
+	EXPECT_TRUE(cpuinfo_get_l1d_caches());
 }
 
-TEST(L1D, non_zero_size) {
+TEST(L1D_CACHE, non_null) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1d_cache(i)->size);
+		EXPECT_TRUE(cpuinfo_get_l1d_cache(i));
 	}
 }
 
-TEST(L1D, valid_size) {
+TEST(L1D_CACHE, non_zero_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l1d_cache(i)->size,
-			cpuinfo_get_l1d_cache(i)->associativity * cpuinfo_get_l1d_cache(i)->sets * cpuinfo_get_l1d_cache(i)->partitions * cpuinfo_get_l1d_cache(i)->line_size);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->size);
 	}
 }
 
-TEST(L1D, non_zero_associativity) {
+TEST(L1D_CACHE, valid_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1d_cache(i)->associativity);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(cache->size,
+			cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 }
 
-TEST(L1D, non_zero_partitions) {
+TEST(L1D_CACHE, non_zero_associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1d_cache(i)->partitions);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->associativity);
 	}
 }
 
-TEST(L1D, non_zero_line_size) {
+TEST(L1D_CACHE, non_zero_partitions) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1d_cache(i)->line_size);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->partitions);
 	}
 }
 
-TEST(L1D, power_of_2_line_size) {
+TEST(L1D_CACHE, non_zero_line_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_EQ(0, cpuinfo_get_l1d_cache(i)->line_size & (cpuinfo_get_l1d_cache(i)->line_size - 1));
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->line_size);
 	}
 }
 
-TEST(L1D, valid_line_size) {
+TEST(L1D_CACHE, power_of_2_line_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_GE(cpuinfo_get_l1d_cache(i)->line_size, 16);
-		ASSERT_LE(cpuinfo_get_l1d_cache(i)->line_size, 128);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		const uint32_t line_size = cache->line_size;
+		EXPECT_NE(0, line_size);
+		EXPECT_EQ(0, line_size & (line_size - 1));
 	}
 }
 
-TEST(L1D, valid_flags) {
+TEST(L1D_CACHE, reasonable_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_GE(cache->line_size, 16);
+		EXPECT_LE(cache->line_size, 128);
+	}
+}
+
+TEST(L1D_CACHE, valid_flags) {
 	const uint32_t valid_flags = CPUINFO_CACHE_UNIFIED | CPUINFO_CACHE_INCLUSIVE | CPUINFO_CACHE_COMPLEX_INDEXING;
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_EQ(0, cpuinfo_get_l1d_cache(i)->flags & ~valid_flags);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(0, cache->flags & ~valid_flags);
 	}
 }
 
-TEST(L1D, non_inclusive) {
+TEST(L1D_CACHE, non_inclusive) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_NE(CPUINFO_CACHE_INCLUSIVE, cpuinfo_get_l1d_cache(i)->flags & CPUINFO_CACHE_INCLUSIVE);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(CPUINFO_CACHE_INCLUSIVE, cache->flags & CPUINFO_CACHE_INCLUSIVE);
 	}
 }
 
-TEST(L1D, non_zero_processors) {
+TEST(L1D_CACHE, non_zero_processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l1d_cache(i)->processor_count);
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->processor_count);
 	}
 }
 
-TEST(L1D, valid_processors) {
+TEST(L1D_CACHE, valid_processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_LT(cpuinfo_get_l1d_cache(i)->processor_start, cpuinfo_get_processors_count());
-		ASSERT_LE(cpuinfo_get_l1d_cache(i)->processor_start + cpuinfo_get_l1d_cache(i)->processor_count, cpuinfo_get_processors_count());
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_LT(cache->processor_start, cpuinfo_get_processors_count());
+		EXPECT_LE(cache->processor_start + cache->processor_count, cpuinfo_get_processors_count());
 	}
 }
 
-TEST(L2, valid_count) {
-	ASSERT_LE(cpuinfo_get_l2_caches_count(), cpuinfo_get_processors_count());
-}
+TEST(L1D_CACHE, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
+		ASSERT_TRUE(cache);
 
-TEST(L2, non_null) {
-	if (cpuinfo_get_l2_caches_count() != 0) {
-		ASSERT_TRUE(cpuinfo_get_l2_caches());
+		for (uint32_t j = 0; j < cache->processor_count; j++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(cache->processor_start + j);
+			ASSERT_TRUE(processor);
+
+			EXPECT_EQ(cache, processor->cache.l1d);
+		}
 	}
 }
 
-TEST(L2, non_zero_size) {
+TEST(L2_CACHES_COUNT, within_bounds) {
+	EXPECT_NE(0, cpuinfo_get_l2_caches_count());
+	EXPECT_LE(cpuinfo_get_l2_caches_count(), cpuinfo_get_processors_count());
+	EXPECT_LE(cpuinfo_get_l2_caches_count(), cpuinfo_get_l1d_caches_count());
+	EXPECT_LE(cpuinfo_get_l2_caches_count(), cpuinfo_get_l1i_caches_count());
+}
+
+TEST(L2_CACHES, non_null) {
+	EXPECT_TRUE(cpuinfo_get_l2_caches());
+}
+
+TEST(L2_CACHE, non_null) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l2_cache(i)->size);
+		EXPECT_TRUE(cpuinfo_get_l2_cache(i));
 	}
 }
 
-TEST(L2, valid_size) {
+TEST(L2_CACHE, non_zero_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l2_cache(i)->size,
-			cpuinfo_get_l2_cache(i)->associativity * cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->line_size);
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->size);
 	}
 }
 
-TEST(L2, non_zero_associativity) {
+TEST(L2_CACHE, valid_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l2_cache(i)->associativity);
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(cache->size,
+			cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 }
 
-TEST(L2, non_zero_partitions) {
+TEST(L2_CACHE, non_zero_associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l2_cache(i)->partitions);
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->associativity);
 	}
 }
 
-TEST(L2, non_zero_line_size) {
+TEST(L2_CACHE, non_zero_partitions) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l2_cache(i)->line_size);
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->partitions);
 	}
 }
 
-TEST(L2, power_of_2_line_size) {
+TEST(L2_CACHE, non_zero_line_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_EQ(0, cpuinfo_get_l2_cache(i)->line_size & (cpuinfo_get_l2_cache(i)->line_size - 1));
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->line_size);
 	}
 }
 
-TEST(L2, valid_line_size) {
+TEST(L2_CACHE, power_of_2_line_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_GE(cpuinfo_get_l2_cache(i)->line_size, 16);
-		ASSERT_LE(cpuinfo_get_l2_cache(i)->line_size, 128);
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		const uint32_t line_size = cache->line_size;
+		EXPECT_NE(0, line_size);
+		EXPECT_EQ(0, line_size & (line_size - 1));
 	}
 }
 
-TEST(L2, valid_flags) {
+TEST(L2_CACHE, reasonable_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_GE(cache->line_size, 16);
+		EXPECT_LE(cache->line_size, 128);
+	}
+}
+
+TEST(L2_CACHE, valid_flags) {
 	const uint32_t valid_flags = CPUINFO_CACHE_UNIFIED | CPUINFO_CACHE_INCLUSIVE | CPUINFO_CACHE_COMPLEX_INDEXING;
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_EQ(0, cpuinfo_get_l2_cache(i)->flags & ~valid_flags);
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(0, cache->flags & ~valid_flags);
 	}
 }
 
-TEST(L2, non_zero_processors) {
+TEST(L2_CACHE, non_zero_processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_NE(0, cpuinfo_get_l2_cache(i)->processor_count);
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->processor_count);
 	}
 }
 
-TEST(L2, valid_processors) {
+TEST(L2_CACHE, valid_processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_LT(cpuinfo_get_l2_cache(i)->processor_start, cpuinfo_get_processors_count());
-		ASSERT_LE(cpuinfo_get_l2_cache(i)->processor_start + cpuinfo_get_l2_cache(i)->processor_count, cpuinfo_get_processors_count());
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_LT(cache->processor_start, cpuinfo_get_processors_count());
+		EXPECT_LE(cache->processor_start + cache->processor_count, cpuinfo_get_processors_count());
 	}
 }
 
-TEST(L3, valid_count) {
-	ASSERT_LE(cpuinfo_get_l3_caches_count(), cpuinfo_get_processors_count());
-}
+TEST(L2_CACHE, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
+		ASSERT_TRUE(cache);
 
-TEST(L3, non_null) {
-	if (cpuinfo_get_l3_caches_count() != 0) {
-		ASSERT_TRUE(cpuinfo_get_l3_caches());
+		for (uint32_t j = 0; j < cache->processor_count; j++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(cache->processor_start + j);
+			ASSERT_TRUE(processor);
+
+			EXPECT_EQ(cache, processor->cache.l2);
+		}
 	}
 }
 
-TEST(L3, non_zero_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l3_caches()[k].size);
+TEST(L3_CACHES_COUNT, within_bounds) {
+	EXPECT_LE(cpuinfo_get_l3_caches_count(), cpuinfo_get_processors_count());
+	EXPECT_LE(cpuinfo_get_l3_caches_count(), cpuinfo_get_l2_caches_count());
+}
+
+TEST(L3_CACHE, non_null) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		EXPECT_TRUE(cpuinfo_get_l3_cache(i));
 	}
 }
 
-TEST(L3, valid_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_EQ(cpuinfo_get_l3_caches()[k].size,
-			cpuinfo_get_l3_caches()[k].associativity * cpuinfo_get_l3_caches()[k].sets * cpuinfo_get_l3_caches()[k].partitions * cpuinfo_get_l3_caches()[k].line_size);
+TEST(L3_CACHE, non_zero_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->size);
 	}
 }
 
-TEST(L3, non_zero_associativity) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l3_caches()[k].associativity);
+TEST(L3_CACHE, valid_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(cache->size,
+			cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 }
 
-TEST(L3, non_zero_partitions) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l3_caches()[k].partitions);
+TEST(L3_CACHE, non_zero_associativity) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->associativity);
 	}
 }
 
-TEST(L3, non_zero_line_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l3_caches()[k].line_size);
+TEST(L3_CACHE, non_zero_partitions) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->partitions);
 	}
 }
 
-TEST(L3, power_of_2_line_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_EQ(0, cpuinfo_get_l3_caches()[k].line_size & (cpuinfo_get_l3_caches()[k].line_size - 1));
+TEST(L3_CACHE, non_zero_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->line_size);
 	}
 }
 
-TEST(L3, valid_line_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_GE(cpuinfo_get_l3_caches()[k].line_size, 16);
-		ASSERT_LE(cpuinfo_get_l3_caches()[k].line_size, 128);
+TEST(L3_CACHE, power_of_2_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		const uint32_t line_size = cache->line_size;
+		EXPECT_NE(0, line_size);
+		EXPECT_EQ(0, line_size & (line_size - 1));
 	}
 }
 
-TEST(L3, valid_flags) {
+TEST(L3_CACHE, reasonable_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_GE(cache->line_size, 16);
+		EXPECT_LE(cache->line_size, 128);
+	}
+}
+
+TEST(L3_CACHE, valid_flags) {
 	const uint32_t valid_flags = CPUINFO_CACHE_UNIFIED | CPUINFO_CACHE_INCLUSIVE | CPUINFO_CACHE_COMPLEX_INDEXING;
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_EQ(0, cpuinfo_get_l3_caches()[k].flags & ~valid_flags);
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(0, cache->flags & ~valid_flags);
 	}
 }
 
-TEST(L3, non_zero_processors) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l3_caches()[k].processor_count);
+TEST(L3_CACHE, non_zero_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->processor_count);
 	}
 }
 
-TEST(L3, valid_processors) {
-	for (uint32_t k = 0; k < cpuinfo_get_l3_caches_count(); k++) {
-		ASSERT_LT(cpuinfo_get_l3_caches()[k].processor_start, cpuinfo_get_processors_count());
-		ASSERT_LE(cpuinfo_get_l3_caches()[k].processor_start + cpuinfo_get_l3_caches()[k].processor_count, cpuinfo_get_processors_count());
+TEST(L3_CACHE, valid_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_LT(cache->processor_start, cpuinfo_get_processors_count());
+		EXPECT_LE(cache->processor_start + cache->processor_count, cpuinfo_get_processors_count());
 	}
 }
 
-TEST(L4, valid_count) {
-	ASSERT_LE(cpuinfo_get_l4_caches_count(), cpuinfo_get_processors_count());
-}
+TEST(L3_CACHE, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
+		ASSERT_TRUE(cache);
 
-TEST(L4, non_null) {
-	if (cpuinfo_get_l4_caches_count() != 0) {
-		ASSERT_TRUE(cpuinfo_get_l4_caches());
+		for (uint32_t j = 0; j < cache->processor_count; j++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(cache->processor_start + j);
+			ASSERT_TRUE(processor);
+
+			EXPECT_EQ(cache, processor->cache.l3);
+		}
 	}
 }
 
-TEST(L4, non_zero_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l4_caches()[k].size);
+TEST(L4_CACHES_COUNT, within_bounds) {
+	EXPECT_LE(cpuinfo_get_l4_caches_count(), cpuinfo_get_processors_count());
+	EXPECT_LE(cpuinfo_get_l4_caches_count(), cpuinfo_get_l3_caches_count());
+}
+
+TEST(L4_CACHE, non_null) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		EXPECT_TRUE(cpuinfo_get_l4_cache(i));
 	}
 }
 
-TEST(L4, valid_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_EQ(cpuinfo_get_l4_caches()[k].size,
-			cpuinfo_get_l4_caches()[k].associativity * cpuinfo_get_l4_caches()[k].sets * cpuinfo_get_l4_caches()[k].partitions * cpuinfo_get_l4_caches()[k].line_size);
+TEST(L4_CACHE, non_zero_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->size);
 	}
 }
 
-TEST(L4, non_zero_associativity) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l4_caches()[k].associativity);
+TEST(L4_CACHE, valid_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(cache->size,
+			cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 }
 
-TEST(L4, non_zero_partitions) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l4_caches()[k].partitions);
+TEST(L4_CACHE, non_zero_associativity) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->associativity);
 	}
 }
 
-TEST(L4, non_zero_line_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l4_caches()[k].line_size);
+TEST(L4_CACHE, non_zero_partitions) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->partitions);
 	}
 }
 
-TEST(L4, power_of_2_line_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_EQ(0, cpuinfo_get_l4_caches()[k].line_size & (cpuinfo_get_l4_caches()[k].line_size - 1));
+TEST(L4_CACHE, non_zero_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->line_size);
 	}
 }
 
-TEST(L4, valid_line_size) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_GE(cpuinfo_get_l4_caches()[k].line_size, 16);
-		ASSERT_LE(cpuinfo_get_l4_caches()[k].line_size, 128);
+TEST(L4_CACHE, power_of_2_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		const uint32_t line_size = cache->line_size;
+		EXPECT_NE(0, line_size);
+		EXPECT_EQ(0, line_size & (line_size - 1));
 	}
 }
 
-TEST(L4, valid_flags) {
+TEST(L4_CACHE, reasonable_line_size) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_GE(cache->line_size, 16);
+		EXPECT_LE(cache->line_size, 128);
+	}
+}
+
+TEST(L4_CACHE, valid_flags) {
 	const uint32_t valid_flags = CPUINFO_CACHE_UNIFIED | CPUINFO_CACHE_INCLUSIVE | CPUINFO_CACHE_COMPLEX_INDEXING;
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_EQ(0, cpuinfo_get_l4_caches()[k].flags & ~valid_flags);
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_EQ(0, cache->flags & ~valid_flags);
 	}
 }
 
-TEST(L4, non_zero_processors) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_NE(0, cpuinfo_get_l4_caches()[k].processor_count);
+TEST(L4_CACHE, non_zero_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_NE(0, cache->processor_count);
 	}
 }
 
-TEST(L4, valid_processors) {
-	for (uint32_t k = 0; k < cpuinfo_get_l4_caches_count(); k++) {
-		ASSERT_LT(cpuinfo_get_l4_caches()[k].processor_start, cpuinfo_get_processors_count());
-		ASSERT_LE(cpuinfo_get_l4_caches()[k].processor_start + cpuinfo_get_l4_caches()[k].processor_count, cpuinfo_get_processors_count());
+TEST(L4_CACHE, valid_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		EXPECT_LT(cache->processor_start, cpuinfo_get_processors_count());
+		EXPECT_LE(cache->processor_start + cache->processor_count, cpuinfo_get_processors_count());
+	}
+}
+
+TEST(L4_CACHE, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_l4_caches_count(); i++) {
+		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
+		ASSERT_TRUE(cache);
+
+		for (uint32_t j = 0; j < cache->processor_count; j++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(cache->processor_start + j);
+			ASSERT_TRUE(processor);
+
+			EXPECT_EQ(cache, processor->cache.l4);
+		}
 	}
 }
 
