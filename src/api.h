@@ -20,10 +20,12 @@ enum cpuinfo_cache_level {
 
 extern struct cpuinfo_processor* cpuinfo_processors;
 extern struct cpuinfo_core* cpuinfo_cores;
+extern struct cpuinfo_cluster* cpuinfo_clusters;
 extern struct cpuinfo_package* cpuinfo_packages;
 extern struct cpuinfo_cache* cpuinfo_cache[cpuinfo_cache_level_max];
 extern uint32_t cpuinfo_processors_count;
 extern uint32_t cpuinfo_cores_count;
+extern uint32_t cpuinfo_clusters_count;
 extern uint32_t cpuinfo_packages_count;
 extern uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
 

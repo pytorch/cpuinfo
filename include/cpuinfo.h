@@ -420,6 +420,8 @@ struct cpuinfo_processor {
 	uint32_t smt_id;
 	/** Core containing this logical processor */
 	const struct cpuinfo_core* core;
+	/** Cluster of cores containing this logical processor */
+	const struct cpuinfo_cluster* cluster;
 	/** Physical package containing this logical processor */
 	const struct cpuinfo_package* package;
 #if defined(__linux__)
@@ -458,13 +460,15 @@ struct cpuinfo_processor {
 };
 
 struct cpuinfo_core {
-	/** Index of the first logical processor on this core */
+	/** Index of the first logical processor on this core. */
 	uint32_t processor_start;
 	/** Number of logical processors on this core */
 	uint32_t processor_count;
 	/** Core ID within a package */
 	uint32_t core_id;
-	/** Physical package containing this core */
+	/** Cluster containing this core */
+	const struct cpuinfo_cluster* cluster;
+	/** Physical package containing this core. */
 	const struct cpuinfo_package* package;
 	/** Vendor of the CPU microarchitecture for this core */
 	enum cpuinfo_vendor vendor;
@@ -478,6 +482,34 @@ struct cpuinfo_core {
 	uint32_t midr;
 #endif
 	/** Clock rate (non-Turbo) of the core, in Hz */
+	uint64_t frequency;
+};
+
+struct cpuinfo_cluster {
+	/** Index of the first logical processor in the cluster */
+	uint32_t processor_start;
+	/** Number of logical processors in the cluster */
+	uint32_t processor_count;
+	/** Index of the first core in the cluster */
+	uint32_t core_start;
+	/** Number of cores on the cluster */
+	uint32_t core_count;
+	/** Cluster ID within a package */
+	uint32_t cluster_id;
+	/** Physical package containing the cluster */
+	const struct cpuinfo_package* package;
+	/** CPU microarchitecture vendor of the cores in the cluster */
+	enum cpuinfo_vendor vendor;
+	/** CPU microarchitecture of the cores in the cluster */
+	enum cpuinfo_uarch uarch;
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	/** Value of CPUID leaf 1 EAX register of the cores in the cluster */
+	uint32_t cpuid;
+#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+	/** Value of Main ID Register (MIDR) of the cores in the cluster */
+	uint32_t midr;
+#endif
+	/** Clock rate (non-Turbo) of the cores in the cluster, in Hz */
 	uint64_t frequency;
 };
 
@@ -499,6 +531,10 @@ struct cpuinfo_package {
 	uint32_t core_start;
 	/** Number of cores on this physical package */
 	uint32_t core_count;
+	/** Index of the first cluster of cores on this physical package */
+	uint32_t cluster_start;
+	/** Number of clusters of cores on this physical package */
+	uint32_t cluster_count;
 };
 
 #ifdef __cplusplus
@@ -1570,6 +1606,7 @@ static inline bool cpuinfo_has_arm_crc32(void) {
 
 const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_processors(void);
 const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_cores(void);
+const struct cpuinfo_cluster* CPUINFO_ABI cpuinfo_get_clusters(void);
 const struct cpuinfo_package* CPUINFO_ABI cpuinfo_get_packages(void);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_caches(void);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_caches(void);
@@ -1579,6 +1616,7 @@ const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_caches(void);
 
 const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_processor(uint32_t index);
 const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_core(uint32_t index);
+const struct cpuinfo_cluster* CPUINFO_ABI cpuinfo_get_cluster(uint32_t index);
 const struct cpuinfo_package* CPUINFO_ABI cpuinfo_get_package(uint32_t index);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_cache(uint32_t index);
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_cache(uint32_t index);
@@ -1588,6 +1626,7 @@ const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_cache(uint32_t index);
 
 uint32_t CPUINFO_ABI cpuinfo_get_processors_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_cores_count(void);
+uint32_t CPUINFO_ABI cpuinfo_get_clusters_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_packages_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l1i_caches_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l1d_caches_count(void);

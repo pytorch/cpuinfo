@@ -6,11 +6,13 @@
 
 struct cpuinfo_processor* cpuinfo_processors = NULL;
 struct cpuinfo_core* cpuinfo_cores = NULL;
+struct cpuinfo_cluster* cpuinfo_clusters = NULL;
 struct cpuinfo_package* cpuinfo_packages = NULL;
 struct cpuinfo_cache* cpuinfo_cache[cpuinfo_cache_level_max] = { NULL };
 
 uint32_t cpuinfo_processors_count = 0;
 uint32_t cpuinfo_cores_count = 0;
+uint32_t cpuinfo_clusters_count = 0;
 uint32_t cpuinfo_packages_count = 0;
 uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max] = { 0 };
 
@@ -21,6 +23,10 @@ const struct cpuinfo_processor* cpuinfo_get_processors(void) {
 
 const struct cpuinfo_core* cpuinfo_get_cores(void) {
 	return cpuinfo_cores;
+}
+
+const struct cpuinfo_cluster* cpuinfo_get_clusters(void) {
+	return cpuinfo_clusters;
 }
 
 const struct cpuinfo_package* cpuinfo_get_packages(void) {
@@ -43,6 +49,14 @@ const struct cpuinfo_core* cpuinfo_get_core(uint32_t index) {
 	}
 }
 
+const struct cpuinfo_cluster* cpuinfo_get_cluster(uint32_t index) {
+	if (index < cpuinfo_clusters_count) {
+		return cpuinfo_clusters + index;
+	} else {
+		return NULL;
+	}
+}
+
 const struct cpuinfo_package* cpuinfo_get_package(uint32_t index) {
 	if (index < cpuinfo_packages_count) {
 		return cpuinfo_packages + index;
@@ -57,6 +71,10 @@ uint32_t cpuinfo_get_processors_count(void) {
 
 uint32_t cpuinfo_get_cores_count(void) {
 	return cpuinfo_cores_count;
+}
+
+uint32_t cpuinfo_get_clusters_count(void) {
+	return cpuinfo_clusters_count;
 }
 
 uint32_t cpuinfo_get_packages_count(void) {

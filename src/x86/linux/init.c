@@ -131,6 +131,7 @@ void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_x86_linux_processor* x86_linux_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
+	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_package* packages = NULL;
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
@@ -234,6 +235,15 @@ void cpuinfo_x86_linux_init(void) {
 			cores_count * sizeof(struct cpuinfo_core), cores_count);
 		goto cleanup;
 	}
+
+	/* On x86 cluster of cores is a physical package */
+	clusters = calloc(packages_count, sizeof(struct cpuinfo_cluster));
+	if (clusters == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core clusters",
+			packages_count * sizeof(struct cpuinfo_cluster), packages_count);
+		goto cleanup;
+	}
+
 	packages = calloc(packages_count, sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" physical packages",
@@ -313,6 +323,7 @@ void cpuinfo_x86_linux_init(void) {
 			/* Initialize logical processor object */
 			processors[processor_index].smt_id   = smt_id;
 			processors[processor_index].core     = cores + core_index;
+			processors[processor_index].cluster  = clusters + package_index;
 			processors[processor_index].package  = packages + package_index;
 			processors[processor_index].linux_id = x86_linux_processors[i].linux_id;
 			processors[processor_index].apic_id  = x86_linux_processors[i].apic_id;
@@ -323,11 +334,13 @@ void cpuinfo_x86_linux_init(void) {
 					.processor_start = processor_index,
 					.processor_count = 1,
 					.core_id = core_id,
+					.cluster = clusters + package_index,
 					.package = packages + package_index,
 					.vendor = x86_processor.vendor,
 					.uarch = x86_processor.uarch,
 					.cpuid = x86_processor.cpuid,
 				};
+				clusters[package_index].core_count += 1;
 				packages[package_index].core_count += 1;
 				last_apic_core_id = apid_core_id;
 			} else {
@@ -336,14 +349,29 @@ void cpuinfo_x86_linux_init(void) {
 			}
 
 			if (apic_package_id != last_apic_package_id) {
-				/* new package */
+				/* new cluster/package */
+
+				clusters[package_index] = (struct cpuinfo_cluster) {
+					.processor_start = processor_index,
+					.processor_count = 1,
+					.core_start = core_index,
+					.core_count = 0,
+					.cluster_id = 0,
+					.package = packages + package_index,
+					.vendor = x86_processor.vendor,
+					.uarch = x86_processor.uarch,
+					.cpuid = x86_processor.cpuid,
+				};
 				packages[package_index].processor_start = processor_index;
 				packages[package_index].processor_count = 1;
 				packages[package_index].core_start = core_index;
+				packages[package_index].cluster_start = package_index;
+				packages[package_index].cluster_count = 1;
 				cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[package_index].name);
 				last_apic_package_id = apic_package_id;
 			} else {
-				/* another logical processor on the same package */
+				/* another logical processor on the same cluster/package */
+				clusters[package_index].processor_count++;
 				packages[package_index].processor_count++;
 			}
 
@@ -492,6 +520,7 @@ void cpuinfo_x86_linux_init(void) {
 
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
 	cpuinfo_packages = packages;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
@@ -501,6 +530,7 @@ void cpuinfo_x86_linux_init(void) {
 
 	cpuinfo_processors_count = processors_count;
 	cpuinfo_cores_count = cores_count;
+	cpuinfo_clusters_count = packages_count;
 	cpuinfo_packages_count = packages_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
@@ -512,6 +542,7 @@ void cpuinfo_x86_linux_init(void) {
 	linux_cpu_to_core_map = NULL;
 	processors = NULL;
 	cores = NULL;
+	clusters = NULL;
 	packages = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
 
@@ -521,6 +552,7 @@ cleanup:
 	free(x86_linux_processors);
 	free(processors);
 	free(cores);
+	free(clusters);
 	free(packages);
 	free(l1i);
 	free(l1d);

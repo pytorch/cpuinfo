@@ -91,6 +91,7 @@ static void cpuinfo_x86_count_caches(
 BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context) {
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
+	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_package* packages = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
@@ -284,6 +285,13 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		goto cleanup;
 	}
 
+	clusters = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_cluster));
+	if (clusters == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core clusters",
+			packages_count * sizeof(struct cpuinfo_cluster), packages_count);
+		goto cleanup;
+	}
+
 	packages = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" physical packages",
@@ -299,6 +307,9 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		struct cpuinfo_core* core =
 			(struct cpuinfo_core*) ((uintptr_t) cores + (uintptr_t) processor->core);
 		processor->core = core;
+		struct cpuinfo_cluster* cluster =
+			(struct cpuinfo_cluster*) ((uintptr_t) clusters + (uintptr_t) processor->cluster);
+		processor->cluster = cluster;
 		struct cpuinfo_package* package =
 			(struct cpuinfo_package*) ((uintptr_t) packages + (uintptr_t) processor->package);
 		processor->package = package;
@@ -306,6 +317,10 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		/* This can be overwritten by lower-index processors on the same package */
 		package->processor_start = processor_id;
 		package->processor_count += 1;
+
+		/* This can be overwritten by lower-index processors on the same cluster */
+		cluster->processor_start = processor_id;
+		cluster->processor_count += 1;
 
 		/* This can be overwritten by lower-index processors on the same core*/
 		core->processor_start = processor_id;
@@ -318,6 +333,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		struct cpuinfo_core* core = cores + global_core_id;
 		const struct cpuinfo_processor* processor = processors + core->processor_start;
 		struct cpuinfo_package* package = (struct cpuinfo_package*) processor->package;
+		struct cpuinfo_cluster* cluster = (struct cpuinfo_cluster*) processor->cluster;
 
 		core->package = package;
 		core->core_id = core_bits_mask &
@@ -326,12 +342,20 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		core->uarch  = x86_processor.uarch;
 		core->cpuid  = x86_processor.cpuid;
 
-		/* This can be overwritten by lower-index cores on the same package */
+		/* This can be overwritten by lower-index cores on the same cluster/package */
+		cluster->core_start = global_core_id;
+		cluster->core_count += 1;
 		package->core_start = global_core_id;
 		package->core_count += 1;
 	}
 
 	for (uint32_t i = 0; i < packages_count; i++) {
+		cluster->package = packages + i;
+		cluster->vendor = cores[cluster->core_start].vendor;
+		cluster->uarch = cores[cluster->core_start].uarch;
+		cluster->cpuid = cores[cluster->core_start].cpuid;
+		package->cluster_start = i;
+		package->cluster_count = 1;
 		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[i].name);
 	}
 
@@ -543,6 +567,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 
 	processors = NULL;
 	cores = NULL;
+	clusters = NULL;
 	packages = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
 
@@ -552,6 +577,9 @@ cleanup:
 	}
 	if (cores != NULL) {
 		HeapFree(heap, 0, cores);
+	}
+	if (clusters != NULL) {
+		HeapFree(heap, 0, clusters);
 	}
 	if (packages != NULL) {
 		HeapFree(heap, 0, packages);

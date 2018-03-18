@@ -28,6 +28,15 @@ TEST(PROCESSOR, valid_smt_id) {
 	}
 }
 
+TEST(PROCESSOR, valid_core) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+
+		EXPECT_TRUE(processor->core);
+	}
+}
+
 TEST(PROCESSOR, consistent_core) {
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
 		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
@@ -37,6 +46,36 @@ TEST(PROCESSOR, consistent_core) {
 
 		EXPECT_GE(i, core->processor_start);
 		EXPECT_LT(i, core->processor_start + core->processor_count);
+	}
+}
+
+TEST(PROCESSOR, valid_cluster) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+
+		EXPECT_TRUE(processor->cluster);
+	}
+}
+
+TEST(PROCESSOR, consistent_cluster) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+		const cpuinfo_cluster* cluster = processor->cluster;
+		ASSERT_TRUE(cluster);
+
+		EXPECT_GE(i, cluster->processor_start);
+		EXPECT_LT(i, cluster->processor_start + cluster->processor_count);
+	}
+}
+
+TEST(PROCESSOR, valid_package) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+
+		EXPECT_TRUE(processor->package);
 	}
 }
 
@@ -144,6 +183,8 @@ TEST(CORE, consistent_processors) {
 
 		for (uint32_t i = 0; i < core->processor_count; i++) {
 			const cpuinfo_processor* processor = cpuinfo_get_processor(core->processor_start + i);
+			ASSERT_TRUE(processor);
+
 			EXPECT_EQ(core, processor->core);
 		}
 	}
@@ -157,6 +198,36 @@ TEST(CORE, valid_core_id) {
 		ASSERT_TRUE(package);
 
 		EXPECT_LT(core->core_id, package->core_count);
+	}
+}
+
+TEST(CORE, valid_cluster) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+
+		EXPECT_TRUE(core->cluster);
+	}
+}
+
+TEST(CORE, consistent_cluster) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+		const cpuinfo_cluster* cluster = core->cluster;
+		ASSERT_TRUE(cluster);
+
+		EXPECT_GE(i, cluster->core_start);
+		EXPECT_LT(i, cluster->core_start + cluster->core_count);
+	}
+}
+
+TEST(CORE, valid_package) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		const cpuinfo_core* core = cpuinfo_get_core(i);
+		ASSERT_TRUE(core);
+
+		EXPECT_TRUE(core->package);
 	}
 }
 
@@ -187,6 +258,196 @@ TEST(CORE, known_uarch) {
 		ASSERT_TRUE(core);
 
 		EXPECT_NE(cpuinfo_uarch_unknown, core->uarch);
+	}
+}
+
+TEST(CLUSTERS_COUNT, within_bounds) {
+	EXPECT_NE(0, cpuinfo_get_clusters_count());
+	EXPECT_LE(cpuinfo_get_clusters_count(), cpuinfo_get_cores_count());
+	EXPECT_LE(cpuinfo_get_clusters_count(), cpuinfo_get_processors_count());
+	EXPECT_GE(cpuinfo_get_clusters_count(), cpuinfo_get_packages_count());
+}
+
+TEST(CLUSTERS, non_null) {
+	EXPECT_TRUE(cpuinfo_get_clusters());
+}
+
+TEST(CLUSTER, non_null) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		EXPECT_TRUE(cpuinfo_get_cluster(i));
+	}
+}
+
+TEST(CLUSTER, non_zero_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		EXPECT_NE(0, cluster->processor_count);
+	}
+}
+
+TEST(CLUSTER, valid_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		EXPECT_LT(cluster->processor_start, cpuinfo_get_processors_count());
+		EXPECT_LE(cluster->processor_start + cluster->processor_count, cpuinfo_get_processors_count());
+	}
+}
+
+TEST(CLUSTER, consistent_processors) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->processor_count; j++) {
+			const cpuinfo_processor* processor = cpuinfo_get_processor(cluster->processor_start + j);
+			EXPECT_EQ(cluster, processor->cluster);
+		}
+	}
+}
+
+TEST(CLUSTER, non_zero_cores) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		EXPECT_NE(0, cluster->core_count);
+	}
+}
+
+TEST(CLUSTER, valid_cores) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		EXPECT_LT(cluster->core_start, cpuinfo_get_cores_count());
+		EXPECT_LE(cluster->core_start + cluster->core_count, cpuinfo_get_cores_count());
+	}
+}
+
+TEST(CLUSTER, consistent_cores) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster, core->cluster);
+		}
+	}
+}
+
+TEST(CLUSTER, valid_cluster_id) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_package* package = cluster->package;
+			ASSERT_TRUE(package);
+
+			EXPECT_LT(cluster->cluster_id, package->cluster_count);
+		}
+	}
+}
+
+TEST(CLUSTER, valid_package) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		EXPECT_TRUE(cluster->package);
+	}
+}
+
+TEST(CLUSTER, consistent_package) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+		const cpuinfo_package* package = cluster->package;
+		ASSERT_TRUE(package);
+
+		EXPECT_GE(i, package->cluster_start);
+		EXPECT_LT(i, package->cluster_start + package->cluster_count);
+	}
+}
+
+TEST(CLUSTER, consistent_vendor) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster->vendor, core->vendor);
+		}
+	}
+}
+
+TEST(CLUSTER, consistent_uarch) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster->uarch, core->uarch);
+		}
+	}
+}
+
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+TEST(CLUSTER, consistent_cpuid) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster->cpuid, core->cpuid);
+		}
+	}
+}
+#endif /* CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64 */
+
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+TEST(CLUSTER, consistent_midr) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster->midr, core->midr);
+		}
+	}
+}
+#endif /* CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 */
+
+TEST(CLUSTER, consistent_frequency) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster->frequency, core->frequency);
+		}
 	}
 }
 
@@ -232,6 +493,8 @@ TEST(PACKAGE, consistent_processors) {
 
 		for (uint32_t j = 0; j < package->processor_count; j++) {
 			const cpuinfo_processor* processor = cpuinfo_get_processor(package->processor_start + j);
+			ASSERT_TRUE(processor);
+
 			EXPECT_EQ(package, processor->package);
 		}
 	}
@@ -242,7 +505,7 @@ TEST(PACKAGE, non_zero_cores) {
 		const cpuinfo_package* package = cpuinfo_get_package(i);
 		ASSERT_TRUE(package);
 
-		EXPECT_NE(0, package->processor_count);
+		EXPECT_NE(0, package->core_count);
 	}
 }
 
@@ -263,7 +526,42 @@ TEST(PACKAGE, consistent_cores) {
 
 		for (uint32_t j = 0; j < package->core_count; j++) {
 			const cpuinfo_core* core = cpuinfo_get_core(package->core_start + j);
+			ASSERT_TRUE(core);
+
 			EXPECT_EQ(package, core->package);
+		}
+	}
+}
+
+TEST(PACKAGE, non_zero_clusters) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		EXPECT_NE(0, package->cluster_count);
+	}
+}
+
+TEST(PACKAGE, valid_clusters) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		EXPECT_LT(package->cluster_start, cpuinfo_get_clusters_count());
+		EXPECT_LE(package->cluster_start + package->cluster_count, cpuinfo_get_clusters_count());
+	}
+}
+
+TEST(PACKAGE, consistent_cluster) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		const cpuinfo_package* package = cpuinfo_get_package(i);
+		ASSERT_TRUE(package);
+
+		for (uint32_t j = 0; j < package->cluster_count; j++) {
+			const cpuinfo_cluster* cluster = cpuinfo_get_cluster(package->cluster_start + j);
+			ASSERT_TRUE(cluster);
+
+			EXPECT_EQ(package, cluster->package);
 		}
 	}
 }

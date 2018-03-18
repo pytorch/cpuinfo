@@ -20,6 +20,7 @@ static inline uint32_t bit_mask(uint32_t bits) {
 void cpuinfo_x86_mach_init(void) {
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
+	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_package* packages = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
@@ -40,9 +41,16 @@ void cpuinfo_x86_mach_init(void) {
 			mach_topology.cores * sizeof(struct cpuinfo_core), mach_topology.cores);
 		goto cleanup;
 	}
+	/* On x86 cluster of cores is a physical package */
+	clusters = calloc(mach_topology.packages, sizeof(struct cpuinfo_cluster));
+	if (clusters == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core clusters",
+			mach_topology.packages * sizeof(struct cpuinfo_cluster), mach_topology.packages);
+		goto cleanup;
+	}
 	packages = calloc(mach_topology.packages, sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" packages",
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" physical packages",
 			mach_topology.packages * sizeof(struct cpuinfo_package), mach_topology.packages);
 		goto cleanup;
 	}
@@ -57,12 +65,23 @@ void cpuinfo_x86_mach_init(void) {
 	const uint32_t threads_per_package = mach_topology.threads / mach_topology.packages;
 	const uint32_t cores_per_package = mach_topology.cores / mach_topology.packages;
 	for (uint32_t i = 0; i < mach_topology.packages; i++) {
-		packages[i] = (struct cpuinfo_package) {
+		clusters[i] = (struct cpuinfo_cluster) {
 			.processor_start = i * threads_per_package,
 			.processor_count = threads_per_package,
 			.core_start = i * cores_per_package,
 			.core_count = cores_per_package,
+			.cluster_id = 0,
+			.package = packages + i,
+			.vendor = x86_processor.vendor,
+			.uarch = x86_processor.uarch,
+			.cpuid = x86_processor.cpuid,
 		};
+		packages[i].processor_start = i * threads_per_package;
+		packages[i].processor_count = threads_per_package;
+		packages[i].core_start = i * cores_per_package;
+		packages[i].core_count = cores_per_package;
+		packages[i].cluster_start = i;
+		packages[i].cluster_count = 1;
 		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[i].name);
 	}
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
@@ -70,6 +89,7 @@ void cpuinfo_x86_mach_init(void) {
 			.processor_start = i * threads_per_core,
 			.processor_count = threads_per_core,
 			.core_id = i % cores_per_package,
+			.cluster = clusters + i / cores_per_package,
 			.package = packages + i / cores_per_package,
 			.vendor = x86_processor.vendor,
 			.uarch = x86_processor.uarch,
@@ -95,6 +115,7 @@ void cpuinfo_x86_mach_init(void) {
 
 		processors[i].smt_id = smt_id;
 		processors[i].core = cores + i / threads_per_core;
+		processors[i].cluster = clusters + i / threads_per_package;
 		processors[i].package = packages + i / threads_per_package;
 		processors[i].apic_id = apic_id;
 	}
@@ -292,6 +313,7 @@ void cpuinfo_x86_mach_init(void) {
 
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
 	cpuinfo_packages = packages;
 
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
@@ -302,16 +324,19 @@ void cpuinfo_x86_mach_init(void) {
 
 	cpuinfo_processors_count = mach_topology.threads;
 	cpuinfo_cores_count = mach_topology.cores;
+	cpuinfo_clusters_count = mach_topology.packages;
 	cpuinfo_packages_count = mach_topology.packages;
 
 	processors = NULL;
 	cores = NULL;
+	clusters = NULL;
 	packages = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
 
 cleanup:
 	free(processors);
 	free(cores);
+	free(clusters);
 	free(packages);
 	free(l1i);
 	free(l1d);
