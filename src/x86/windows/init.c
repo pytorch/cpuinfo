@@ -286,7 +286,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 
 	packages = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" packages",
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" physical packages",
 			packages_count * sizeof(struct cpuinfo_package), packages_count);
 		goto cleanup;
 	}
@@ -300,7 +300,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 			(struct cpuinfo_core*) ((uintptr_t) cores + (uintptr_t) processor->core);
 		processor->core = core;
 		struct cpuinfo_package* package =
-			(struct cpuinfo_package*) ((uintptr_t)packages + (uintptr_t)processor->package);
+			(struct cpuinfo_package*) ((uintptr_t) packages + (uintptr_t) processor->package);
 		processor->package = package;
 
 		/* This can be overwritten by lower-index processors on the same package */

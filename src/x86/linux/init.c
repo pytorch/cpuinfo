@@ -236,10 +236,11 @@ void cpuinfo_x86_linux_init(void) {
 	}
 	packages = calloc(packages_count, sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" physical packages",
 			packages_count * sizeof(struct cpuinfo_package), packages_count);
 		goto cleanup;
 	}
+
 	if (l1i_count != 0) {
 		l1i = calloc(l1i_count, sizeof(struct cpuinfo_cache));
 		if (l1i == NULL) {
