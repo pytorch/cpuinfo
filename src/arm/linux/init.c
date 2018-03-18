@@ -106,6 +106,7 @@ void cpuinfo_arm_linux_init(void) {
 	struct cpuinfo_arm_linux_processor* arm_linux_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
+	struct cpuinfo_cluster* clusters = NULL;
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
 	struct cpuinfo_cache* l1i = NULL;
@@ -390,7 +391,9 @@ void cpuinfo_arm_linux_init(void) {
 	 * - Level 2 cache is shared between cores in the same cluster.
 	 */
 	cpuinfo_arm_chipset_to_string(&chipset, package.name);
-	package.processor_count = package.core_count = usable_processors;
+	package.processor_count = usable_processors;
+	package.core_count = usable_processors;
+	package.cluster_count = cluster_count;
 
 	processors = calloc(usable_processors, sizeof(struct cpuinfo_processor));
 	if (processors == NULL) {
@@ -403,6 +406,13 @@ void cpuinfo_arm_linux_init(void) {
 	if (cores == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
 			usable_processors * sizeof(struct cpuinfo_core), usable_processors);
+		goto cleanup;
+	}
+
+	clusters = calloc(cluster_count, sizeof(struct cpuinfo_cluster));
+	if (clusters == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core clusters",
+			cluster_count * sizeof(struct cpuinfo_cluster), cluster_count);
 		goto cleanup;
 	}
 
@@ -451,6 +461,7 @@ void cpuinfo_arm_linux_init(void) {
 
 		processors[i].smt_id = 0;
 		processors[i].core = cores + i;
+		processors[i].cluster = clusters + cluster_id;
 		processors[i].package = &package;
 		processors[i].linux_id = (int) arm_linux_processors[i].system_processor_id;
 		processors[i].cache.l1i = l1i + i;
@@ -461,6 +472,7 @@ void cpuinfo_arm_linux_init(void) {
 		cores[i].processor_start = i;
 		cores[i].processor_count = 1;
 		cores[i].core_id = i;
+		cores[i].cluster = clusters + cluster_id;
 		cores[i].package = &package;
 		cores[i].vendor = arm_linux_processors[i].vendor;
 		cores[i].uarch = arm_linux_processors[i].uarch;
@@ -504,6 +516,18 @@ void cpuinfo_arm_linux_init(void) {
 			shared_l2.processor_start = i;
 			shared_l2.processor_count = arm_linux_processors[i].package_processor_count;
 			l2[cluster_id] = shared_l2;
+
+			clusters[cluster_id] = (struct cpuinfo_cluster) {
+				.processor_start = i,
+				.processor_count = arm_linux_processors[i].package_processor_count,
+				.core_start = i,
+				.core_count = arm_linux_processors[i].package_processor_count,
+				.cluster_id = cluster_id,
+				.package = &package,
+				.vendor = arm_linux_processors[i].vendor,
+				.uarch = arm_linux_processors[i].uarch,
+				.midr = arm_linux_processors[i].midr,
+			};
 		}
 	}
 
@@ -519,12 +543,15 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
 	cpuinfo_packages = &package;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
 
-	cpuinfo_processors_count = cpuinfo_cores_count = usable_processors;
+	cpuinfo_processors_count = usable_processors;
+	cpuinfo_cores_count = usable_processors;
+	cpuinfo_clusters_count = cluster_count;
 	cpuinfo_packages_count = 1;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = usable_processors;
@@ -534,6 +561,7 @@ void cpuinfo_arm_linux_init(void) {
 	linux_cpu_to_core_map = NULL;
 	processors = NULL;
 	cores = NULL;
+	clusters = NULL;
 	l1i = l1d = l2 = NULL;
 
 	#ifdef __ANDROID__
@@ -541,7 +569,7 @@ void cpuinfo_arm_linux_init(void) {
 		if (cpuinfo_arm_android_lookup_gpu(&chipset, &gpu))	{
 			cpuinfo_android_gpu_to_string(&gpu, package.gpu_name);
 		} else {
-			cpuinfo_log_info("GPU name needs to be queries from OpenGL ES");
+			cpuinfo_log_info("GPU name needs to be queried from OpenGL ES");
 			cpuinfo_gpu_query_gles2(package.gpu_name);
 			gpu = cpuinfo_android_decode_gpu(package.gpu_name);
 			if (gpu.series != cpuinfo_android_gpu_series_unknown) {
@@ -556,6 +584,7 @@ cleanup:
 	free(linux_cpu_to_core_map);
 	free(processors);
 	free(cores);
+	free(clusters);
 	free(l1i);
 	free(l1d);
 	free(l2);
