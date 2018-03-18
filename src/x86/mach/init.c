@@ -231,7 +231,7 @@ void cpuinfo_x86_mach_init(void) {
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
-			processors[t].cache.l2 = &l2[t / threads_per_l1];
+			processors[t].cache.l2 = &l2[t / threads_per_l2];
 		}
 	}
 
@@ -255,7 +255,7 @@ void cpuinfo_x86_mach_init(void) {
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
-			processors[t].cache.l3 = &l3[t / threads_per_l1];
+			processors[t].cache.l3 = &l3[t / threads_per_l3];
 		}
 	}
 
@@ -279,7 +279,7 @@ void cpuinfo_x86_mach_init(void) {
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
-			processors[t].cache.l4 = &l4[t / threads_per_l1];
+			processors[t].cache.l4 = &l4[t / threads_per_l4];
 		}
 	}
 
