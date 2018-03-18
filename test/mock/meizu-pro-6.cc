@@ -24,6 +24,29 @@ TEST(PROCESSORS, core) {
 	}
 }
 
+TEST(PROCESSORS, cluster) {
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		switch (i) {
+			case 0:
+			case 1:
+				ASSERT_EQ(cpuinfo_get_cluster(0), cpuinfo_get_processor(i)->cluster);
+				break;
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				ASSERT_EQ(cpuinfo_get_cluster(1), cpuinfo_get_processor(i)->cluster);
+				break;
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				ASSERT_EQ(cpuinfo_get_cluster(2), cpuinfo_get_processor(i)->cluster);
+				break;
+		}
+	}
+}
+
 TEST(PROCESSORS, package) {
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
 		ASSERT_EQ(cpuinfo_get_package(0), cpuinfo_get_processor(i)->package);
@@ -123,6 +146,29 @@ TEST(CORES, processor_count) {
 TEST(CORES, core_id) {
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
 		ASSERT_EQ(i, cpuinfo_get_core(i)->core_id);
+	}
+}
+
+TEST(CORES, cluster) {
+	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
+		switch (i) {
+			case 0:
+			case 1:
+				ASSERT_EQ(cpuinfo_get_cluster(0), cpuinfo_get_core(i)->cluster);
+				break;
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				ASSERT_EQ(cpuinfo_get_cluster(1), cpuinfo_get_core(i)->cluster);
+				break;
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				ASSERT_EQ(cpuinfo_get_cluster(2), cpuinfo_get_core(i)->cluster);
+				break;
+		}
 	}
 }
 
@@ -244,6 +290,18 @@ TEST(PACKAGES, core_start) {
 TEST(PACKAGES, core_count) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
 		ASSERT_EQ(10, cpuinfo_get_package(i)->core_count);
+	}
+}
+
+TEST(PACKAGES, cluster_start) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_package(i)->cluster_start);
+	}
+}
+
+TEST(PACKAGES, cluster_count) {
+	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
+		ASSERT_EQ(3, cpuinfo_get_package(i)->cluster_count);
 	}
 }
 
