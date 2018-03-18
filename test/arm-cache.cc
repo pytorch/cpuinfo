@@ -18,13 +18,15 @@ TEST(QUALCOMM, snapdragon_410_msm) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD030),
 		&chipset, 0, 8,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(512 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_410_apq) {
@@ -37,13 +39,15 @@ TEST(QUALCOMM, snapdragon_410_apq) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD030),
 		&chipset, 0, 8,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(512 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_415) {
@@ -57,13 +61,15 @@ TEST(QUALCOMM, snapdragon_415) {
 		struct cpuinfo_cache l1i = { 0 };
 		struct cpuinfo_cache l1d = { 0 };
 		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
 		cpuinfo_arm_decode_cache(
 			cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD031),
 			&chipset, cluster, 8,
-			&l1i, &l1d, &l2);
+			&l1i, &l1d, &l2, &l3);
 		EXPECT_EQ(32 * 1024, l1i.size);
 		EXPECT_EQ(32 * 1024, l1d.size);
 		EXPECT_EQ(512 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
 	}
 }
 
@@ -77,13 +83,15 @@ TEST(QUALCOMM, snapdragon_425) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(512 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_427) {
@@ -96,13 +104,15 @@ TEST(QUALCOMM, snapdragon_427) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(512 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_430) {
@@ -115,26 +125,30 @@ TEST(QUALCOMM, snapdragon_430) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_435) {
@@ -147,26 +161,30 @@ TEST(QUALCOMM, snapdragon_435) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_450) {
@@ -179,26 +197,30 @@ TEST(QUALCOMM, snapdragon_450) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_617) {
@@ -211,26 +233,30 @@ TEST(QUALCOMM, snapdragon_617) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(512 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(256 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_625) {
@@ -243,26 +269,30 @@ TEST(QUALCOMM, snapdragon_625) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_626) {
@@ -280,26 +310,30 @@ TEST(QUALCOMM, snapdragon_626) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_630) {
@@ -312,26 +346,30 @@ TEST(QUALCOMM, snapdragon_630) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_650) {
@@ -344,26 +382,30 @@ TEST(QUALCOMM, snapdragon_650) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a72, 2, UINT32_C(0x410FD080),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(48 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_652) {
@@ -376,26 +418,30 @@ TEST(QUALCOMM, snapdragon_652) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a72, 4, UINT32_C(0x410FD080),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(48 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_653) {
@@ -413,26 +459,30 @@ TEST(QUALCOMM, snapdragon_653) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a72, 4, UINT32_C(0x410FD080),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(48 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_660) {
@@ -445,26 +495,30 @@ TEST(QUALCOMM, snapdragon_660) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a73, 4, UINT32_C(0x51AF8002),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(64 * 1024, big_l1i.size);
 	EXPECT_EQ(64 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_808) {
@@ -477,26 +531,30 @@ TEST(QUALCOMM, snapdragon_808) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a57, 2, UINT32_C(0x410FD033),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD033),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(48 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_810) {
@@ -509,26 +567,30 @@ TEST(QUALCOMM, snapdragon_810) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a57, 4, UINT32_C(0x410FD033),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD033),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(48 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_820) {
@@ -541,26 +603,30 @@ TEST(QUALCOMM, snapdragon_820) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_kryo, 4, UINT32_C(0x511F2052),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_kryo, 4, UINT32_C(0x511F2112),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(24 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(24 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_821) {
@@ -581,26 +647,30 @@ TEST(QUALCOMM, snapdragon_821) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_kryo, 4, UINT32_C(0x512F2051),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_kryo, 4, UINT32_C(0x512F2011),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(24 * 1024, big_l1d.size);
 	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(24 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(QUALCOMM, snapdragon_835) {
@@ -613,26 +683,66 @@ TEST(QUALCOMM, snapdragon_835) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a73, 4, UINT32_C(0x51AF8001),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(64 * 1024, big_l1i.size);
 	EXPECT_EQ(64 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(1024 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
+}
+
+TEST(QUALCOMM, snapdragon_845) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+		.model = 845,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a75, 4, UINT32_C(0x518F802D),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a55, 4, UINT32_C(0x518F803C),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(64 * 1024, big_l1d.size);
+	EXPECT_EQ(256 * 1024, big_l2.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l3.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(128 * 1024, little_l2.size);
+	EXPECT_EQ(2 * 1024 * 1024, little_l3.size);
 }
 
 TEST(SAMSUNG, exynos_7885) {
@@ -645,26 +755,30 @@ TEST(SAMSUNG, exynos_7885) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a73, 2, UINT32_C(0x410FD092),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 6, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(64 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(512 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(256 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(SAMSUNG, exynos_8890) {
@@ -677,26 +791,30 @@ TEST(SAMSUNG, exynos_8890) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_mongoose_m1, 4, UINT32_C(0x531F0011),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(64 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(256 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(SAMSUNG, exynos_8895) {
@@ -709,26 +827,66 @@ TEST(SAMSUNG, exynos_8895) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_mongoose_m2, 4, UINT32_C(0x534F0010),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(64 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(256 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
+}
+
+TEST(SAMSUNG, exynos_9810) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_samsung,
+		.series = cpuinfo_arm_chipset_series_samsung_exynos,
+		.model = 9810,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_meerkat_m3, 4, UINT32_C(0x531F0020),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a55, 4, UINT32_C(0x410FD051),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(64 * 1024, big_l1d.size);
+	EXPECT_EQ(512 * 1024, big_l2.size);
+	EXPECT_EQ(4 * 1024 * 1024, big_l3.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_650) {
@@ -741,26 +899,30 @@ TEST(HISILICON, kirin_650) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(512 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_659) {
@@ -773,26 +935,30 @@ TEST(HISILICON, kirin_659) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(512 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_920) {
@@ -805,26 +971,30 @@ TEST(HISILICON, kirin_920) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
 	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_925) {
@@ -837,26 +1007,30 @@ TEST(HISILICON, kirin_925) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
 	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_928) {
@@ -869,26 +1043,30 @@ TEST(HISILICON, kirin_928) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(32 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
 	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_950) {
@@ -901,26 +1079,30 @@ TEST(HISILICON, kirin_950) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a72, 4, UINT32_C(0x410FD080),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(48 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_955) {
@@ -933,26 +1115,30 @@ TEST(HISILICON, kirin_955) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a72, 4, UINT32_C(0x410FD080),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(48 * 1024, big_l1i.size);
 	EXPECT_EQ(32 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_960) {
@@ -965,26 +1151,30 @@ TEST(HISILICON, kirin_960) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a73, 4, UINT32_C(0x410FD091),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(64 * 1024, big_l1i.size);
 	EXPECT_EQ(64 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(HISILICON, kirin_970) {
@@ -997,26 +1187,30 @@ TEST(HISILICON, kirin_970) {
 	struct cpuinfo_cache big_l1i = { 0 };
 	struct cpuinfo_cache big_l1d = { 0 };
 	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a73, 4, UINT32_C(0x410FD092),
 		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2);
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
 	struct cpuinfo_cache little_l1i = { 0 };
 	struct cpuinfo_cache little_l1d = { 0 };
 	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x410FD034),
 		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2);
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
 
 	EXPECT_EQ(64 * 1024, big_l1i.size);
 	EXPECT_EQ(64 * 1024, big_l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
 	EXPECT_EQ(1024 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
 }
 
 TEST(NVIDIA, tegra_ap20h) {
@@ -1032,14 +1226,16 @@ TEST(NVIDIA, tegra_ap20h) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t20) {
@@ -1052,14 +1248,16 @@ TEST(NVIDIA, tegra_t20) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t30l) {
@@ -1075,14 +1273,16 @@ TEST(NVIDIA, tegra_t30l) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t30) {
@@ -1095,14 +1295,16 @@ TEST(NVIDIA, tegra_t30) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t33) {
@@ -1115,14 +1317,16 @@ TEST(NVIDIA, tegra_t33) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_ap33) {
@@ -1135,14 +1339,16 @@ TEST(NVIDIA, tegra_ap33) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t114) {
@@ -1155,14 +1361,16 @@ TEST(NVIDIA, tegra_t114) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x412FC0F2),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_sl460n) {
@@ -1178,14 +1386,16 @@ TEST(NVIDIA, tegra_sl460n) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x414FC091),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1 * 1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t124) {
@@ -1198,14 +1408,16 @@ TEST(NVIDIA, tegra_t124) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
 		&chipset, 0, 7,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t132) {
@@ -1218,14 +1430,16 @@ TEST(NVIDIA, tegra_t132) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_denver, 2, UINT32_C(0x4E0F0000),
 		&chipset, 0, 8,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(128 * 1024, l1i.size);
 	EXPECT_EQ(64 * 1024, l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(NVIDIA, tegra_t210) {
@@ -1238,12 +1452,14 @@ TEST(NVIDIA, tegra_t210) {
 	struct cpuinfo_cache l1i = { 0 };
 	struct cpuinfo_cache l1d = { 0 };
 	struct cpuinfo_cache l2 = { 0 };
+	struct cpuinfo_cache l3 = { 0 };
 	cpuinfo_arm_decode_cache(
 		cpuinfo_uarch_cortex_a57, 4, UINT32_C(0x411FD071),
 		&chipset, 0, 8,
-		&l1i, &l1d, &l2);
+		&l1i, &l1d, &l2, &l3);
 
 	EXPECT_EQ(48 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+	EXPECT_EQ(0, l3.size);
 }

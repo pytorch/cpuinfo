@@ -14,7 +14,8 @@ void cpuinfo_arm_decode_cache(
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
-	struct cpuinfo_cache l2[restrict static 1])
+	struct cpuinfo_cache l2[restrict static 1],
+	struct cpuinfo_cache l3[restrict static 1])
 {
 	switch (uarch) {
 		case cpuinfo_uarch_xscale:
@@ -607,6 +608,87 @@ void cpuinfo_arm_decode_cache(
 				};
 			}
 			break;
+		case cpuinfo_uarch_cortex_a55:
+			/*
+			 * ARM Cortex-A55 Core Technical Reference Manual
+			 * A6.1. About the L1 memory system
+			 *   The Cortex®-A55 core's L1 memory system enhances core performance and power efficiency.
+			 *   It consists of separate instruction and data caches. You can configure instruction and data caches
+			 *   independently during implementation to sizes of 16KB, 32KB, or 64KB.
+			 *
+			 *   L1 instruction-side memory system
+			 *   The L1 instruction-side memory system provides an instruction stream to the DPU. Its key features are:
+			 *    - 64-byte instruction side cache line length.
+			 *    - 4-way set associative L1 instruction cache.
+			 *
+			 *   L1 data-side memory system
+			 *    - 64-byte data side cache line length.
+			 *    - 4-way set associative L1 data cache.
+			 *
+			 * A7.1 About the L2 memory system
+			 *   The Cortex-A55 L2 memory system is required to interface the Cortex-A55 cores to the L3 memory system.
+			 *   The L2 memory subsystem consists of:
+			 *    - An optional 4-way, set-associative L2 cache with a configurable size of 64KB, 128KB or 256KB. Cache
+			 *      lines have a fixed length of 64 bytes.
+			 *
+			 *   The main features of the L2 memory system are:
+			 *    - Strictly exclusive with L1 data cache.
+			 *    - Pseudo-inclusive with L1 instruction cache.
+			 *    - Private per-core unified L2 cache.
+			 *
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | L3 cache | Reference  |
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *  | Snapdragon 845     | 4(+4) |    32K    |    32K    |    128K   |    2M    | [1], sysfs |
+			 *  | Exynos 9810        | 4(+4) |     ?     |     ?     |    None   |   512K   |     [2]    |
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *
+			 * [1] https://www.anandtech.com/show/12114/qualcomm-announces-snapdragon-845-soc
+			 * [2] https://www.anandtech.com/show/12478/exynos-9810-handson-awkward-first-results
+			 */
+			if (midr_is_qualcomm_cortex_a55_silver(midr)) {
+				/* Qualcomm-modified Cortex-A55 in Snapdragon 845 */
+
+				*l1i = (struct cpuinfo_cache) {
+					.size = 32 * 1024,
+					.associativity = 4,
+					.line_size = 64
+				};
+				*l1d = (struct cpuinfo_cache) {
+					.size = 32 * 1024,
+					.associativity = 4,
+					.line_size = 64
+				};
+				*l2 = (struct cpuinfo_cache) {
+					.size = 128 * 1024,
+					.associativity = 4,
+					.line_size = 64
+				};
+				*l3 = (struct cpuinfo_cache) {
+					.size = 2 * 1024 * 1024,
+					.associativity = 16,
+					.line_size = 64
+				};
+			} else {
+				/* Standard Cortex-A55 */
+
+				*l1i = (struct cpuinfo_cache) {
+					.size = 32 * 1024,
+					.associativity = 4,
+					.line_size = 64
+				};
+				*l1d = (struct cpuinfo_cache) {
+					.size = 32 * 1024,
+					.associativity = 4,
+					.line_size = 64
+				};
+				*l2 = (struct cpuinfo_cache) {
+					.size = 512 * 1024,
+					.associativity = 16,
+					.line_size = 64
+				};
+			}
+			break;
 		case cpuinfo_uarch_cortex_a57:
 			/*
 			 * ARM Cortex-A57 MPCore Processor Technical Reference Manual:
@@ -810,6 +892,59 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		}
+		case cpuinfo_uarch_cortex_a75:
+		{
+			/*
+			 * ARM Cortex-A75 Core Technical Reference Manual
+			 * A6.1. About the L1 memory system
+			 *   The L1 memory system consists of separate instruction and data caches. Both have a fixed size of 64KB.
+			 *
+			 * A6.1.1 L1 instruction-side memory system
+			 *   The L1 instruction memory system has the following key features:
+			 *    - Virtually Indexed, Physically Tagged (VIPT), four-way set-associative instruction cache.
+			 *    - Fixed cache line length of 64 bytes.
+			 *
+			 * A6.1.2 L1 data-side memory system
+			 *   The L1 data memory system has the following features:
+			 *    - Physically Indexed, Physically Tagged (PIPT), 16-way set-associative L1 data cache.
+			 *    - Fixed cache line length of 64 bytes.
+			 *    - Pseudo-random cache replacement policy.
+			 *
+			 * A7.1 About the L2 memory system
+			 *   The L2 memory subsystem consist of:
+			 *    - An 8-way set associative L2 cache with a configurable size of 256KB or 512KB.
+			 *      Cache lines have a fixed length of 64 bytes.
+			 *
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | L3 cache | Reference  |
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *  | Snapdragon 845     | 4(+4) |    64K    |    64K    |    256K   |    2M    | [1], sysfs |
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *
+			 * [1] https://www.anandtech.com/show/12114/qualcomm-announces-snapdragon-845-soc
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 16,
+				.line_size = 64
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = 256 * 1024,
+				.associativity = 8,
+				.line_size = 64
+			};
+			*l3 = (struct cpuinfo_cache) {
+				.size = 2 * 1024 * 1024,
+				.associativity = 16,
+				.line_size = 64
+			};
+			break;
+		}
 		case cpuinfo_uarch_scorpion:
 			/*
 			 * - "The CPU includes 32KB instruction and data caches as
@@ -971,6 +1106,37 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
+		case cpuinfo_uarch_meerkat_m3:
+			/*
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | L3 cache | Reference  |
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *  | Exynos 9810        | 4(+4) |    64K    |     ?     |    512K   |    4M    |     [1]    |
+			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 *
+			 * [1] https://www.anandtech.com/show/12478/exynos-9810-handson-awkward-first-results
+			 */
+			*l1i = (struct cpuinfo_cache) {
+				.size = 64 * 1024 /* assume same as in Mongoose cores */,
+				.associativity = 4 /* assume same as in Mongoose cores */,
+				.line_size = 128 /* assume same as in Mongoose cores */
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 8 /* assume same as in Mongoose cores */,
+				.line_size = 64 /* assume same as in Mongoose cores */,
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = 512 * 1024,
+				.associativity = 16 /* assume same as in Mongoose cores */,
+				.line_size = 64 /* assume same as in Mongoose cores */,
+			};
+			*l3 = (struct cpuinfo_cache) {
+				.size = 4 * 1024 * 1024,
+				.associativity = 16 /* assume DynamIQ cache */,
+				.line_size = 64 /* assume DynamIQ cache */,
+			};
+			break;
 		case cpuinfo_uarch_thunderx:
 			/*
 			 * "78K-Icache and 32K-D cache per core, 16 MB shared L2 cache" [1]
@@ -1042,5 +1208,9 @@ void cpuinfo_arm_decode_cache(
 	if (l2->size != 0) {
 		l2->sets = l2->size / (l2->associativity * l2->line_size);
 		l2->partitions = 1;
+		if (l3->size != 0) {
+			l3->sets = l3->size / (l3->associativity * l3->line_size);
+			l3->partitions = 1;
+		}
 	}
 }

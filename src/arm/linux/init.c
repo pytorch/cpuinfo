@@ -112,6 +112,7 @@ void cpuinfo_arm_linux_init(void) {
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
+	struct cpuinfo_cache* l3 = NULL;
 
 	const uint32_t max_processors_count = cpuinfo_linux_get_max_processors_count();
 	cpuinfo_log_debug("system maximum processors count: %"PRIu32, max_processors_count);
@@ -385,7 +386,7 @@ void cpuinfo_arm_linux_init(void) {
 	 * Assumptions:
 	 * - No SMP (i.e. each core supports only one hardware thread).
 	 * - Level 1 instruction and data caches are private to the core clusters.
-	 * - Level 2 cache is shared between cores in the same cluster.
+	 * - Level 2 and level 3 cache is shared between cores in the same cluster.
 	 */
 	cpuinfo_arm_chipset_to_string(&chipset, package.name);
 	package.processor_count = usable_processors;
@@ -441,19 +442,24 @@ void cpuinfo_arm_linux_init(void) {
 		goto cleanup;
 	}
 
-	uint32_t l2_count = cluster_count;
-	l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
-	if (l2 == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
-			l2_count * sizeof(struct cpuinfo_cache), l2_count);
-		goto cleanup;
-	}
-
-	/* Populate cache infromation structures in l1i, l1d, and l2 */
-	uint32_t cluster_id = UINT32_MAX;
+	uint32_t l2_count = 0, l3_count = 0, big_l3_size = 0, cluster_id = UINT32_MAX;
+	/* Indication whether L3 (if it exists) is shared between all cores */
+	bool shared_l3 = true;
+	/* Populate cache infromation structures in l1i, l1d */
 	for (uint32_t i = 0; i < usable_processors; i++) {
 		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
-			cluster_id++;
+			cluster_id += 1;
+			clusters[cluster_id] = (struct cpuinfo_cluster) {
+				.processor_start = i,
+				.processor_count = arm_linux_processors[i].package_processor_count,
+				.core_start = i,
+				.core_count = arm_linux_processors[i].package_processor_count,
+				.cluster_id = cluster_id,
+				.package = &package,
+				.vendor = arm_linux_processors[i].vendor,
+				.uarch = arm_linux_processors[i].uarch,
+				.midr = arm_linux_processors[i].midr,
+			};
 		}
 
 		processors[i].smt_id = 0;
@@ -463,7 +469,6 @@ void cpuinfo_arm_linux_init(void) {
 		processors[i].linux_id = (int) arm_linux_processors[i].system_processor_id;
 		processors[i].cache.l1i = l1i + i;
 		processors[i].cache.l1d = l1d + i;
-		processors[i].cache.l2 = l2 + cluster_id;
 		linux_cpu_to_processor_map[arm_linux_processors[i].system_processor_id] = &processors[i];
 
 		cores[i].processor_start = i;
@@ -476,7 +481,7 @@ void cpuinfo_arm_linux_init(void) {
 		cores[i].midr = arm_linux_processors[i].midr;
 		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
 
-		struct cpuinfo_cache shared_l2 = { 0 };
+		struct cpuinfo_cache temp_l2 = { 0 }, temp_l3 = { 0 };
 		cpuinfo_arm_decode_cache(
 			arm_linux_processors[i].uarch,
 			arm_linux_processors[i].package_processor_count,
@@ -484,7 +489,7 @@ void cpuinfo_arm_linux_init(void) {
 			&chipset,
 			cluster_id,
 			arm_linux_processors[i].architecture_version,
-			&l1i[i], &l1d[i], &shared_l2);
+			&l1i[i], &l1d[i], &temp_l2, &temp_l3);
 		l1i[i].processor_start = l1d[i].processor_start = i;
 		l1i[i].processor_count = l1d[i].processor_count = 1;
 		#if CPUINFO_ARCH_ARM
@@ -509,30 +514,129 @@ void cpuinfo_arm_linux_init(void) {
 				};
 			}
 		#endif
-		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
-			shared_l2.processor_start = i;
-			shared_l2.processor_count = arm_linux_processors[i].package_processor_count;
-			l2[cluster_id] = shared_l2;
 
-			clusters[cluster_id] = (struct cpuinfo_cluster) {
-				.processor_start = i,
-				.processor_count = arm_linux_processors[i].package_processor_count,
-				.core_start = i,
-				.core_count = arm_linux_processors[i].package_processor_count,
-				.cluster_id = cluster_id,
-				.package = &package,
-				.vendor = arm_linux_processors[i].vendor,
-				.uarch = arm_linux_processors[i].uarch,
-				.midr = arm_linux_processors[i].midr,
-			};
+		if (temp_l3.size != 0) {
+			/*
+			 * Assumptions:
+			 * - L2 is private to each core
+			 * - L3 is shared by cores in the same cluster
+			 * - If cores in different clusters report the same L3, it is shared between all cores.
+			 */
+			l2_count += 1;
+			if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
+				if (cluster_id == 0) {
+					big_l3_size = temp_l3.size;
+					l3_count = 1;
+				} else if (temp_l3.size != big_l3_size) {
+					/* If some cores have different L3 size, L3 is not shared between all cores */
+					shared_l3 = false;
+					l3_count += 1;
+				}
+			}
+		} else {
+			/* If some cores don't have L3 cache, L3 is not shared between all cores */
+			shared_l3 = false;
+			if (temp_l2.size != 0) {
+				/* Assume L2 is shared by cores in the same cluster */
+				if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
+					l2_count += 1;
+				}
+			}
 		}
 	}
 
-	if (cluster_count == 1 && l2[0].size == 0) {
-		/* CPU without L2 cache */
-		free(l2);
-		l2 = NULL;
-		l2_count = 0;
+	if (l2_count != 0) {
+		l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
+		if (l2 == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
+				l2_count * sizeof(struct cpuinfo_cache), l2_count);
+			goto cleanup;
+		}
+
+		if (l3_count != 0) {
+			l3 = calloc(l3_count, sizeof(struct cpuinfo_cache));
+			if (l3 == NULL) {
+				cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
+					l3_count * sizeof(struct cpuinfo_cache), l3_count);
+				goto cleanup;
+			}
+		}
+	}
+
+	cluster_id = UINT32_MAX;
+	uint32_t l2_index = UINT32_MAX, l3_index = UINT32_MAX;
+	for (uint32_t i = 0; i < usable_processors; i++) {
+		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
+			cluster_id++;
+		}
+
+		struct cpuinfo_cache dummy_l1i, dummy_l1d, temp_l2 = { 0 }, temp_l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			arm_linux_processors[i].uarch,
+			arm_linux_processors[i].package_processor_count,
+			arm_linux_processors[i].midr,
+			&chipset,
+			cluster_id,
+			arm_linux_processors[i].architecture_version,
+			&dummy_l1i, &dummy_l1d, &temp_l2, &temp_l3);
+
+		if (temp_l3.size != 0) {
+			/*
+			 * Assumptions:
+			 * - L2 is private to each core
+			 * - L3 is shared by cores in the same cluster
+			 * - If cores in different clusters report the same L3, it is shared between all cores.
+			 */
+			l2_index += 1;
+			l2[l2_index] = (struct cpuinfo_cache) {
+				.size            = temp_l2.size,
+				.associativity   = temp_l2.associativity,
+				.sets            = temp_l2.sets,
+				.partitions      = 1,
+				.line_size       = temp_l2.line_size,
+				.flags           = temp_l2.flags,
+				.processor_start = i,
+				.processor_count = 1,
+			};
+			processors[i].cache.l2 = l2 + l2_index;
+			if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
+				l3_index += 1;
+				if (l3_index < l3_count) {
+					l3[l3_index] = (struct cpuinfo_cache) {
+						.size            = temp_l3.size,
+						.associativity   = temp_l3.associativity,
+						.sets            = temp_l3.sets,
+						.partitions      = 1,
+						.line_size       = temp_l3.line_size,
+						.flags           = temp_l3.flags,
+						.processor_start = i,
+						.processor_count =
+							shared_l3 ? usable_processors : arm_linux_processors[i].package_processor_count,
+					};
+				}
+			}
+			if (shared_l3) {
+				processors[i].cache.l3 = l3;
+			} else if (l3_index < l3_count) {
+				processors[i].cache.l3 = l3 + l3_index;
+			}
+		} else if (temp_l2.size != 0) {
+			/* Assume L2 is shared by cores in the same cluster */
+			if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
+				l2_index += 1;
+				l2[l2_index] = (struct cpuinfo_cache) {
+					.size            = temp_l2.size,
+					.associativity   = temp_l2.associativity,
+					.sets            = temp_l2.sets,
+					.partitions      = 1,
+					.line_size       = temp_l2.line_size,
+					.flags           = temp_l2.flags,
+					.processor_start = i,
+					.processor_count = arm_linux_processors[i].package_processor_count,
+				};
+			}
+			processors[i].cache.l2 = l2 + l2_index;
+		}
 	}
 
 	/* Commit */
@@ -545,6 +649,7 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
+	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
 
 	cpuinfo_processors_count = usable_processors;
 	cpuinfo_cores_count = usable_processors;
@@ -553,6 +658,7 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 
 	__sync_synchronize();
 
@@ -563,7 +669,7 @@ void cpuinfo_arm_linux_init(void) {
 	processors = NULL;
 	cores = NULL;
 	clusters = NULL;
-	l1i = l1d = l2 = NULL;
+	l1i = l1d = l2 = l3 = NULL;
 
 	#ifdef __ANDROID__
 		struct cpuinfo_android_gpu gpu;
@@ -589,4 +695,5 @@ cleanup:
 	free(l1i);
 	free(l1d);
 	free(l2);
+	free(l3);
 }

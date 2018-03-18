@@ -101,7 +101,8 @@ void cpuinfo_arm_decode_cache(
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[restrict static 1],
 	struct cpuinfo_cache l1d[restrict static 1],
-	struct cpuinfo_cache l2[restrict static 1]);
+	struct cpuinfo_cache l2[restrict static 1],
+	struct cpuinfo_cache l3[restrict static 1]);
 #else /* defined(__cplusplus) */
 void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
@@ -112,5 +113,6 @@ void cpuinfo_arm_decode_cache(
 	uint32_t arch_version,
 	struct cpuinfo_cache l1i[1],
 	struct cpuinfo_cache l1d[1],
-	struct cpuinfo_cache l2[1]);
+	struct cpuinfo_cache l2[1],
+	struct cpuinfo_cache l3[1]);
 #endif

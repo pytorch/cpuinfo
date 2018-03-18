@@ -26,8 +26,10 @@
 #define CPUINFO_ARM_MIDR_CORTEX_A72      UINT32_C(0x410FD080)
 #define CPUINFO_ARM_MIDR_CORTEX_A73      UINT32_C(0x410FD090)
 #define CPUINFO_ARM_MIDR_CORTEX_A75      UINT32_C(0x410FD0A0)
-#define CPUINFO_ARM_MIDR_KRYO280_GOLD    UINT32_C(0x510F8000)
-#define CPUINFO_ARM_MIDR_KRYO280_SILVER  UINT32_C(0x510F8010)
+#define CPUINFO_ARM_MIDR_KRYO280_GOLD    UINT32_C(0x51AF8001)
+#define CPUINFO_ARM_MIDR_KRYO280_SILVER  UINT32_C(0x51AF8014)
+#define CPUINFO_ARM_MIDR_KRYO385_GOLD    UINT32_C(0x518F802D)
+#define CPUINFO_ARM_MIDR_KRYO385_SILVER  UINT32_C(0x518F803C)
 #define CPUINFO_ARM_MIDR_KRYO_SILVER_821 UINT32_C(0x510F2010)
 #define CPUINFO_ARM_MIDR_KRYO_GOLD       UINT32_C(0x510F2050)
 #define CPUINFO_ARM_MIDR_KRYO_SILVER_820 UINT32_C(0x510F2110)
@@ -139,6 +141,11 @@ inline static bool midr_is_qualcomm_cortex_a53_silver(uint32_t midr) {
 	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_KRYO280_SILVER & uarch_mask);
 }
 
+inline static bool midr_is_qualcomm_cortex_a55_silver(uint32_t midr) {
+	const uint32_t uarch_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
+	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_KRYO385_SILVER & uarch_mask);
+}
+
 inline static bool midr_is_kryo280_gold(uint32_t midr) {
 	const uint32_t uarch_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
 	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_KRYO280_GOLD & uarch_mask);
@@ -166,14 +173,16 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 	switch (midr & core_mask) {
 		case UINT32_C(0x4E000030): /* Denver 2 */
 		case UINT32_C(0x53000010): /* Mongoose */
+		case UINT32_C(0x51008020): /* Kryo 385 Gold */
 		case UINT32_C(0x51008000): /* Kryo 260 / 280 Gold */
 		case UINT32_C(0x51002050): /* Kryo Gold */
 		case UINT32_C(0x4100D0A0): /* Cortex-A75 */
 		case UINT32_C(0x4100D090): /* Cortex-A73 */
 		case UINT32_C(0x4100D080): /* Cortex-A72 */
-		case UINT32_C(0x4100C0E0): /* Cortex-A17 */
 		case UINT32_C(0x4100C0F0): /* Cortex-A15 */
-		case UINT32_C(0x4100C0D0): /* Cortex-A12 */
+		case UINT32_C(0x4100C0E0): /* Cortex-A17 */
+		case UINT32_C(0x4100C0D0): /* Rockchip RK3288 cores */
+		case UINT32_C(0x4100C0C0): /* Cortex-A12 */
 			/* These cores are always in big role */
 			return 5;
 		case UINT32_C(0x4100D070): /* Cortex-A57 */
@@ -185,6 +194,7 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 			return 2;
 		case UINT32_C(0x4100D040): /* Cortex-A35 */
 		case UINT32_C(0x4100C070): /* Cortex-A7 */
+		case UINT32_C(0x51008030): /* Kryo 385 Silver */
 		case UINT32_C(0x51008010): /* Kryo 260 / 280 Silver */
 		case UINT32_C(0x51002110): /* Kryo Silver (Snapdragon 820) */
 		case UINT32_C(0x51002010): /* Kryo Silver (Snapdragon 821) */
