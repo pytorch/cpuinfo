@@ -23,4 +23,7 @@ build:
 
 test_script:
 - Debug\init-test.exe
+- Debug\cpu-info.exe
+- Debug\cache-info.exe
+- Debug\isa-info.exe
 
