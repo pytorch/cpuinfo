@@ -2,5 +2,5 @@
 
 set -e
 
-adb push libs/armeabi-v7a/cpu-info /data/local/tmp/cpu-info
+adb push build/android/armeabi-v7a/cpu-info /data/local/tmp/cpu-info
 adb shell /data/local/tmp/cpu-info
