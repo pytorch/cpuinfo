@@ -20,3 +20,7 @@ build:
   project: c:\projects\cpuinfo\build\cpuinfo.sln
   verbosity: minimal
   parallel: true
+
+test_script:
+- Debug\init-test.exe
+
