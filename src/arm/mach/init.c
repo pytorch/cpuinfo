@@ -44,7 +44,7 @@ struct cpuinfo_arm_isa cpuinfo_isa = {
 #endif
 };
 
-static uint32_t get_sys_info(int type_specifier, char* name) {
+static uint32_t get_sys_info(int type_specifier, const char* name) {
 	size_t size = 0;
 	uint32_t result = 0;
 	int mib[2] = { CTL_HW, type_specifier };
@@ -59,7 +59,7 @@ static uint32_t get_sys_info(int type_specifier, char* name) {
 	return result;
 }
 
-static uint64_t get_sys_info_by_name(char* type_specifier) {
+static uint64_t get_sys_info_by_name(const char* type_specifier) {
 	size_t size = 0;
 	uint32_t result = 0;
 	if (sysctlbyname(type_specifier, NULL, &size, NULL, 0) != 0) {
