@@ -225,6 +225,109 @@ TEST(CORES, DISABLED_frequency) {
 	}
 }
 
+TEST(CLUSTERS, count) {
+	ASSERT_EQ(2, cpuinfo_get_clusters_count());
+}
+
+TEST(CLUSTERS, non_null) {
+	ASSERT_TRUE(cpuinfo_get_clusters());
+}
+
+TEST(CLUSTERS, processor_start) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		switch (i) {
+			case 0:
+				ASSERT_EQ(0, cpuinfo_get_cluster(i)->processor_start);
+				break;
+			case 1:
+				ASSERT_EQ(4, cpuinfo_get_cluster(i)->processor_start);
+				break;
+		}
+	}
+}
+
+TEST(CLUSTERS, processor_count) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(4, cpuinfo_get_cluster(i)->processor_count);
+	}
+}
+
+TEST(CLUSTERS, core_start) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		switch (i) {
+			case 0:
+				ASSERT_EQ(0, cpuinfo_get_cluster(i)->core_start);
+				break;
+			case 1:
+				ASSERT_EQ(4, cpuinfo_get_cluster(i)->core_start);
+				break;
+		}
+	}
+}
+
+TEST(CLUSTERS, core_count) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(4, cpuinfo_get_cluster(i)->core_count);
+	}
+}
+
+TEST(CLUSTERS, cluster_id) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(i, cpuinfo_get_cluster(i)->cluster_id);
+	}
+}
+
+TEST(CLUSTERS, package) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_package(0), cpuinfo_get_cluster(i)->package);
+	}
+}
+
+TEST(CLUSTERS, vendor) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(cpuinfo_vendor_arm, cpuinfo_get_cluster(i)->vendor);
+	}
+}
+
+TEST(CLUSTERS, uarch) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		switch (i) {
+			case 0:
+				ASSERT_EQ(cpuinfo_uarch_cortex_a15, cpuinfo_get_cluster(i)->uarch);
+				break;
+			case 1:
+				ASSERT_EQ(cpuinfo_uarch_cortex_a7, cpuinfo_get_cluster(i)->uarch);
+				break;
+		}
+	}
+}
+
+TEST(CLUSTERS, midr) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		switch (i) {
+			case 0:
+				ASSERT_EQ(UINT32_C(0x412FC0F3), cpuinfo_get_cluster(i)->midr);
+				break;
+			case 1:
+				ASSERT_EQ(UINT32_C(0x410FC073), cpuinfo_get_cluster(i)->midr);
+				break;
+		}
+	}
+}
+
+TEST(CLUSTERS, DISABLED_frequency) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		switch (i) {
+			case 0:
+				ASSERT_EQ(UINT64_C(1900000000), cpuinfo_get_cluster(i)->frequency);
+				break;
+			case 1:
+				ASSERT_EQ(UINT64_C(1300000000), cpuinfo_get_cluster(i)->frequency);
+				break;
+		}
+	}
+}
+
 TEST(PACKAGES, count) {
 	ASSERT_EQ(1, cpuinfo_get_packages_count());
 }

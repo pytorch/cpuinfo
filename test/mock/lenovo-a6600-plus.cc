@@ -134,6 +134,74 @@ TEST(CORES, DISABLED_frequency) {
 	}
 }
 
+TEST(CLUSTERS, count) {
+	ASSERT_EQ(1, cpuinfo_get_clusters_count());
+}
+
+TEST(CLUSTERS, non_null) {
+	ASSERT_TRUE(cpuinfo_get_clusters());
+}
+
+TEST(CLUSTERS, processor_start) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_cluster(i)->processor_start);
+	}
+}
+
+TEST(CLUSTERS, processor_count) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(4, cpuinfo_get_cluster(i)->processor_count);
+	}
+}
+
+TEST(CLUSTERS, core_start) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(0, cpuinfo_get_cluster(i)->core_start);
+	}
+}
+
+TEST(CLUSTERS, core_count) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(4, cpuinfo_get_cluster(i)->core_count);
+	}
+}
+
+TEST(CLUSTERS, cluster_id) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(i, cpuinfo_get_cluster(i)->cluster_id);
+	}
+}
+
+TEST(CLUSTERS, package) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(cpuinfo_get_package(0), cpuinfo_get_cluster(i)->package);
+	}
+}
+
+TEST(CLUSTERS, vendor) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(cpuinfo_vendor_arm, cpuinfo_get_cluster(i)->vendor);
+	}
+}
+
+TEST(CLUSTERS, uarch) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(cpuinfo_uarch_cortex_a53, cpuinfo_get_cluster(i)->uarch);
+	}
+}
+
+TEST(CLUSTERS, midr) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(UINT32_C(0x410FD034), cpuinfo_get_cluster(i)->midr);
+	}
+}
+
+TEST(CLUSTERS, DISABLED_frequency) {
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		ASSERT_EQ(UINT64_C(988000000), cpuinfo_get_cluster(i)->frequency);
+	}
+}
+
 TEST(PACKAGES, count) {
 	ASSERT_EQ(1, cpuinfo_get_packages_count());
 }
