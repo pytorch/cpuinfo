@@ -246,9 +246,10 @@ def adb_pull(device_path, local_path):
     if any(device_path.startswith(prefix) for prefix in SHELL_PREFIX):
         content = adb_shell(["cat", device_path])
         if content is not None:
-            with open(local_path, "wb") as local_file:
-                local_file.write(content)
-        return content is not None
+            if not content.rstrip().endswith("No such file or directory"):
+                with open(local_path, "wb") as local_file:
+                    local_file.write(content)
+                    return True
     else:
         env = os.environ.copy()
         env["LC_ALL"] = "C"
