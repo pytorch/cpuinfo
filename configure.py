@@ -21,7 +21,7 @@ def main(args):
 
     with build.options(source_dir="src", macros=macros, extra_include_dirs="src"):
         sources = ["init.c", "api.c", "log.c"]
-        if build.target.is_x86 or build.target.is_x86_64:
+        if build.target.is_x86_64:
             sources += [
                 "x86/init.c", "x86/info.c", "x86/vendor.c", "x86/uarch.c", "x86/name.c",
                 "x86/topology.c",
