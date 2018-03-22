@@ -29,7 +29,7 @@ def main(args):
             ]
             if build.target.is_macos:
                 sources += ["x86/mach/init.c"]
-            elif build.target.is_linux or build.target.is_android:
+            elif build.target.is_linux:
                 sources += [
                     "x86/linux/init.c",
                     "x86/linux/cpuinfo.c",
@@ -37,7 +37,7 @@ def main(args):
             sources.append("x86/isa.c" if not build.target.is_nacl else "x86/nacl/isa.c")
         if build.target.is_arm or build.target.is_arm64:
             sources += ["arm/uarch.c", "arm/cache.c"]
-            if build.target.is_linux or build.target.is_android:
+            if build.target.is_linux:
                 sources += [
                     "arm/linux/init.c",
                     "arm/linux/cpuinfo.c",
@@ -50,15 +50,10 @@ def main(args):
                     sources.append("arm/linux/aarch32-isa.c")
                 elif build.target.is_arm64:
                     sources.append("arm/linux/aarch64-isa.c")
-                if build.target.is_android:
-                    sources += [
-                        "arm/android/gpu.c",
-                        "arm/android/properties.c",
-                    ]
-
+                
         if build.target.is_macos:
             sources += ["mach/topology.c"]
-        if build.target.is_linux or build.target.is_android:
+        if build.target.is_linux:
             sources += [
                 "linux/current.c",
                 "linux/cpulist.c",
@@ -68,12 +63,7 @@ def main(args):
             ]
             if options.mock:
                 sources += ["linux/mockfile.c"]
-        if build.target.is_android:
-            sources.append("linux/gpu.c")
-            if options.mock:
-                sources.append("gpu/gles2-mock.c")
-            else:
-                sources.append("gpu/gles2.c")
+        
         build.static_library("cpuinfo", map(build.cc, sources))
 
     with build.options(source_dir="tools", deps=build):
