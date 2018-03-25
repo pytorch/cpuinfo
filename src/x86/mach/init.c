@@ -327,6 +327,10 @@ void cpuinfo_x86_mach_init(void) {
 	cpuinfo_clusters_count = mach_topology.packages;
 	cpuinfo_packages_count = mach_topology.packages;
 
+	__sync_synchronize();
+
+	cpuinfo_is_initialized = true;
+
 	processors = NULL;
 	cores = NULL;
 	clusters = NULL;

@@ -557,6 +557,10 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = usable_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 
+	__sync_synchronize();
+
+	cpuinfo_is_initialized = true;
+
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
 	processors = NULL;

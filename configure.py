@@ -14,7 +14,8 @@ def main(args):
 
     macros = {
         "CPUINFO_LOG_LEVEL": {"none": 0, "error": 1, "warning": 2, "info": 3, "debug": 4}[options.log_level],
-        "CPUINFO_MOCK": int(options.mock)
+        "CPUINFO_LOG_TO_STDIO": int(not options.mock),
+        "CPUINFO_MOCK": int(options.mock),
     }
 
     build.export_cpath("include", ["cpuinfo.h"])

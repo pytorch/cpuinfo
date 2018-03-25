@@ -534,6 +534,10 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
 
+	__sync_synchronize();
+
+	cpuinfo_is_initialized = true;
+
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
 	processors = NULL;

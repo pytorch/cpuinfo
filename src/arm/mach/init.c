@@ -483,6 +483,10 @@ void cpuinfo_arm_mach_init(void) {
 	cpuinfo_cores_count = mach_topology.cores;
 	cpuinfo_packages_count = mach_topology.packages;
 
+	__sync_synchronize();
+
+	cpuinfo_is_initialized = true;
+
 	processors = NULL;
 	cores = NULL;
 	packages = NULL;

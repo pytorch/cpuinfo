@@ -18,6 +18,7 @@ enum cpuinfo_cache_level {
 	cpuinfo_cache_level_max = 5,
 };
 
+extern bool cpuinfo_is_initialized;
 extern struct cpuinfo_processor* cpuinfo_processors;
 extern struct cpuinfo_core* cpuinfo_cores;
 extern struct cpuinfo_cluster* cpuinfo_clusters;
