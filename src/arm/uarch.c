@@ -217,11 +217,11 @@ void cpuinfo_arm_decode_vendor_uarch(
 					break;
 				case 0x00100020:
 					/*
-					 * Exynos 9810 MIDR = 0x531F0020, assume Mongoose M3 has:
+					 * Exynos 9810 MIDR = 0x531F0020, assume Meerkat M3 has:
 					 * - CPU variant 0x1
 					 * - CPU part 0x002
 					 */
-					*uarch = cpuinfo_uarch_mongoose_m3;
+					*uarch = cpuinfo_uarch_meerkat_m3;
 					break;
 				default:
 					cpuinfo_log_warning("unknown Samsung CPU variant 0x%01"PRIx32" part 0x%03"PRIx32" ignored",

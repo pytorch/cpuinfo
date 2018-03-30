@@ -390,8 +390,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_mongoose_m1 = 0x00600100,
 	/** Samsung Mongoose M2 (Exynos 8895 big cores). */
 	cpuinfo_uarch_mongoose_m2 = 0x00600101,
-	/** Samsung Mongoose M3 (Exynos 9810 big cores). */
-	cpuinfo_uarch_mongoose_m3 = 0x00600102,
+	/** Samsung Meerkat M3 (Exynos 9810 big cores). */
+	cpuinfo_uarch_meerkat_m3  = 0x00600102,
 
 	/** Apple A6 and A6X processors. */
 	cpuinfo_uarch_swift     = 0x00700100,

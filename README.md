@@ -155,10 +155,10 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen)
   - [ ] VIA-designed x86/x86-64 cores
   - [ ] Other x86 cores (DM&P, RDC, Transmeta, Cyrix, Rise)
-  - [x] ARM-designed ARM cores (up to Cortex-A17, Cortex-A75)
-  - [x] Qualcomm-designed ARM cores (up to Kryo and Kryo-280)
+  - [x] ARM-designed ARM cores (up to Cortex-A55 and Cortex-A75)
+  - [x] Qualcomm-designed ARM cores (up to Kryo, Kryo-280, and Kryo-385)
   - [x] Nvidia-designed ARM cores (Denver)
-  - [x] Samsung-designed ARM cores (Mongoose)
+  - [x] Samsung-designed ARM cores (Mongoose and Meerkat)
   - [x] Intel-designed ARM cores (XScale up to 3rd-gen)
   - [x] Apple-designed ARM cores (up to Hurricane)
   - [x] Cavium-designed ARM cores (ThunderX)
