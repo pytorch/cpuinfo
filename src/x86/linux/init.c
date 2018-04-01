@@ -49,7 +49,9 @@ static void cpuinfo_x86_count_objects(
 	uint32_t linux_processors_count,
 	const struct cpuinfo_x86_linux_processor linux_processors[restrict static linux_processors_count],
 	const struct cpuinfo_x86_processor processor[restrict static 1],
+	uint32_t llc_apic_bits,
 	uint32_t cores_count_ptr[restrict static 1],
+	uint32_t clusters_count_ptr[restrict static 1],
 	uint32_t packages_count_ptr[restrict static 1],
 	uint32_t l1i_count_ptr[restrict static 1],
 	uint32_t l1d_count_ptr[restrict static 1],
@@ -57,9 +59,16 @@ static void cpuinfo_x86_count_objects(
 	uint32_t l3_count_ptr[restrict static 1],
 	uint32_t l4_count_ptr[restrict static 1])
 {
-	uint32_t cores_count = 0, packages_count = 0;
+	const uint32_t core_apic_mask =
+		~(bit_mask(processor->topology.thread_bits_length) << processor->topology.thread_bits_offset);
+	const uint32_t package_apic_mask =
+		core_apic_mask & ~(bit_mask(processor->topology.core_bits_length) << processor->topology.core_bits_offset);
+	const uint32_t llc_apic_mask = ~bit_mask(llc_apic_bits);
+	const uint32_t cluster_apic_mask = package_apic_mask | llc_apic_mask;
+
+	uint32_t cores_count = 0, clusters_count = 0, packages_count = 0;
 	uint32_t l1i_count = 0, l1d_count = 0, l2_count = 0, l3_count = 0, l4_count = 0;
-	uint32_t last_core_id = UINT32_MAX, last_package_id = UINT32_MAX;
+	uint32_t last_core_id = UINT32_MAX, last_cluster_id = UINT32_MAX, last_package_id = UINT32_MAX;
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
 	for (uint32_t i = 0; i < linux_processors_count; i++) {
@@ -68,18 +77,22 @@ static void cpuinfo_x86_count_objects(
 			cpuinfo_log_debug("APID ID %"PRIu32": system processor %"PRIu32, apic_id, linux_processors[i].linux_id);
 
 			/* All bits of APIC ID except thread ID mask */
-			const uint32_t core_id = apic_id &
-				~(bit_mask(processor->topology.thread_bits_length) << processor->topology.thread_bits_offset);
+			const uint32_t core_id = apic_id & core_apic_mask;
 			if (core_id != last_core_id) {
 				last_core_id = core_id;
 				cores_count++;
 			}
 			/* All bits of APIC ID except thread ID and core ID masks */
-			const uint32_t package_id = core_id &
-				~(bit_mask(processor->topology.core_bits_length) << processor->topology.core_bits_offset);
+			const uint32_t package_id = apic_id & package_apic_mask;
 			if (package_id != last_package_id) {
 				last_package_id = package_id;
 				packages_count++;
+			}
+			/* Bits of APIC ID which are part of either LLC or package ID mask */
+			const uint32_t cluster_id = apic_id & cluster_apic_mask;
+			if (cluster_id != last_cluster_id) {
+				last_cluster_id = cluster_id;
+				clusters_count++;
 			}
 			if (processor->cache.l1i.size != 0) {
 				const uint32_t l1i_id = apic_id & ~bit_mask(processor->cache.l1i.apic_bits);
@@ -119,6 +132,7 @@ static void cpuinfo_x86_count_objects(
 		}
 	}
 	*cores_count_ptr = cores_count;
+	*clusters_count_ptr = clusters_count;
 	*packages_count_ptr = packages_count;
 	*l1i_count_ptr = l1i_count;
 	*l1d_count_ptr = l1d_count;
@@ -200,12 +214,23 @@ void cpuinfo_x86_linux_init(void) {
 		goto cleanup;
 	}
 
-	uint32_t packages_count = 0, cores_count = 0;
+	uint32_t llc_apic_bits = 0;
+	if (x86_processor.cache.l4.size != 0) {
+		llc_apic_bits = x86_processor.cache.l4.apic_bits;
+	} else if (x86_processor.cache.l3.size != 0) {
+		llc_apic_bits = x86_processor.cache.l3.apic_bits;
+	} else if (x86_processor.cache.l2.size != 0) {
+		llc_apic_bits = x86_processor.cache.l2.apic_bits;
+	} else if (x86_processor.cache.l1d.size != 0) {
+		llc_apic_bits = x86_processor.cache.l1d.apic_bits;
+	}
+	uint32_t packages_count = 0, clusters_count = 0, cores_count = 0;
 	uint32_t l1i_count = 0, l1d_count = 0, l2_count = 0, l3_count = 0, l4_count = 0;
-	cpuinfo_x86_count_objects(x86_linux_processors_count, x86_linux_processors, &x86_processor,
-		&cores_count, &packages_count, &l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
+	cpuinfo_x86_count_objects(x86_linux_processors_count, x86_linux_processors, &x86_processor, llc_apic_bits,
+		&cores_count, &clusters_count, &packages_count, &l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
 
 	cpuinfo_log_debug("detected %"PRIu32" cores", cores_count);
+	cpuinfo_log_debug("detected %"PRIu32" clusters", clusters_count);
 	cpuinfo_log_debug("detected %"PRIu32" packages", packages_count);
 	cpuinfo_log_debug("detected %"PRIu32" L1I caches", l1i_count);
 	cpuinfo_log_debug("detected %"PRIu32" L1D caches", l1d_count);
@@ -236,11 +261,10 @@ void cpuinfo_x86_linux_init(void) {
 		goto cleanup;
 	}
 
-	/* On x86 cluster of cores is a physical package */
-	clusters = calloc(packages_count, sizeof(struct cpuinfo_cluster));
+	clusters = calloc(clusters_count, sizeof(struct cpuinfo_cluster));
 	if (clusters == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core clusters",
-			packages_count * sizeof(struct cpuinfo_cluster), packages_count);
+			clusters_count * sizeof(struct cpuinfo_cluster), clusters_count);
 		goto cleanup;
 	}
 
@@ -292,10 +316,17 @@ void cpuinfo_x86_linux_init(void) {
 		}
 	}
 
-	uint32_t processor_index = UINT32_MAX, core_index = UINT32_MAX, package_index = UINT32_MAX;
+	const uint32_t core_apic_mask =
+		~(bit_mask(x86_processor.topology.thread_bits_length) << x86_processor.topology.thread_bits_offset);
+	const uint32_t package_apic_mask =
+		core_apic_mask & ~(bit_mask(x86_processor.topology.core_bits_length) << x86_processor.topology.core_bits_offset);
+	const uint32_t llc_apic_mask = ~bit_mask(llc_apic_bits);
+	const uint32_t cluster_apic_mask = package_apic_mask | llc_apic_mask;
+
+	uint32_t processor_index = UINT32_MAX, core_index = UINT32_MAX, cluster_index = UINT32_MAX, package_index = UINT32_MAX;
 	uint32_t l1i_index = UINT32_MAX, l1d_index = UINT32_MAX, l2_index = UINT32_MAX, l3_index = UINT32_MAX, l4_index = UINT32_MAX;
-	uint32_t core_id = 0, smt_id = 0;
-	uint32_t last_apic_core_id = UINT32_MAX, last_apic_package_id = UINT32_MAX;
+	uint32_t cluster_id = 0, core_id = 0, smt_id = 0;
+	uint32_t last_apic_core_id = UINT32_MAX, last_apic_cluster_id = UINT32_MAX, last_apic_package_id = UINT32_MAX;
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
 	for (uint32_t i = 0; i < x86_linux_processors_count; i++) {
@@ -305,25 +336,30 @@ void cpuinfo_x86_linux_init(void) {
 			smt_id++;
 
 			/* All bits of APIC ID except thread ID mask */
-			const uint32_t apid_core_id = apic_id &
-				~(bit_mask(x86_processor.topology.thread_bits_length) << x86_processor.topology.thread_bits_offset);
+			const uint32_t apid_core_id = apic_id & core_apic_mask;
 			if (apid_core_id != last_apic_core_id) {
 				core_index++;
 				core_id++;
 				smt_id = 0;
 			}
+			/* Bits of APIC ID which are part of either LLC or package ID mask */
+			const uint32_t apic_cluster_id = apic_id & cluster_apic_mask;
+			if (apic_cluster_id != last_apic_cluster_id) {
+				cluster_index++;
+				cluster_id++;
+			}
 			/* All bits of APIC ID except thread ID and core ID masks */
-			const uint32_t apic_package_id = apid_core_id &
-				~(bit_mask(x86_processor.topology.core_bits_length) << x86_processor.topology.core_bits_offset);
+			const uint32_t apic_package_id = apic_id & package_apic_mask;
 			if (apic_package_id != last_apic_package_id) {
 				package_index++;
 				core_id = 0;
+				cluster_id = 0;
 			}
 
 			/* Initialize logical processor object */
 			processors[processor_index].smt_id   = smt_id;
 			processors[processor_index].core     = cores + core_index;
-			processors[processor_index].cluster  = clusters + package_index;
+			processors[processor_index].cluster  = clusters + cluster_index;
 			processors[processor_index].package  = packages + package_index;
 			processors[processor_index].linux_id = x86_linux_processors[i].linux_id;
 			processors[processor_index].apic_id  = x86_linux_processors[i].apic_id;
@@ -334,13 +370,13 @@ void cpuinfo_x86_linux_init(void) {
 					.processor_start = processor_index,
 					.processor_count = 1,
 					.core_id = core_id,
-					.cluster = clusters + package_index,
+					.cluster = clusters + cluster_index,
 					.package = packages + package_index,
 					.vendor = x86_processor.vendor,
 					.uarch = x86_processor.uarch,
 					.cpuid = x86_processor.cpuid,
 				};
-				clusters[package_index].core_count += 1;
+				clusters[cluster_index].core_count += 1;
 				packages[package_index].core_count += 1;
 				last_apic_core_id = apid_core_id;
 			} else {
@@ -348,26 +384,33 @@ void cpuinfo_x86_linux_init(void) {
 				cores[core_index].processor_count++;
 			}
 
-			if (apic_package_id != last_apic_package_id) {
-				/* new cluster/package */
+			if (apic_cluster_id != last_apic_cluster_id) {
+				/* new cluster */
+				clusters[cluster_index].processor_start = processor_index;
+				clusters[cluster_index].processor_count = 1;
+				clusters[cluster_index].core_start = core_index;
+				clusters[cluster_index].cluster_id = cluster_id;
+				clusters[cluster_index].package = packages + package_index;
+				clusters[cluster_index].vendor = x86_processor.vendor;
+				clusters[cluster_index].uarch = x86_processor.uarch;
+				clusters[cluster_index].cpuid = x86_processor.cpuid;
+				packages[package_index].cluster_count += 1;
+				last_apic_cluster_id = apic_cluster_id;
+			} else {
+				/* another logical processor on the same cluster */
+				clusters[cluster_index].processor_count++;
+			}
 
-				clusters[package_index].processor_start = processor_index;
-				clusters[package_index].processor_count = 1;
-				clusters[package_index].core_start = core_index;
-				clusters[package_index].package = packages + package_index;
-				clusters[package_index].vendor = x86_processor.vendor;
-				clusters[package_index].uarch = x86_processor.uarch;
-				clusters[package_index].cpuid = x86_processor.cpuid;
+			if (apic_package_id != last_apic_package_id) {
+				/* new package */
 				packages[package_index].processor_start = processor_index;
 				packages[package_index].processor_count = 1;
 				packages[package_index].core_start = core_index;
-				packages[package_index].cluster_start = package_index;
-				packages[package_index].cluster_count = 1;
+				packages[package_index].cluster_start = cluster_index;
 				cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[package_index].name);
 				last_apic_package_id = apic_package_id;
 			} else {
-				/* another logical processor on the same cluster/package */
-				clusters[package_index].processor_count++;
+				/* another logical processor on the same package */
 				packages[package_index].processor_count++;
 			}
 
@@ -526,7 +569,7 @@ void cpuinfo_x86_linux_init(void) {
 
 	cpuinfo_processors_count = processors_count;
 	cpuinfo_cores_count = cores_count;
-	cpuinfo_clusters_count = packages_count;
+	cpuinfo_clusters_count = clusters_count;
 	cpuinfo_packages_count = packages_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
