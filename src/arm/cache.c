@@ -872,19 +872,20 @@ void cpuinfo_arm_decode_cache(
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Processor model | Cores | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
-			 *  | Snapdragon 820  |  2+2  |     ?     |     ?     |  1M+512K  |    [1]    |
+			 *  | Snapdragon 820  |  2+2  |    24K    |    32K    |  1M+512K  |   [1, 2]  |
 			 *  | Snapdragon 821  |  2+2  |     ?     |     ?     |  1M+512K  |    [1]    |
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] http://www.anandtech.com/show/9837/snapdragon-820-preview/2
+			 * [2] https://www.inforcecomputing.com/public_docs/Inforce6601/Inforce_6601_Micro-SOM_FAQs_04-2016-1.pdf
 			 */
 			*l1i = (struct cpuinfo_cache) {
-				.size = 32 * 1024 /* TODO: verify */,
+				.size = 32 * 1024,
 				.associativity = 4,
 				.line_size = 64
 			};
 			*l1d = (struct cpuinfo_cache) {
-				.size = 24 * 1024 /* TODO: verify */,
+				.size = 24 * 1024,
 				.associativity = 3,
 				.line_size = 64
 			};
