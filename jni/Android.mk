@@ -733,6 +733,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := leagoo-t5c-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/leagoo-t5c.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := memo-pad-7-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/memo-pad-7.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

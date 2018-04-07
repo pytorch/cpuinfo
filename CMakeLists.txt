@@ -660,6 +660,11 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(alldocube-iwork8-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(alldocube-iwork8-test alldocube-iwork8-test)
 
+    ADD_EXECUTABLE(leagoo-t5c-test test/mock/leagoo-t5c.cc)
+    TARGET_INCLUDE_DIRECTORIES(leagoo-t5c-test BEFORE PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(leagoo-t5c-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(leagoo-t5c-test leagoo-t5c-test)
+
     ADD_EXECUTABLE(memo-pad-7-test test/mock/memo-pad-7.cc)
     TARGET_INCLUDE_DIRECTORIES(memo-pad-7-test BEFORE PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(memo-pad-7-test PRIVATE cpuinfo_mock gtest)
