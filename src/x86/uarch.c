@@ -94,9 +94,12 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x4A:
 						case 0x4D:
 						case 0x5A: // Moorefield
+						case 0x5D: // SoFIA
 							return cpuinfo_uarch_silvermont;
 						case 0x4C: // Braswell
 						case 0x5F: // Denverton
+						case 0x75: // Spreadtrum SC9853I-IA
+						case 0x7A: // Goldmont+
 							return cpuinfo_uarch_airmont;
 
 						/* Knights-series cores */
