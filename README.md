@@ -90,7 +90,7 @@ cpu_set_t cpu_set;
 CPU_ZERO(&cpu_set);
 const struct cpuinfo_cache* current_l2 = cpuinfo_get_current_processor()->cache.l2;
 for (uint32_t i = 0; i < current_l2->processor_count; i++) {
-    CPU_SET(cpuinfo_get_processor(current_l2->processor_start + i).linux_id, &cpu_set);
+    CPU_SET(cpuinfo_get_processor(current_l2->processor_start + i)->linux_id, &cpu_set);
 }
 pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 ```
