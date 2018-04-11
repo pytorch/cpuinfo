@@ -183,6 +183,8 @@ void cpuinfo_arm_decode_cache(
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *  | Broadcom BCM2836   |   4   |    32K    |    32K    |    512K   |    [8]    |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
+			 *  | Kirin 920          | 4(+4) |     ?     |     ?     |    512K   |    [9]    |
+			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] https://linux-sunxi.org/A20
 			 * [2] https://linux-sunxi.org/A23
@@ -192,6 +194,7 @@ void cpuinfo_arm_decode_cache(
 			 * [6] https://linux-sunxi.org/images/1/10/A80_Datasheet_Revision_1.0_0404.pdf
 			 * [7] http://dl.linux-sunxi.org/A83T/A83T_datasheet_Revision_1.1.pdf
 			 * [8] https://www.raspberrypi.org/forums/viewtopic.php?t=98428
+			 * [9] http://www.gizmochina.com/2014/10/07/hisilicon-kirin-920-tear-down/
 			 */
 			*l1i = (struct cpuinfo_cache) {
 				.size = 32 * 1024,
@@ -336,11 +339,13 @@ void cpuinfo_arm_decode_cache(
 			 *  | Exynos 5 Octa 5422 | 4(+4) |    32K    |    32K    | 2M(+512K) |    [3]    |
 			 *  | Exynos 5 Octa 5430 | 4(+4) |    32K    |    32K    | 2M(+512K) |    [3]    |
 			 *  | Exynos 5 Octa 5800 | 4(+4) |    32K    |    32K    | 2M(+512K) |    [3]    |
+			 *  | Kirin 920          | 4(+4) |     ?     |     ?     | 2M(+512K) |    [4]    |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] http://www.arndaleboard.org/wiki/downloads/supports/Exynos_5_Dual_User_Manaul_Public_REV1.00.pdf
 			 * [2] http://www.yicsystem.com/wp-content/uploads/2014/08/Espresso5260P-Guide-Book.pdf
 			 * [3] http://www.anandtech.com/show/6768/samsung-details-exynos-5-octa-architecture-power-at-isscc-13
+			 * [4] http://www.gizmochina.com/2014/10/07/hisilicon-kirin-920-tear-down/
 			 */
 			*l1i = (struct cpuinfo_cache) {
 				.size = 32 * 1024,

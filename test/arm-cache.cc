@@ -795,6 +795,102 @@ TEST(HISILICON, kirin_659) {
 	EXPECT_EQ(512 * 1024, little_l2.size);
 }
 
+TEST(HISILICON, kirin_920) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
+		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+		.model = 920,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
+	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(HISILICON, kirin_925) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
+		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+		.model = 925,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
+	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
+TEST(HISILICON, kirin_928) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
+		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+		.model = 928,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2);
+
+	EXPECT_EQ(32 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
+	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
+	EXPECT_EQ(512 * 1024, little_l2.size);
+}
+
 TEST(HISILICON, kirin_950) {
 	const struct cpuinfo_arm_chipset chipset = {
 		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
