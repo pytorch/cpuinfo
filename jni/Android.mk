@@ -328,6 +328,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := huawei-honor-6-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/huawei-honor-6.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := lenovo-a6600-plus-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/lenovo-a6600-plus.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

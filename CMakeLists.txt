@@ -401,6 +401,11 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(huawei-ascend-p7-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(huawei-ascend-p7-test huawei-ascend-p7-test)
 
+    ADD_EXECUTABLE(huawei-honor-6-test test/mock/huawei-honor-6.cc)
+    TARGET_INCLUDE_DIRECTORIES(huawei-honor-6-test BEFORE PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(huawei-honor-6-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(huawei-honor-6-test huawei-honor-6-test)
+
     ADD_EXECUTABLE(lenovo-a6600-plus-test test/mock/lenovo-a6600-plus.cc)
     TARGET_INCLUDE_DIRECTORIES(lenovo-a6600-plus-test BEFORE PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(lenovo-a6600-plus-test PRIVATE cpuinfo_mock gtest)
