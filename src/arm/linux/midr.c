@@ -256,8 +256,8 @@ static const struct cluster_config cluster_configs[] = {
 			[1] = 4,
 		},
 		.cluster_midr = {
-			[0] = UINT32_C(0x410FC070) /* TODO: clarify */,
-			[1] = UINT32_C(0x410FC0F0) /* TODO: clarify */,
+			[0] = UINT32_C(0x410FC075),
+			[1] = UINT32_C(0x413FC0F3),
 		},
 	},
 	{
@@ -271,8 +271,8 @@ static const struct cluster_config cluster_configs[] = {
 			[1] = 4,
 		},
 		.cluster_midr = {
-			[0] = UINT32_C(0x410FC070) /* TODO: clarify */,
-			[1] = UINT32_C(0x410FC0F0) /* TODO: clarify */,
+			[0] = UINT32_C(0x410FC075),
+			[1] = UINT32_C(0x413FC0F3),
 		},
 	},
 	{
@@ -286,8 +286,8 @@ static const struct cluster_config cluster_configs[] = {
 			[1] = 4,
 		},
 		.cluster_midr = {
-			[0] = UINT32_C(0x410FC070) /* TODO: clarify */,
-			[1] = UINT32_C(0x410FC0F0) /* TODO: clarify */,
+			[0] = UINT32_C(0x410FC075),
+			[1] = UINT32_C(0x413FC0F3),
 		},
 	},
 #endif /* CPUINFO_ARCH_ARM */
