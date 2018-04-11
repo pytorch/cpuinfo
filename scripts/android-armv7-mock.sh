@@ -24,6 +24,7 @@ adb push build/android/armeabi-v7a/galaxy-s7-global-test /data/local/tmp/galaxy-
 adb push build/android/armeabi-v7a/galaxy-s7-us-test /data/local/tmp/galaxy-s7-us-test
 adb push build/android/armeabi-v7a/galaxy-s8-global-test /data/local/tmp/galaxy-s8-global-test
 adb push build/android/armeabi-v7a/galaxy-s8-us-test /data/local/tmp/galaxy-s8-us-test
+adb push build/android/armeabi-v7a/galaxy-s9-global-test /data/local/tmp/galaxy-s9-global-test
 adb push build/android/armeabi-v7a/galaxy-s9-us-test /data/local/tmp/galaxy-s9-us-test
 adb push build/android/armeabi-v7a/galaxy-tab-3-7.0-test /data/local/tmp/galaxy-tab-3-7.0-test
 adb push build/android/armeabi-v7a/galaxy-tab-3-lite-test /data/local/tmp/galaxy-tab-3-lite-test
@@ -94,6 +95,7 @@ adb shell "/data/local/tmp/galaxy-s7-global-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s7-us-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s8-global-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s8-us-test --gtest_color=yes"
+adb shell "/data/local/tmp/galaxy-s9-global-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-s9-us-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-tab-3-7.0-test --gtest_color=yes"
 adb shell "/data/local/tmp/galaxy-tab-3-lite-test --gtest_color=yes"

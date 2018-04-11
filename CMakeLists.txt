@@ -533,6 +533,11 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(galaxy-s9-us-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(galaxy-s9-us-test galaxy-s9-us-test)
 
+    ADD_EXECUTABLE(galaxy-s9-global-test test/mock/galaxy-s9-global.cc)
+    TARGET_INCLUDE_DIRECTORIES(galaxy-s9-global-test BEFORE PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(galaxy-s9-global-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(galaxy-s9-global-test galaxy-s9-global-test)
+
     ADD_EXECUTABLE(huawei-mate-8-test test/mock/huawei-mate-8.cc)
     TARGET_INCLUDE_DIRECTORIES(huawei-mate-8-test BEFORE PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(huawei-mate-8-test PRIVATE cpuinfo_mock gtest)
