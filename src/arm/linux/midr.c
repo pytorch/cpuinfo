@@ -248,7 +248,7 @@ static const struct cluster_config cluster_configs[] = {
 	{
 		/* Kirin 920: 4x Cortex-A15 + 4x Cortex-A7 */
 		.cores = 8,
-		.series = cpuinfo_arm_chipset_series_samsung_exynos,
+		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 		.model = UINT16_C(920),
 		.clusters = 2,
 		.cluster_cores = {
