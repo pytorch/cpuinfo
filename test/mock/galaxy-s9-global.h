@@ -1,4 +1,5 @@
 struct cpuinfo_mock_file filesystem[] = {
+#if CPUINFO_ARCH_ARM64
 	{
 		.path = "/proc/cpuinfo",
 		.size = 1616,
@@ -76,10 +77,117 @@ struct cpuinfo_mock_file filesystem[] = {
 			"CPU revision\t: 0\n"
 			"\n",
 	},
+#elif CPUINFO_ARCH_ARM
+	{
+		.path = "/proc/cpuinfo",
+		.size = 2240,
+		.content =
+			"processor\t: 0\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd05\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"processor\t: 1\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd05\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"processor\t: 2\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd05\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"processor\t: 3\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd05\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"processor\t: 4\n"
+			"model name\t: ARMv8 Processor rev 0 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x53\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x1\n"
+			"CPU part\t: 0x002\n"
+			"CPU revision\t: 0\n"
+			"\n"
+			"processor\t: 5\n"
+			"model name\t: ARMv8 Processor rev 0 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x53\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x1\n"
+			"CPU part\t: 0x002\n"
+			"CPU revision\t: 0\n"
+			"\n"
+			"processor\t: 6\n"
+			"model name\t: ARMv8 Processor rev 0 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x53\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x1\n"
+			"CPU part\t: 0x002\n"
+			"CPU revision\t: 0\n"
+			"\n"
+			"processor\t: 7\n"
+			"model name\t: ARMv8 Processor rev 0 (v8l)\n"
+			"BogoMIPS\t: 52.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x53\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x1\n"
+			"CPU part\t: 0x002\n"
+			"CPU revision\t: 0\n"
+			"\n",
+	},
+#endif
+	{
+		.path = "/sys/devices/system/cpu/isolated",
+		.size = 1,
+		.content = "\n",
+	},
 	{
 		.path = "/sys/devices/system/cpu/kernel_max",
 		.size = 2,
 		.content = "7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/modalias",
+		.size = 81,
+		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007,0008,0009,000A\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 1,
+		.content = "\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 4,
+		.content = "0-7\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/possible",
@@ -90,21 +198,6 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/present",
 		.size = 4,
 		.content = "0-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/online",
-		.size = 4,
-		.content = "0-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/offline",
-		.size = 1,
-		.content = "\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/modalias",
-		.size = 81,
-		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007,0008,0009,000A\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
@@ -183,23 +276,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
-		.size = 136,
+		.size = 131,
 		.content =
-			"1794000 70499\n"
-			"1690000 6998\n"
-			"1456000 14601\n"
-			"1248000 10306\n"
-			"1053000 68890\n"
-			"949000 10055\n"
-			"832000 25746\n"
-			"715000 35071\n"
-			"598000 69997\n"
-			"455000 1888320\n",
+			"1794000 28706\n"
+			"1690000 2524\n"
+			"1456000 6223\n"
+			"1248000 3526\n"
+			"1053000 41990\n"
+			"949000 3768\n"
+			"832000 8121\n"
+			"715000 12524\n"
+			"598000 23493\n"
+			"455000 607015\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
-		.size = 7,
-		.content = "140620\n",
+		.size = 6,
+		.content = "46410\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/regs/identification/midr_el1",
@@ -284,7 +377,7 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
 		.size = 8,
-		.content = "1456000\n",
+		.content = "1248000\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
@@ -308,23 +401,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
-		.size = 136,
+		.size = 131,
 		.content =
-			"1794000 70499\n"
-			"1690000 7001\n"
-			"1456000 14621\n"
-			"1248000 10372\n"
-			"1053000 68893\n"
-			"949000 10058\n"
-			"832000 25748\n"
-			"715000 35073\n"
-			"598000 70010\n"
-			"455000 1888550\n",
+			"1794000 28706\n"
+			"1690000 2524\n"
+			"1456000 6255\n"
+			"1248000 3570\n"
+			"1053000 41990\n"
+			"949000 3768\n"
+			"832000 8121\n"
+			"715000 12525\n"
+			"598000 23510\n"
+			"455000 607190\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
-		.size = 7,
-		.content = "140847\n",
+		.size = 6,
+		.content = "46636\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/regs/identification/midr_el1",
@@ -409,7 +502,7 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
 		.size = 7,
-		.content = "455000\n",
+		.content = "598000\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_driver",
@@ -433,23 +526,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
-		.size = 136,
+		.size = 131,
 		.content =
-			"1794000 70499\n"
-			"1690000 7001\n"
-			"1456000 14644\n"
-			"1248000 10442\n"
-			"1053000 68895\n"
-			"949000 10058\n"
-			"832000 25748\n"
-			"715000 35077\n"
-			"598000 70019\n"
-			"455000 1888779\n",
+			"1794000 28706\n"
+			"1690000 2526\n"
+			"1456000 6285\n"
+			"1248000 3619\n"
+			"1053000 41997\n"
+			"949000 3770\n"
+			"832000 8122\n"
+			"715000 12529\n"
+			"598000 23533\n"
+			"455000 607355\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
-		.size = 7,
-		.content = "141073\n",
+		.size = 6,
+		.content = "46873\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/regs/identification/midr_el1",
@@ -534,7 +627,7 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
 		.size = 8,
-		.content = "1456000\n",
+		.content = "1248000\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_driver",
@@ -558,23 +651,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
-		.size = 136,
+		.size = 131,
 		.content =
-			"1794000 70499\n"
-			"1690000 7002\n"
-			"1456000 14667\n"
-			"1248000 10504\n"
-			"1053000 68904\n"
-			"949000 10058\n"
-			"832000 25748\n"
-			"715000 35079\n"
-			"598000 70027\n"
-			"455000 1889027\n",
+			"1794000 28706\n"
+			"1690000 2529\n"
+			"1456000 6307\n"
+			"1248000 3668\n"
+			"1053000 41998\n"
+			"949000 3770\n"
+			"832000 8122\n"
+			"715000 12534\n"
+			"598000 23559\n"
+			"455000 607541\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
-		.size = 7,
-		.content = "141297\n",
+		.size = 6,
+		.content = "47107\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/regs/identification/midr_el1",
@@ -683,31 +776,31 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
-		.size = 231,
+		.size = 224,
 		.content =
-			"2704000 26160\n"
-			"2652000 271\n"
-			"2496000 1796\n"
-			"2314000 832\n"
-			"2106000 184\n"
-			"2002000 52\n"
-			"1924000 67\n"
-			"1794000 46727\n"
-			"1690000 2623\n"
-			"1586000 4426\n"
-			"1469000 10417\n"
-			"1261000 2151\n"
-			"1170000 3011\n"
-			"1066000 5752\n"
-			"962000 3192\n"
-			"858000 11460\n"
-			"741000 66617\n"
-			"650000 2016122\n",
+			"2704000 8469\n"
+			"2652000 44\n"
+			"2496000 4623\n"
+			"2314000 1315\n"
+			"2106000 620\n"
+			"2002000 16\n"
+			"1924000 13\n"
+			"1794000 10070\n"
+			"1690000 465\n"
+			"1586000 1211\n"
+			"1469000 2430\n"
+			"1261000 676\n"
+			"1170000 677\n"
+			"1066000 1472\n"
+			"962000 1353\n"
+			"858000 3174\n"
+			"741000 41680\n"
+			"650000 660716\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
 		.size = 6,
-		.content = "30264\n",
+		.content = "11731\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/regs/identification/midr_el1",
@@ -816,31 +909,31 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
-		.size = 231,
+		.size = 224,
 		.content =
-			"2704000 26160\n"
-			"2652000 271\n"
-			"2496000 1796\n"
-			"2314000 832\n"
-			"2106000 184\n"
-			"2002000 52\n"
-			"1924000 67\n"
-			"1794000 46727\n"
-			"1690000 2623\n"
-			"1586000 4426\n"
-			"1469000 10417\n"
-			"1261000 2151\n"
-			"1170000 3011\n"
-			"1066000 5752\n"
-			"962000 3192\n"
-			"858000 11460\n"
-			"741000 66617\n"
-			"650000 2016426\n",
+			"2704000 8469\n"
+			"2652000 44\n"
+			"2496000 4623\n"
+			"2314000 1315\n"
+			"2106000 620\n"
+			"2002000 16\n"
+			"1924000 13\n"
+			"1794000 10070\n"
+			"1690000 465\n"
+			"1586000 1211\n"
+			"1469000 2430\n"
+			"1261000 676\n"
+			"1170000 677\n"
+			"1066000 1472\n"
+			"962000 1353\n"
+			"858000 3174\n"
+			"741000 41680\n"
+			"650000 660975\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
 		.size = 6,
-		.content = "30264\n",
+		.content = "11731\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/regs/identification/midr_el1",
@@ -949,31 +1042,31 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
-		.size = 231,
+		.size = 224,
 		.content =
-			"2704000 26160\n"
-			"2652000 271\n"
-			"2496000 1796\n"
-			"2314000 832\n"
-			"2106000 184\n"
-			"2002000 52\n"
-			"1924000 67\n"
-			"1794000 46727\n"
-			"1690000 2623\n"
-			"1586000 4426\n"
-			"1469000 10417\n"
-			"1261000 2151\n"
-			"1170000 3011\n"
-			"1066000 5752\n"
-			"962000 3192\n"
-			"858000 11460\n"
-			"741000 66617\n"
-			"650000 2016800\n",
+			"2704000 8469\n"
+			"2652000 44\n"
+			"2496000 4623\n"
+			"2314000 1315\n"
+			"2106000 620\n"
+			"2002000 16\n"
+			"1924000 13\n"
+			"1794000 10070\n"
+			"1690000 465\n"
+			"1586000 1211\n"
+			"1469000 2430\n"
+			"1261000 676\n"
+			"1170000 677\n"
+			"1066000 1472\n"
+			"962000 1353\n"
+			"858000 3174\n"
+			"741000 41680\n"
+			"650000 661245\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
 		.size = 6,
-		.content = "30264\n",
+		.content = "11731\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/regs/identification/midr_el1",
@@ -1082,31 +1175,31 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
-		.size = 231,
+		.size = 224,
 		.content =
-			"2704000 26160\n"
-			"2652000 271\n"
-			"2496000 1796\n"
-			"2314000 832\n"
-			"2106000 184\n"
-			"2002000 52\n"
-			"1924000 67\n"
-			"1794000 46727\n"
-			"1690000 2623\n"
-			"1586000 4426\n"
-			"1469000 10417\n"
-			"1261000 2151\n"
-			"1170000 3011\n"
-			"1066000 5752\n"
-			"962000 3192\n"
-			"858000 11460\n"
-			"741000 66617\n"
-			"650000 2017162\n",
+			"2704000 8469\n"
+			"2652000 44\n"
+			"2496000 4623\n"
+			"2314000 1315\n"
+			"2106000 620\n"
+			"2002000 16\n"
+			"1924000 13\n"
+			"1794000 10070\n"
+			"1690000 465\n"
+			"1586000 1211\n"
+			"1469000 2430\n"
+			"1261000 676\n"
+			"1170000 677\n"
+			"1066000 1472\n"
+			"962000 1353\n"
+			"858000 3174\n"
+			"741000 41681\n"
+			"650000 661544\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
 		.size = 6,
-		.content = "30264\n",
+		.content = "11733\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/regs/identification/midr_el1",
@@ -1261,6 +1354,10 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "0",
 	},
 	{
+		.key = "debug.gpuwatch.api",
+		.value = "1",
+	},
+	{
 		.key = "debug.hwc.winupdate",
 		.value = "1",
 	},
@@ -1282,7 +1379,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "dev.mtp.opensession",
-		.value = "0",
+		.value = "1",
 	},
 	{
 		.key = "dev.ssrm.app.install.standby",
@@ -1301,16 +1398,12 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "1",
 	},
 	{
-		.key = "dev.ssrm.live_thumbnail",
-		.value = "0",
-	},
-	{
 		.key = "dev.ssrm.mode",
 		.value = "dm;",
 	},
 	{
 		.key = "dev.ssrm.pst",
-		.value = "262",
+		.value = "256",
 	},
 	{
 		.key = "dev.ssrm.smart_switch",
@@ -1366,11 +1459,11 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "gsm.version.baseband",
-		.value = "G960FXXU1ARC4",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "gsm.version.baseband1",
-		.value = "G960FXXU1ARC4",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "gsm.version.ril-impl",
@@ -1553,10 +1646,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "running",
 	},
 	{
-		.key = "init.svc.kap_enable",
-		.value = "stopped",
-	},
-	{
 		.key = "init.svc.keymaster-3-0",
 		.value = "running",
 	},
@@ -1729,10 +1818,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "running",
 	},
 	{
-		.key = "init.svc.umount_service",
-		.value = "stopped",
-	},
-	{
 		.key = "init.svc.vaultkeeperd",
 		.value = "running",
 	},
@@ -1794,7 +1879,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "net.iptype",
-		.value = "512:v4v6v6",
+		.value = "504:v4v6v6",
 	},
 	{
 		.key = "net.knoxscep.version",
@@ -1851,10 +1936,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "nfc.product.support.uicc",
 		.value = "1",
-	},
-	{
-		.key = "nfc.smartcard.binded",
-		.value = "true",
 	},
 	{
 		.key = "persist.audio.a2dp_avc",
@@ -1942,7 +2023,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.nfc.log.index",
-		.value = "3",
+		.value = "5",
 	},
 	{
 		.key = "persist.radio.embms.support",
@@ -1990,15 +2071,15 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.sys.ccm.date",
-		.value = "Wed Mar  7 09:48:24 KST 2018",
+		.value = "Thu Mar 22 20:54:22 KST 2018",
 	},
 	{
 		.key = "persist.sys.clssprld1",
-		.value = "906",
+		.value = "920",
 	},
 	{
 		.key = "persist.sys.clssprld2",
-		.value = "322",
+		.value = "308",
 	},
 	{
 		.key = "persist.sys.cpboot",
@@ -2006,7 +2087,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.sys.csc_status",
-		.value = "nwFotaUpdated",
+		.value = "normal",
 	},
 	{
 		.key = "persist.sys.dalvik.vm.lib.2",
@@ -2146,7 +2227,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.sys.webview.vmsize",
-		.value = "113195568",
+		.value = "114925168",
 	},
 	{
 		.key = "pm.dexopt.ab-ota",
@@ -2169,10 +2250,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "quicken",
 	},
 	{
-		.key = "ril.CHAR",
-		.value = "111727107",
-	},
-	{
 		.key = "ril.CompleteMsg",
 		.value = "OK",
 	},
@@ -2187,14 +2264,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "ril.ICC_TYPE1",
 		.value = "0",
-	},
-	{
-		.key = "ril.LIMA",
-		.value = "40491",
-	},
-	{
-		.key = "ril.MainStack",
-		.value = "1",
 	},
 	{
 		.key = "ril.NwNmId",
@@ -2277,14 +2346,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "112,911,999,000,08,110,118,119",
 	},
 	{
-		.key = "ril.ecclist_net0",
-		.value = "",
-	},
-	{
-		.key = "ril.ecclist_net1",
-		.value = "",
-	},
-	{
 		.key = "ril.hasisim",
 		.value = "0,0",
 	},
@@ -2313,20 +2374,16 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "0",
 	},
 	{
-		.key = "ril.iscdma",
-		.value = "0",
-	},
-	{
 		.key = "ril.lte_ps_only",
 		.value = "0,0",
 	},
 	{
 		.key = "ril.model_id",
-		.value = "QB9114616",
+		.value = "QB9270665",
 	},
 	{
 		.key = "ril.model_id2",
-		.value = "QB9114616",
+		.value = "QB9270665",
 	},
 	{
 		.key = "ril.modem.board",
@@ -2338,7 +2395,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ril.official_cscver",
-		.value = "G960FOXM1ARC4",
+		.value = "G960FOXM1ARCA",
 	},
 	{
 		.key = "ril.product_code",
@@ -2353,10 +2410,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "0",
 	},
 	{
-		.key = "ril.read.done",
-		.value = "1",
-	},
-	{
 		.key = "ril.region_props",
 		.value = "MM1.SINGAPORE.SG.MM1",
 	},
@@ -2369,24 +2422,12 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "20180223",
 	},
 	{
-		.key = "ril.rildreset",
-		.value = "4",
-	},
-	{
 		.key = "ril.serialnumber",
 		.value = "R58K235S8VT",
 	},
 	{
 		.key = "ril.servicestate",
 		.value = "3,3",
-	},
-	{
-		.key = "ril.signal.disprssi",
-		.value = "false",
-	},
-	{
-		.key = "ril.signal.param",
-		.value = "-13,0,255",
 	},
 	{
 		.key = "ril.simoperator",
@@ -2402,19 +2443,15 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ril.sw_ver",
-		.value = "G960FXXU1ARC4",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "ril.sw_ver2",
-		.value = "G960FXXU1ARC4",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "ril.twwan911Timer",
 		.value = "0",
-	},
-	{
-		.key = "ril.voice.rat",
-		.value = "3",
 	},
 	{
 		.key = "rild.libargs",
@@ -2458,7 +2495,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.boot.bootloader",
-		.value = "G960FXXU1ARC5",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "ro.boot.carrierid",
@@ -2566,19 +2603,19 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.bootimage.build.date",
-		.value = "Wed Mar 7 09:48:24 KST 2018",
+		.value = "Thu Mar 22 20:54:22 KST 2018",
 	},
 	{
 		.key = "ro.bootimage.build.date.utc",
-		.value = "1520383704",
+		.value = "1521719662",
 	},
 	{
 		.key = "ro.bootimage.build.fingerprint",
-		.value = "samsung/starltexx/starlte:8.0.0/R16NW/G960FXXU1ARC5:user/release-keys",
+		.value = "samsung/starltexx/starlte:8.0.0/R16NW/G960FXXU1ARCC:user/release-keys",
 	},
 	{
 		.key = "ro.bootloader",
-		.value = "G960FXXU1ARC5",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "ro.bootmode",
@@ -2586,7 +2623,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.PDA",
-		.value = "G960FXXU1ARC5",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "ro.build.changelist",
@@ -2598,23 +2635,23 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.date",
-		.value = "Wed Mar  7 09:48:24 KST 2018",
+		.value = "Thu Mar 22 20:54:22 KST 2018",
 	},
 	{
 		.key = "ro.build.date.utc",
-		.value = "1520383704",
+		.value = "1521719662",
 	},
 	{
 		.key = "ro.build.description",
-		.value = "starltexx-user 8.0.0 R16NW G960FXXU1ARC5 release-keys",
+		.value = "starltexx-user 8.0.0 R16NW G960FXXU1ARCC release-keys",
 	},
 	{
 		.key = "ro.build.display.id",
-		.value = "R16NW.G960FXXU1ARC5",
+		.value = "R16NW.G960FXXU1ARCC",
 	},
 	{
 		.key = "ro.build.fingerprint",
-		.value = "samsung/starltexx/starlte:8.0.0/R16NW/G960FXXU1ARC5:user/release-keys",
+		.value = "samsung/starltexx/starlte:8.0.0/R16NW/G960FXXU1ARCC:user/release-keys",
 	},
 	{
 		.key = "ro.build.flavor",
@@ -2622,7 +2659,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.host",
-		.value = "SWDG5417",
+		.value = "SWDD6507",
 	},
 	{
 		.key = "ro.build.id",
@@ -2674,7 +2711,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.version.incremental",
-		.value = "G960FXXU1ARC5",
+		.value = "G960FXXU1ARCC",
 	},
 	{
 		.key = "ro.build.version.preview_sdk",
@@ -2734,7 +2771,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.com.google.gmsversion",
-		.value = "8.0_r5",
+		.value = "8.0_r6",
 	},
 	{
 		.key = "ro.config.alarm_alert",
@@ -2918,7 +2955,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.expect.recovery_id",
-		.value = "0x14223f9703258e75c3866b07b8a15ddf9d9ef94e000000000000000000000000",
+		.value = "0x391347e6a649be99a22ebf04c41b03f07aad1993000000000000000000000000",
 	},
 	{
 		.key = "ro.fmp_config",
@@ -3038,11 +3075,11 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.omc.build.id",
-		.value = "17202937",
+		.value = "17395495",
 	},
 	{
 		.key = "ro.omc.build.version",
-		.value = "G960FOXM1ARC4",
+		.value = "G960FOXM1ARCA",
 	},
 	{
 		.key = "ro.omc.changetype",
@@ -3274,15 +3311,15 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.vendor.build.date",
-		.value = "Wed Mar 7 09:48:24 KST 2018",
+		.value = "Thu Mar 22 20:54:22 KST 2018",
 	},
 	{
 		.key = "ro.vendor.build.date.utc",
-		.value = "1520383704",
+		.value = "1521719662",
 	},
 	{
 		.key = "ro.vendor.build.fingerprint",
-		.value = "samsung/starltexx/starlte:8.0.0/R16NW/G960FXXU1ARC5:user/release-keys",
+		.value = "samsung/starltexx/starlte:8.0.0/R16NW/G960FXXU1ARCC:user/release-keys",
 	},
 	{
 		.key = "ro.warranty_bit",
@@ -3349,10 +3386,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "1",
 	},
 	{
-		.key = "storage.preload.complete",
-		.value = "1",
-	},
-	{
 		.key = "storage.support.sdcard",
 		.value = "1",
 	},
@@ -3367,6 +3400,10 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "sys.bartender.batterystats.ver",
 		.value = "17",
+	},
+	{
+		.key = "sys.bluetooth.tty",
+		.value = "ttySAC1",
 	},
 	{
 		.key = "sys.boot.end_package",
