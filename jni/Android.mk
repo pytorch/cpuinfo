@@ -154,6 +154,12 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/auxv-dump.c
 LOCAL_CFLAGS := -std=gnu99
 include $(BUILD_EXECUTABLE)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := cpuinfo-dump
+LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/cpuinfo-dump.c
+LOCAL_CFLAGS := -std=gnu99
+include $(BUILD_EXECUTABLE)
+
 endif # armeabi, armeabi-v7a, or arm64-v8a
 
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
