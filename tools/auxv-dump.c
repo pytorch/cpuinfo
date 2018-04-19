@@ -5,8 +5,6 @@
 #include <errno.h>
 #include <dlfcn.h>
 
-#include <cpuinfo.h>
-
 
 typedef unsigned long (*getauxval_function_t)(unsigned long);
 

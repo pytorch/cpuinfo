@@ -151,7 +151,6 @@ ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v
 include $(CLEAR_VARS)
 LOCAL_MODULE := auxv-dump
 LOCAL_SRC_FILES := $(LOCAL_PATH)/tools/auxv-dump.c
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/include $(LOCAL_PATH)/src
 LOCAL_CFLAGS := -std=gnu99
 include $(BUILD_EXECUTABLE)
 
