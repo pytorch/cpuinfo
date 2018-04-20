@@ -488,15 +488,11 @@ TEST(ISA, atomics) {
 }
 
 TEST(ISA, neon_rdm) {
-	ASSERT_FALSE(cpuinfo_has_arm_neon_rdm());
+	ASSERT_TRUE(cpuinfo_has_arm_neon_rdm());
 }
 
 TEST(ISA, fp16_arith) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_FALSE(cpuinfo_has_arm_fp16_arith());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_TRUE(cpuinfo_has_arm_fp16_arith());
-	#endif
+	ASSERT_TRUE(cpuinfo_has_arm_fp16_arith());
 }
 
 TEST(ISA, jscvt) {
