@@ -1,4 +1,5 @@
 struct cpuinfo_mock_file filesystem[] = {
+#if CPUINFO_ARCH_ARM64
 	{
 		.path = "/proc/cpuinfo",
 		.size = 1540,
@@ -78,10 +79,270 @@ struct cpuinfo_mock_file filesystem[] = {
 			"\n"
 			"Hardware\t: Qualcomm Technologies, Inc MSM8998\n",
 	},
+#elif CPUINFO_ARCH_ARM
+	{
+		.path = "/proc/cpuinfo",
+		.size = 2332,
+		.content =
+			"Processor\t: AArch64 Processor rev 4 (aarch64)\n"
+			"processor\t: 0\n"
+			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x801\n"
+			"CPU revision\t: 4\n"
+			"\n"
+			"processor\t: 1\n"
+			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x801\n"
+			"CPU revision\t: 4\n"
+			"\n"
+			"processor\t: 2\n"
+			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x801\n"
+			"CPU revision\t: 4\n"
+			"\n"
+			"processor\t: 3\n"
+			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x801\n"
+			"CPU revision\t: 4\n"
+			"\n"
+			"processor\t: 4\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x800\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"processor\t: 5\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x800\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"processor\t: 6\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x800\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"processor\t: 7\n"
+			"model name\t: ARMv8 Processor rev 1 (v8l)\n"
+			"BogoMIPS\t: 38.40\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x51\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0xa\n"
+			"CPU part\t: 0x800\n"
+			"CPU revision\t: 1\n"
+			"\n"
+			"Hardware\t: Qualcomm Technologies, Inc MSM8998\n",
+	},
+#endif
+	{
+		.path = "/sys/devices/soc0/accessory_chip",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/soc0/build_id",
+		.size = 1,
+		.content = "\n",
+	},
+	{
+		.path = "/sys/devices/soc0/family",
+		.size = 11,
+		.content = "Snapdragon\n",
+	},
+	{
+		.path = "/sys/devices/soc0/foundry_id",
+		.size = 2,
+		.content = "3\n",
+	},
+	{
+		.path = "/sys/devices/soc0/hw_platform",
+		.size = 4,
+		.content = "MTP\n",
+	},
+	{
+		.path = "/sys/devices/soc0/image_crm_version",
+		.size = 5,
+		.content =
+			"REL\n"
+			"\n",
+	},
+	{
+		.path = "/sys/devices/soc0/image_variant",
+		.size = 15,
+		.content =
+			"OnePlus5-user\n"
+			"\n",
+	},
+	{
+		.path = "/sys/devices/soc0/image_version",
+		.size = 24,
+		.content =
+			"10:OPR1.170623.032:119\n"
+			"\n",
+	},
+	{
+		.path = "/sys/devices/soc0/images",
+		.size = 637,
+		.content =
+			"0:\n"
+			"\tCRM:\t\t00:BOOT.XF.1.2.2.c1-00021-M8998LZB-1\n"
+			"\tVariant:\tMsm8998LA\n"
+			"\tVersion:\t:ubuntu-23\n"
+			"1:\n"
+			"\tCRM:\t\t01:TZ.BF.4.0.6-00144\n"
+			"\tVariant:\t \n"
+			"\tVersion:\t:CRM\n"
+			"3:\n"
+			"\tCRM:\t\t03:RPM.BF.1.7-00128\n"
+			"\tVariant:\tAAAAANAZR\n"
+			"\tVersion:\t:ubuntu-23\n"
+			"10:\n"
+			"\tCRM:\t\t10:OPR1.170623.032:119\n"
+			"\n"
+			"\tVariant:\tOnePlus5-user\n"
+			"\n"
+			"\tVersion:\tREL\n"
+			"\n"
+			"11:\n"
+			"\tCRM:\t\t11:MPSS.AT.2.0.c4.7-00070-8998_GEN_PACK-2.130961.1.131284.2\n"
+			"\tVariant:\t8998.gen.prodQ\n"
+			"\tVersion:\t:ubuntu-23\n"
+			"12:\n"
+			"\tCRM:\t\t12:ADSP.HT.3.0-00366-CB8998-1\n"
+			"\tVariant:\tAAAAAAAAQ\n"
+			"\tVersion:\t:ubuntu-23\n"
+			"14:\n"
+			"\tCRM:\t\t14:VIDEO.VE.4.4-00031\n"
+			"\tVariant:\tPROD\n"
+			"\tVersion:\t\n"
+			"15:\n"
+			"\tCRM:\t\t15:SLPI.HB.2.0.c3-00012-M8998AZL-1\n"
+			"\tVariant:\tAAAAAAAAQ\n"
+			"\tVersion:\t:ubuntu-23\n",
+	},
+	{
+		.path = "/sys/devices/soc0/machine",
+		.size = 8,
+		.content = "MSM8998\n",
+	},
+	{
+		.path = "/sys/devices/soc0/platform_subtype",
+		.size = 8,
+		.content = "Unknown\n",
+	},
+	{
+		.path = "/sys/devices/soc0/platform_subtype_id",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/soc0/platform_version",
+		.size = 6,
+		.content = "65536\n",
+	},
+	{
+		.path = "/sys/devices/soc0/pmic_die_revision",
+		.size = 7,
+		.content = "131072\n",
+	},
+	{
+		.path = "/sys/devices/soc0/pmic_model",
+		.size = 6,
+		.content = "65556\n",
+	},
+	{
+		.path = "/sys/devices/soc0/raw_id",
+		.size = 3,
+		.content = "94\n",
+	},
+	{
+		.path = "/sys/devices/soc0/raw_version",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/soc0/revision",
+		.size = 4,
+		.content = "2.1\n",
+	},
+	{
+		.path = "/sys/devices/soc0/select_image",
+		.size = 3,
+		.content = "10\n",
+	},
+	{
+		.path = "/sys/devices/soc0/serial_number",
+		.size = 11,
+		.content = "1620680061\n",
+	},
+	{
+		.path = "/sys/devices/soc0/soc_id",
+		.size = 4,
+		.content = "292\n",
+	},
+	{
+		.path = "/sys/devices/soc0/vendor",
+		.size = 9,
+		.content = "Qualcomm\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/isolated",
+		.size = 1,
+		.content = "\n",
+	},
 	{
 		.path = "/sys/devices/system/cpu/kernel_max",
 		.size = 2,
 		.content = "7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/modalias",
+		.size = 66,
+		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 1,
+		.content = "\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 4,
+		.content = "0-7\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/possible",
@@ -94,21 +355,6 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/online",
-		.size = 4,
-		.content = "0-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/offline",
-		.size = 1,
-		.content = "\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/modalias",
-		.size = 66,
-		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007\n",
-	},
-	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
 		.size = 9,
 		.content = "msm_idle\n",
@@ -117,6 +363,174 @@ struct cpuinfo_mock_file filesystem[] = {
 		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
 		.size = 5,
 		.content = "qcom\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/active_cpus",
+		.size = 2,
+		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/busy_up_thres",
+		.size = 9,
+		.content = "0 0 0 0 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres",
+		.size = 9,
+		.content = "0 0 0 0 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/enable",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/global_state",
+		.size = 1336,
+		.content =
+			"CPU0\n"
+			"\tCPU: 0\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 2\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU1\n"
+			"\tCPU: 1\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 4\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU2\n"
+			"\tCPU: 2\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 2\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU3\n"
+			"\tCPU: 3\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 2\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU4\n"
+			"\tCPU: 4\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n"
+			"CPU5\n"
+			"\tCPU: 5\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 1\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n"
+			"CPU6\n"
+			"\tCPU: 6\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 1\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n"
+			"CPU7\n"
+			"\tCPU: 7\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/is_big_cluster",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/max_cpus",
+		.size = 2,
+		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/min_cpus",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/need_cpus",
+		.size = 2,
+		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/not_preferred",
+		.size = 36,
+		.content =
+			"CPU#0: 0\n"
+			"CPU#1: 0\n"
+			"CPU#2: 0\n"
+			"CPU#3: 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms",
+		.size = 4,
+		.content = "100\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/core_ctl/task_thres",
+		.size = 11,
+		.content = "4294967295\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpuidle/driver/name",
@@ -174,46 +588,46 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "interactive\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
-		.size = 8,
-		.content = "1900800\n",
-	},
-	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
 		.size = 7,
 		.content = "518400\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
-		.size = 253,
+		.size = 234,
 		.content =
 			"300000 0\n"
 			"364800 0\n"
 			"441600 0\n"
-			"518400 18840\n"
-			"595200 204\n"
-			"672000 175\n"
-			"748800 167\n"
-			"825600 159\n"
-			"883200 125\n"
-			"960000 247\n"
-			"1036800 284\n"
-			"1094400 193\n"
-			"1171200 291\n"
-			"1248000 2329\n"
-			"1324800 645\n"
-			"1401600 608\n"
-			"1478400 790\n"
-			"1555200 684\n"
-			"1670400 712\n"
-			"1747200 540\n"
-			"1824000 1847\n"
-			"1900800 9479\n",
+			"518400 2291\n"
+			"595200 25\n"
+			"672000 32\n"
+			"748800 31\n"
+			"825600 31\n"
+			"883200 23\n"
+			"960000 20\n"
+			"1036800 35\n"
+			"1094400 4\n"
+			"1171200 12\n"
+			"1248000 548\n"
+			"1324800 53\n"
+			"1401600 14\n"
+			"1478400 31\n"
+			"1555200 60\n"
+			"1670400 40\n"
+			"1747200 20\n"
+			"1824000 156\n"
+			"1900800 4081\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "5077\n",
+		.size = 4,
+		.content = "675\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/isolate",
+		.size = 2,
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
@@ -446,46 +860,46 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "interactive\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq",
-		.size = 8,
-		.content = "1900800\n",
-	},
-	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
 		.size = 7,
 		.content = "518400\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
-		.size = 253,
+		.size = 234,
 		.content =
 			"300000 0\n"
 			"364800 0\n"
 			"441600 0\n"
-			"518400 19063\n"
-			"595200 204\n"
-			"672000 175\n"
-			"748800 167\n"
-			"825600 159\n"
-			"883200 125\n"
-			"960000 247\n"
-			"1036800 284\n"
-			"1094400 193\n"
-			"1171200 293\n"
-			"1248000 2347\n"
-			"1324800 645\n"
-			"1401600 608\n"
-			"1478400 790\n"
-			"1555200 684\n"
-			"1670400 712\n"
-			"1747200 540\n"
-			"1824000 1847\n"
-			"1900800 9479\n",
+			"518400 2482\n"
+			"595200 25\n"
+			"672000 32\n"
+			"748800 31\n"
+			"825600 31\n"
+			"883200 23\n"
+			"960000 20\n"
+			"1036800 35\n"
+			"1094400 4\n"
+			"1171200 12\n"
+			"1248000 564\n"
+			"1324800 53\n"
+			"1401600 17\n"
+			"1478400 31\n"
+			"1555200 70\n"
+			"1670400 48\n"
+			"1747200 22\n"
+			"1824000 176\n"
+			"1900800 4115\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "5096\n",
+		.size = 4,
+		.content = "709\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu1/isolate",
+		.size = 2,
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
@@ -718,46 +1132,46 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "interactive\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq",
-		.size = 8,
-		.content = "1900800\n",
-	},
-	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq",
 		.size = 7,
 		.content = "518400\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
-		.size = 253,
+		.size = 234,
 		.content =
 			"300000 0\n"
 			"364800 0\n"
 			"441600 0\n"
-			"518400 19286\n"
-			"595200 204\n"
-			"672000 175\n"
-			"748800 167\n"
-			"825600 159\n"
-			"883200 125\n"
-			"960000 247\n"
-			"1036800 284\n"
-			"1094400 193\n"
-			"1171200 293\n"
-			"1248000 2363\n"
-			"1324800 645\n"
-			"1401600 608\n"
-			"1478400 790\n"
-			"1555200 684\n"
-			"1670400 712\n"
-			"1747200 540\n"
-			"1824000 1847\n"
-			"1900800 9479\n",
+			"518400 2769\n"
+			"595200 25\n"
+			"672000 32\n"
+			"748800 33\n"
+			"825600 31\n"
+			"883200 23\n"
+			"960000 20\n"
+			"1036800 35\n"
+			"1094400 4\n"
+			"1171200 12\n"
+			"1248000 596\n"
+			"1324800 53\n"
+			"1401600 17\n"
+			"1478400 31\n"
+			"1555200 70\n"
+			"1670400 48\n"
+			"1747200 22\n"
+			"1824000 176\n"
+			"1900800 4121\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "5112\n",
+		.size = 4,
+		.content = "733\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu2/isolate",
+		.size = 2,
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
@@ -990,46 +1404,46 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "interactive\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq",
-		.size = 8,
-		.content = "1900800\n",
-	},
-	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq",
 		.size = 7,
 		.content = "518400\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
-		.size = 253,
+		.size = 234,
 		.content =
 			"300000 0\n"
 			"364800 0\n"
 			"441600 0\n"
-			"518400 19509\n"
-			"595200 204\n"
-			"672000 177\n"
-			"748800 167\n"
-			"825600 159\n"
-			"883200 125\n"
-			"960000 247\n"
-			"1036800 284\n"
-			"1094400 193\n"
-			"1171200 293\n"
-			"1248000 2384\n"
-			"1324800 645\n"
-			"1401600 610\n"
-			"1478400 790\n"
-			"1555200 684\n"
-			"1670400 712\n"
-			"1747200 540\n"
-			"1824000 1847\n"
-			"1900800 9479\n",
+			"518400 3023\n"
+			"595200 25\n"
+			"672000 32\n"
+			"748800 33\n"
+			"825600 31\n"
+			"883200 23\n"
+			"960000 20\n"
+			"1036800 35\n"
+			"1094400 4\n"
+			"1171200 16\n"
+			"1248000 624\n"
+			"1324800 53\n"
+			"1401600 19\n"
+			"1478400 31\n"
+			"1555200 70\n"
+			"1670400 48\n"
+			"1747200 22\n"
+			"1824000 176\n"
+			"1900800 4133\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "5132\n",
+		.size = 4,
+		.content = "759\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu3/isolate",
+		.size = 2,
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
@@ -1207,6 +1621,174 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "WriteBack\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/active_cpus",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres",
+		.size = 13,
+		.content = "60 60 60 60 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres",
+		.size = 13,
+		.content = "30 30 30 30 \n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/enable",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/global_state",
+		.size = 1336,
+		.content =
+			"CPU0\n"
+			"\tCPU: 0\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 1\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU1\n"
+			"\tCPU: 1\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 1\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU2\n"
+			"\tCPU: 2\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU3\n"
+			"\tCPU: 3\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 0\n"
+			"\tBusy%: 4\n"
+			"\tIs busy: 1\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 1\n"
+			"\tActive CPUs: 4\n"
+			"\tNeed CPUs: 4\n"
+			"\tNr isolated CPUs: 0\n"
+			"\tBoost: 0\n"
+			"CPU4\n"
+			"\tCPU: 4\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n"
+			"CPU5\n"
+			"\tCPU: 5\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 1\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n"
+			"CPU6\n"
+			"\tCPU: 6\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 1\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n"
+			"CPU7\n"
+			"\tCPU: 7\n"
+			"\tOnline: 1\n"
+			"\tIsolated: 0\n"
+			"\tFirst CPU: 4\n"
+			"\tBusy%: 0\n"
+			"\tIs busy: 0\n"
+			"\tNot preferred: 0\n"
+			"\tNr running: 0\n"
+			"\tActive CPUs: 2\n"
+			"\tNeed CPUs: 2\n"
+			"\tNr isolated CPUs: 2\n"
+			"\tBoost: 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster",
+		.size = 2,
+		.content = "1\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/max_cpus",
+		.size = 2,
+		.content = "4\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/min_cpus",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/need_cpus",
+		.size = 2,
+		.content = "2\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/not_preferred",
+		.size = 36,
+		.content =
+			"CPU#4: 0\n"
+			"CPU#5: 0\n"
+			"CPU#6: 0\n"
+			"CPU#7: 0\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms",
+		.size = 4,
+		.content = "100\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/core_ctl/task_thres",
+		.size = 2,
+		.content = "4\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/cpu4/cpuidle/driver/name",
 		.size = 9,
 		.content = "msm_idle\n",
@@ -1273,7 +1855,7 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
-		.size = 332,
+		.size = 323,
 		.content =
 			"300000 0\n"
 			"345600 0\n"
@@ -1282,35 +1864,40 @@ struct cpuinfo_mock_file filesystem[] = {
 			"576000 0\n"
 			"652800 0\n"
 			"729600 0\n"
-			"806400 33474\n"
-			"902400 46\n"
-			"979200 53\n"
-			"1056000 57\n"
-			"1132800 45\n"
-			"1190400 25\n"
-			"1267200 33\n"
-			"1344000 27\n"
-			"1420800 51\n"
-			"1497600 65\n"
-			"1574400 614\n"
-			"1651200 31\n"
-			"1728000 27\n"
-			"1804800 46\n"
-			"1881600 36\n"
-			"1958400 116\n"
-			"2035200 61\n"
-			"2112000 32\n"
-			"2208000 34\n"
-			"2265600 155\n"
-			"2323200 24\n"
-			"2342400 6\n"
-			"2361600 3329\n"
-			"2457600 907\n",
+			"806400 5163\n"
+			"902400 16\n"
+			"979200 19\n"
+			"1056000 14\n"
+			"1132800 16\n"
+			"1190400 5\n"
+			"1267200 15\n"
+			"1344000 10\n"
+			"1420800 16\n"
+			"1497600 12\n"
+			"1574400 239\n"
+			"1651200 14\n"
+			"1728000 19\n"
+			"1804800 9\n"
+			"1881600 5\n"
+			"1958400 31\n"
+			"2035200 16\n"
+			"2112000 9\n"
+			"2208000 1\n"
+			"2265600 4\n"
+			"2323200 3\n"
+			"2342400 1\n"
+			"2361600 1990\n"
+			"2457600 1104\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "1071\n",
+		.size = 4,
+		.content = "333\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu4/isolate",
+		.size = 2,
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
@@ -1554,7 +2141,7 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
-		.size = 332,
+		.size = 323,
 		.content =
 			"300000 0\n"
 			"345600 0\n"
@@ -1563,35 +2150,40 @@ struct cpuinfo_mock_file filesystem[] = {
 			"576000 0\n"
 			"652800 0\n"
 			"729600 0\n"
-			"806400 33731\n"
-			"902400 46\n"
-			"979200 53\n"
-			"1056000 57\n"
-			"1132800 45\n"
-			"1190400 25\n"
-			"1267200 33\n"
-			"1344000 27\n"
-			"1420800 51\n"
-			"1497600 65\n"
-			"1574400 614\n"
-			"1651200 31\n"
-			"1728000 27\n"
-			"1804800 46\n"
-			"1881600 36\n"
-			"1958400 116\n"
-			"2035200 61\n"
-			"2112000 32\n"
-			"2208000 34\n"
-			"2265600 155\n"
-			"2323200 24\n"
-			"2342400 6\n"
-			"2361600 3329\n"
-			"2457600 907\n",
+			"806400 5477\n"
+			"902400 16\n"
+			"979200 19\n"
+			"1056000 14\n"
+			"1132800 16\n"
+			"1190400 5\n"
+			"1267200 15\n"
+			"1344000 10\n"
+			"1420800 16\n"
+			"1497600 12\n"
+			"1574400 239\n"
+			"1651200 14\n"
+			"1728000 19\n"
+			"1804800 9\n"
+			"1881600 5\n"
+			"1958400 31\n"
+			"2035200 16\n"
+			"2112000 9\n"
+			"2208000 1\n"
+			"2265600 4\n"
+			"2323200 3\n"
+			"2342400 1\n"
+			"2361600 1990\n"
+			"2457600 1104\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "1071\n",
+		.size = 4,
+		.content = "333\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu5/isolate",
+		.size = 2,
+		.content = "1\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
@@ -1835,7 +2427,7 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
-		.size = 332,
+		.size = 323,
 		.content =
 			"300000 0\n"
 			"345600 0\n"
@@ -1844,35 +2436,40 @@ struct cpuinfo_mock_file filesystem[] = {
 			"576000 0\n"
 			"652800 0\n"
 			"729600 0\n"
-			"806400 33975\n"
-			"902400 46\n"
-			"979200 53\n"
-			"1056000 57\n"
-			"1132800 45\n"
-			"1190400 25\n"
-			"1267200 33\n"
-			"1344000 27\n"
-			"1420800 51\n"
-			"1497600 65\n"
-			"1574400 614\n"
-			"1651200 31\n"
-			"1728000 27\n"
-			"1804800 46\n"
-			"1881600 36\n"
-			"1958400 116\n"
-			"2035200 61\n"
-			"2112000 32\n"
-			"2208000 34\n"
-			"2265600 155\n"
-			"2323200 24\n"
-			"2342400 6\n"
-			"2361600 3329\n"
-			"2457600 907\n",
+			"806400 5834\n"
+			"902400 16\n"
+			"979200 19\n"
+			"1056000 14\n"
+			"1132800 16\n"
+			"1190400 5\n"
+			"1267200 15\n"
+			"1344000 10\n"
+			"1420800 16\n"
+			"1497600 12\n"
+			"1574400 239\n"
+			"1651200 14\n"
+			"1728000 19\n"
+			"1804800 9\n"
+			"1881600 5\n"
+			"1958400 31\n"
+			"2035200 16\n"
+			"2112000 9\n"
+			"2208000 1\n"
+			"2265600 4\n"
+			"2323200 3\n"
+			"2342400 1\n"
+			"2361600 1990\n"
+			"2457600 1104\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "1071\n",
+		.size = 4,
+		.content = "333\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu6/isolate",
+		.size = 2,
+		.content = "1\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
@@ -2116,7 +2713,7 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
-		.size = 332,
+		.size = 323,
 		.content =
 			"300000 0\n"
 			"345600 0\n"
@@ -2125,35 +2722,40 @@ struct cpuinfo_mock_file filesystem[] = {
 			"576000 0\n"
 			"652800 0\n"
 			"729600 0\n"
-			"806400 34225\n"
-			"902400 46\n"
-			"979200 53\n"
-			"1056000 57\n"
-			"1132800 45\n"
-			"1190400 25\n"
-			"1267200 33\n"
-			"1344000 27\n"
-			"1420800 51\n"
-			"1497600 65\n"
-			"1574400 614\n"
-			"1651200 31\n"
-			"1728000 27\n"
-			"1804800 46\n"
-			"1881600 36\n"
-			"1958400 116\n"
-			"2035200 61\n"
-			"2112000 32\n"
-			"2208000 34\n"
-			"2265600 155\n"
-			"2323200 24\n"
-			"2342400 6\n"
-			"2361600 3329\n"
-			"2457600 907\n",
+			"806400 6189\n"
+			"902400 16\n"
+			"979200 19\n"
+			"1056000 14\n"
+			"1132800 16\n"
+			"1190400 5\n"
+			"1267200 15\n"
+			"1344000 10\n"
+			"1420800 16\n"
+			"1497600 12\n"
+			"1574400 239\n"
+			"1651200 14\n"
+			"1728000 19\n"
+			"1804800 9\n"
+			"1881600 5\n"
+			"1958400 31\n"
+			"2035200 16\n"
+			"2112000 9\n"
+			"2208000 1\n"
+			"2265600 4\n"
+			"2323200 3\n"
+			"2342400 1\n"
+			"2361600 1990\n"
+			"2457600 1104\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
-		.size = 5,
-		.content = "1071\n",
+		.size = 4,
+		.content = "333\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu7/isolate",
+		.size = 2,
+		.content = "0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
@@ -2984,7 +3586,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "init.svc.wpa_supplicant",
-		.value = "running",
+		.value = "stopped",
 	},
 	{
 		.key = "init.svc.zygote",
@@ -3395,10 +3997,6 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "Android",
 	},
 	{
-		.key = "net.hostname",
-		.value = "OnePlus_5",
-	},
-	{
 		.key = "net.lte.ims.data.enabled2147483643",
 		.value = "true",
 	},
@@ -3463,40 +4061,20 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "60",
 	},
 	{
-		.key = "nfc.app_log_level",
-		.value = "1",
-	},
-	{
-		.key = "nfc.nxp_log_level_dnld",
-		.value = "1",
-	},
-	{
-		.key = "nfc.nxp_log_level_extns",
-		.value = "1",
-	},
-	{
-		.key = "nfc.nxp_log_level_global",
-		.value = "1",
-	},
-	{
-		.key = "nfc.nxp_log_level_hal",
-		.value = "1",
-	},
-	{
-		.key = "nfc.nxp_log_level_nci",
-		.value = "1",
-	},
-	{
-		.key = "nfc.nxp_log_level_tml",
-		.value = "1",
-	},
-	{
 		.key = "nxpWechatDebugEnable",
 		.value = "1",
 	},
 	{
-		.key = "oem.device.imeicache",
-		.value = "864630032745548",
+		.key = "oem.device.imeicache0",
+		.value = "864630032470279",
+	},
+	{
+		.key = "oem.device.imeicache1",
+		.value = "864630032470261",
+	},
+	{
+		.key = "oem.drm.widevine.level",
+		.value = "L3",
 	},
 	{
 		.key = "oplib.oneplus_sdk_utils",
@@ -3596,7 +4174,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.qua.op",
-		.value = "1656754",
+		.value = "3501500",
 	},
 	{
 		.key = "persist.radio.apm_sim_not_pwdn",
@@ -3624,7 +4202,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.radio.serialno",
-		.value = "edd859e0",
+		.value = "54f801ef",
 	},
 	{
 		.key = "persist.radio.start_ota_daemon",
@@ -3707,16 +4285,8 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "200",
 	},
 	{
-		.key = "persist.sys.embryo.rename",
-		.value = "0",
-	},
-	{
 		.key = "persist.sys.event",
 		.value = "yes",
-	},
-	{
-		.key = "persist.sys.font",
-		.value = "2",
 	},
 	{
 		.key = "persist.sys.force_sw_gles",
@@ -3724,7 +4294,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.sys.idle.soff",
-		.value = "91,2803220",
+		.value = "52,51304",
 	},
 	{
 		.key = "persist.sys.kernel",
@@ -3788,11 +4358,15 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.sys.theme_version",
-		.value = "OnePlus5Oxygen_23.X.06_GLO_006_1801292021",
+		.value = "OnePlus5Oxygen_23.O.31_GLO_031_1802230119",
 	},
 	{
 		.key = "persist.sys.timezone",
 		.value = "America/New_York",
+	},
+	{
+		.key = "persist.sys.ui.hw",
+		.value = "true",
 	},
 	{
 		.key = "persist.sys.usb.config",
@@ -3816,11 +4390,11 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "persist.sys.version.lastota",
-		.value = "OnePlus5Oxygen_23.O.28_GLO_028_1801031502",
+		.value = "",
 	},
 	{
 		.key = "persist.sys.version.ota",
-		.value = "OnePlus5Oxygen_23.X.06_GLO_006_1801292021",
+		.value = "OnePlus5Oxygen_23.O.31_GLO_031_1802230119",
 	},
 	{
 		.key = "persist.sys.webview.vmsize",
@@ -4040,7 +4614,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.boot.pcba_number",
-		.value = "001685907619032200018894",
+		.value = "001685907522036000002439",
 	},
 	{
 		.key = "ro.boot.project_name",
@@ -4060,7 +4634,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.boot.serialno",
-		.value = "edd859e0",
+		.value = "54f801ef",
 	},
 	{
 		.key = "ro.boot.startupmode",
@@ -4076,15 +4650,15 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.bootimage.build.date",
-		.value = "Mon Jan 29 20:17:27 CST 2018",
+		.value = "Fri Feb 23 01:13:37 CST 2018",
 	},
 	{
 		.key = "ro.bootimage.build.date.utc",
-		.value = "1517228247",
+		.value = "1519319617",
 	},
 	{
 		.key = "ro.bootimage.build.fingerprint",
-		.value = "OnePlus/OnePlus5/OnePlus5:8.0.0/OPR6.170623.013/01132342:user/release-keys",
+		.value = "OnePlus/OnePlus5/OnePlus5:8.0.0/OPR1.170623.032/01301703:user/release-keys",
 	},
 	{
 		.key = "ro.bootloader",
@@ -4095,48 +4669,44 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "normal",
 	},
 	{
-		.key = "ro.build.beta",
-		.value = "1",
-	},
-	{
 		.key = "ro.build.characteristics",
 		.value = "nosdcard",
 	},
 	{
 		.key = "ro.build.date",
-		.value = "Mon Jan 29 20:17:27 CST 2018",
+		.value = "Fri Feb 23 01:13:37 CST 2018",
 	},
 	{
 		.key = "ro.build.date.Ymd",
-		.value = "180129",
+		.value = "180223",
 	},
 	{
 		.key = "ro.build.date.YmdHM",
-		.value = "201801292021",
+		.value = "201802230119",
 	},
 	{
 		.key = "ro.build.date.utc",
-		.value = "1517228247",
+		.value = "1519319617",
 	},
 	{
 		.key = "ro.build.date.ymd",
-		.value = "180129",
+		.value = "180223",
 	},
 	{
 		.key = "ro.build.description",
-		.value = "OnePlus5-user 8.0.0 OPR6.170623.013 74 release-keys",
+		.value = "OnePlus5-user 8.0.0 OPR1.170623.032 119 release-keys",
 	},
 	{
 		.key = "ro.build.display.full_id",
-		.value = "ONEPLUS A5000_23_X.06_180129",
+		.value = "ONEPLUS A5000_23_O.31_180223",
 	},
 	{
 		.key = "ro.build.display.id",
-		.value = "ONEPLUS A5000_23_180129",
+		.value = "ONEPLUS A5000_23_180223",
 	},
 	{
 		.key = "ro.build.fingerprint",
-		.value = "OnePlus/OnePlus5/OnePlus5:8.0.0/OPR6.170623.013/01132342:user/release-keys",
+		.value = "OnePlus/OnePlus5/OnePlus5:8.0.0/OPR1.170623.032/01301703:user/release-keys",
 	},
 	{
 		.key = "ro.build.flavor",
@@ -4144,11 +4714,11 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.host",
-		.value = "ubuntu-152",
+		.value = "ubuntu-23",
 	},
 	{
 		.key = "ro.build.id",
-		.value = "OPR6.170623.013",
+		.value = "OPR1.170623.032",
 	},
 	{
 		.key = "ro.build.id.hardware",
@@ -4156,15 +4726,15 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.kernel.id",
-		.value = "4.4-G1801292021",
+		.value = "4.4-G1802230119",
 	},
 	{
 		.key = "ro.build.oemfingerprint",
-		.value = "8.0.0/OPR6.170623.013/01132342:user/release-keys",
+		.value = "8.0.0/OPR1.170623.032/01301703:user/release-keys",
 	},
 	{
 		.key = "ro.build.ota.versionname",
-		.value = "OnePlus5Oxygen_23_1801292021",
+		.value = "OnePlus5Oxygen_23_1802230119",
 	},
 	{
 		.key = "ro.build.product",
@@ -4184,7 +4754,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.soft.version",
-		.value = "X.06",
+		.value = "O.31",
 	},
 	{
 		.key = "ro.build.tags",
@@ -4212,11 +4782,11 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.build.version.incremental",
-		.value = "74",
+		.value = "119",
 	},
 	{
 		.key = "ro.build.version.ota",
-		.value = "OnePlus5Oxygen_23.X.06_GLO_006_1801292021",
+		.value = "OnePlus5Oxygen_23.O.31_GLO_031_1802230119",
 	},
 	{
 		.key = "ro.build.version.preview_sdk",
@@ -4304,7 +4874,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.expect.recovery_id",
-		.value = "0x699e65d267c82251bdc00fc64b13df35db46d074000000000000000000000000",
+		.value = "0xfee05c25867ac2fa97d3aee3537a9a8fbb7520b1000000000000000000000000",
 	},
 	{
 		.key = "ro.frp.pst",
@@ -4372,7 +4942,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.oxygen.version",
-		.value = "OP5_O2_Open_5",
+		.value = "5.0.4",
 	},
 	{
 		.key = "ro.product.board",
@@ -4432,7 +5002,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.remount.time",
-		.value = "0",
+		.value = "1",
 	},
 	{
 		.key = "ro.revision",
@@ -4452,7 +5022,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.serialno",
-		.value = "edd859e0",
+		.value = "54f801ef",
 	},
 	{
 		.key = "ro.setupwizard.mode",
@@ -4616,7 +5186,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "sys.dci3p",
-		.value = "1",
+		.value = "0",
 	},
 	{
 		.key = "sys.games.gt.prof",
@@ -4631,8 +5201,12 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "1",
 	},
 	{
-		.key = "sys.oem_unlock_allowed",
+		.key = "sys.night_mode",
 		.value = "0",
+	},
+	{
+		.key = "sys.oem_unlock_allowed",
+		.value = "1",
 	},
 	{
 		.key = "sys.post_boot.parsed",
@@ -4647,12 +5221,12 @@ struct cpuinfo_mock_property properties[] = {
 		.value = "1",
 	},
 	{
-		.key = "sys.sysctl.extra_free_kbytes",
-		.value = "24300",
+		.key = "sys.srgb",
+		.value = "0",
 	},
 	{
-		.key = "sys.sysctl.tcp_def_init_rwnd",
-		.value = "60",
+		.key = "sys.sysctl.extra_free_kbytes",
+		.value = "24300",
 	},
 	{
 		.key = "sys.usb.config",
