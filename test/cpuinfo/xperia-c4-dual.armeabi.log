@@ -1,5 +1,3 @@
-WARNING: linker: /data/local/tmp/cpuinfo-dump: unused DT entry: type 0x6ffffffe arg 0x52c
-WARNING: linker: /data/local/tmp/cpuinfo-dump: unused DT entry: type 0x6fffffff arg 0x1
 Processor	: AArch64 Processor rev 2 (aarch64)
 processor	: 0
 BogoMIPS	: 26.00

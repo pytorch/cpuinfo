@@ -25,25 +25,25 @@ struct cpuinfo_mock_file filesystem[] = {
 #elif CPUINFO_ARCH_ARM
 	{
 		.path = "/proc/cpuinfo",
-		.size = 413,
+		.size = 395,
 		.content =
-			"Processor\t: AArch64 Processor rev 3 (aarch64)\r\n"
-			"processor\t: 0\r\n"
-			"processor\t: 1\r\n"
-			"processor\t: 2\r\n"
-			"processor\t: 3\r\n"
-			"processor\t: 4\r\n"
-			"processor\t: 5\r\n"
-			"processor\t: 6\r\n"
-			"processor\t: 7\r\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 wp half thumb fastmult vfp edsp neon vfpv3 tlsi vfpv4 idiva idivt \r\n"
-			"CPU implementer\t: 0x41\r\n"
-			"CPU architecture: 8\r\n"
-			"CPU variant\t: 0x0\r\n"
-			"CPU part\t: 0xd03\r\n"
-			"CPU revision\t: 3\r\n"
-			"\r\n"
-			"Hardware\t: hi6210sft\r\n",
+			"Processor\t: AArch64 Processor rev 3 (aarch64)\n"
+			"processor\t: 0\n"
+			"processor\t: 1\n"
+			"processor\t: 2\n"
+			"processor\t: 3\n"
+			"processor\t: 4\n"
+			"processor\t: 5\n"
+			"processor\t: 6\n"
+			"processor\t: 7\n"
+			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 wp half thumb fastmult vfp edsp neon vfpv3 tlsi vfpv4 idiva idivt \n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd03\n"
+			"CPU revision\t: 3\n"
+			"\n"
+			"Hardware\t: hi6210sft",
 	},
 #endif
 	{

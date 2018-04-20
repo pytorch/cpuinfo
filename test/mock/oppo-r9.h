@@ -27,21 +27,19 @@ struct cpuinfo_mock_file filesystem[] = {
 #elif CPUINFO_ARCH_ARM
 	{
 		.path = "/proc/cpuinfo",
-		.size = 495,
+		.size = 303,
 		.content =
-			"WARNING: linker: /data/local/tmp/cpuinfo-dump: unused DT entry: type 0x6ffffffe arg 0x52c\r\n"
-			"WARNING: linker: /data/local/tmp/cpuinfo-dump: unused DT entry: type 0x6fffffff arg 0x1\r\n"
-			"Processor\t: AArch64 Processor rev 2 (aarch64)\r\n"
-			"processor\t: 0\r\n"
-			"BogoMIPS\t: 26.00\r\n"
-			"Features\t: fp asimd aes pmull sha1 sha2 crc32 wp half thumb fastmult vfp edsp neon vfpv3 tlsi vfpv4 idiva idivt \r\n"
-			"CPU implementer\t: 0x41\r\n"
-			"CPU architecture: 8\r\n"
-			"CPU variant\t: 0x0\r\n"
-			"CPU part\t: 0xd03\r\n"
-			"CPU revision\t: 2\r\n"
-			"\r\n"
-			"Hardware\t: MT6755\r\n",
+			"Processor\t: AArch64 Processor rev 2 (aarch64)\n"
+			"processor\t: 0\n"
+			"BogoMIPS\t: 26.00\n"
+			"Features\t: fp asimd aes pmull sha1 sha2 crc32 wp half thumb fastmult vfp edsp neon vfpv3 tlsi vfpv4 idiva idivt \n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd03\n"
+			"CPU revision\t: 2\n"
+			"\n"
+			"Hardware\t: MT6755",
 	},
 #endif
 	{
