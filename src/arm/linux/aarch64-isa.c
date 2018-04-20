@@ -7,6 +7,7 @@
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
 	uint32_t midr,
+	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	struct cpuinfo_arm_isa isa[restrict static 1])
 {
 	if (features & CPUINFO_ARM_LINUX_FEATURE_AES) {
@@ -29,7 +30,12 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	}
 	const uint32_t fp16arith_mask = CPUINFO_ARM_LINUX_FEATURE_FPHP | CPUINFO_ARM_LINUX_FEATURE_ASIMDHP;
 	if ((features & fp16arith_mask) == fp16arith_mask) {
-		isa->fp16arith = true;
+		if (chipset->series == cpuinfo_arm_chipset_series_samsung_exynos && chipset->model == 9810) {
+			/* Exynos 9810 reports that it supports FP16 compute, but in fact only little cores do */
+			cpuinfo_log_warning("FP16 arithmetics disabled: only little cores of Exynos 9810 support FP16 compute");
+		} else {
+			isa->fp16arith = true;
+		}
 	} else if (features & CPUINFO_ARM_LINUX_FEATURE_FPHP) {
 		cpuinfo_log_warning("FP16 arithmetics disabled: detected support only for scalar operations");
 	} else if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDHP) {

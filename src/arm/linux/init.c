@@ -203,6 +203,16 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
+#if defined(__ANDROID__)
+	const struct cpuinfo_arm_chipset chipset =
+		cpuinfo_arm_android_decode_chipset(&android_properties, usable_processors, 0);
+#else
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_unknown,
+		.series = cpuinfo_arm_chipset_series_unknown,
+	};
+#endif
+
 	#if CPUINFO_ARCH_ARM
 		uint32_t isa_features = 0, isa_features2 = 0;
 		#ifdef __ANDROID__
@@ -248,7 +258,8 @@ void cpuinfo_arm_linux_init(void) {
 	#elif CPUINFO_ARCH_ARM64
 		/* getauxval is always available on ARM64 Android */
 		const uint32_t isa_features = cpuinfo_arm_linux_hwcap_from_getauxval();
-		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(isa_features, last_midr, &cpuinfo_isa);
+		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
+			isa_features, last_midr, &chipset, &cpuinfo_isa);
 	#endif
 
 	/* Detect min/max frequency and package ID */
@@ -323,16 +334,6 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 	cpuinfo_arm_linux_count_cluster_processors(arm_linux_processors_count, arm_linux_processors);
-
-#if defined(__ANDROID__)
-	const struct cpuinfo_arm_chipset chipset =
-		cpuinfo_arm_android_decode_chipset(&android_properties, usable_processors, 0);
-#else
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_unknown,
-		.series = cpuinfo_arm_chipset_series_unknown,
-	};
-#endif
 
 	const uint32_t cluster_count = cpuinfo_arm_linux_detect_cluster_midr(
 		&chipset,

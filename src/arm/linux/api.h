@@ -266,6 +266,7 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		uint32_t features,
 		uint32_t midr,
+		const struct cpuinfo_arm_chipset chipset[restrict static 1],
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #endif
 
