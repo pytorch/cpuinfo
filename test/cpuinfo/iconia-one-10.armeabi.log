@@ -1,8 +1,9 @@
 processor	: 0
+model name	: ARMv8 Processor rev 1 (v8l)
 Processor	: AArch64 Processor rev 1 (aarch64)
 model name	: AArch64 Processor rev 1 (aarch64)
 BogoMIPS	: 26.00
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -10,10 +11,11 @@ CPU part	: 0xd04
 CPU revision	: 1
 
 processor	: 1
+model name	: ARMv8 Processor rev 1 (v8l)
 Processor	: AArch64 Processor rev 1 (aarch64)
 model name	: AArch64 Processor rev 1 (aarch64)
 BogoMIPS	: 26.00
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -21,10 +23,11 @@ CPU part	: 0xd04
 CPU revision	: 1
 
 processor	: 2
+model name	: ARMv8 Processor rev 1 (v8l)
 Processor	: AArch64 Processor rev 1 (aarch64)
 model name	: AArch64 Processor rev 1 (aarch64)
 BogoMIPS	: 26.00
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
