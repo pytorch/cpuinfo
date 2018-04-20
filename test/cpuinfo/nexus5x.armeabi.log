@@ -1,5 +1,5 @@
 processor	: 0
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -7,7 +7,7 @@ CPU part	: 0xd03
 CPU revision	: 3
 
 processor	: 1
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -15,7 +15,7 @@ CPU part	: 0xd03
 CPU revision	: 3
 
 processor	: 2
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -23,7 +23,7 @@ CPU part	: 0xd03
 CPU revision	: 3
 
 processor	: 3
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -31,7 +31,7 @@ CPU part	: 0xd03
 CPU revision	: 3
 
 processor	: 4
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x1
@@ -39,7 +39,7 @@ CPU part	: 0xd07
 CPU revision	: 2
 
 processor	: 5
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm aes pmull sha1 sha2 crc32
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x1
