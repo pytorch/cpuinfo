@@ -265,6 +265,7 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	uint32_t cpuinfo_arm_linux_hwcap_from_getauxval(void);
 	void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		uint32_t features,
+		uint32_t midr,
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #endif
 

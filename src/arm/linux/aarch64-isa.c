@@ -6,6 +6,7 @@
 
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
+	uint32_t midr,
 	struct cpuinfo_arm_isa isa[restrict static 1])
 {
 	if (features & CPUINFO_ARM_LINUX_FEATURE_AES) {
@@ -34,8 +35,17 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	} else if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDHP) {
 		cpuinfo_log_warning("FP16 arithmetics disabled: detected support only for SIMD operations");
 	}
-	if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDRDM) {
-		isa->rdm = true;
+	/* Qualcomm Kryo 385 may have buggy kernel configuration that doesn't report VQRDMLAH/VQRDMLSH instructions */
+	switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+		case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
+		case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
+			isa->rdm = true;
+			break;
+		default:
+			if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDRDM) {
+				isa->rdm = true;
+			}
+			break;
 	}
 	if (features & CPUINFO_ARM_LINUX_FEATURE_JSCVT) {
 		isa->jscvt = true;

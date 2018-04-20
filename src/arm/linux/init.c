@@ -169,9 +169,9 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
-	uint32_t usable_processors = 0;
+	uint32_t usable_processors = 0, last_midr = 0;
 	#if CPUINFO_ARCH_ARM
-	uint32_t last_midr = 0, last_architecture_version = 0, last_architecture_flags = 0;
+	uint32_t last_architecture_version = 0, last_architecture_flags = 0;
 	#endif
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		arm_linux_processors[i].system_processor_id = i;
@@ -186,10 +186,10 @@ void cpuinfo_arm_linux_init(void) {
 				cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
 			}
 
+			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
+				last_midr = arm_linux_processors[i].midr;
+			}
 			#if CPUINFO_ARCH_ARM
-				if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
-					last_midr = arm_linux_processors[i].midr;
-				}
 				if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_ARCHITECTURE)) {
 					last_architecture_version = arm_linux_processors[i].architecture_version;
 					last_architecture_flags   = arm_linux_processors[i].architecture_flags;
@@ -248,7 +248,7 @@ void cpuinfo_arm_linux_init(void) {
 	#elif CPUINFO_ARCH_ARM64
 		/* getauxval is always available on ARM64 Android */
 		const uint32_t isa_features = cpuinfo_arm_linux_hwcap_from_getauxval();
-		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(isa_features, &cpuinfo_isa);
+		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(isa_features, last_midr, &cpuinfo_isa);
 	#endif
 
 	/* Detect min/max frequency and package ID */
