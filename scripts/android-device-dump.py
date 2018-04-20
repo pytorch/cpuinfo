@@ -8,6 +8,9 @@ import subprocess
 import tempfile
 
 
+root_dir = os.path.abspath(os.path.dirname(__file__))
+
+
 parser = argparse.ArgumentParser(description='Android system files extractor')
 parser.add_argument("-p", "--prefix", metavar="NAME", required=True,
                     help="Prefix for stored files, e.g. galaxy-s7-us")
@@ -107,12 +110,29 @@ SYSTEM_FILES = [
     "/sys/devices/soc0/serial_number",
     "/sys/devices/soc0/soc_id",
     "/sys/devices/soc0/vendor",
+    "/sys/devices/system/b.L/big_threads",
+    "/sys/devices/system/b.L/boot_cluster",
+    "/sys/devices/system/b.L/core_status",
+    "/sys/devices/system/b.L/little_threads",
+    "/sys/devices/system/b.L/down_migrations",
+    "/sys/devices/system/b.L/up_migrations",
+    "/sys/devices/system/cpu/isolated",
     "/sys/devices/system/cpu/kernel_max",
+    "/sys/devices/system/cpu/modalias",
+    "/sys/devices/system/cpu/offline",
+    "/sys/devices/system/cpu/online",
     "/sys/devices/system/cpu/possible",
     "/sys/devices/system/cpu/present",
-    "/sys/devices/system/cpu/online",
-    "/sys/devices/system/cpu/offline",
-    "/sys/devices/system/cpu/modalias",
+    "/sys/devices/system/cpu/sched_isolated",
+    "/sys/devices/system/cpu/clusterhotplug/cur_hstate",
+    "/sys/devices/system/cpu/clusterhotplug/down_freq",
+    "/sys/devices/system/cpu/clusterhotplug/down_tasks",
+    "/sys/devices/system/cpu/clusterhotplug/down_threshold",
+    "/sys/devices/system/cpu/clusterhotplug/sampling_rate",
+    "/sys/devices/system/cpu/clusterhotplug/time_in_state",
+    "/sys/devices/system/cpu/clusterhotplug/up_freq",
+    "/sys/devices/system/cpu/clusterhotplug/up_tasks",
+    "/sys/devices/system/cpu/clusterhotplug/up_threshold",
     "/sys/devices/system/cpu/cpufreq/all_time_in_state",
     "/sys/devices/system/cpu/cpufreq/current_in_state",
     "/sys/devices/system/cpu/cpufreq/cpufreq_limit/big_cpu_num",
@@ -135,21 +155,8 @@ SYSTEM_FILES = [
     "/sys/devices/system/cpu/cputopo/is_multi_cluster",
     "/sys/devices/system/cpu/cputopo/little_cpumask",
     "/sys/devices/system/cpu/cputopo/nr_clusters",
-    "/sys/devices/system/b.L/big_threads",
-    "/sys/devices/system/b.L/boot_cluster",
-    "/sys/devices/system/b.L/core_status",
-    "/sys/devices/system/b.L/little_threads",
-    "/sys/devices/system/b.L/down_migrations",
-    "/sys/devices/system/b.L/up_migrations",
-    "/sys/devices/system/cpu/clusterhotplug/cur_hstate",
-    "/sys/devices/system/cpu/clusterhotplug/down_freq",
-    "/sys/devices/system/cpu/clusterhotplug/down_tasks",
-    "/sys/devices/system/cpu/clusterhotplug/down_threshold",
-    "/sys/devices/system/cpu/clusterhotplug/sampling_rate",
-    "/sys/devices/system/cpu/clusterhotplug/time_in_state",
-    "/sys/devices/system/cpu/clusterhotplug/up_freq",
-    "/sys/devices/system/cpu/clusterhotplug/up_tasks",
-    "/sys/devices/system/cpu/clusterhotplug/up_threshold",
+    "/sys/devices/system/sched/idle_prefer",
+    "/sys/devices/system/sched/sched_boost",
 ]
 
 CPU_FILES = [
@@ -242,6 +249,14 @@ def adb_shell(commands):
     if adb.returncode == 0:
         return stdout
 
+def adb_push(local_path, device_path):
+    env = os.environ.copy()
+    env["LC_ALL"] = "C"
+
+    adb = subprocess.Popen(["adb", "push", local_path, device_path], env=env)
+    adb.communicate()
+    return adb.returncode == 0
+
 def adb_pull(device_path, local_path):
     if any(device_path.startswith(prefix) for prefix in SHELL_PREFIX):
         content = adb_shell(["cat", device_path])
@@ -275,24 +290,31 @@ def adb_getprop():
         properties_list.append((key, value))
     return properties_list
 
-def dump_device_file(stream, path):
+def add_mock_file(stream, path, content):
+    assert content is not None
+    stream.write("\t{\n")
+    stream.write("\t\t.path = \"%s\",\n" % path)
+    stream.write("\t\t.size = %d,\n" % len(content))
+    if len(content.splitlines()) > 1:
+        stream.write("\t\t.content =")
+        for line in content.splitlines(True):
+            stream.write("\n\t\t\t\"%s\"" % c_escape(line))
+        stream.write(",\n")
+    else:
+        stream.write("\t\t.content = \"%s\",\n" % c_escape(content))
+    stream.write("\t},\n")
+
+
+def dump_device_file(stream, path, prefix_line=None):
     temp_fd, temp_path = tempfile.mkstemp()
     os.close(temp_fd)
     try:
         if adb_pull(path, temp_path):
             with open(temp_path, "rb") as temp_file:
                 content = temp_file.read()
-                stream.write("\t{\n")
-                stream.write("\t\t.path = \"%s\",\n" % path)
-                stream.write("\t\t.size = %d,\n" % len(content))
-                if len(content.splitlines()) > 1:
-                    stream.write("\t\t.content =")
-                    for line in content.splitlines(True):
-                        stream.write("\n\t\t\t\"%s\"" % c_escape(line))
-                    stream.write(",\n")
-                else:
-                    stream.write("\t\t.content = \"%s\",\n" % c_escape(content))
-                stream.write("\t},\n")
+                if prefix_line is not None:
+                    stream.write(prefix_line)
+                add_mock_file(stream, path, content)
                 return content
     finally:
         if os.path.exists(temp_path):
@@ -311,11 +333,20 @@ def main(args):
 
     build_prop_content = None
     proc_cpuinfo_content = None
+    proc_cpuinfo_content32 = None
     kernel_max = 0
     with open(os.path.join("test", "mock", options.prefix + ".h"), "w") as file_header:
         file_header.write("struct cpuinfo_mock_file filesystem[] = {\n")
+        android_props = adb_getprop()
+        abi = None
+        for key, value in android_props:
+            if key == "ro.product.cpu.abi":
+                abi = value
         for path in SYSTEM_FILES:
-            content = dump_device_file(file_header, path)
+            arm64_prefix = None
+            if path == "/proc/cpuinfo" and abi == "arm64-v8a":
+                arm64_prefix = "#if CPUINFO_ARCH_ARM64\n"
+            content = dump_device_file(file_header, path, prefix_line=arm64_prefix)
             if content is not None:
                 if path == "/proc/cpuinfo":
                     proc_cpuinfo_content = content
@@ -323,6 +354,17 @@ def main(args):
                     build_prop_content = content
                 elif path == "/sys/devices/system/cpu/kernel_max":
                     kernel_max = int(content.strip())
+            if arm64_prefix:
+                cpuinfo_dump_binary = os.path.join(root_dir, "..", "build", "android", "armeabi-v7a", "cpuinfo-dump")
+                assert os.path.isfile(cpuinfo_dump_binary)
+                adb_push(cpuinfo_dump_binary, "/data/local/tmp/cpuinfo-dump")
+                proc_cpuinfo_content32 = adb_shell(["/data/local/tmp/cpuinfo-dump"])
+                if proc_cpuinfo_content32:
+                    proc_cpuinfo_content32 = "\n".join(proc_cpuinfo_content32.splitlines())
+                    file_header.write("#elif CPUINFO_ARCH_ARM\n")
+                    add_mock_file(file_header, "/proc/cpuinfo", proc_cpuinfo_content32)
+                file_header.write("#endif\n")
+
         for cpu in range(kernel_max + 1):
             for filename in CPU_FILES:
                 path = "/sys/devices/system/cpu/cpu%d/%s" % (cpu, filename)
@@ -335,7 +377,7 @@ def main(args):
         file_header.write("};\n")
         file_header.write("#ifdef __ANDROID__\n")
         file_header.write("struct cpuinfo_mock_property properties[] = {\n")
-        for key, value in adb_getprop():
+        for key, value in android_props:
             file_header.write("\t{\n")
             file_header.write("\t\t.key = \"%s\",\n" % c_escape(key))
             file_header.write("\t\t.value = \"%s\",\n" % c_escape(value))
@@ -347,6 +389,9 @@ def main(args):
     if proc_cpuinfo_content is not None:
         with open(os.path.join("test", "cpuinfo", options.prefix + ".log"), "w") as proc_cpuinfo_dump:
             proc_cpuinfo_dump.write(proc_cpuinfo_content)
+    if proc_cpuinfo_content32 is not None:
+        with open(os.path.join("test", "cpuinfo", options.prefix + ".armeabi.log"), "w") as proc_cpuinfo_dump32:
+            proc_cpuinfo_dump32.write(proc_cpuinfo_content32)
     if build_prop_content is not None:
         with open(os.path.join("test", "build.prop", options.prefix + ".log"), "w") as build_prop_dump:
             build_prop_dump.write(build_prop_content)
