@@ -1328,11 +1328,11 @@ static inline bool cpuinfo_has_x86_sha(void) {
 		#endif
 		#if CPUINFO_ARCH_ARM64
 			bool atomics;
-			bool rdm;
-			bool fp16arith;
-			bool jscvt;
-			bool fcma;
 		#endif
+		bool rdm;
+		bool fp16arith;
+		bool jscvt;
+		bool fcma;
 
 		bool aes;
 		bool sha1;
@@ -1533,7 +1533,7 @@ static inline bool cpuinfo_has_arm_atomics(void) {
 }
 
 static inline bool cpuinfo_has_arm_neon_rdm(void) {
-	#if CPUINFO_ARCH_ARM64
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.rdm;
 	#else
 		return false;
@@ -1541,7 +1541,7 @@ static inline bool cpuinfo_has_arm_neon_rdm(void) {
 }
 
 static inline bool cpuinfo_has_arm_fp16_arith(void) {
-	#if CPUINFO_ARCH_ARM64
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.fp16arith;
 	#else
 		return false;
@@ -1549,7 +1549,7 @@ static inline bool cpuinfo_has_arm_fp16_arith(void) {
 }
 
 static inline bool cpuinfo_has_arm_jscvt(void) {
-	#if CPUINFO_ARCH_ARM64
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.jscvt;
 	#else
 		return false;
@@ -1557,7 +1557,7 @@ static inline bool cpuinfo_has_arm_jscvt(void) {
 }
 
 static inline bool cpuinfo_has_arm_fcma(void) {
-	#if CPUINFO_ARCH_ARM64
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.fcma;
 	#else
 		return false;
