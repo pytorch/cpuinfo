@@ -1,4 +1,5 @@
 struct cpuinfo_mock_file filesystem[] = {
+#if CPUINFO_ARCH_ARM64
 	{
 		.path = "/proc/cpuinfo",
 		.size = 243,
@@ -15,6 +16,26 @@ struct cpuinfo_mock_file filesystem[] = {
 			"\n"
 			"Hardware\t: MT6752\n",
 	},
+#elif CPUINFO_ARCH_ARM
+	{
+		.path = "/proc/cpuinfo",
+		.size = 495,
+		.content =
+			"WARNING: linker: /data/local/tmp/cpuinfo-dump: unused DT entry: type 0x6ffffffe arg 0x52c\r\n"
+			"WARNING: linker: /data/local/tmp/cpuinfo-dump: unused DT entry: type 0x6fffffff arg 0x1\r\n"
+			"Processor\t: AArch64 Processor rev 2 (aarch64)\r\n"
+			"processor\t: 0\r\n"
+			"BogoMIPS\t: 26.00\r\n"
+			"Features\t: fp asimd aes pmull sha1 sha2 crc32 wp half thumb fastmult vfp edsp neon vfpv3 tlsi vfpv4 idiva idivt \r\n"
+			"CPU implementer\t: 0x41\r\n"
+			"CPU architecture: 8\r\n"
+			"CPU variant\t: 0x0\r\n"
+			"CPU part\t: 0xd03\r\n"
+			"CPU revision\t: 2\r\n"
+			"\r\n"
+			"Hardware\t: MT6752\r\n",
+	},
+#endif
 	{
 		.path = "/system/build.prop",
 		.size = 7780,
@@ -317,6 +338,21 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "7\n",
 	},
 	{
+		.path = "/sys/devices/system/cpu/modalias",
+		.size = 61,
+		.content = "cpu:type:aarch64:feature:,0000,0001,0003,0004,0005,0006,0007\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/offline",
+		.size = 4,
+		.content = "1-7\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/online",
+		.size = 2,
+		.content = "0\n",
+	},
+	{
 		.path = "/sys/devices/system/cpu/possible",
 		.size = 4,
 		.content = "0-7\n",
@@ -327,33 +363,18 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0-7\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/online",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/offline",
-		.size = 4,
-		.content = "1-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/modalias",
-		.size = 61,
-		.content = "cpu:type:aarch64:feature:,0000,0001,0003,0004,0005,0006,0007\n",
-	},
-	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
-		.size = 169,
+		.size = 172,
 		.content =
 			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
-			"468000\t\t3297\t\t\n"
-			"702000\t\t156\t\t\n"
-			"936000\t\t18\t\t\n"
-			"1170000\t\t51\t\t\n"
-			"1287000\t\t22\t\t\n"
-			"1417000\t\t23\t\t\n"
-			"1560000\t\t33\t\t\n"
-			"1690000\t\t5923\t\t\n",
+			"468000\t\t2351\t\t\n"
+			"702000\t\t538\t\t\n"
+			"936000\t\t104\t\t\n"
+			"1170000\t\t9954\t\t\n"
+			"1287000\t\t47\t\t\n"
+			"1417000\t\t24\t\t\n"
+			"1560000\t\t48\t\t\n"
+			"1690000\t\t4478\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cputopo/big_cpumask",
@@ -446,21 +467,21 @@ struct cpuinfo_mock_file filesystem[] = {
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
-		.size = 90,
+		.size = 93,
 		.content =
-			"1690000 5923\n"
-			"1560000 33\n"
-			"1417000 23\n"
-			"1287000 22\n"
-			"1170000 51\n"
-			"936000 18\n"
-			"702000 156\n"
-			"468000 3372\n",
+			"1690000 4496\n"
+			"1560000 48\n"
+			"1417000 24\n"
+			"1287000 47\n"
+			"1170000 9954\n"
+			"936000 104\n"
+			"702000 538\n"
+			"468000 2479\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
 		.size = 4,
-		.content = "209\n",
+		.content = "251\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
@@ -468,29 +489,14 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content =
 			"   From  :    To\n"
 			"         :   1690000   1560000   1417000   1287000   1170000    936000    702000    468000 \n"
-			"  1690000:         0         7         6         7        13         4         7        38 \n"
-			"  1560000:         5         0         0         0         0         0         0         3 \n"
-			"  1417000:         3         1         0         0         1         1         0         0 \n"
-			"  1287000:         7         0         0         0         0         1         0         0 \n"
-			"  1170000:        14         0         0         1         0         0         1         0 \n"
-			"   936000:         2         0         0         0         1         0         1         2 \n"
-			"   702000:        21         0         0         0         0         0         0        10 \n"
-			"   468000:        30         0         0         0         0         0        22         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
-		.size = 3,
-		.content = "0f\n",
+			"  1690000:         0         9         6        11        28        14         8        25 \n"
+			"  1560000:         7         0         0         1         2         0         0         0 \n"
+			"  1417000:         7         1         0         0         0         0         0         0 \n"
+			"  1287000:        10         0         2         0         1         1         2         0 \n"
+			"  1170000:        27         0         0         4         0         0         0         3 \n"
+			"   936000:        10         0         0         0         1         0         6         1 \n"
+			"   702000:        15         0         0         0         0         3         0         9 \n"
+			"   468000:        25         0         0         0         1         0        11         0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
@@ -498,7 +504,17 @@ struct cpuinfo_mock_file filesystem[] = {
 		.content = "0\n",
 	},
 	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+		.size = 3,
+		.content = "0f\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings_list",
+		.size = 4,
+		.content = "0-3\n",
+	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
 		.size = 2,
 		.content = "0\n",
 	},
@@ -507,9 +523,13 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 3,
 		.content = "01\n",
 	},
+	{
+		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
+		.size = 2,
+		.content = "0\n",
+	},
 	{ NULL },
 };
-
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
 	{
@@ -1110,15 +1130,15 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "mtk.md1.starttime",
-		.value = "0s Thu Jan 19 00:20:38 2017\n",
+		.value = "0s Sat Aug 26 01:28:00 2017\r\n",
 	},
 	{
 		.key = "mtk.md1.status",
-		.value = "readyThu Jan 19 00:20:38 2017\n",
+		.value = "readySat Aug 26 01:28:00 2017\r\n",
 	},
 	{
 		.key = "mtk.md2.status",
-		.value = "initThu Jan 19 00:20:35 2017\n",
+		.value = "initSat Aug 26 01:27:57 2017\r\n",
 	},
 	{
 		.key = "mtk_wifi.fwpath",
@@ -1486,7 +1506,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.boot.bootreason",
-		.value = "wdt_by_pass_pwk",
+		.value = "usb",
 	},
 	{
 		.key = "ro.boot.hardware",
@@ -2098,7 +2118,7 @@ struct cpuinfo_mock_property properties[] = {
 	},
 	{
 		.key = "ro.runtime.firstboot",
-		.value = "1484785268438",
+		.value = "1503710910267",
 	},
 	{
 		.key = "ro.sdcrypt.supported",
@@ -2271,10 +2291,6 @@ struct cpuinfo_mock_property properties[] = {
 	{
 		.key = "sys.ipowin.done",
 		.value = "1",
-	},
-	{
-		.key = "sys.pcc.installing",
-		.value = "false",
 	},
 	{
 		.key = "sys.sysctl.extra_free_kbytes",
