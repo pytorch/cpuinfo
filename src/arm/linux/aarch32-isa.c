@@ -50,6 +50,30 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		isa->fp16 = true;
 		isa->fma = true;
 		isa->neon = true;
+
+		/*
+		 * NEON FP16 compute extension is not indicated in /proc/cpuinfo.
+		 * Use a MIDR-based heuristic to whitelist processors known to support it:
+		 * - Processors with Qualcomm-modified Cortex-A75 and Cortex-A55 cores
+		 */
+		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+			case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
+			case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
+				isa->fp16arith = true;
+				break;
+		}
+
+		/*
+		 * NEON VQRDMLAH/VQRDMLSH instructions are not indicated in /proc/cpuinfo.
+		 * Use a MIDR-based heuristic to whitelist processors known to support it:
+		 * - Processors with Qualcomm-modified Cortex-A75 and Cortex-A55 cores
+		 */
+		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+			case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
+			case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
+				isa->rdm = true;
+				break;
+		}
 	} else {
 		/* ARMv7 or lower: use feature flags to detect optional features */
 
