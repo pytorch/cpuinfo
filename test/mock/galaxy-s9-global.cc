@@ -511,7 +511,7 @@ TEST(ISA, neon_rdm) {
 	ASSERT_FALSE(cpuinfo_has_arm_neon_rdm());
 }
 
-TEST(ISA, DISABLED_fp16_arith) {
+TEST(ISA, fp16_arith) {
 	ASSERT_FALSE(cpuinfo_has_arm_fp16_arith());
 }
 
