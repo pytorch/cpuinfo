@@ -1,6 +1,6 @@
 processor	: 0
 BogoMIPS	: 52.16
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -9,7 +9,7 @@ CPU revision	: 4
 
 processor	: 1
 BogoMIPS	: 52.16
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -18,7 +18,7 @@ CPU revision	: 4
 
 processor	: 2
 BogoMIPS	: 52.16
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -27,7 +27,7 @@ CPU revision	: 4
 
 processor	: 3
 BogoMIPS	: 52.16
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -36,7 +36,7 @@ CPU revision	: 4
 
 processor	: 4
 BogoMIPS	: 52.16
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
@@ -45,7 +45,7 @@ CPU revision	: 4
 
 processor	: 5
 BogoMIPS	: 52.16
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt evtstrm
 CPU implementer	: 0x41
 CPU architecture: 8
 CPU variant	: 0x0
