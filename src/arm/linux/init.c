@@ -227,14 +227,10 @@ void cpuinfo_arm_linux_init(void) {
 						if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_ARM_LINUX_VALID_FEATURES)) {
 							if (processors_with_features == 0) {
 								isa_features = arm_linux_processors[i].features;
-								#if CPUINFO_ARCH_ARM
-									isa_features2 = arm_linux_processors[i].features2;
-								#endif
+								isa_features2 = arm_linux_processors[i].features2;
 							} else {
 								isa_features &= arm_linux_processors[i].features;
-								#if CPUINFO_ARCH_ARM
-									isa_features2 &= arm_linux_processors[i].features2;
-								#endif
+								isa_features2 &= arm_linux_processors[i].features2;
 							}
 							processors_with_features += 1;
 						}
