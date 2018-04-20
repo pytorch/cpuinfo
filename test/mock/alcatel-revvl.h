@@ -1,4 +1,5 @@
 struct cpuinfo_mock_file filesystem[] = {
+#if CPUINFO_ARCH_ARM64
 	{
 		.path = "/proc/cpuinfo",
 		.size = 554,
@@ -28,6 +29,26 @@ struct cpuinfo_mock_file filesystem[] = {
 			"\n"
 			"Hardware\t: MT6738\n",
 	},
+#elif CPUINFO_ARCH_ARM
+	{
+		.path = "/proc/cpuinfo",
+		.size = 367,
+		.content =
+			"Processor\t: AArch64 Processor rev 2 (aarch64)\n"
+			"processor\t: 4\n"
+			"model name\t: AArch64 Processor rev 2 (aarch64)\n"
+			"BogoMIPS\t: 26.00\n"
+			"BogoMIPS\t: 26.00\n"
+			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+			"CPU implementer\t: 0x41\n"
+			"CPU architecture: 8\n"
+			"CPU variant\t: 0x0\n"
+			"CPU part\t: 0xd03\n"
+			"CPU revision\t: 2\n"
+			"\n"
+			"Hardware\t: MT6738\n",
+	},
+#endif
 	{
 		.path = "/system/build.prop",
 		.size = 9423,
