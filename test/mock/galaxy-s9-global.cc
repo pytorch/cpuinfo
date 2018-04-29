@@ -80,15 +80,41 @@ TEST(PROCESSORS, l1d) {
 	}
 }
 
-TEST(PROCESSORS, DISABLED_l2) {
+TEST(PROCESSORS, l2) {
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l2_cache(i), cpuinfo_get_processor(i)->cache.l2);
+		switch (i) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				ASSERT_EQ(cpuinfo_get_l2_cache(i), cpuinfo_get_processor(i)->cache.l2);
+				break;
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				ASSERT_EQ(cpuinfo_get_l2_cache(4), cpuinfo_get_processor(i)->cache.l2);
+				break;
+		}
 	}
 }
 
-TEST(PROCESSORS, DISABLED_l3) {
+TEST(PROCESSORS, l3) {
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l3_cache(i / 4), cpuinfo_get_processor(i)->cache.l3);
+		switch (i) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				ASSERT_EQ(cpuinfo_get_l3_cache(0), cpuinfo_get_processor(i)->cache.l3);
+				break;
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				ASSERT_FALSE(cpuinfo_get_processor(i)->cache.l3);
+				break;
+		}
 	}
 }
 
@@ -551,7 +577,7 @@ TEST(L1I, non_null) {
 	ASSERT_TRUE(cpuinfo_get_l1i_caches());
 }
 
-TEST(L1I, DISABLED_size) {
+TEST(L1I, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
 		switch (i) {
 			case 0:
@@ -570,22 +596,9 @@ TEST(L1I, DISABLED_size) {
 	}
 }
 
-TEST(L1I, DISABLED_associativity) {
+TEST(L1I, associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		switch (i) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-				ASSERT_EQ(4, cpuinfo_get_l1i_cache(i)->associativity);
-				break;
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-				ASSERT_EQ(2, cpuinfo_get_l1i_cache(i)->associativity);
-				break;
-		}
+		ASSERT_EQ(4, cpuinfo_get_l1i_cache(i)->associativity);
 	}
 }
 
@@ -604,7 +617,20 @@ TEST(L1I, partitions) {
 
 TEST(L1I, line_size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_EQ(64, cpuinfo_get_l1i_cache(i)->line_size);
+		switch (i) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				ASSERT_EQ(128, cpuinfo_get_l1i_cache(i)->line_size);
+				break;
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				ASSERT_EQ(64, cpuinfo_get_l1i_cache(i)->line_size);
+				break;
+		}
 	}
 }
 
@@ -629,13 +655,26 @@ TEST(L1D, non_null) {
 	ASSERT_TRUE(cpuinfo_get_l1d_caches());
 }
 
-TEST(L1D, DISABLED_size) {
+TEST(L1D, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_EQ(32 * 1024, cpuinfo_get_l1d_cache(i)->size);
+		switch (i) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				ASSERT_EQ(64 * 1024, cpuinfo_get_l1d_cache(i)->size);
+				break;
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				ASSERT_EQ(32 * 1024, cpuinfo_get_l1d_cache(i)->size);
+				break;
+		}
 	}
 }
 
-TEST(L1D, DISABLED_associativity) {
+TEST(L1D, associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
 		switch (i) {
 			case 0:
@@ -686,7 +725,7 @@ TEST(L1D, processors) {
 	}
 }
 
-TEST(L2, DISABLED_count) {
+TEST(L2, count) {
 	ASSERT_EQ(5, cpuinfo_get_l2_caches_count());
 }
 
@@ -694,23 +733,13 @@ TEST(L2, non_null) {
 	ASSERT_TRUE(cpuinfo_get_l2_caches());
 }
 
-TEST(L2, DISABLED_size) {
+TEST(L2, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		switch (i) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-				ASSERT_EQ(512 * 1024, cpuinfo_get_l2_cache(i)->size);
-				break;
-			case 4:
-				ASSERT_EQ(256 * 1024, cpuinfo_get_l2_cache(i)->size);
-				break;
-		}
+		ASSERT_EQ(512 * 1024, cpuinfo_get_l2_cache(i)->size);
 	}
 }
 
-TEST(L2, DISABLED_associativity) {
+TEST(L2, associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
 		ASSERT_EQ(16, cpuinfo_get_l2_cache(i)->associativity);
 	}
@@ -735,13 +764,13 @@ TEST(L2, line_size) {
 	}
 }
 
-TEST(L2, DISABLED_flags) {
+TEST(L2, flags) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
 		ASSERT_EQ(0, cpuinfo_get_l2_cache(i)->flags);
 	}
 }
 
-TEST(L2, DISABLED_processors) {
+TEST(L2, processors) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
 		switch (i) {
 			case 0:
@@ -759,15 +788,15 @@ TEST(L2, DISABLED_processors) {
 	}
 }
 
-TEST(L3, DISABLED_count) {
+TEST(L3, count) {
 	ASSERT_EQ(1, cpuinfo_get_l3_caches_count());
 }
 
-TEST(L3, DISABLED_non_null) {
+TEST(L3, non_null) {
 	ASSERT_TRUE(cpuinfo_get_l3_caches());
 }
 
-TEST(L3, DISABLED_size) {
+TEST(L3, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
 		switch (i) {
 			case 0:
@@ -777,9 +806,9 @@ TEST(L3, DISABLED_size) {
 	}
 }
 
-TEST(L3, DISABLED_associativity) {
+TEST(L3, associativity) {
 	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
-		ASSERT_EQ(8, cpuinfo_get_l3_cache(i)->associativity);
+		ASSERT_EQ(16, cpuinfo_get_l3_cache(i)->associativity);
 	}
 }
 
@@ -802,7 +831,7 @@ TEST(L3, line_size) {
 	}
 }
 
-TEST(L3, DISABLED_flags) {
+TEST(L3, flags) {
 	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
 		ASSERT_EQ(0, cpuinfo_get_l3_cache(i)->flags);
 	}
