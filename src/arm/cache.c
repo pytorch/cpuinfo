@@ -490,6 +490,9 @@ void cpuinfo_arm_decode_cache(
 			 *  | Exynos 7420        | 4(+4) |    32K    |    32K    |    256K   |  [2, 3]   |
 			 *  | Exynos 8890        | 4(+4) |    32K    |    32K    |    256K   |    [4]    |
 			 *  | Snapdragon 410     |   4   |    32K    |    32K    |    512K   |    [3]    |
+			 *  | Snapdragon 630     |  4+4  |    32K    |    32K    |  1M+512K  |   sysfs   |
+			 *  | Snapdragon 636     | 4(+4) |  32K+64K  |  32K+64K  |   1M+1M   |   sysfs   |
+			 *  | Snapdragon 660     | 4(+4) |  32K+64K  |  32K+64K  |   1M+1M   |   sysfs   |
 			 *  | Snapdragon 835     | 4(+4) |  32K+64K  |  32K+64K  |  1M(+2M)  |   sysfs   |
 			 *  | Kirin 620          |  4+4  |    32K    |    32K    |    512K   |    [5]    |
 			 *  +--------------------+-------+-----------+-----------+-----------+-----------+
@@ -504,12 +507,33 @@ void cpuinfo_arm_decode_cache(
 				/* Qualcomm-modified Cortex-A53 in Snapdragon 630/660/835 */
 
 				uint32_t l2_size = 512 * 1024;
-				if (chipset->series == cpuinfo_arm_chipset_series_qualcomm_msm && chipset->model == 8998) {
-					/* Snapdragon 835 (MSM8998): 1 MB L2 (little cores only) */
-					l2_size = 1024 * 1024;
-				} else if (chipset->series == cpuinfo_arm_chipset_series_qualcomm_snapdragon && chipset->model == 630 && cluster_id == 0) {
-					/* Snapdragon 630 (MSM8998): 1 MB L2 for the big cores */
-					l2_size = 1024 * 1024;
+				switch (chipset->series) {
+					case cpuinfo_arm_chipset_series_qualcomm_msm:
+						if (chipset->model == 8998) {
+							/* Snapdragon 835 (MSM8998): 1 MB L2 (little cores only) */
+							l2_size = 1024 * 1024;
+						}
+						break;
+					case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
+						switch (chipset->model) {
+							case 630:
+								if (cluster_id == 0) {
+									/* Snapdragon 630: 1 MB L2 for the big cores */
+									l2_size = 1024 * 1024;
+								}
+								break;
+							case 636:
+								/* Snapdragon 636: 1 MB L2 (little cores only) */
+								l2_size = 1024 * 1024;
+								break;
+							case 660:
+								/* Snapdragon 660: 1 MB L2 (little cores only) */
+								l2_size = 1024 * 1024;
+								break;
+						}
+						break;
+					default:
+						break;
 				}
 
 				*l1i = (struct cpuinfo_cache) {
@@ -840,10 +864,11 @@ void cpuinfo_arm_decode_cache(
 			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
 			 *  | Processor model     | Cores   | L1D cache | L1I cache | L2 cache  | Reference |
 			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
-			 *  | HiSilicon Kirin 960 | 4(+4)   |  64K+32K  |  64K+32K  |     ?     |    [2]    |
+			 *  | HiSilicon Kirin 960 |  4(+4)  |  64K+32K  |  64K+32K  |     ?     |    [2]    |
 			 *  | MediaTek Helio X30  | 2(+4+4) |     ?     |  64K+ ?   |     ?     |           |
-			 *  | Snapdragon 835      | 4(+4)   |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
-			 *  | Snapdragon 660      | 4(+4)   |  64K+32K  |  64K+32K  |  2M(+1M)  |    [3]    |
+			 *  | Snapdragon 636      |  4(+4)  | 64K(+32K) | 64K(+32K) |  1M(+1M)  |   sysfs   |
+			 *  | Snapdragon 660      |  4(+4)  |  64K+32K  |  64K+32K  |  1M(+1M)  |    [3]    |
+			 *  | Snapdragon 835      |  4(+4)  |  64K+32K  |  64K+32K  |  2M(+1M)  |   sysfs   |
 			 *  +---------------------+---------+-----------+-----------+-----------+-----------+
 			 *
 			 * [1] http://www.anandtech.com/show/10347/arm-cortex-a73-artemis-unveiled/2
