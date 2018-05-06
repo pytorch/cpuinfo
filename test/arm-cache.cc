@@ -372,6 +372,42 @@ TEST(QUALCOMM, snapdragon_630) {
 	EXPECT_EQ(0, little_l3.size);
 }
 
+TEST(QUALCOMM, snapdragon_636) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+		.model = 636,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a73, 4, UINT32_C(0x51AF8002),
+		&chipset, 0, 8,
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 4, UINT32_C(0x51AF8014),
+		&chipset, 1, 8,
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
+
+	EXPECT_EQ(64 * 1024, big_l1i.size);
+	EXPECT_EQ(64 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(1024 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
+}
+
 TEST(QUALCOMM, snapdragon_650) {
 	const struct cpuinfo_arm_chipset chipset = {
 		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
@@ -517,7 +553,7 @@ TEST(QUALCOMM, snapdragon_660) {
 
 	EXPECT_EQ(32 * 1024, little_l1i.size);
 	EXPECT_EQ(32 * 1024, little_l1d.size);
-	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(1024 * 1024, little_l2.size);
 	EXPECT_EQ(0, little_l3.size);
 }
 
