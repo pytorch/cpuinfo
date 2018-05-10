@@ -7,8 +7,6 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/sysctl.h>
-#include <mach/host_info.h>
-#include <mach/mach_host.h>
 #include <mach/machine.h>
 
 #include <cpuinfo.h>
