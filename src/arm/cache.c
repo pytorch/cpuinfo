@@ -489,6 +489,7 @@ void cpuinfo_arm_decode_cache(
 			 *  | Broadcom BCM2837   |   4   |    16K    |    16K    |    512K   |    [1]    |
 			 *  | Exynos 7420        | 4(+4) |    32K    |    32K    |    256K   |  [2, 3]   |
 			 *  | Exynos 8890        | 4(+4) |    32K    |    32K    |    256K   |    [4]    |
+			 *  | Rochchip RK3368    |  4+4  |    32K    |    32K    | 512K+256K |   sysfs   |
 			 *  | Snapdragon 410     |   4   |    32K    |    32K    |    512K   |    [3]    |
 			 *  | Snapdragon 630     |  4+4  |    32K    |    32K    |  1M+512K  |   sysfs   |
 			 *  | Snapdragon 636     | 4(+4) |  32K+64K  |  32K+64K  |   1M+1M   |   sysfs   |
@@ -605,6 +606,17 @@ void cpuinfo_arm_decode_cache(
 								break;
 							default:
 								l2_size = 512 * 1024;
+								break;
+						}
+						break;
+					case cpuinfo_arm_chipset_series_rockchip_rk:
+						l1_size = 32 * 1024;
+						switch (chipset->model) {
+							case 3368:
+								if (cluster_id == 0) {
+									 /* RK3368: 512 KB L2 for the big cores */
+									l2_size = 512 * 1024;
+								}
 								break;
 						}
 						break;
