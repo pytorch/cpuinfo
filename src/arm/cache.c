@@ -490,6 +490,7 @@ void cpuinfo_arm_decode_cache(
 			 *  | Exynos 7420        | 4(+4) |    32K    |    32K    |    256K   |  [2, 3]   |
 			 *  | Exynos 8890        | 4(+4) |    32K    |    32K    |    256K   |    [4]    |
 			 *  | Rochchip RK3368    |  4+4  |    32K    |    32K    | 512K+256K |   sysfs   |
+			 *  | MediaTek MT8173C   | 2(+2) |    32K    |    32K    | 512K(+1M) |   sysfs   |
 			 *  | Snapdragon 410     |   4   |    32K    |    32K    |    512K   |    [3]    |
 			 *  | Snapdragon 630     |  4+4  |    32K    |    32K    |  1M+512K  |   sysfs   |
 			 *  | Snapdragon 636     | 4(+4) |  32K+64K  |  32K+64K  |   1M+1M   |   sysfs   |
@@ -605,6 +606,14 @@ void cpuinfo_arm_decode_cache(
 								l2_size = 1024 * 1024;
 								break;
 							default:
+								l2_size = 512 * 1024;
+								break;
+						}
+						break;
+					case cpuinfo_arm_chipset_series_mediatek_mt:
+						switch (chipset->model) {
+							case 8173:
+								l1_size = 32 * 1024;
 								l2_size = 512 * 1024;
 								break;
 						}
@@ -806,6 +815,7 @@ void cpuinfo_arm_decode_cache(
 			 *  | Snapdragon 653      |  4(+4)  | 32K(+32K) | 48K(+32K) |  1M(+512K) |    [3]    |
 			 *  | HiSilicon Kirin 950 |  4(+4)  |  32K+32K  |  48K+32K  |     ?      |           |
 			 *  | HiSilicon Kirin 955 |  4(+4)  |  32K+32K  |  48K+32K  |     ?      |           |
+			 *  | MediaTek MT8173C    |  2(+2)  | 32K(+32K) | 48K(+32K) |  1M(+512K) |   sysfs   |
 			 *  | MediaTek Helio X20  | 2(+4+4) |     ?     |     ?     |     ?      |           |
 			 *  | MediaTek Helio X23  | 2(+4+4) |     ?     |     ?     |     ?      |           |
 			 *  | MediaTek Helio X25  | 2(+4+4) |     ?     |     ?     |     ?      |           |
