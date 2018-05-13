@@ -925,6 +925,81 @@ TEST(SAMSUNG, exynos_9810) {
 	EXPECT_EQ(0, little_l3.size);
 }
 
+TEST(MEDIATEK, mediatek_mt8173) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_mediatek,
+		.series = cpuinfo_arm_chipset_series_mediatek_mt,
+		.model = 8173,
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a72, 2, UINT32_C(0x410FD080),
+		&chipset, 0, 4,
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 2, UINT32_C(0x410FD032),
+		&chipset, 1, 4,
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
+
+	EXPECT_EQ(48 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
+}
+
+TEST(MEDIATEK, mediatek_mt8173c) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_mediatek,
+		.series = cpuinfo_arm_chipset_series_mediatek_mt,
+		.model = 8173,
+		.suffix = {
+			[0] = 'C',
+		},
+	};
+
+	struct cpuinfo_cache big_l1i = { 0 };
+	struct cpuinfo_cache big_l1d = { 0 };
+	struct cpuinfo_cache big_l2 = { 0 };
+	struct cpuinfo_cache big_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a72, 2, UINT32_C(0x410FD080),
+		&chipset, 0, 4,
+		&big_l1i, &big_l1d, &big_l2, &big_l3);
+
+	struct cpuinfo_cache little_l1i = { 0 };
+	struct cpuinfo_cache little_l1d = { 0 };
+	struct cpuinfo_cache little_l2 = { 0 };
+	struct cpuinfo_cache little_l3 = { 0 };
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a53, 2, UINT32_C(0x410FD032),
+		&chipset, 1, 4,
+		&little_l1i, &little_l1d, &little_l2, &little_l3);
+
+	EXPECT_EQ(48 * 1024, big_l1i.size);
+	EXPECT_EQ(32 * 1024, big_l1d.size);
+	EXPECT_EQ(1024 * 1024, big_l2.size);
+	EXPECT_EQ(0, big_l3.size);
+
+	EXPECT_EQ(32 * 1024, little_l1i.size);
+	EXPECT_EQ(32 * 1024, little_l1d.size);
+	EXPECT_EQ(512 * 1024, little_l2.size);
+	EXPECT_EQ(0, little_l3.size);
+}
+
 TEST(HISILICON, kirin_650) {
 	const struct cpuinfo_arm_chipset chipset = {
 		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
