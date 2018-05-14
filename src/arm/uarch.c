@@ -99,6 +99,13 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x100:
 					*uarch = cpuinfo_uarch_brahma_b53;
 					break;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+				case 0x516:
+					/* Broadcom Vulkan was sold to Cavium before it reached the market, so we identify it as Cavium ThunderX2 */
+					*vendor = cpuinfo_vendor_cavium;
+					*uarch = cpuinfo_uarch_thunderx2;
+					break;
+#endif
 				default:
 					cpuinfo_log_warning("unknown Broadcom CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
@@ -107,8 +114,14 @@ void cpuinfo_arm_decode_vendor_uarch(
 		case 'C':
 			*vendor = cpuinfo_vendor_cavium;
 			switch (midr_get_part(midr)) {
-				case 0x0A1:
+				case 0x0A0: /* ThunderX */
+				case 0x0A1: /* ThunderX 88XX */
+				case 0x0A2: /* ThunderX 81XX */
+				case 0x0A3: /* ThunderX 83XX */
 					*uarch = cpuinfo_uarch_thunderx;
+					break;
+				case 0x0AF: /* ThunderX2 99XX */
+					*uarch = cpuinfo_uarch_thunderx2;
 					break;
 				default:
 					cpuinfo_log_warning("unknown Cavium CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
@@ -147,6 +160,18 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Nvidia CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+		case 'P':
+			*vendor = cpuinfo_vendor_apm;
+			switch (midr_get_part(midr)) {
+				case 0x000:
+					*uarch = cpuinfo_uarch_xgene;
+					break;
+				default:
+					cpuinfo_log_warning("unknown Applied Micro CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
+			}
+			break;
+#endif
 		case 'Q':
 			*vendor = cpuinfo_vendor_qualcomm;
 			switch (midr_get_part(midr)) {
@@ -205,6 +230,14 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a55;
 					break;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+				case 0xC00:
+					*uarch = cpuinfo_uarch_falkor;
+					break;
+				case 0xC01:
+					*uarch = cpuinfo_uarch_saphira;
+					break;
+#endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
 				default:
 					cpuinfo_log_warning("unknown Qualcomm CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
