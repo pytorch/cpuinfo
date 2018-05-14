@@ -164,6 +164,8 @@ enum cpuinfo_vendor {
 	cpuinfo_vendor_via      = 11,
 	/** Cavium, Inc. Vendor of ARM64 processor microarchitectures. */
 	cpuinfo_vendor_cavium   = 12,
+	/** Broadcom, Inc. Vendor of ARM processor microarchitectures. */
+	cpuinfo_vendor_broadcom = 13,
 
 	/* Active vendors of embedded CPUs */
 
@@ -413,6 +415,11 @@ enum cpuinfo_uarch {
 
 	/** Marvell PJ4. */
 	cpuinfo_uarch_pj4 = 0x00900100,
+
+	/** Broadcom Brahma B15. */
+	cpuinfo_uarch_brahma_b15 = 0x00A00100,
+	/** Broadcom Brahma B53. */
+	cpuinfo_uarch_brahma_b53 = 0x00A00101,
 };
 
 struct cpuinfo_processor {

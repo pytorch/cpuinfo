@@ -90,6 +90,19 @@ void cpuinfo_arm_decode_vendor_uarch(
 					}
 			}
 			break;
+		case 'B':
+			*vendor = cpuinfo_vendor_broadcom;
+			switch (midr_get_part(midr)) {
+				case 0x00F:
+					*uarch = cpuinfo_uarch_brahma_b15;
+					break;
+				case 0x100:
+					*uarch = cpuinfo_uarch_brahma_b53;
+					break;
+				default:
+					cpuinfo_log_warning("unknown Broadcom CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
+			}
+			break;
 #if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 		case 'C':
 			*vendor = cpuinfo_vendor_cavium;

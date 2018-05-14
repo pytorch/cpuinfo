@@ -34,6 +34,8 @@ static const char* vendor_to_string(enum cpuinfo_vendor vendor) {
 			return "VIA";
 		case cpuinfo_vendor_cavium:
 			return "Cavium";
+		case cpuinfo_vendor_broadcom:
+			return "Broadcom";
 		default:
 			return NULL;
 	}
@@ -183,6 +185,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "ThunderX";
 		case cpuinfo_uarch_pj4:
 			return "PJ4";
+		case cpuinfo_uarch_brahma_b15:
+			return "Brahma B15";
+		case cpuinfo_uarch_brahma_b53:
+			return "Brahma B53";
 		default:
 			return NULL;
 	}
