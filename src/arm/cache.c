@@ -1093,6 +1093,7 @@ void cpuinfo_arm_decode_cache(
 			}
 			break;
 		case cpuinfo_uarch_denver:
+		case cpuinfo_uarch_denver2:
 			/*
 			 * The Denver chip includes a 128KB, 4-way level 1 instruction cache, a 64KB, 4-way level 2 data cache,
 			 * and a 2MB, 16-way level 2 cache, all of which can service both cores. [1]
