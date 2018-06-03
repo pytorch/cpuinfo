@@ -1,7 +1,7 @@
 # CPU INFOrmation library
 
-[![BSD (2 clause) License](https://img.shields.io/badge/License-BSD%202--Clause%20%22Simplified%22%20License-blue.svg)](https://github.com/Maratyszcza/cpuinfo/blob/master/LICENSE)
-[![Linux/Mac build status](https://img.shields.io/travis/Maratyszcza/cpuinfo.svg)](https://travis-ci.org/Maratyszcza/cpuinfo)
+[![BSD (2 clause) License](https://img.shields.io/badge/License-BSD%202--Clause%20%22Simplified%22%20License-blue.svg)](https://github.com/pytorch/cpuinfo/blob/master/LICENSE)
+[![Linux/Mac build status](https://img.shields.io/travis/pytorch/cpuinfo.svg)](https://travis-ci.org/pytorch/cpuinfo)
 [![Windows build status](https://ci.appveyor.com/api/projects/status/g5khy9nr0xm458t7/branch/master?svg=true)](https://ci.appveyor.com/project/MaratDukhan/cpuinfo/branch/master)
 
 cpuinfo is a library to detect essential for performance optimization information about host CPU.
