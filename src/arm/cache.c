@@ -692,7 +692,18 @@ void cpuinfo_arm_decode_cache(
 			 * [2] https://www.anandtech.com/show/12478/exynos-9810-handson-awkward-first-results
 			 */
 			if (midr_is_qualcomm_cortex_a55_silver(midr)) {
-				/* Qualcomm-modified Cortex-A55 in Snapdragon 845 */
+				/* Qualcomm-modified Cortex-A55 in Snapdragon 710 / 845 */
+				uint32_t l3_size = 1024 * 1024;
+				switch (chipset->series) {
+					case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
+						/* Snapdragon 845: 2M L3 cache */
+						if (chipset->model == 845) {
+							l3_size = 2 * 1024 * 1024;
+						}
+						break;
+					default:
+						break;
+				}
 
 				*l1i = (struct cpuinfo_cache) {
 					.size = 32 * 1024,
@@ -710,7 +721,7 @@ void cpuinfo_arm_decode_cache(
 					.line_size = 64
 				};
 				*l3 = (struct cpuinfo_cache) {
-					.size = 2 * 1024 * 1024,
+					.size = l3_size,
 					.associativity = 16,
 					.line_size = 64
 				};
@@ -970,6 +981,17 @@ void cpuinfo_arm_decode_cache(
 			 *
 			 * [1] https://www.anandtech.com/show/12114/qualcomm-announces-snapdragon-845-soc
 			 */
+			uint32_t l3_size = 1024 * 1024;
+			switch (chipset->series) {
+				case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
+					/* Snapdragon 845: 2M L3 cache */
+					if (chipset->model == 845) {
+						l3_size = 2 * 1024 * 1024;
+					}
+					break;
+				default:
+					break;
+			}
 			*l1i = (struct cpuinfo_cache) {
 				.size = 64 * 1024,
 				.associativity = 4,
@@ -986,7 +1008,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			*l3 = (struct cpuinfo_cache) {
-				.size = 2 * 1024 * 1024,
+				.size = l3_size,
 				.associativity = 16,
 				.line_size = 64
 			};
