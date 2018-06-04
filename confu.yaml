@@ -4,3 +4,4 @@ license: Simplified BSD
 deps:
   - name: googletest
   - name: googlebenchmark
+  - name: clog

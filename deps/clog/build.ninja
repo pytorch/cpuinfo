@@ -1,0 +1,114 @@
+ninja_required_version = 1.7
+builddir = /Users/marat/Projects/clog/build
+root = /Users/marat/Projects/clog
+cc = clang
+cxx = clang++
+ar = ar
+ranlib = ranlib
+strip = strip
+cflags = -std=gnu99 -g
+cxxflags = -std=gnu++11 -g
+ldflags = 
+ldlibs = 
+optflags = -O2
+rule cc
+  command = $cc -o $out -c $in -MMD -MF $out.d $cflags $optflags $macro $
+      $includes
+  description = CC $path
+  depfile = $out.d
+  deps = gcc
+rule cxx
+  command = $cxx -o $out -c $in -MMD -MF $out.d $cxxflags $optflags $macro $
+      $includes
+  description = CXX $path
+  depfile = $out.d
+  deps = gcc
+rule executable
+  command = $linker $ldflags $lddirs -o $out $in $ldlibs
+  description = LINK $path
+rule library
+  command = $linker -dynamiclib $ldflags $lddirs -o $out $in $ldlibs
+  description = LINK $path
+rule archive
+  command = $ar rcs $out $in
+  description = AR $path
+rule run
+  command = $in $args
+  description = RUN $path
+  pool = console
+rule configure
+  command = /Users/marat/Projects/clog/configure.py $args
+  description = CONFIGURE $args
+  generator = 1
+  pool = console
+rule clean
+  command = ninja -f $config -t clean
+  description = CLEAN
+  pool = console
+build build.ninja: configure /Users/marat/Projects/clog/configure.py
+  args = 
+build clean: clean
+  config = /Users/marat/Projects/clog/build.ninja
+build /Users/marat/Projects/clog/build/src/clog.c.o: cc $
+    /Users/marat/Projects/clog/src/clog.c || $
+    /Users/marat/Projects/clog/build.ninja
+  optflags = $optflags 
+  path = src/clog.c
+  includes = $includes -I/Users/marat/Projects/clog/include $
+      -I/Users/marat/Projects/clog/src
+build /Users/marat/Projects/clog/lib/libclog.a: archive $
+    /Users/marat/Projects/clog/build/src/clog.c.o || $
+    /Users/marat/Projects/clog/build.ninja
+  path = lib/libclog.a
+  ldlibs = $ldlibs
+build clog: phony /Users/marat/Projects/clog/lib/libclog.a
+build /Users/marat/Projects/clog/build/test/clog.cc.o: cxx $
+    /Users/marat/Projects/clog/test/clog.cc || $
+    /Users/marat/Projects/clog/build.ninja
+  optflags = $optflags 
+  path = test/clog.cc
+  includes = $includes -I/Users/marat/Projects/clog/include $
+      -I/Users/marat/Projects/clog/src -I/Users/marat/Projects/clog/include $
+      -I/Users/marat/Projects/clog/deps/googletest/googletest/include
+build $
+    /Users/marat/Projects/clog/build/deps/googletest/googletest/src/gtest-all.cc.o: $
+    cxx $
+    /Users/marat/Projects/clog/deps/googletest/googletest/src/gtest-all.cc $
+    || /Users/marat/Projects/clog/build.ninja
+  optflags = $optflags 
+  path = deps/googletest/googletest/src/gtest-all.cc
+  includes = $includes $
+      -I/Users/marat/Projects/clog/deps/googletest/googletest/include $
+      -I/Users/marat/Projects/clog/deps/googletest/googletest
+build $
+    /Users/marat/Projects/clog/build/deps/googletest/googletest/src/gtest_main.cc.o: $
+    cxx $
+    /Users/marat/Projects/clog/deps/googletest/googletest/src/gtest_main.cc $
+    || /Users/marat/Projects/clog/build.ninja
+  optflags = $optflags 
+  path = deps/googletest/googletest/src/gtest_main.cc
+  includes = $includes $
+      -I/Users/marat/Projects/clog/deps/googletest/googletest/include $
+      -I/Users/marat/Projects/clog/deps/googletest/googletest $
+      -I/Users/marat/Projects/clog/deps/googletest/googletest/include
+build /Users/marat/Projects/clog/lib/libgoogletest.a: archive $
+    /Users/marat/Projects/clog/build/deps/googletest/googletest/src/gtest-all.cc.o $
+    /Users/marat/Projects/clog/build/deps/googletest/googletest/src/gtest_main.cc.o $
+    || /Users/marat/Projects/clog/build.ninja
+  path = lib/libgoogletest.a
+  ldlibs = $ldlibs
+build /Users/marat/Projects/clog/bin/clog-test: executable $
+    /Users/marat/Projects/clog/build/test/clog.cc.o | $
+    /Users/marat/Projects/clog/lib/libclog.a $
+    /Users/marat/Projects/clog/lib/libgoogletest.a || $
+    /Users/marat/Projects/clog/build.ninja
+  path = bin/clog-test
+  ldlibs = /Users/marat/Projects/clog/lib/libclog.a $
+      /Users/marat/Projects/clog/lib/libgoogletest.a $ldlibs
+  linker = $cxx
+build clog-test: run /Users/marat/Projects/clog/bin/clog-test
+  path = clog-test
+  args = --gtest_color=yes
+default /Users/marat/Projects/clog/lib/libclog.a $
+    /Users/marat/Projects/clog/bin/clog-test
+build test: phony clog-test

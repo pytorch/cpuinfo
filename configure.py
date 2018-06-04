@@ -20,8 +20,8 @@ def main(args):
 
     build.export_cpath("include", ["cpuinfo.h"])
 
-    with build.options(source_dir="src", macros=macros, extra_include_dirs="src"):
-        sources = ["init.c", "api.c", "log.c"]
+    with build.options(source_dir="src", macros=macros, extra_include_dirs="src", deps=build.deps.clog):
+        sources = ["init.c", "api.c"]
         if build.target.is_x86 or build.target.is_x86_64:
             sources += [
                 "x86/init.c", "x86/info.c", "x86/vendor.c", "x86/uarch.c", "x86/name.c",
@@ -77,7 +77,7 @@ def main(args):
                 sources.append("gpu/gles2.c")
         build.static_library("cpuinfo", map(build.cc, sources))
 
-    with build.options(source_dir="tools", deps=build):
+    with build.options(source_dir="tools", deps=[build, build.deps.clog]):
         build.executable("cpu-info", build.cc("cpu-info.c"))
         build.executable("isa-info", build.cc("isa-info.c"))
         build.executable("cache-info", build.cc("cache-info.c"))
@@ -86,7 +86,7 @@ def main(args):
         with build.options(source_dir="tools", include_dirs=["src", "include"]):
             build.executable("cpuid-dump", build.cc("cpuid-dump.c"))
 
-    with build.options(source_dir="test", deps=[build, build.deps.googletest]):
+    with build.options(source_dir="test", deps=[build, build.deps.clog, build.deps.googletest]):
         build.smoketest("init-test", build.cxx("init.cc"))
         if build.target.is_linux:
             build.smoketest("get-current-test", build.cxx("get-current.cc"))
@@ -98,7 +98,7 @@ def main(args):
                 build.unittest("scaleway-test", build.cxx("scaleway.cc"))
 
     if not options.mock:
-        with build.options(source_dir="bench", deps=[build, build.deps.googlebenchmark]):
+        with build.options(source_dir="bench", deps=[build, build.deps.clog, build.deps.googlebenchmark]):
             build.benchmark("init-bench", build.cxx("init.cc"))
             if not build.target.is_macos:
                 build.benchmark("get-current-bench", build.cxx("get-current.cc"))
