@@ -3076,6 +3076,12 @@ void cpuinfo_arm_fixup_chipset(
 			}
 			break;
 		}
+		case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
+			/* Snapdragon 670 was renamed to Snapdragon 710 */
+			if (chipset->model == 670) {
+				chipset->model = 710;
+			}
+			break;
 		case cpuinfo_arm_chipset_series_samsung_exynos:
 			switch (chipset->model) {
 				case 4410:
