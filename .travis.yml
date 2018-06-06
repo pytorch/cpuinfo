@@ -8,4 +8,4 @@ before_script:
 script:
  - cmake ..
  - make
- - make test
+ - ctest --verbose
