@@ -11,45 +11,25 @@
 #define CLOG_INFO 4
 #define CLOG_DEBUG 5
 
+#ifndef CLOG_VISIBILITY
+	#if defined(__ELF__)
+		#define CLOG_VISIBILITY __attribute__((__visibility__("internal")))
+	#elif defined(__MACH__)
+		#define CLOG_VISIBILITY __attribute__((__visibility__("hidden")))
+	#else
+		#define CLOG_VISIBILITY
+	#endif
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined(__ELF__)
-__attribute__((__visibility__("internal")))
-#elif defined(__MACH__)
-__attribute__((__visibility__("hidden")))
-#endif
-void clog_vlog_debug(const char* module, const char* format, va_list args);
-
-#if defined(__ELF__)
-__attribute__((__visibility__("internal")))
-#elif defined(__MACH__)
-__attribute__((__visibility__("hidden")))
-#endif
-void clog_vlog_info(const char* module, const char* format, va_list args);
-
-#if defined(__ELF__)
-__attribute__((__visibility__("internal")))
-#elif defined(__MACH__)
-__attribute__((__visibility__("hidden")))
-#endif
-void clog_vlog_warning(const char* module, const char* format, va_list args);
-
-#if defined(__ELF__)
-__attribute__((__visibility__("internal")))
-#elif defined(__MACH__)
-__attribute__((__visibility__("hidden")))
-#endif
-void clog_vlog_error(const char* module, const char* format, va_list args);
-
-#if defined(__ELF__)
-__attribute__((__visibility__("internal")))
-#elif defined(__MACH__)
-__attribute__((__visibility__("hidden")))
-#endif
-void clog_vlog_fatal(const char* module, const char* format, va_list args);
+CLOG_VISIBILITY void clog_vlog_debug(const char* module, const char* format, va_list args);
+CLOG_VISIBILITY void clog_vlog_info(const char* module, const char* format, va_list args);
+CLOG_VISIBILITY void clog_vlog_warning(const char* module, const char* format, va_list args);
+CLOG_VISIBILITY void clog_vlog_error(const char* module, const char* format, va_list args);
+CLOG_VISIBILITY void clog_vlog_fatal(const char* module, const char* format, va_list args);
 
 #ifdef __GNUC__
 	#define CLOG_DEFINE_LOG_DEBUG(prefix, module, level) \
