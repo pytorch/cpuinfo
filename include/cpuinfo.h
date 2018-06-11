@@ -1560,6 +1560,16 @@ static inline bool cpuinfo_has_arm_neon_rdm(void) {
 	#endif
 }
 
+static inline bool cpuinfo_has_arm_neon_fp16_arith(void) {
+	#if CPUINFO_ARCH_ARM
+		return cpuinfo_isa.neon && cpuinfo_isa.fp16arith;
+	#elif CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.fp16arith;
+	#else
+		return false;
+	#endif
+}
+
 static inline bool cpuinfo_has_arm_fp16_arith(void) {
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.fp16arith;
