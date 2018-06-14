@@ -5,3 +5,5 @@ deps:
   - name: googletest
   - name: googlebenchmark
   - name: clog
+    dir:  deps/clog
+
