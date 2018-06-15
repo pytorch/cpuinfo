@@ -41,6 +41,6 @@ TEST(CLOG, warning) {
 
 TEST(CLOG, error) {
 	named_log_error("test error message with a module name");
-	nameless_log_warning("test warning message without a module name");
+	nameless_log_error("test error message without a module name");
 	suppressed_log_error("test suppressed error message");
 }
