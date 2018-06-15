@@ -17,6 +17,8 @@ def main(args):
         "CPUINFO_LOG_TO_STDIO": int(not options.mock),
         "CPUINFO_MOCK": int(options.mock),
     }
+    if build.target.is_linux or build.target.is_android:
+        macros["_GNU_SOURCE"] = 1
 
     build.export_cpath("include", ["cpuinfo.h"])
 
