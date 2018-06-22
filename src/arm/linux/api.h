@@ -193,7 +193,7 @@ static inline bool cpuinfo_arm_linux_processor_equals(
 
 	bool same_min_frequency = false;
 	if (joint_flags & CPUINFO_LINUX_FLAG_MIN_FREQUENCY) {
-		if (processor_j->min_frequency != processor_j->min_frequency) {
+		if (processor_i->min_frequency != processor_j->min_frequency) {
 			return false;
 		} else {
 			same_min_frequency = true;
