@@ -73,12 +73,22 @@ INSTALL(TARGETS clog
   PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 # ---[ clog tests
-IF(CLOG_BUILD_UNIT_TESTS)
+IF(CLOG_BUILD_TESTS)
+  # ---[ Build google test
+  IF(NOT TARGET gtest)
+    IF(MSVC AND NOT CLOG_RUNTIME_TYPE STREQUAL "static")
+      SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    ENDIF()
+    ADD_SUBDIRECTORY(
+      "${GOOGLETEST_SOURCE_DIR}"
+      "${CONFU_DEPENDENCIES_BINARY_DIR}/googletest")
+  ENDIF()
+
   ADD_EXECUTABLE(clog-test test/clog.cc)
   SET_TARGET_PROPERTIES(clog-test PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS NO)
   CLOG_TARGET_RUNTIME_LIBRARY(clog-test)
-  TARGET_LINK_LIBRARIES(clog-test PRIVATE clog gtest)
+  TARGET_LINK_LIBRARIES(clog-test PRIVATE clog gtest gtest_main)
   ADD_TEST(clog-test clog-test)
 ENDIF()
