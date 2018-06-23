@@ -2,7 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <unistd.h>
+#endif
 #ifdef __ANDROID__
 	#include <android/log.h>
 #endif
@@ -44,6 +48,7 @@ void clog_vlog_fatal(const char* module, const char* format, va_list args) {
 	#else
 		char stack_buffer[CLOG_STACK_BUFFER_SIZE];
 		char* heap_buffer = NULL;
+		char* out_buffer = &stack_buffer[0];
 
 		/* The first call to vsnprintf will clobber args, thus need a copy in case a second vsnprintf call is needed */
 		va_list args_copy;
@@ -94,13 +99,18 @@ void clog_vlog_fatal(const char* module, const char* format, va_list args) {
 				memcpy(heap_buffer, stack_buffer, prefix_chars);
 			}
 			vsnprintf(heap_buffer + prefix_chars, format_chars + CLOG_SUFFIX_LENGTH, format, args_copy);
-			heap_buffer[prefix_chars + format_chars] = '\n';
-			write(STDERR_FILENO, heap_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
-		} else {
-			/* Formatted string was written to on-stack buffer, and it has enough space for suffix too */
-			stack_buffer[prefix_chars + format_chars] = '\n';
-			write(STDERR_FILENO, stack_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+			out_buffer = heap_buffer;
 		}
+		out_buffer[prefix_chars + format_chars] = '\n';
+		#ifdef _WIN32
+			DWORD bytes_written;
+			WriteFile(
+				GetStdHandle(STD_ERROR_HANDLE),
+				out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH,
+				&bytes_written, NULL);
+		#else
+			write(STDERR_FILENO, out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+		#endif
 
 cleanup:
 		free(heap_buffer);
@@ -114,6 +124,7 @@ void clog_vlog_error(const char* module, const char* format, va_list args) {
 	#else
 		char stack_buffer[CLOG_STACK_BUFFER_SIZE];
 		char* heap_buffer = NULL;
+		char* out_buffer = &stack_buffer[0];
 
 		/* The first call to vsnprintf will clobber args, thus need a copy in case a second vsnprintf call is needed */
 		va_list args_copy;
@@ -164,13 +175,18 @@ void clog_vlog_error(const char* module, const char* format, va_list args) {
 				memcpy(heap_buffer, stack_buffer, prefix_chars);
 			}
 			vsnprintf(heap_buffer + prefix_chars, format_chars + CLOG_SUFFIX_LENGTH, format, args_copy);
-			heap_buffer[prefix_chars + format_chars] = '\n';
-			write(STDERR_FILENO, heap_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
-		} else {
-			/* Formatted string was written to on-stack buffer, and it has enough space for suffix too */
-			stack_buffer[prefix_chars + format_chars] = '\n';
-			write(STDERR_FILENO, stack_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+			out_buffer = heap_buffer;
 		}
+		out_buffer[prefix_chars + format_chars] = '\n';
+		#ifdef _WIN32
+			DWORD bytes_written;
+			WriteFile(
+				GetStdHandle(STD_ERROR_HANDLE),
+				out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH,
+				&bytes_written, NULL);
+		#else
+			write(STDERR_FILENO, out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+		#endif
 
 cleanup:
 		free(heap_buffer);
@@ -184,6 +200,7 @@ void clog_vlog_warning(const char* module, const char* format, va_list args) {
 	#else
 		char stack_buffer[CLOG_STACK_BUFFER_SIZE];
 		char* heap_buffer = NULL;
+		char* out_buffer = &stack_buffer[0];
 
 		/* The first call to vsnprintf will clobber args, thus need a copy in case a second vsnprintf call is needed */
 		va_list args_copy;
@@ -234,13 +251,18 @@ void clog_vlog_warning(const char* module, const char* format, va_list args) {
 				memcpy(heap_buffer, stack_buffer, prefix_chars);
 			}
 			vsnprintf(heap_buffer + prefix_chars, format_chars + CLOG_SUFFIX_LENGTH, format, args_copy);
-			heap_buffer[prefix_chars + format_chars] = '\n';
-			write(STDERR_FILENO, heap_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
-		} else {
-			/* Formatted string was written to on-stack buffer, and it has enough space for suffix too */
-			stack_buffer[prefix_chars + format_chars] = '\n';
-			write(STDERR_FILENO, stack_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+			out_buffer = heap_buffer;
 		}
+		out_buffer[prefix_chars + format_chars] = '\n';
+		#ifdef _WIN32
+			DWORD bytes_written;
+			WriteFile(
+				GetStdHandle(STD_ERROR_HANDLE),
+				out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH,
+				&bytes_written, NULL);
+		#else
+			write(STDERR_FILENO, out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+		#endif
 
 cleanup:
 		free(heap_buffer);
@@ -254,6 +276,7 @@ void clog_vlog_info(const char* module, const char* format, va_list args) {
 	#else
 		char stack_buffer[CLOG_STACK_BUFFER_SIZE];
 		char* heap_buffer = NULL;
+		char* out_buffer = &stack_buffer[0];
 
 		/* The first call to vsnprintf will clobber args, thus need a copy in case a second vsnprintf call is needed */
 		va_list args_copy;
@@ -304,13 +327,18 @@ void clog_vlog_info(const char* module, const char* format, va_list args) {
 				memcpy(heap_buffer, stack_buffer, prefix_chars);
 			}
 			vsnprintf(heap_buffer + prefix_chars, format_chars + CLOG_SUFFIX_LENGTH, format, args_copy);
-			heap_buffer[prefix_chars + format_chars] = '\n';
-			write(STDOUT_FILENO, heap_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
-		} else {
-			/* Formatted string was written to on-stack buffer, and it has enough space for suffix too */
-			stack_buffer[prefix_chars + format_chars] = '\n';
-			write(STDOUT_FILENO, stack_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+			out_buffer = heap_buffer;
 		}
+		out_buffer[prefix_chars + format_chars] = '\n';
+		#ifdef _WIN32
+			DWORD bytes_written;
+			WriteFile(
+				GetStdHandle(STD_OUTPUT_HANDLE),
+				out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH,
+				&bytes_written, NULL);
+		#else
+			write(STDOUT_FILENO, out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+		#endif
 
 cleanup:
 		free(heap_buffer);
@@ -324,6 +352,7 @@ void clog_vlog_debug(const char* module, const char* format, va_list args) {
 	#else
 		char stack_buffer[CLOG_STACK_BUFFER_SIZE];
 		char* heap_buffer = NULL;
+		char* out_buffer = &stack_buffer[0];
 
 		/* The first call to vsnprintf will clobber args, thus need a copy in case a second vsnprintf call is needed */
 		va_list args_copy;
@@ -374,13 +403,18 @@ void clog_vlog_debug(const char* module, const char* format, va_list args) {
 				memcpy(heap_buffer, stack_buffer, prefix_chars);
 			}
 			vsnprintf(heap_buffer + prefix_chars, format_chars + CLOG_SUFFIX_LENGTH, format, args_copy);
-			heap_buffer[prefix_chars + format_chars] = '\n';
-			write(STDOUT_FILENO, heap_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
-		} else {
-			/* Formatted string was written to on-stack buffer, and it has enough space for suffix too */
-			stack_buffer[prefix_chars + format_chars] = '\n';
-			write(STDOUT_FILENO, stack_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+			out_buffer = heap_buffer;
 		}
+		out_buffer[prefix_chars + format_chars] = '\n';
+		#ifdef _WIN32
+			DWORD bytes_written;
+			WriteFile(
+				GetStdHandle(STD_OUTPUT_HANDLE),
+				out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH,
+				&bytes_written, NULL);
+		#else
+			write(STDOUT_FILENO, out_buffer, prefix_chars + format_chars + CLOG_SUFFIX_LENGTH);
+		#endif
 
 cleanup:
 		free(heap_buffer);
