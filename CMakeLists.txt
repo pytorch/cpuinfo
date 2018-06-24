@@ -241,6 +241,8 @@ IF(NOT TARGET clog)
   SET(CLOG_RUNTIME_TYPE "${CPUINFO_RUNTIME_TYPE}" CACHE STRING "")
   ADD_SUBDIRECTORY(
     "${CLOG_SOURCE_DIR}")
+  # We build static version of clog but a dynamic library may indirectly depend on it
+  SET_PROPERTY(TARGET clog PROPERTY POSITION_INDEPENDENT_CODE ON)
 ENDIF()
 TARGET_LINK_LIBRARIES(cpuinfo PRIVATE clog)
 
