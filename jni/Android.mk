@@ -403,6 +403,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := moto-g-gen5-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/moto-g-gen5.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := nexus-s-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/nexus-s.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
