@@ -29,19 +29,55 @@ void cpuinfo_x86_detect_topology(
 	uint32_t apic_id = 0;
 	if (htt) {
 		apic_id = leaf1.ebx >> 24;
-		const uint32_t logical_processors = (leaf1.ebx >> 16) & UINT32_C(0x000000FF);
-		if (logical_processors != 0) {
-			const uint32_t log2_max_logical_processors = bit_length(logical_processors);
-			const uint32_t log2_max_threads_per_core = log2_max_logical_processors - topology->core_bits_length;
-			topology->core_bits_offset = log2_max_threads_per_core;
-			topology->thread_bits_length = log2_max_threads_per_core;
+		bool amd_cmp_legacy = false;
+		if (max_extended_index >= UINT32_C(0x80000001)) {
+			const struct cpuid_regs leaf0x80000001 = cpuid(UINT32_C(0x80000001));
+			/*
+			 * CmpLegacy: core multi-processing legacy mode.
+			 * - AMD: ecx[bit 1] in extended info (reserved bit on Intel CPUs).
+			 */
+			amd_cmp_legacy = !!(leaf0x80000001.ecx & UINT32_C(0x00000002));
 		}
-		cpuinfo_log_debug("HTT: APIC ID = %08"PRIx32", logical processors = %"PRIu32, apic_id, logical_processors);
+		if (amd_cmp_legacy) {
+			if (max_extended_index >= UINT32_C(0x80000008)) {
+				const struct cpuid_regs leaf0x80000008 = cpuid(UINT32_C(0x80000008));
+				/*
+				 * NC: number of physical cores - 1. The number of cores in the processor is NC+1.
+				 * - AMD: ecx[bits 0-7] in leaf 0x80000008 (reserved zero bits on Intel CPUs).
+				 */
+				const uint32_t cores_per_processor = 1 + (leaf0x80000008.ecx & UINT32_C(0x000000FF));
+				topology->core_bits_length = bit_length(cores_per_processor);
+				cpuinfo_log_debug("HTT: APIC ID = %08"PRIx32", cores per processor = %"PRIu32, apic_id, cores_per_processor);
+			} else {
+				/*
+				 * LogicalProcessorCount: the number of cores per processor.
+				 * - AMD: ebx[bits 16-23] in basic info (different interpretation on Intel CPUs).
+				 */
+				const uint32_t cores_per_processor = (leaf1.ebx >> 16) & UINT32_C(0x000000FF);
+				if (cores_per_processor != 0) {
+					topology->core_bits_length = bit_length(cores_per_processor);
+				}
+				cpuinfo_log_debug("HTT: APIC ID = %08"PRIx32", cores per processor = %"PRIu32, apic_id, cores_per_processor);
+			}
+		} else {
+			/*
+			 * Maximum number of addressable IDs for logical processors in this physical package.
+			 * - Intel: ebx[bits 16-23] in basic info (different interpretation on AMD CPUs).
+			 */
+			const uint32_t logical_processors = (leaf1.ebx >> 16) & UINT32_C(0x000000FF);
+			if (logical_processors != 0) {
+				const uint32_t log2_max_logical_processors = bit_length(logical_processors);
+				const uint32_t log2_max_threads_per_core = log2_max_logical_processors - topology->core_bits_length;
+				topology->core_bits_offset = log2_max_threads_per_core;
+				topology->thread_bits_length = log2_max_threads_per_core;
+			}
+			cpuinfo_log_debug("HTT: APIC ID = %08"PRIx32", logical processors = %"PRIu32, apic_id, logical_processors);
+		}
 	}
 
 	/*
 	 * x2APIC: indicated support for x2APIC feature.
-	 * - Inte: ecx[bit 21] in basic info (reserved bit on AMD CPUs).
+	 * - Intel: ecx[bit 21] in basic info (reserved bit on AMD CPUs).
 	 */
 	const bool x2apic = !!(leaf1.ecx & UINT32_C(0x00200000));
 	if (x2apic && (max_base_index >= UINT32_C(0xB))) {
@@ -55,7 +91,6 @@ void cpuinfo_x86_detect_topology(
 			type = (leafB.ecx >> 8) & UINT32_C(0x000000FF);
 			const uint32_t level_shift = leafB.eax & UINT32_C(0x0000001F);
 			const uint32_t x2apic_id   = leafB.edx;
-			// const uint32_t logical_processors = leafB.ebx & UINT32_C(0x0000FFFF);
 			apic_id = x2apic_id;
 			switch (type) {
 				case topology_type_invalid:
