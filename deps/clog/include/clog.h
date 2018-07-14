@@ -39,9 +39,9 @@ CLOG_VISIBILITY void clog_vlog_warning(const char* module, const char* format, v
 CLOG_VISIBILITY void clog_vlog_error(const char* module, const char* format, va_list args);
 CLOG_VISIBILITY void clog_vlog_fatal(const char* module, const char* format, va_list args);
 
-#define CLOG_DEFINE_LOG_DEBUG(prefix, module, level) \
+#define CLOG_DEFINE_LOG_DEBUG(log_debug_function_name, module, level) \
 	CLOG_ARGUMENTS_FORMAT \
-	inline static void prefix ## log_debug(const char* format, ...) { \
+	inline static void log_debug_function_name(const char* format, ...) { \
 		if (level >= CLOG_DEBUG) { \
 			va_list args; \
 			va_start(args, format); \
@@ -50,9 +50,9 @@ CLOG_VISIBILITY void clog_vlog_fatal(const char* module, const char* format, va_
 		} \
 	}
 
-#define CLOG_DEFINE_LOG_INFO(prefix, module, level) \
+#define CLOG_DEFINE_LOG_INFO(log_info_function_name, module, level) \
 	CLOG_ARGUMENTS_FORMAT \
-	inline static void prefix ## log_info(const char* format, ...) { \
+	inline static void log_info_function_name(const char* format, ...) { \
 		if (level >= CLOG_INFO) { \
 			va_list args; \
 			va_start(args, format); \
@@ -61,9 +61,9 @@ CLOG_VISIBILITY void clog_vlog_fatal(const char* module, const char* format, va_
 		} \
 	}
 
-#define CLOG_DEFINE_LOG_WARNING(prefix, module, level) \
+#define CLOG_DEFINE_LOG_WARNING(log_warning_function_name, module, level) \
 	CLOG_ARGUMENTS_FORMAT \
-	inline static void prefix ## log_warning(const char* format, ...) { \
+	inline static void log_warning_function_name(const char* format, ...) { \
 		if (level >= CLOG_WARNING) { \
 			va_list args; \
 			va_start(args, format); \
@@ -72,9 +72,9 @@ CLOG_VISIBILITY void clog_vlog_fatal(const char* module, const char* format, va_
 		} \
 	}
 
-#define CLOG_DEFINE_LOG_ERROR(prefix, module, level) \
+#define CLOG_DEFINE_LOG_ERROR(log_error_function_name, module, level) \
 	CLOG_ARGUMENTS_FORMAT \
-	inline static void prefix ## log_error(const char* format, ...) { \
+	inline static void log_error_function_name(const char* format, ...) { \
 		if (level >= CLOG_ERROR) { \
 			va_list args; \
 			va_start(args, format); \
@@ -83,9 +83,9 @@ CLOG_VISIBILITY void clog_vlog_fatal(const char* module, const char* format, va_
 		} \
 	}
 
-#define CLOG_DEFINE_LOG_FATAL(prefix, module, level) \
+#define CLOG_DEFINE_LOG_FATAL(log_fatal_function_name, module, level) \
 	CLOG_ARGUMENTS_FORMAT \
-	inline static void prefix ## log_fatal(const char* format, ...) { \
+	inline static void log_fatal_function_name(const char* format, ...) { \
 		if (level >= CLOG_FATAL) { \
 			va_list args; \
 			va_start(args, format); \

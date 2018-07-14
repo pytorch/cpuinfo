@@ -2,23 +2,23 @@
 
 #include <clog.h>
 
-CLOG_DEFINE_LOG_DEBUG(named_, "Unit Test", CLOG_DEBUG);
-CLOG_DEFINE_LOG_INFO(named_, "Unit Test", CLOG_INFO);
-CLOG_DEFINE_LOG_WARNING(named_, "Unit Test", CLOG_WARNING);
-CLOG_DEFINE_LOG_ERROR(named_, "Unit Test", CLOG_ERROR);
-CLOG_DEFINE_LOG_FATAL(named_, "Unit Test", CLOG_FATAL);
+CLOG_DEFINE_LOG_DEBUG(named_log_debug, "Unit Test", CLOG_DEBUG);
+CLOG_DEFINE_LOG_INFO(named_log_info, "Unit Test", CLOG_INFO);
+CLOG_DEFINE_LOG_WARNING(named_log_warning, "Unit Test", CLOG_WARNING);
+CLOG_DEFINE_LOG_ERROR(named_log_error, "Unit Test", CLOG_ERROR);
+CLOG_DEFINE_LOG_FATAL(named_log_fatal, "Unit Test", CLOG_FATAL);
 
-CLOG_DEFINE_LOG_DEBUG(nameless_, NULL, CLOG_DEBUG);
-CLOG_DEFINE_LOG_INFO(nameless_, NULL, CLOG_INFO);
-CLOG_DEFINE_LOG_WARNING(nameless_, NULL, CLOG_WARNING);
-CLOG_DEFINE_LOG_ERROR(nameless_, NULL, CLOG_ERROR);
-CLOG_DEFINE_LOG_FATAL(nameless_, NULL, CLOG_FATAL);
+CLOG_DEFINE_LOG_DEBUG(nameless_log_debug, NULL, CLOG_DEBUG);
+CLOG_DEFINE_LOG_INFO(nameless_log_info, NULL, CLOG_INFO);
+CLOG_DEFINE_LOG_WARNING(nameless_log_warning, NULL, CLOG_WARNING);
+CLOG_DEFINE_LOG_ERROR(nameless_log_error, NULL, CLOG_ERROR);
+CLOG_DEFINE_LOG_FATAL(nameless_log_fatal, NULL, CLOG_FATAL);
 
-CLOG_DEFINE_LOG_DEBUG(suppressed_, NULL, CLOG_INFO);
-CLOG_DEFINE_LOG_INFO(suppressed_, NULL, CLOG_WARNING);
-CLOG_DEFINE_LOG_WARNING(suppressed_, NULL, CLOG_ERROR);
-CLOG_DEFINE_LOG_ERROR(suppressed_, NULL, CLOG_FATAL);
-CLOG_DEFINE_LOG_FATAL(suppressed_, NULL, CLOG_NONE);
+CLOG_DEFINE_LOG_DEBUG(suppressed_log_debug, NULL, CLOG_INFO);
+CLOG_DEFINE_LOG_INFO(suppressed_log_info, NULL, CLOG_WARNING);
+CLOG_DEFINE_LOG_WARNING(suppressed_log_warning, NULL, CLOG_ERROR);
+CLOG_DEFINE_LOG_ERROR(suppressed_log_error, NULL, CLOG_FATAL);
+CLOG_DEFINE_LOG_FATAL(suppressed_log_fatal, NULL, CLOG_NONE);
 
 
 TEST(CLOG, debug) {
