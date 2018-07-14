@@ -630,6 +630,11 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(oppo-r9-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(oppo-r9-test oppo-r9-test)
 
+    ADD_EXECUTABLE(oppo-r15-test test/mock/oppo-r15.cc)
+    TARGET_INCLUDE_DIRECTORIES(oppo-r15-test BEFORE PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(oppo-r15-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(oppo-r15-test oppo-r15-test)
+
     ADD_EXECUTABLE(pixel-test test/mock/pixel.cc)
     TARGET_INCLUDE_DIRECTORIES(pixel-test BEFORE PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(pixel-test PRIVATE cpuinfo_mock gtest)
