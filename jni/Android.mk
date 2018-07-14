@@ -591,6 +591,13 @@ LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
 include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := huawei-p20-pro-test
+LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/huawei-p20-pro.cc
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock
+LOCAL_STATIC_LIBRARIES := cpuinfo_mock gtest
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := iconia-one-10-test
 LOCAL_SRC_FILES := $(LOCAL_PATH)/test/mock/iconia-one-10.cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/test/mock

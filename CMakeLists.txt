@@ -565,6 +565,11 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(huawei-p9-lite-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(huawei-p9-lite-test huawei-p9-lite-test)
 
+    ADD_EXECUTABLE(huawei-p20-pro-test test/mock/huawei-p20-pro.cc)
+    TARGET_INCLUDE_DIRECTORIES(huawei-p20-pro-test BEFORE PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(huawei-p20-pro-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(huawei-p20-pro-test huawei-p20-pro-test)
+
     ADD_EXECUTABLE(iconia-one-10-test test/mock/iconia-one-10.cc)
     TARGET_INCLUDE_DIRECTORIES(iconia-one-10-test BEFORE PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(iconia-one-10-test PRIVATE cpuinfo_mock gtest)
