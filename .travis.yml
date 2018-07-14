@@ -8,4 +8,8 @@ before_script:
 script:
  - cmake ..
  - make
+ - ./cpuid-dump
+ - ./isa-info
+ - ./cpu-info
+ - ./cache-info
  - ctest --verbose
