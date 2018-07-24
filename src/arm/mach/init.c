@@ -121,14 +121,14 @@ static void decode_package_name(char* package_name) {
 		return;
 	}
 	cpuinfo_log_debug("hw.machine: %s", machine_name);
-	
+
 	char name[10];
 	uint32_t major = 0, minor = 0;
 	if (sscanf(machine_name, "%9[^,0123456789]%"SCNu32",%"SCNu32, name, &major, &minor) != 3) {
 		cpuinfo_log_warning("parsing \"hw.machine\" failed: %s", strerror(errno));
 		return;
 	}
-	
+
 	uint32_t chip_model = 0;
 	char suffix = '\0';
 	if (strcmp(name, "iPhone") == 0) {
@@ -231,6 +231,7 @@ static void decode_package_name(char* package_name) {
 void cpuinfo_arm_mach_init(void) {
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
+	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_package* packages = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
@@ -260,7 +261,7 @@ void cpuinfo_arm_mach_init(void) {
 	const uint32_t threads_per_core = mach_topology.threads / mach_topology.cores;
 	const uint32_t threads_per_package = mach_topology.threads / mach_topology.packages;
 	const uint32_t cores_per_package = mach_topology.cores / mach_topology.packages;
-	
+
 	for (uint32_t i = 0; i < mach_topology.packages; i++) {
 		packages[i] = (struct cpuinfo_package) {
 			.processor_start = i * threads_per_package,
@@ -311,6 +312,7 @@ void cpuinfo_arm_mach_init(void) {
 #endif
 	}
 
+	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		cores[i] = (struct cpuinfo_core) {
 			.processor_start = i * threads_per_core,
@@ -320,6 +322,9 @@ void cpuinfo_arm_mach_init(void) {
 			.vendor = cpuinfo_vendor_apple,
 			.uarch = decode_uarch(cpu_family, cpu_subtype, i),
 		};
+		if (i != 0 && cores[i].uarch != cores[i - 1].uarch) {
+			num_clusters++;
+		}
 	}
 	for (uint32_t i = 0; i < mach_topology.threads; i++) {
 		const uint32_t smt_id = i % threads_per_core;
@@ -329,6 +334,44 @@ void cpuinfo_arm_mach_init(void) {
 		processors[i].smt_id = smt_id;
 		processors[i].core = &cores[core_id];
 		processors[i].package = &packages[package_id];
+	}
+
+	clusters = calloc(num_clusters, sizeof(struct cpuinfo_cluster));
+	if (clusters == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %"PRIu32" clusters",
+			num_clusters * sizeof(struct cpuinfo_cluster), num_clusters);
+		goto cleanup;
+	}
+	uint32_t cluster_idx = UINT32_MAX;
+	for (uint32_t i = 0; i < mach_topology.cores; i++) {
+		if (i == 0 || cores[i].uarch != cores[i - 1].uarch) {
+			cluster_idx++;
+			clusters[cluster_idx] = (struct cpuinfo_cluster) {
+				.processor_start = i * threads_per_core,
+				.processor_count = 1,
+				.core_start = i,
+				.core_count = 1,
+				.cluster_id = cluster_idx,
+				.package = cores[i].package,
+				.vendor = cores[i].vendor,
+				.uarch = cores[i].uarch,
+			};
+		} else {
+			clusters[cluster_idx].processor_count++;
+			clusters[cluster_idx].core_count++;
+		}
+		cores[i].cluster = &clusters[cluster_idx];
+	}
+
+	for (uint32_t i = 0; i < mach_topology.threads; i++) {
+		const uint32_t core_id = i / threads_per_core;
+		processors[i].cluster = cores[core_id].cluster;
+	}
+
+	for (uint32_t i = 0; i < mach_topology.packages; i++) {
+		packages[i].cluster_start = 0;
+		packages[i].cluster_count = num_clusters;
 	}
 
 	const uint32_t cacheline_size = get_sys_info(HW_CACHELINE, "HW_CACHELINE");
@@ -357,7 +400,7 @@ void cpuinfo_arm_mach_init(void) {
 		l2_count = 1;
 		cpuinfo_log_debug("detected %"PRIu32" L2 caches", l2_count);
 	}
-	
+
 	uint32_t threads_per_l3 = 0, l3_count = 0;
 	if (l3_cache_size != 0) {
 		/* Assume L3 cache is shared between all cores */
@@ -437,7 +480,7 @@ void cpuinfo_arm_mach_init(void) {
 			processors[t].cache.l2 = &l2[0];
 		}
 	}
-	
+
 	if (l3_count != 0) {
 		l3 = calloc(l3_count, sizeof(struct cpuinfo_cache));
 		if (l3 == NULL) {
@@ -470,6 +513,7 @@ void cpuinfo_arm_mach_init(void) {
 
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
 	cpuinfo_packages = packages;
 
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
@@ -479,6 +523,7 @@ void cpuinfo_arm_mach_init(void) {
 
 	cpuinfo_processors_count = mach_topology.threads;
 	cpuinfo_cores_count = mach_topology.cores;
+	cpuinfo_clusters_count = num_clusters;
 	cpuinfo_packages_count = mach_topology.packages;
 
 	__sync_synchronize();
@@ -487,12 +532,14 @@ void cpuinfo_arm_mach_init(void) {
 
 	processors = NULL;
 	cores = NULL;
+	clusters = NULL;
 	packages = NULL;
 	l1i = l1d = l2 = l3 = NULL;
 
 cleanup:
 	free(processors);
 	free(cores);
+	free(clusters);
 	free(packages);
 	free(l1i);
 	free(l1d);
