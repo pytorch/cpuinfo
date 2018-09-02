@@ -72,6 +72,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD0A:
 					*uarch = cpuinfo_uarch_cortex_a75;
 					break;
+				case 0xD0B:
+					*uarch = cpuinfo_uarch_cortex_a76;
+					break;
 				default:
 					switch (midr_get_part(midr) >> 8) {
 #if CPUINFO_ARCH_ARM
@@ -128,6 +131,17 @@ void cpuinfo_arm_decode_vendor_uarch(
 			}
 			break;
 #endif
+		case 'H':
+			*vendor = cpuinfo_vendor_huawei;
+			switch (midr_get_part(midr)) {
+				case 0xD40: /* Kirin 980 Big/Medium cores -> Cortex-A76 */
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a76;
+					break;
+				default:
+					cpuinfo_log_warning("unknown Huawei CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
+			}
+			break;
 #if CPUINFO_ARCH_ARM
 		case 'i':
 			*vendor = cpuinfo_vendor_intel;

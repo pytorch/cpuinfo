@@ -168,6 +168,12 @@ enum cpuinfo_vendor {
 	cpuinfo_vendor_broadcom = 13,
 	/** Applied Micro Circuits Corporation (APM). Vendor of ARM64 processor microarchitectures. */
 	cpuinfo_vendor_apm      = 14,
+	/**
+	 * Huawei Technologies Co., Ltd. Vendor of ARM64 processor microarchitectures.
+	 *
+	 * Processors are designed by HiSilicon, a subsidiary of Huawei.
+	 */
+	cpuinfo_vendor_huawei   = 15,
 
 	/* Active vendors of embedded CPUs */
 
@@ -379,6 +385,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_cortex_a73 = 0x00300373,
 	/** ARM Cortex-A75. */
 	cpuinfo_uarch_cortex_a75 = 0x00300375,
+	/** ARM Cortex-A76. */
+	cpuinfo_uarch_cortex_a76 = 0x00300376,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
