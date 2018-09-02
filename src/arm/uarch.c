@@ -145,7 +145,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 #if CPUINFO_ARCH_ARM
 		case 'i':
 			*vendor = cpuinfo_vendor_intel;
-			switch (midr_get_part(midr_get_part(midr)) >> 8) {
+			switch (midr_get_part(midr) >> 8) {
 				case 2: /* PXA 210/25X/26X */
 				case 4: /* PXA 27X */
 				case 6: /* PXA 3XX */
