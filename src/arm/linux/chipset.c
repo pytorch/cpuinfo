@@ -1372,9 +1372,29 @@ static const struct huawei_map_entry huawei_platform_map[] = {
 		.model = 970,
 	},
 	{
+		/* "CLT" -> Kirin 970 */
+		.platform = UINT32_C(0x00544C43), /* "\0TLC" = reverse("CLT\0") */
+		.model = 970,
+	},
+	{
+		/* "COL" -> Kirin 970 */
+		.platform = UINT32_C(0x004C4F43), /* "\0LOC" = reverse("COL\0") */
+		.model = 970,
+	},
+	{
+		/* "COR" -> Kirin 970 */
+		.platform = UINT32_C(0x00524F43), /* "\0ROC" = reverse("COR\0") */
+		.model = 970,
+	},
+	{
 		/* "DUK" -> Kirin 960 */
 		.platform = UINT32_C(0x004B5544), /* "\0KUD" = reverse("DUK\0") */
 		.model = 960,
+	},
+	{
+		/* "EML" -> Kirin 970 */
+		.platform = UINT32_C(0x004C4D45), /* "\0LME" = reverse("EML\0") */
+		.model = 970,
 	},
 	{
 		/* "EVA" -> Kirin 955 */
@@ -1387,6 +1407,11 @@ static const struct huawei_map_entry huawei_platform_map[] = {
 		.model = 950,
 	},
 	{
+		/* "INE" -> Kirin 710 */
+		.platform = UINT32_C(0x00454E49), /* "\0ENI" = reverse("INE\0") */
+		.model = 710,
+	},
+	{
 		/* "KNT" -> Kirin 950 */
 		.platform = UINT32_C(0x00544E4B), /* "\0TNK" = reverse("KNT\0") */
 		.model = 950,
@@ -1397,9 +1422,24 @@ static const struct huawei_map_entry huawei_platform_map[] = {
 		.model = 960,
 	},
 	{
+		/* "LYA" -> Kirin 980 */
+		.platform = UINT32_C(0x0041594C), /* "\0AYL" = reverse("LYA\0") */
+		.model = 980,
+	},
+	{
+		/* "MCN" -> Kirin 980 */
+		.platform = UINT32_C(0x004E434D), /* "\0NCM" = reverse("MCN\0") */
+		.model = 980,
+	},
+	{
 		/* "MHA" -> Kirin 960 */
 		.platform = UINT32_C(0x0041484D), /* "\0AHM" = reverse("MHA\0") */
 		.model = 960,
+	},
+	{
+		/* "NEO" -> Kirin 970 */
+		.platform = UINT32_C(0x004F454E), /* "\0OEN" = reverse("NEO\0") */
+		.model = 970,
 	},
 	{
 		/* "NXT" -> Kirin 950 */
@@ -1407,9 +1447,29 @@ static const struct huawei_map_entry huawei_platform_map[] = {
 		.model = 950,
 	},
 	{
+		/* "PAN" -> Kirin 980 */
+		.platform = UINT32_C(0x004E4150), /* "\0NAP" = reverse("PAN\0") */
+		.model = 980,
+	},
+	{
+		/* "PAR" -> Kirin 970 */
+		.platform = UINT32_C(0x00524150), /* "\0RAP" = reverse("PAR\0") */
+		.model = 970,
+	},
+	{
+		/* "RVL" -> Kirin 970 */
+		.platform = UINT32_C(0x004C5652), /* "\0LVR" = reverse("RVL\0") */
+		.model = 970,
+	},
+	{
 		/* "STF" -> Kirin 960 */
 		.platform = UINT32_C(0x00465453), /* "\0FTS" = reverse("STF\0") */
 		.model = 960,
+	},
+	{
+		/* "SUE" -> Kirin 980 */
+		.platform = UINT32_C(0x00455553), /* "\0EUS" = reverse("SUE\0") */
+		.model = 980,
 	},
 	{
 		/* "VIE" -> Kirin 955 */
