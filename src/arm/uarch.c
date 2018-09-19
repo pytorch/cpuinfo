@@ -165,6 +165,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x003:
 					*uarch = cpuinfo_uarch_denver2;
 					break;
+				case 0x004:
+					*uarch = cpuinfo_uarch_carmel;
+					break;
 				default:
 					cpuinfo_log_warning("unknown Nvidia CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}

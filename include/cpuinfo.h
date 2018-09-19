@@ -403,6 +403,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_denver   = 0x00500100,
 	/** Nvidia Denver 2. */
 	cpuinfo_uarch_denver2  = 0x00500101,
+	/** Nvidia Carmel. */
+	cpuinfo_uarch_carmel   = 0x00500102,
 
 	/** Samsung Mongoose M1 (Exynos 8890 big cores). */
 	cpuinfo_uarch_mongoose_m1 = 0x00600100,
