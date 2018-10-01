@@ -149,6 +149,9 @@ static void decode_package_name(char* package_name) {
 		 *  - iPhone 8       [A11]: iPhone10,1, iPhone10,4
 		 *  - iPhone 8 Plus  [A11]: iPhone10,2, iPhone10,5
 		 *  - iPhone X       [A11]: iPhone10,3, iPhone10,6
+		 *  - iPhone XS      [A12]: iPhone11,2,
+		 *  - iPhone XS Max  [A12]: iPhone11,4, iPhone11,6
+		 *  - iPhone XR      [A12]: iPhone11,8
 		 */
 		chip_model = major + 1;
 	} else if (strcmp(name, "iPad") == 0) {
@@ -198,9 +201,10 @@ static void decode_package_name(char* package_name) {
 				/*
 				 * iPad Pro 12.9" [A10X]: iPad7,1, iPad7,2
 				 * iPad Pro 10.5" [A10X]: iPad7,3, iPad7,4
+				 * iPad 6th Gen   [A10]:  iPad7,5, iPad7,6
 				 */
 				chip_model = major + 3;
-				suffix = 'X';
+				suffix = minor <= 4 ? 'X' : '\0';
 				break;
 			default:
 				cpuinfo_log_info("unknown iPad: %s", machine_name);
