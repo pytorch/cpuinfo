@@ -173,9 +173,12 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 	switch (midr & core_mask) {
 		case UINT32_C(0x4E000030): /* Denver 2 */
 		case UINT32_C(0x53000010): /* Mongoose */
+		case UINT32_C(0x53000020): /* Meerkat */
 		case UINT32_C(0x51008020): /* Kryo 385 Gold */
 		case UINT32_C(0x51008000): /* Kryo 260 / 280 Gold */
 		case UINT32_C(0x51002050): /* Kryo Gold */
+		case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
+		case UINT32_C(0x4100D0B0): /* Cortex-A76 */
 		case UINT32_C(0x4100D0A0): /* Cortex-A75 */
 		case UINT32_C(0x4100D090): /* Cortex-A73 */
 		case UINT32_C(0x4100D080): /* Cortex-A72 */
