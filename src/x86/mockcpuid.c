@@ -17,7 +17,7 @@ void CPUINFO_ABI cpuinfo_mock_set_cpuid(struct cpuinfo_mock_cpuid* dump, size_t 
 	cpuinfo_mock_cpuid_entries = entries;	
 };
 
-void CPUINFO_ABI cpuinfo_mock_get_cpuid(uint32_t eax, uint32_t regs[restrict static 4]) {
+void CPUINFO_ABI cpuinfo_mock_get_cpuid(uint32_t eax, uint32_t regs[4]) {
 	if (eax != 4) {
 		cpuinfo_mock_cpuid_leaf4_iteration = 0;
 	}
@@ -51,7 +51,7 @@ void CPUINFO_ABI cpuinfo_mock_get_cpuid(uint32_t eax, uint32_t regs[restrict sta
 	regs[0] = regs[1] = regs[2] = regs[3] = 0;
 }
 
-void CPUINFO_ABI cpuinfo_mock_get_cpuidex(uint32_t eax, uint32_t ecx, uint32_t regs[restrict static 4]) {
+void CPUINFO_ABI cpuinfo_mock_get_cpuidex(uint32_t eax, uint32_t ecx, uint32_t regs[4]) {
 	cpuinfo_mock_cpuid_leaf4_iteration = 0;
 	if (cpuinfo_mock_cpuid_data != NULL && cpuinfo_mock_cpuid_entries != 0) {
 		for (uint32_t i = 0; i < cpuinfo_mock_cpuid_entries; i++) {
