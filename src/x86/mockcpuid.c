@@ -1,24 +1,11 @@
-#include <stdbool.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <stddef.h>
-#include <string.h>
-#include <errno.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sched.h>
 
 #if !CPUINFO_MOCK
 	#error This file should be built only in mock mode
 #endif
 
 #include <cpuinfo-mock.h>
-#include <arm/linux/api.h>
-#include <arm/midr.h>
-#include <log.h>
 
 
 static struct cpuinfo_mock_cpuid* cpuinfo_mock_cpuid_data = NULL;
