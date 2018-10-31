@@ -120,7 +120,7 @@ SET(CPUINFO_SRCS
   src/api.c)
 
 IF(CPUINFO_SUPPORTED_PLATFORM)
-  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64|AMD64)$")
+  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i686|x86_64|AMD64)$" OR IOS_ARCH MATCHES "^(i386|x86_64)$")
     LIST(APPEND CPUINFO_SRCS
       src/x86/init.c
       src/x86/info.c
@@ -141,7 +141,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
     ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
       LIST(APPEND CPUINFO_SRCS src/x86/windows/init.c)
     ENDIF()
-  ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7|armv7f|armv7s|armv7k|armv7-a|armv7l|arm64|aarch64)$" OR IOS)
+  ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv[0-9].*|arm64|aarch64)$" OR IOS_ARCH MATCHES "^(armv[0-9].*|arm64)$")
     LIST(APPEND CPUINFO_SRCS
       src/arm/uarch.c
       src/arm/cache.c)
