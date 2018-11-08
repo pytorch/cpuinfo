@@ -242,6 +242,10 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a55;
 					break;
+				case 0x804:
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a76;
+					break;
 #if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 				case 0xC00:
 					*uarch = cpuinfo_uarch_falkor;
