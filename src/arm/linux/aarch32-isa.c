@@ -59,6 +59,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 			case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
 			case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
+			case UINT32_C(0x51008040): /* Qualcomm Cortex-A76 */
 				isa->fp16arith = true;
 				break;
 		}
@@ -71,6 +72,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 			case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
 			case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
+			case UINT32_C(0x51008040): /* Qualcomm Cortex-A76 */
 				isa->rdm = true;
 				break;
 		}
