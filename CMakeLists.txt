@@ -65,7 +65,7 @@ IF(NOT CMAKE_SYSTEM_PROCESSOR)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
     SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
   ENDIF()
-ELSEIF(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86_64|armv[5-8].*|aarch64)$")
+ELSEIF(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64)$")
   MESSAGE(WARNING
     "Target processor architecture \"${CMAKE_SYSTEM_PROCESSOR}\" is not supported in cpuinfo. "
     "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
@@ -120,7 +120,7 @@ SET(CPUINFO_SRCS
   src/api.c)
 
 IF(CPUINFO_SUPPORTED_PLATFORM)
-  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86_64)$" OR IOS_ARCH MATCHES "^(i386|x86_64)$")
+  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?)$" OR IOS_ARCH MATCHES "^(i386|x86_64)$")
     LIST(APPEND CPUINFO_SRCS
       src/x86/init.c
       src/x86/info.c
