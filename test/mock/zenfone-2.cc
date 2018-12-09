@@ -218,14 +218,6 @@ TEST(PACKAGES, name) {
 	}
 }
 
-TEST(PACKAGES, gpu_name) {
-	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
-		ASSERT_EQ("PowerVR Rogue G6430",
-			std::string(cpuinfo_get_package(i)->gpu_name,
-				strnlen(cpuinfo_get_package(i)->gpu_name, CPUINFO_GPU_NAME_MAX)));
-	}
-}
-
 TEST(PACKAGES, processor_start) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
 		ASSERT_EQ(0, cpuinfo_get_package(i)->processor_start);
@@ -693,9 +685,6 @@ TEST(L4, none) {
 int main(int argc, char* argv[]) {
 	cpuinfo_mock_filesystem(filesystem);
 	cpuinfo_mock_set_cpuid(cpuid_dump, sizeof(cpuid_dump) / sizeof(cpuinfo_mock_cpuid));
-#ifdef __ANDROID__
-	cpuinfo_mock_gl_renderer("PowerVR Rogue G6430");
-#endif
 	cpuinfo_initialize();
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

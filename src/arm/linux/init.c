@@ -8,7 +8,6 @@
 #if defined(__ANDROID__)
 	#include <arm/android/api.h>
 #endif
-#include <gpu/api.h>
 #include <arm/api.h>
 #include <arm/midr.h>
 #include <linux/api.h>
@@ -670,20 +669,6 @@ void cpuinfo_arm_linux_init(void) {
 	cores = NULL;
 	clusters = NULL;
 	l1i = l1d = l2 = l3 = NULL;
-
-	#ifdef __ANDROID__
-		struct cpuinfo_android_gpu gpu;
-		if (cpuinfo_arm_android_lookup_gpu(&chipset, &gpu))	{
-			cpuinfo_android_gpu_to_string(&gpu, package.gpu_name);
-		} else {
-			cpuinfo_log_info("GPU name needs to be queried from OpenGL ES");
-			cpuinfo_gpu_query_gles2(package.gpu_name);
-			gpu = cpuinfo_android_decode_gpu(package.gpu_name);
-			if (gpu.series != cpuinfo_android_gpu_series_unknown) {
-				cpuinfo_android_gpu_to_string(&gpu, package.gpu_name);
-			}
-		}
-	#endif
 
 cleanup:
 	free(arm_linux_processors);

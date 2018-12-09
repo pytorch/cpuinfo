@@ -15,7 +15,3 @@ enum cpuinfo_android_chipset_property {
 };
 
 void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties properties[restrict static 1]);
-
-bool cpuinfo_arm_android_lookup_gpu(
-	const struct cpuinfo_arm_chipset chipset[restrict static 1],
-	struct cpuinfo_android_gpu gpu[restrict static 1]);

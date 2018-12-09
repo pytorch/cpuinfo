@@ -544,15 +544,10 @@ struct cpuinfo_cluster {
 };
 
 #define CPUINFO_PACKAGE_NAME_MAX 48
-#define CPUINFO_GPU_NAME_MAX 64
 
 struct cpuinfo_package {
 	/** SoC or processor chip model name */
 	char name[CPUINFO_PACKAGE_NAME_MAX];
-#if defined(__ANDROID__) || (defined(__APPLE__) && TARGET_OS_IPHONE)
-	/** Integrated GPU model name */
-	char gpu_name[CPUINFO_GPU_NAME_MAX];
-#endif
 	/** Index of the first logical processor on this physical package */
 	uint32_t processor_start;
 	/** Number of logical processors on this physical package */

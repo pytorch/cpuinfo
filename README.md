@@ -18,8 +18,8 @@ cpuinfo is a library to detect essential for performance optimization informatio
 - Detection of **supported instruction sets**, up to AVX512 (x86) and ARMv8.3 extensions
 - Detection of SoC and core information:
   - **Processor (SoC) name**
-  - Integrated **GPU name** (Android/iOS only)
-  - Vendor, **microarchitecture**, and ID (**MIDR** on ARM, **CPUID** leaf 1 EAX value on x86) for each CPU core
+  - Vendor and **microarchitecture** for each CPU core
+  - ID (**MIDR** on ARM, **CPUID** leaf 1 EAX value on x86) for each CPU core
 - Detection of **cache information**:
   - Cache type (instruction/data/unified), size and line size
   - Cache associativity
@@ -97,7 +97,6 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 
 ## Exposed information
 - [x] Processor (SoC) name
-  - [x] Integrated GPU name (Android and iOS only)
 - [x] Microarchitecture
 - [x] Usable instruction sets
 - [ ] CPU frequency

@@ -153,9 +153,6 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
         src/arm/linux/chipset.c
         src/arm/linux/midr.c
         src/arm/linux/hwcap.c)
-      IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
-        LIST(APPEND CPUINFO_SRCS src/arm/android/gpu.c)
-      ENDIF()
       IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^armv[5-8]")
         LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch32-isa.c)
         IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND ANDROID_ABI STREQUAL "armeabi")
@@ -165,10 +162,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
         LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch64-isa.c)
       ENDIF()
     ELSEIF(IOS)
-      LIST(APPEND CPUINFO_SRCS
-        src/arm/mach/init.c
-        src/gpu/gles-ios.m)
-      SET_SOURCE_FILES_PROPERTIES(src/gpu/gles-ios.m PROPERTIES COMPILE_FLAGS -fobjc-arc)
+      LIST(APPEND CPUINFO_SRCS src/arm/mach/init.c)
     ENDIF()
     IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
       LIST(APPEND CPUINFO_SRCS
@@ -183,11 +177,6 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       src/linux/current.c
       src/linux/cpulist.c
       src/linux/processors.c)
-    IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
-      LIST(APPEND CPUINFO_SRCS
-        src/gpu/gles2.c
-        src/linux/gpu.c)
-    ENDIF()
   ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     LIST(APPEND CPUINFO_SRCS src/mach/topology.c)
   ENDIF()
@@ -287,10 +276,6 @@ ENDIF()
 # ---[ cpuinfo mock library and mock tests
 IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
   SET(CPUINFO_MOCK_SRCS "${CPUINFO_SRCS}")
-  IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    LIST(REMOVE_ITEM CPUINFO_MOCK_SRCS src/gpu/gles2.c)
-    LIST(APPEND CPUINFO_MOCK_SRCS src/gpu/gles2-mock.c)
-  ENDIF()
   IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86_64)$")
     LIST(APPEND CPUINFO_MOCK_SRCS src/x86/mockcpuid.c)
   ENDIF()

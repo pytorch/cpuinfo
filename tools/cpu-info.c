@@ -221,7 +221,6 @@ int main(int argc, char** argv) {
 	}
 	#ifdef __ANDROID__
 		printf("SoC name: %s\n", cpuinfo_get_package(0)->name);
-		printf("GPU name: %s\n", cpuinfo_get_package(0)->gpu_name);
 	#else
 		printf("Packages:\n");
 		for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {

@@ -11,7 +11,6 @@
 
 #include <cpuinfo.h>
 #include <mach/api.h>
-#include <gpu/api.h>
 #include <api.h>
 #include <log.h>
 
@@ -274,7 +273,6 @@ void cpuinfo_arm_mach_init(void) {
 			.core_count = cores_per_package,
 		};
 		decode_package_name(packages[i].name);
-		cpuinfo_gpu_ios_query_gles2(packages[i].gpu_name);
 	}
 
 

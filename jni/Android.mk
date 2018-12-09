@@ -5,8 +5,6 @@ LOCAL_MODULE := cpuinfo
 LOCAL_SRC_FILES := \
 	src/init.c \
 	src/api.c \
-	src/gpu/gles2.c \
-	src/linux/gpu.c \
 	src/linux/current.c \
 	src/linux/processors.c \
 	src/linux/smallfile.c \
@@ -22,7 +20,6 @@ LOCAL_SRC_FILES += \
 	src/arm/linux/chipset.c \
 	src/arm/linux/midr.c \
 	src/arm/linux/hwcap.c \
-	src/arm/android/gpu.c \
 	src/arm/android/properties.c
 ifeq ($(TARGET_ARCH_ABI),armeabi)
 LOCAL_SRC_FILES += src/arm/linux/aarch32-isa.c.arm
