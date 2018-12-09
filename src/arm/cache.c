@@ -18,6 +18,7 @@ void cpuinfo_arm_decode_cache(
 	struct cpuinfo_cache l3[restrict static 1])
 {
 	switch (uarch) {
+#if CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_7A__) && !defined(__ARM_ARCH_8A__)
 		case cpuinfo_uarch_xscale:
 			switch (midr_get_part(midr) >> 8) {
 				case 2:
@@ -87,6 +88,8 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 32
 			};
 			break;
+#endif /* CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_7A__) && !defined(__ARM_ARCH_8A__) */
+#if CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_8A__)
 		case cpuinfo_uarch_cortex_a5:
 			/*
 			 * Cortex-A5 Technical Reference Manual:
@@ -410,6 +413,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
+#endif /* CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_8A__) */
 		case cpuinfo_uarch_cortex_a35:
 			/*
 			 * ARM Cortex‑A35 Processor Technical Reference Manual:
@@ -1014,6 +1018,7 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		}
+#if CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_8A__)
 		case cpuinfo_uarch_scorpion:
 			/*
 			 * - "The CPU includes 32KB instruction and data caches as
@@ -1076,6 +1081,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 128
 			};
 			break;
+#endif /* CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_8A__) */
 		case cpuinfo_uarch_kryo:
 			/*
 			 *  +-----------------+-------+-----------+-----------+-----------+-----------+
@@ -1207,6 +1213,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64 /* assume DynamIQ cache */,
 			};
 			break;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 		case cpuinfo_uarch_thunderx:
 			/*
 			 * "78K-Icache and 32K-D cache per core, 16 MB shared L2 cache" [1]
@@ -1229,6 +1236,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64 /* assumption */
 			};
 			break;
+#endif
 		case cpuinfo_uarch_cortex_a12:
 		case cpuinfo_uarch_cortex_a32:
 		default:
