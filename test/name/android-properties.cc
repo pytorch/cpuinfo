@@ -38,16 +38,20 @@ inline std::string parse_chipset(
 }
 
 TEST(ANDROID_PROPERTIES, disambiguate_chipset) {
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Amlogic S812",
 		parse_chipset("Amlogic Meson8", "n200C", "meson8", "", "", ""));
 	EXPECT_EQ("HiSilicon Kirin 925",
 		parse_chipset("Kirin925", "MT7-L09", "hi3630", "", "", ""));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("HiSilicon Kirin 955",
 		parse_chipset("Hisilicon Kirin 955", "EVA-L09", "hi3650", "", "", ""));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Marvell PXA986",
 		parse_chipset("PXA988", "PXA986", "mrvl", "", "", ""));
 	EXPECT_EQ("Marvell PXA986",
 		parse_chipset("PXA988", "PXA986", "mrvl", "", "", "PXA986"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("MediaTek MT6735P",
 		parse_chipset("MT6735P", "MT6735P", "mt6735m", "MT6735", "", ""));
 	EXPECT_EQ("MediaTek MT8382",
@@ -81,8 +85,10 @@ TEST(ANDROID_PROPERTIES, ambiguous_vendors) {
 		parse_chipset("", "universal5410", "msm8974", "", "", ""));
 	EXPECT_EQ("",
 		parse_chipset("MT6580", "universal8895", "mt6580", "MT6580", "", ""));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("",
 		parse_chipset("", "smdk4x12", "msm8974", "", "", "", 2));
+#endif /* CPUINFO_ARCH_ARM */
 }
 
 TEST(ANDROID_PROPERTIES, unambiguous_chipset) {
@@ -90,8 +96,10 @@ TEST(ANDROID_PROPERTIES, unambiguous_chipset) {
 		parse_chipset("UNIVERSAL_GARDA", "universal_garda", "exynos3", "", "exynos3470", "exynos3470"));
 	EXPECT_EQ("MediaTek MT6582",
 		parse_chipset("APPLE A8", "APPLE A8", "", "MT6582", "", ""));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("NovaThor U8500",
 		parse_chipset("SAMSUNG GOLDEN", "DB8520H", "montblanc", "", "", ""));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("MediaTek MT6580",
 		parse_chipset("Qualcomm", "unknown", "mt6580", "MT6580", "", ""));
 	EXPECT_EQ("HiSilicon Kirin 650",
@@ -106,8 +114,10 @@ TEST(ANDROID_PROPERTIES, unambiguous_chipset) {
 		parse_chipset("SAMSUNG JF", "MSM8960", "msm8960", "", "", "apq8064", 4));
 	EXPECT_EQ("MediaTek MT6795",
 		parse_chipset("", "mt6795", "mt6795", "MT6795", "", ""));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Marvell PXA1908",
 		parse_chipset("PXA1908", "PXA19xx", "mrvl", "", "", "PXA19xx"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Spreadtrum SC7715A",
 		parse_chipset("scx15", "SM-G928G", "scx15", "", "", "SC7715A"));
 	EXPECT_EQ("MediaTek MT6592",
@@ -118,8 +128,10 @@ TEST(ANDROID_PROPERTIES, unambiguous_chipset) {
 		parse_chipset("PANTECH APQ8064 EF52L", "VEGA", "msm8960", "", "", "apq8064", 4));
 	EXPECT_EQ("MediaTek MT6580M",
 		parse_chipset("MT6580M", "unknown", "mt6580", "MT6580", "", ""));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Samsung Exynos 4412",
 		parse_chipset("SMDK4x12", "smdk4x12", "exynos4", "", "", "smdk4x12", 4));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Samsung Exynos 7420",
 		parse_chipset("SAMSUNG Exynos7420", "universal7420", "exynos5", "", "exynos7420", "exynos7420"));
 	EXPECT_EQ("MediaTek MT6582",

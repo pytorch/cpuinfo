@@ -153,17 +153,19 @@ TEST(RO_CHIPNAME, samsung_exynos) {
 		parse_ro_chipname("exynos8895"));
 }
 
-TEST(RO_CHIPNAME, marvell_pxa) {
-	EXPECT_EQ("Marvell PXA1088",
-		parse_ro_chipname("PXA1088"));
-	EXPECT_EQ("Marvell PXA986",
-		parse_ro_chipname("PXA986"));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(RO_CHIPNAME, marvell_pxa) {
+		EXPECT_EQ("Marvell PXA1088",
+			parse_ro_chipname("PXA1088"));
+		EXPECT_EQ("Marvell PXA986",
+			parse_ro_chipname("PXA986"));
+	}
 
-TEST(RO_CHIPNAME, renesas) {
-	EXPECT_EQ("Renesas MP5232",
-		parse_ro_chipname("mp523x"));
-}
+	TEST(RO_CHIPNAME, renesas) {
+		EXPECT_EQ("Renesas MP5232",
+			parse_ro_chipname("mp523x"));
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(RO_CHIPNAME, spreadtrum) {
 	EXPECT_EQ("Spreadtrum SC6815AS",

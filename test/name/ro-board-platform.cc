@@ -34,10 +34,12 @@ TEST(RO_BOARD_PLATFORM, qualcomm_msm) {
 		parse_ro_board_platform("msm8084"));
 	EXPECT_EQ("Qualcomm MSM8226",
 		parse_ro_board_platform("msm8226"));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Qualcomm MSM8610",
 		parse_ro_board_platform("msm8610", 2));
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_ro_board_platform("msm8610", 4));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_ro_board_platform("MSM8612"));
 	EXPECT_EQ("Qualcomm MSM8660",
@@ -168,18 +170,22 @@ TEST(RO_BOARD_PLATFORM, samsung) {
 }
 
 TEST(RO_BOARD_PLATFORM, hisilicon) {
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("HiSilicon K3V2",
 		parse_ro_board_platform("k3v200"));
 	EXPECT_EQ("HiSilicon K3V2",
 		parse_ro_board_platform("k3v2oem1"));
+#endif
 	EXPECT_EQ("HiSilicon Kirin 620",
 		parse_ro_board_platform("hi6210sft"));
 	EXPECT_EQ("HiSilicon Kirin 650",
 		parse_ro_board_platform("hi6250"));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("HiSilicon Kirin 910T",
 		parse_ro_board_platform("hi6620oem"));
 	EXPECT_EQ("HiSilicon Kirin 920",
 		parse_ro_board_platform("hi3630"));
+#endif
 	EXPECT_EQ("HiSilicon Kirin 930",
 		parse_ro_board_platform("hi3635"));
 	EXPECT_EQ("HiSilicon Kirin 950",
@@ -191,12 +197,14 @@ TEST(RO_BOARD_PLATFORM, hisilicon) {
 }
 
 TEST(RO_BOARD_PLATFORM, amlogic) {
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Amlogic AML8726-M",
 		parse_ro_board_platform("meson3"));
 	EXPECT_EQ("Amlogic AML8726-MX",
 		parse_ro_board_platform("meson6"));
 	EXPECT_EQ("Amlogic S805",
 		parse_ro_board_platform("meson8"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Amlogic S905",
 		parse_ro_board_platform("gxbaby"));
 	EXPECT_EQ("Amlogic S905X",
@@ -205,38 +213,42 @@ TEST(RO_BOARD_PLATFORM, amlogic) {
 		parse_ro_board_platform("gxm"));
 }
 
-TEST(RO_BOARD_PLATFORM, broadcom) {
-	EXPECT_EQ("Broadcom BCM21654",
-		parse_ro_board_platform("rhea", 1, 849999));
-	EXPECT_EQ("Broadcom BCM21654G",
-		parse_ro_board_platform("rhea", 1, 999999));
-	EXPECT_EQ("Broadcom BCM21663",
-		parse_ro_board_platform("hawaii", 1, 999999));
-	EXPECT_EQ("Broadcom BCM21664",
-		parse_ro_board_platform("hawaii", 2, 999999));
-	EXPECT_EQ("Broadcom BCM21664T",
-		parse_ro_board_platform("hawaii", 2, 1200000));
-	EXPECT_EQ("Broadcom BCM23550",
-		parse_ro_board_platform("java", 4, 1200000));
-	EXPECT_EQ("Broadcom BCM28155",
-		parse_ro_board_platform("capri", 2, 1200000));
-	EXPECT_EQ("Broadcom BCM28155",
-		parse_ro_board_platform("capri", 2, 1399999));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(RO_BOARD_PLATFORM, broadcom) {
+		EXPECT_EQ("Broadcom BCM21654",
+			parse_ro_board_platform("rhea", 1, 849999));
+		EXPECT_EQ("Broadcom BCM21654G",
+			parse_ro_board_platform("rhea", 1, 999999));
+		EXPECT_EQ("Broadcom BCM21663",
+			parse_ro_board_platform("hawaii", 1, 999999));
+		EXPECT_EQ("Broadcom BCM21664",
+			parse_ro_board_platform("hawaii", 2, 999999));
+		EXPECT_EQ("Broadcom BCM21664T",
+			parse_ro_board_platform("hawaii", 2, 1200000));
+		EXPECT_EQ("Broadcom BCM23550",
+			parse_ro_board_platform("java", 4, 1200000));
+		EXPECT_EQ("Broadcom BCM28155",
+			parse_ro_board_platform("capri", 2, 1200000));
+		EXPECT_EQ("Broadcom BCM28155",
+			parse_ro_board_platform("capri", 2, 1399999));
+	}
 
-TEST(RO_BOARD_PLATFORM, leadcore) {
-	EXPECT_EQ("Leadcore LC1860",
-		parse_ro_board_platform("lc1860"));
-}
+	TEST(RO_BOARD_PLATFORM, leadcore) {
+		EXPECT_EQ("Leadcore LC1860",
+			parse_ro_board_platform("lc1860"));
+	}
 
-TEST(RO_BOARD_PLATFORM, novathor) {
-	EXPECT_EQ("NovaThor U8500",
-		parse_ro_board_platform("montblanc"));
-}
+	TEST(RO_BOARD_PLATFORM, novathor) {
+		EXPECT_EQ("NovaThor U8500",
+			parse_ro_board_platform("montblanc"));
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(RO_BOARD_PLATFORM, nvidia) {
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Nvidia Tegra T114",
 		parse_ro_board_platform("tegra4"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Nvidia Tegra T132",
 		parse_ro_board_platform("tegra132"));
 	EXPECT_EQ("Nvidia Tegra T210",
@@ -259,8 +271,10 @@ TEST(RO_BOARD_PLATFORM, rockchip_rk) {
 		parse_ro_board_platform("rk3188"));
 	EXPECT_EQ("Rockchip RK3228",
 		parse_ro_board_platform("rk3228"));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Rockchip RK3229",
 		parse_ro_board_platform("rk322x"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Rockchip RK3288",
 		parse_ro_board_platform("rk3288", 4));
 	EXPECT_EQ("Rockchip RK3399",
@@ -290,7 +304,9 @@ TEST(RO_BOARD_PLATFORM, spreadtrum_sc) {
 		parse_ro_board_platform("sc8830"));
 }
 
-TEST(RO_BOARD_PLATFORM, texas_instruments_omap) {
-	EXPECT_EQ("Texas Instruments OMAP4430",
-		parse_ro_board_platform("omap4", 2, 1008000));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(RO_BOARD_PLATFORM, texas_instruments_omap) {
+		EXPECT_EQ("Texas Instruments OMAP4430",
+			parse_ro_board_platform("omap4", 2, 1008000));
+	}
+#endif /* CPUINFO_ARCH_ARM */

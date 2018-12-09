@@ -1136,6 +1136,7 @@ struct sunxi_map_entry {
 };
 
 static const struct sunxi_map_entry sunxi_map_entries[] = {
+#if CPUINFO_ARCH_ARM
 	{
 		/* ("sun4i", 1) -> "A10" */
 		.sunxi = 4,
@@ -1186,6 +1187,7 @@ static const struct sunxi_map_entry sunxi_map_entries[] = {
 		.cores = 8,
 		.model = 80,
 	},
+#endif /* CPUINFO_ARCH_ARM */
 	{
 		/* ("sun50i", 4) -> "A64" */
 		.sunxi = 50,
@@ -1662,6 +1664,7 @@ struct special_map_entry {
 };
 
 static const struct special_map_entry special_hardware_map_entries[] = {
+#if CPUINFO_ARCH_ARM
 	{
 		/* "k3v2oem1" -> HiSilicon K3V2 */
 		.platform = "k3v2oem1",
@@ -1675,6 +1678,7 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 		.model = 910,
 		.suffix = 'T'
 	},
+#endif /* CPUINFO_ARCH_ARM */
 	{
 		/* "hi6250" -> HiSilicon Kirin 650 */
 		.platform = "hi6250",
@@ -1693,18 +1697,21 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 		.series = cpuinfo_arm_chipset_series_hisilicon_hi,
 		.model = 3751,
 	},
+#if CPUINFO_ARCH_ARM
 	{
 		/* "hi3630" -> HiSilicon Kirin 920 */
 		.platform = "hi3630",
 		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 		.model = 920,
 	},
+#endif /* CPUINFO_ARCH_ARM */
 	{
 		/* "hi3635" -> HiSilicon Kirin 930 */
 		.platform = "hi3635",
 		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 		.model = 930,
 	},
+#if CPUINFO_ARCH_ARM
 	{
 		/* "gs702a" -> Actions ATM7029 (Cortex-A5 + GC1000) */
 		.platform = "gs702a",
@@ -1780,9 +1787,11 @@ static const struct special_map_entry special_hardware_map_entries[] = {
 		.series = cpuinfo_arm_chipset_series_mstar_6a,
 		.model = 338,
 	},
+#endif /* CPUINFO_ARCH_ARM */
 };
 
 static const struct special_map_entry tegra_hardware_map_entries[] = {
+#if CPUINFO_ARCH_ARM
 	{
 		/* "cardhu" (Nvidia Cardhu developer tablet) -> Tegra T30 */
 		.platform = "cardhu",
@@ -1863,24 +1872,6 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.platform = "roth",
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 114,
-	},
-	{
-		/* "foster_e" (Nvidia Shield TV, Flash) -> Tegra T210 */
-		.platform = "foster_e",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 210,
-	},
-	{
-		/* "foster_e_hdd" (Nvidia Shield TV, HDD) -> Tegra T210 */
-		.platform = "foster_e_hdd",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 210,
-	},
-	{
-		/* "darcy" (Nvidia Shield TV 2017) -> Tegra T210 */
-		.platform = "darcy",
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 210,
 	},
 	{
 		/* "pisces" (Xiaomi Mi 3) -> Tegra T114 */
@@ -2104,6 +2095,25 @@ static const struct special_map_entry tegra_hardware_map_entries[] = {
 		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 		.model = 114,
 	},
+#endif /* CPUINFO_ARCH_ARM */
+	{
+		/* "foster_e" (Nvidia Shield TV, Flash) -> Tegra T210 */
+		.platform = "foster_e",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 210,
+	},
+	{
+		/* "foster_e_hdd" (Nvidia Shield TV, HDD) -> Tegra T210 */
+		.platform = "foster_e_hdd",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 210,
+	},
+	{
+		/* "darcy" (Nvidia Shield TV 2017) -> Tegra T210 */
+		.platform = "darcy",
+		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+		.model = 210,
+	},
 };
 
 /*
@@ -2225,13 +2235,15 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/* Match /SMDK(4410|4x12)$/ */
-		if (match_and_parse_smdk(hardware, hardware_end, cores, &chipset)) {
-			cpuinfo_log_debug(
-				"matched SMDK (Samsung Exynos) signature in /proc/cpuinfo Hardware string \"%.*s\"",
-				(int) hardware_length, hardware);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/* Match /SMDK(4410|4x12)$/ */
+			if (match_and_parse_smdk(hardware, hardware_end, cores, &chipset)) {
+				cpuinfo_log_debug(
+					"matched SMDK (Samsung Exynos) signature in /proc/cpuinfo Hardware string \"%.*s\"",
+					(int) hardware_length, hardware);
+				return chipset;
+			}
+		#endif
 
 		/* Check Spreadtrum SC signature */
 		if (match_sc(hardware, hardware_end, &chipset)) {
@@ -2241,13 +2253,15 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/* Check Marvell PXA signature */
-		if (match_pxa(hardware, hardware_end, &chipset)) {
-			cpuinfo_log_debug(
-				"matched Marvell PXA signature in /proc/cpuinfo Hardware string \"%.*s\"",
-				(int) hardware_length, hardware);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/* Check Marvell PXA signature */
+			if (match_pxa(hardware, hardware_end, &chipset)) {
+				cpuinfo_log_debug(
+					"matched Marvell PXA signature in /proc/cpuinfo Hardware string \"%.*s\"",
+					(int) hardware_length, hardware);
+				return chipset;
+			}
+		#endif
 
 		/* Match /sun\d+i/ signature and map to Allwinner chipset name */
 		if (match_and_parse_sunxi(hardware, hardware_end, cores, &chipset)) {
@@ -2257,21 +2271,24 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/* Check Texas Instruments OMAP signature */
-		if (match_omap(hardware, hardware_end, &chipset)) {
-			cpuinfo_log_debug(
-				"matched Texas Instruments OMAP signature in /proc/cpuinfo Hardware string \"%.*s\"",
-				(int) hardware_length, hardware);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/* Check Texas Instruments OMAP signature */
+			if (match_omap(hardware, hardware_end, &chipset)) {
+				cpuinfo_log_debug(
+					"matched Texas Instruments OMAP signature in /proc/cpuinfo Hardware string \"%.*s\"",
+					(int) hardware_length, hardware);
+				return chipset;
+			}
 
-		/* Check WonderMedia WMT signature and decode chipset from frequency and number of cores  */
-		if (match_and_parse_wmt(hardware, hardware_end, cores, max_cpu_freq_max, &chipset)) {
-			cpuinfo_log_debug(
-				"matched WonderMedia WMT signature in /proc/cpuinfo Hardware string \"%.*s\"",
-				(int) hardware_length, hardware);
-			return chipset;
-		}
+			/* Check WonderMedia WMT signature and decode chipset from frequency and number of cores  */
+			if (match_and_parse_wmt(hardware, hardware_end, cores, max_cpu_freq_max, &chipset)) {
+				cpuinfo_log_debug(
+					"matched WonderMedia WMT signature in /proc/cpuinfo Hardware string \"%.*s\"",
+					(int) hardware_length, hardware);
+				return chipset;
+			}
+
+		#endif
 
 		/* Check Telechips TCC signature */
 		if (match_tcc(hardware, hardware_end, &chipset)) {
@@ -2322,12 +2339,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 			.model = 620,
 		},
+#if CPUINFO_ARCH_ARM
 		{
 			/* "hi3630" -> HiSilicon Kirin 920 */
 			.platform = "hi3630",
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 			.model = 920,
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "hi3635" -> HiSilicon Kirin 930 */
 			.platform = "hi3635",
@@ -2346,18 +2365,21 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 			.model = 960,
 		},
+#if CPUINFO_ARCH_ARM
 		{
 			/* "mp523x" -> Renesas MP5232 */
 			.platform = "mp523x",
 			.series = cpuinfo_arm_chipset_series_renesas_mp,
 			.model = 5232,
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "BEETHOVEN" (Huawei MadiaPad M3) -> HiSilicon Kirin 950 */
 			.platform = "BEETHOVEN",
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 			.model = 950,
 		},
+#if CPUINFO_ARCH_ARM
 		{
 			/* "hws7701u" (Huawei MediaPad 7 Youth) -> Rockchip RK3168 */
 			.platform = "hws7701u",
@@ -2396,6 +2418,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 30,
 			.suffix = 'L',
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "flounder" (HTC Nexus 9) -> Nvidia Tegra T132 */
 			.platform = "flounder",
@@ -2459,13 +2482,15 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/* Check SMDK (Samsung Exynos) signature */
-		if (match_and_parse_smdk(board, board_end, cores, &chipset)) {
-			cpuinfo_log_debug(
-				"matched SMDK (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
-				(int) board_length, board);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/* Check SMDK (Samsung Exynos) signature */
+			if (match_and_parse_smdk(board, board_end, cores, &chipset)) {
+				cpuinfo_log_debug(
+					"matched SMDK (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
+					(int) board_length, board);
+				return chipset;
+			}
+		#endif
 
 		/* Check MediaTek MT signature */
 		if (match_mt(board, board_end, true, &chipset)) {
@@ -2483,32 +2508,34 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/* Check Marvell PXA signature */
-		if (match_pxa(board, board_end, &chipset)) {
-			cpuinfo_log_debug(
-				"matched Marvell PXA signature in ro.product.board string \"%.*s\"",
-				(int) board_length, board);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/* Check Marvell PXA signature */
+			if (match_pxa(board, board_end, &chipset)) {
+				cpuinfo_log_debug(
+					"matched Marvell PXA signature in ro.product.board string \"%.*s\"",
+					(int) board_length, board);
+				return chipset;
+			}
 
-		/* Check Leadcore LCxxxx signature */
-		if (match_lc(board, board_end, &chipset)) {
-			cpuinfo_log_debug(
-				"matched Leadcore LC signature in ro.product.board string \"%.*s\"",
-				(int) board_length, board);
-			return chipset;
-		}
+			/* Check Leadcore LCxxxx signature */
+			if (match_lc(board, board_end, &chipset)) {
+				cpuinfo_log_debug(
+					"matched Leadcore LC signature in ro.product.board string \"%.*s\"",
+					(int) board_length, board);
+				return chipset;
+			}
 
-		/*
-		 * Compare to tabulated ro.product.board values for Broadcom chipsets and decode chipset from frequency and
-		 * number of cores.
-		 */
-		if (match_and_parse_broadcom(board, board_end, cores, max_cpu_freq_max, &chipset)) {
-			cpuinfo_log_debug(
-				"found ro.product.board string \"%.*s\" in Broadcom chipset table",
-				(int) board_length, board);
-			return chipset;
-		}
+			/*
+			 * Compare to tabulated ro.product.board values for Broadcom chipsets and decode chipset from frequency and
+			 * number of cores.
+			 */
+			if (match_and_parse_broadcom(board, board_end, cores, max_cpu_freq_max, &chipset)) {
+				cpuinfo_log_debug(
+					"found ro.product.board string \"%.*s\" in Broadcom chipset table",
+					(int) board_length, board);
+				return chipset;
+			}
+		#endif
 
 		/* Compare to tabulated ro.product.board values for Huawei devices which don't report chipset elsewhere */
 		if (match_and_parse_huawei(board, board_end, &chipset)) {
@@ -2555,6 +2582,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 	};
 
 	static const struct amlogic_map_entry amlogic_map_entries[] = {
+#if CPUINFO_ARCH_ARM
 		{
 			/* "meson3" -> Amlogic AML8726-M */
 			.ro_board_platform = "meson3",
@@ -2575,6 +2603,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_amlogic_s,
 			.model = 805,
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "gxbaby" -> Amlogic S905 */
 			.ro_board_platform = "gxbaby",
@@ -2597,6 +2626,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 	};
 
 	static const struct special_map_entry special_platform_map_entries[] = {
+#if CPUINFO_ARCH_ARM
 		{
 			/* "hi6620oem" -> HiSilicon Kirin 910T */
 			.platform = "hi6620oem",
@@ -2604,6 +2634,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.model = 910,
 			.suffix = 'T',
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "hi6250" -> HiSilicon Kirin 650 */
 			.platform = "hi6250",
@@ -2616,12 +2647,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 			.model = 620,
 		},
+#if CPUINFO_ARCH_ARM
 		{
 			/* "hi3630" -> HiSilicon Kirin 920 */
 			.platform = "hi3630",
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 			.model = 920,
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "hi3635" -> HiSilicon Kirin 930 */
 			.platform = "hi3635",
@@ -2640,6 +2673,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
 			.model = 960,
 		},
+#if CPUINFO_ARCH_ARM
 		{
 			/* "k3v2oem1" -> HiSilicon K3V2 */
 			.platform = "k3v2oem1",
@@ -2658,18 +2692,21 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_novathor_u,
 			.model = 8500,
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "song" -> Pinecone Surge S1 */
 			.platform = "song",
 			.series = cpuinfo_arm_chipset_series_pinecone_surge_s,
 			.model = 1,
 		},
+#if CPUINFO_ARCH_ARM
 		{
 			/* "rk322x" -> RockChip RK3229 */
 			.platform = "rk322x",
 			.series = cpuinfo_arm_chipset_series_rockchip_rk,
 			.model = 3229,
 		},
+#endif /* CPUINFO_ARCH_ARM */
 		{
 			/* "tegra132" -> Nvidia Tegra T132 */
 			.platform = "tegra132",
@@ -2682,6 +2719,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
 			.model = 210,
 		},
+#if CPUINFO_ARCH_ARM
 		{
 			/* "tegra4" -> Nvidia Tegra T114 */
 			.platform = "tegra4",
@@ -2694,6 +2732,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			.series = cpuinfo_arm_chipset_series_samsung_exynos,
 			.model = 3110,
 		},
+#endif /* CPUINFO_ARCH_ARM */
 	};
 
 	/*
@@ -2759,12 +2798,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/* Check Leadcore LCxxxx signature */
-		if (match_lc(platform, platform_end, &chipset)) {
-			cpuinfo_log_debug(
-				"matched Leadcore LC signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/* Check Leadcore LCxxxx signature */
+			if (match_lc(platform, platform_end, &chipset)) {
+				cpuinfo_log_debug(
+					"matched Leadcore LC signature in ro.board.platform string \"%.*s\"", (int) platform_length, platform);
+				return chipset;
+			}
+		#endif
 
 		/* Compare to tabulated ro.board.platform values for Huawei devices which don't report chipset elsewhere */
 		if (match_and_parse_huawei(platform, platform_end, &chipset)) {
@@ -2774,32 +2815,34 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/*
-		 * Compare to known ro.board.platform values for Broadcom devices and
-		 * detect chipset from frequency and number of cores
-		 */
-		if (match_and_parse_broadcom(platform, platform_end, cores, max_cpu_freq_max, &chipset)) {
-			cpuinfo_log_debug(
-				"found ro.board.platform string \"%.*s\" in Broadcom chipset table",
-				(int) platform_length, platform);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/*
+			 * Compare to known ro.board.platform values for Broadcom devices and
+			 * detect chipset from frequency and number of cores
+			 */
+			if (match_and_parse_broadcom(platform, platform_end, cores, max_cpu_freq_max, &chipset)) {
+				cpuinfo_log_debug(
+					"found ro.board.platform string \"%.*s\" in Broadcom chipset table",
+					(int) platform_length, platform);
+				return chipset;
+			}
 
-		/*
-		 * Compare to ro.board.platform value ("omap4") for OMAP4xxx chipsets.
-		 * Upon successful match, detect OMAP4430 from frequency and number of cores.
-		 */
-		if (platform_length == 5 && cores == 2 && max_cpu_freq_max == 1008000 && memcmp(platform, "omap4", 5) == 0) {
-			cpuinfo_log_debug(
-				"matched Texas Instruments OMAP4 signature in ro.board.platform string \"%.*s\"",
-				(int) platform_length, platform);
+			/*
+			 * Compare to ro.board.platform value ("omap4") for OMAP4xxx chipsets.
+			 * Upon successful match, detect OMAP4430 from frequency and number of cores.
+			 */
+			if (platform_length == 5 && cores == 2 && max_cpu_freq_max == 1008000 && memcmp(platform, "omap4", 5) == 0) {
+				cpuinfo_log_debug(
+					"matched Texas Instruments OMAP4 signature in ro.board.platform string \"%.*s\"",
+					(int) platform_length, platform);
 
-			return (struct cpuinfo_arm_chipset) {
-				.vendor = cpuinfo_arm_chipset_vendor_texas_instruments,
-				.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
-				.model = 4430,
-			};
-		}
+				return (struct cpuinfo_arm_chipset) {
+					.vendor = cpuinfo_arm_chipset_vendor_texas_instruments,
+					.series = cpuinfo_arm_chipset_series_texas_instruments_omap,
+					.model = 4430,
+				};
+			}
+		#endif
 
 		/*
 		 * Compare to tabulated ro.board.platform values for Amlogic chipsets/devices which can't be otherwise detected.
@@ -2962,26 +3005,28 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 			return chipset;
 		}
 
-		/* Check Marvell PXA signature */
-		if (match_pxa(chipname, chipname_end, &chipset)) {
-			cpuinfo_log_debug(
-				"matched Marvell PXA signature in ro.chipname string \"%.*s\"",
-				(int) chipname_length, chipname);
-			return chipset;
-		}
+		#if CPUINFO_ARCH_ARM
+			/* Check Marvell PXA signature */
+			if (match_pxa(chipname, chipname_end, &chipset)) {
+				cpuinfo_log_debug(
+					"matched Marvell PXA signature in ro.chipname string \"%.*s\"",
+					(int) chipname_length, chipname);
+				return chipset;
+			}
 
-		/* Compare to ro.chipname value ("mp523x") for Renesas MP5232 which can't be otherwise detected */
-		if (chipname_length == 6 && memcmp(chipname, "mp523x", 6) == 0) {
-			cpuinfo_log_debug(
-				"matched Renesas MP5232 signature in ro.chipname string \"%.*s\"",
-				(int) chipname_length, chipname);
+			/* Compare to ro.chipname value ("mp523x") for Renesas MP5232 which can't be otherwise detected */
+			if (chipname_length == 6 && memcmp(chipname, "mp523x", 6) == 0) {
+				cpuinfo_log_debug(
+					"matched Renesas MP5232 signature in ro.chipname string \"%.*s\"",
+					(int) chipname_length, chipname);
 
-			return (struct cpuinfo_arm_chipset) {
-				.vendor = cpuinfo_arm_chipset_vendor_renesas,
-				.series = cpuinfo_arm_chipset_series_renesas_mp,
-				.model = 5232,
-			};
-		}
+				return (struct cpuinfo_arm_chipset) {
+					.vendor = cpuinfo_arm_chipset_vendor_renesas,
+					.series = cpuinfo_arm_chipset_series_renesas_mp,
+					.model = 5232,
+				};
+			}
+		#endif
 
 		return (struct cpuinfo_arm_chipset) {
 			.vendor = cpuinfo_arm_chipset_vendor_unknown,
@@ -3072,6 +3117,7 @@ void cpuinfo_arm_fixup_chipset(
 								chipset->model = 0;
 						}
 						break;
+#if CPUINFO_ARCH_ARM
 					case 8610:
 						/* Common bug: MSM8612 (Quad-core) reported as MSM8610 (Dual-core) */
 						switch (cores) {
@@ -3087,6 +3133,7 @@ void cpuinfo_arm_fixup_chipset(
 								chipset->model = 0;
 						}
 						break;
+#endif /* CPUINFO_ARCH_ARM */
 				}
 			} else {
 				/* Suffix may need correction */
@@ -3144,6 +3191,7 @@ void cpuinfo_arm_fixup_chipset(
 			break;
 		case cpuinfo_arm_chipset_series_samsung_exynos:
 			switch (chipset->model) {
+#if CPUINFO_ARCH_ARM
 				case 4410:
 					/* Exynos 4410 was renamed to Exynos 4412 */
 					chipset->model = 4412;
@@ -3162,6 +3210,7 @@ void cpuinfo_arm_fixup_chipset(
 							chipset->model = 0;
 					}
 					break;
+#endif /* CPUINFO_ARCH_ARM */
 				case 7580:
 					/* Common bug: Exynos 7578 (Quad-core) reported as Exynos 7580 (Octa-core) */
 					switch (cores) {

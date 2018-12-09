@@ -76,10 +76,12 @@ TEST(PROC_CPUINFO_HARDWARE, qualcomm_msm) {
 		parse_proc_cpuinfo_hardware("Qualcomm MSM 8610 (Flattened Device Tree)", 2));
 	EXPECT_EQ("Qualcomm MSM8610",
 		parse_proc_cpuinfo_hardware("Qualcomm MSM8610", 2));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_proc_cpuinfo_hardware("Qualcomm MSM 8610 (Flattened Device Tree)", 4));
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_proc_cpuinfo_hardware("Qualcomm MSM 8612 (Flattened Device Tree)"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Qualcomm MSM8625",
 		parse_proc_cpuinfo_hardware("LG MSM8625 V7"));
 	EXPECT_EQ("Qualcomm MSM8625",
@@ -525,21 +527,24 @@ TEST(PROC_CPUINFO_HARDWARE, samsung_universal) {
 		parse_proc_cpuinfo_hardware("UNIVERSAL5430"));
 }
 
-TEST(PROC_CPUINFO_HARDWARE, samsung_smdk) {
-	EXPECT_EQ("Samsung Exynos 4210",
-		parse_proc_cpuinfo_hardware("SMDK4210"));
-	EXPECT_EQ("Samsung Exynos 4212",
-		parse_proc_cpuinfo_hardware("SMDK4x12", 2));
-	EXPECT_EQ("Samsung Exynos 4412",
-		parse_proc_cpuinfo_hardware("SMDK4x12", 4));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(PROC_CPUINFO_HARDWARE, samsung_smdk) {
+		EXPECT_EQ("Samsung Exynos 4210",
+			parse_proc_cpuinfo_hardware("SMDK4210"));
+		EXPECT_EQ("Samsung Exynos 4212",
+			parse_proc_cpuinfo_hardware("SMDK4x12", 2));
+		EXPECT_EQ("Samsung Exynos 4412",
+			parse_proc_cpuinfo_hardware("SMDK4x12", 4));
+	}
 
-TEST(PROC_CPUINFO_HARDWARE, samsung_special) {
-	EXPECT_EQ("Samsung Exynos 5250",
-		parse_proc_cpuinfo_hardware("Manta"));
-}
+	TEST(PROC_CPUINFO_HARDWARE, samsung_special) {
+		EXPECT_EQ("Samsung Exynos 5250",
+			parse_proc_cpuinfo_hardware("Manta"));
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(PROC_CPUINFO_HARDWARE, hisilicon_kirin) {
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("HiSilicon Kirin 920",
 		parse_proc_cpuinfo_hardware("Hisilicon Kirin 920"));
 	EXPECT_EQ("HiSilicon Kirin 920",
@@ -548,6 +553,7 @@ TEST(PROC_CPUINFO_HARDWARE, hisilicon_kirin) {
 		parse_proc_cpuinfo_hardware("Hisilicon Kirin 925"));
 	EXPECT_EQ("HiSilicon Kirin 925",
 		parse_proc_cpuinfo_hardware("Kirin925"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("HiSilicon Kirin 930",
 		parse_proc_cpuinfo_hardware("Hisilicon Kirin 930"));
 	EXPECT_EQ("HiSilicon Kirin 935",
@@ -561,26 +567,33 @@ TEST(PROC_CPUINFO_HARDWARE, hisilicon_kirin) {
 TEST(PROC_CPUINFO_HARDWARE, hisilicon_special) {
 	EXPECT_EQ("HiSilicon Hi3751",
 		parse_proc_cpuinfo_hardware("hi3751"));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("HiSilicon K3V2",
 		parse_proc_cpuinfo_hardware("k3v2oem1"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("HiSilicon Kirin 620",
 		parse_proc_cpuinfo_hardware("hi6210sft"));
 	EXPECT_EQ("HiSilicon Kirin 650",
 		parse_proc_cpuinfo_hardware("hi6250"));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("HiSilicon Kirin 910T",
 		parse_proc_cpuinfo_hardware("hi6620oem"));
+#endif /* CPUINFO_ARCH_ARM */
 }
 
-TEST(PROC_CPUINFO_HARDWARE, actions) {
-	EXPECT_EQ("Actions ATM7029",
-		parse_proc_cpuinfo_hardware("gs702a"));
-	EXPECT_EQ("Actions ATM7029B",
-		parse_proc_cpuinfo_hardware("gs702c"));
-	EXPECT_EQ("Actions ATM7059A",
-		parse_proc_cpuinfo_hardware("gs705a"));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(PROC_CPUINFO_HARDWARE, actions) {
+		EXPECT_EQ("Actions ATM7029",
+			parse_proc_cpuinfo_hardware("gs702a"));
+		EXPECT_EQ("Actions ATM7029B",
+			parse_proc_cpuinfo_hardware("gs702c"));
+		EXPECT_EQ("Actions ATM7059A",
+			parse_proc_cpuinfo_hardware("gs705a"));
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(PROC_CPUINFO_HARDWARE, allwinner_sunxi) {
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Allwinner A10",
 		parse_proc_cpuinfo_hardware("sun4i", 1));
 	EXPECT_EQ("Allwinner A13",
@@ -593,106 +606,111 @@ TEST(PROC_CPUINFO_HARDWARE, allwinner_sunxi) {
 		parse_proc_cpuinfo_hardware("sun6i", 4));
 	EXPECT_EQ("Allwinner A33",
 		parse_proc_cpuinfo_hardware("sun8i", 4));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Allwinner A64",
 		parse_proc_cpuinfo_hardware("sun50iw1", 4));
 	EXPECT_EQ("Allwinner A64",
 		parse_proc_cpuinfo_hardware("sun50iw1p1", 4));
 	EXPECT_EQ("Allwinner A64",
 		parse_proc_cpuinfo_hardware("sun50iw2", 4));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Allwinner A80",
 		parse_proc_cpuinfo_hardware("sun9i", 8));
 	EXPECT_EQ("Allwinner A83T",
 		parse_proc_cpuinfo_hardware("sun8i", 8));
+#endif /* CPUINFO_ARCH_ARM */
 }
 
-TEST(PROC_CPUINFO_HARDWARE, amlogic) {
-	EXPECT_EQ("Amlogic S805",
-		parse_proc_cpuinfo_hardware("Amlogic Meson8B"));
-	EXPECT_EQ("Amlogic S812",
-		parse_proc_cpuinfo_hardware("Amlogic Meson8"));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(PROC_CPUINFO_HARDWARE, amlogic) {
+		EXPECT_EQ("Amlogic S805",
+			parse_proc_cpuinfo_hardware("Amlogic Meson8B"));
+		EXPECT_EQ("Amlogic S812",
+			parse_proc_cpuinfo_hardware("Amlogic Meson8"));
+	}
 
-TEST(PROC_CPUINFO_HARDWARE, lg) {
-	EXPECT_EQ("LG Nuclun 7111",
-		parse_proc_cpuinfo_hardware("Odin"));
-}
+	TEST(PROC_CPUINFO_HARDWARE, lg) {
+		EXPECT_EQ("LG Nuclun 7111",
+			parse_proc_cpuinfo_hardware("Odin"));
+	}
 
-TEST(PROC_CPUINFO_HARDWARE, marvell_pxa) {
-	EXPECT_EQ("Marvell PXA1088",
-		parse_proc_cpuinfo_hardware("PXA1088"));
-	EXPECT_EQ("Marvell PXA1088",
-		parse_proc_cpuinfo_hardware("PXA1L88"));
-	EXPECT_EQ("Marvell PXA1908",
-		parse_proc_cpuinfo_hardware("PXA1908"));
-	EXPECT_EQ("Marvell PXA1928",
-		parse_proc_cpuinfo_hardware("PXA1928"));
-	EXPECT_EQ("Marvell PXA988",
-		parse_proc_cpuinfo_hardware("PXA988"));
-}
+	TEST(PROC_CPUINFO_HARDWARE, marvell_pxa) {
+		EXPECT_EQ("Marvell PXA1088",
+			parse_proc_cpuinfo_hardware("PXA1088"));
+		EXPECT_EQ("Marvell PXA1088",
+			parse_proc_cpuinfo_hardware("PXA1L88"));
+		EXPECT_EQ("Marvell PXA1908",
+			parse_proc_cpuinfo_hardware("PXA1908"));
+		EXPECT_EQ("Marvell PXA1928",
+			parse_proc_cpuinfo_hardware("PXA1928"));
+		EXPECT_EQ("Marvell PXA988",
+			parse_proc_cpuinfo_hardware("PXA988"));
+	}
 
-TEST(PROC_CPUINFO_HARDWARE, mstar) {
-	EXPECT_EQ("MStar 6A338",
-		parse_proc_cpuinfo_hardware("Madison"));
-}
+	TEST(PROC_CPUINFO_HARDWARE, mstar) {
+		EXPECT_EQ("MStar 6A338",
+			parse_proc_cpuinfo_hardware("Madison"));
+	}
 
-TEST(PROC_CPUINFO_HARDWARE, nvidia) {
-	EXPECT_EQ("Nvidia Tegra AP20H",
-		parse_proc_cpuinfo_hardware_tegra("picasso"));
-	EXPECT_EQ("Nvidia Tegra AP20H",
-		parse_proc_cpuinfo_hardware_tegra("picasso_e"));
-	EXPECT_EQ("Nvidia Tegra AP20H",
-		parse_proc_cpuinfo_hardware_tegra("stingray"));
-	EXPECT_EQ("Nvidia Tegra AP33",
-		parse_proc_cpuinfo_hardware_tegra("endeavoru"));
-	EXPECT_EQ("Nvidia Tegra AP33",
-		parse_proc_cpuinfo_hardware_tegra("x3"));
-	EXPECT_EQ("Nvidia Tegra SL460N",
-		parse_proc_cpuinfo_hardware_tegra("Ceres"));
-	EXPECT_EQ("Nvidia Tegra T114",
-		parse_proc_cpuinfo_hardware_tegra("macallan"));
-	EXPECT_EQ("Nvidia Tegra T114",
-		parse_proc_cpuinfo_hardware_tegra("mozart"));
-	EXPECT_EQ("Nvidia Tegra T114",
-		parse_proc_cpuinfo_hardware_tegra("tostab12BA"));
-	EXPECT_EQ("Nvidia Tegra T124",
-		parse_proc_cpuinfo_hardware_tegra("mocha"));
-	EXPECT_EQ("Nvidia Tegra T124",
-		parse_proc_cpuinfo_hardware_tegra("tn8"));
-	EXPECT_EQ("Nvidia Tegra T20",
-		parse_proc_cpuinfo_hardware_tegra("nbx03"));
-	EXPECT_EQ("Nvidia Tegra T20",
-		parse_proc_cpuinfo_hardware_tegra("p3"));
-	EXPECT_EQ("Nvidia Tegra T20",
-		parse_proc_cpuinfo_hardware_tegra("ventana"));
-	EXPECT_EQ("Nvidia Tegra T30",
-		parse_proc_cpuinfo_hardware_tegra("cardhu"));
-	EXPECT_EQ("Nvidia Tegra T30",
-		parse_proc_cpuinfo_hardware_tegra("chagall"));
-	EXPECT_EQ("Nvidia Tegra T30",
-		parse_proc_cpuinfo_hardware_tegra("picasso_m"));
-	EXPECT_EQ("Nvidia Tegra T30",
-		parse_proc_cpuinfo_hardware_tegra("picasso_mf"));
-	EXPECT_EQ("Nvidia Tegra T30L",
-		parse_proc_cpuinfo_hardware_tegra("BIRCH"));
-	EXPECT_EQ("Nvidia Tegra T30L",
-		parse_proc_cpuinfo_hardware_tegra("NS_14T004"));
-	EXPECT_EQ("Nvidia Tegra T30L",
-		parse_proc_cpuinfo_hardware_tegra("avalon"));
-	EXPECT_EQ("Nvidia Tegra T30L",
-		parse_proc_cpuinfo_hardware_tegra("picasso_e2"));
-	EXPECT_EQ("Nvidia Tegra T30L",
-		parse_proc_cpuinfo_hardware_tegra("tostab12BL"));
-	EXPECT_EQ("Nvidia Tegra T30L",
-		parse_proc_cpuinfo_hardware_tegra("txs03"));
-	EXPECT_EQ("Nvidia Tegra T33",
-		parse_proc_cpuinfo_hardware_tegra("bobsleigh"));
-	EXPECT_EQ("Nvidia Tegra T33",
-		parse_proc_cpuinfo_hardware_tegra("enrc2b"));
-	EXPECT_EQ("Nvidia Tegra T33",
-		parse_proc_cpuinfo_hardware_tegra("evitareul"));
-	EXPECT_EQ("Nvidia Tegra T33",
-		parse_proc_cpuinfo_hardware_tegra("tegra_fjdev103"));
-}
+	TEST(PROC_CPUINFO_HARDWARE, nvidia) {
+		EXPECT_EQ("Nvidia Tegra AP20H",
+			parse_proc_cpuinfo_hardware_tegra("picasso"));
+		EXPECT_EQ("Nvidia Tegra AP20H",
+			parse_proc_cpuinfo_hardware_tegra("picasso_e"));
+		EXPECT_EQ("Nvidia Tegra AP20H",
+			parse_proc_cpuinfo_hardware_tegra("stingray"));
+		EXPECT_EQ("Nvidia Tegra AP33",
+			parse_proc_cpuinfo_hardware_tegra("endeavoru"));
+		EXPECT_EQ("Nvidia Tegra AP33",
+			parse_proc_cpuinfo_hardware_tegra("x3"));
+		EXPECT_EQ("Nvidia Tegra SL460N",
+			parse_proc_cpuinfo_hardware_tegra("Ceres"));
+		EXPECT_EQ("Nvidia Tegra T114",
+			parse_proc_cpuinfo_hardware_tegra("macallan"));
+		EXPECT_EQ("Nvidia Tegra T114",
+			parse_proc_cpuinfo_hardware_tegra("mozart"));
+		EXPECT_EQ("Nvidia Tegra T114",
+			parse_proc_cpuinfo_hardware_tegra("tostab12BA"));
+		EXPECT_EQ("Nvidia Tegra T124",
+			parse_proc_cpuinfo_hardware_tegra("mocha"));
+		EXPECT_EQ("Nvidia Tegra T124",
+			parse_proc_cpuinfo_hardware_tegra("tn8"));
+		EXPECT_EQ("Nvidia Tegra T20",
+			parse_proc_cpuinfo_hardware_tegra("nbx03"));
+		EXPECT_EQ("Nvidia Tegra T20",
+			parse_proc_cpuinfo_hardware_tegra("p3"));
+		EXPECT_EQ("Nvidia Tegra T20",
+			parse_proc_cpuinfo_hardware_tegra("ventana"));
+		EXPECT_EQ("Nvidia Tegra T30",
+			parse_proc_cpuinfo_hardware_tegra("cardhu"));
+		EXPECT_EQ("Nvidia Tegra T30",
+			parse_proc_cpuinfo_hardware_tegra("chagall"));
+		EXPECT_EQ("Nvidia Tegra T30",
+			parse_proc_cpuinfo_hardware_tegra("picasso_m"));
+		EXPECT_EQ("Nvidia Tegra T30",
+			parse_proc_cpuinfo_hardware_tegra("picasso_mf"));
+		EXPECT_EQ("Nvidia Tegra T30L",
+			parse_proc_cpuinfo_hardware_tegra("BIRCH"));
+		EXPECT_EQ("Nvidia Tegra T30L",
+			parse_proc_cpuinfo_hardware_tegra("NS_14T004"));
+		EXPECT_EQ("Nvidia Tegra T30L",
+			parse_proc_cpuinfo_hardware_tegra("avalon"));
+		EXPECT_EQ("Nvidia Tegra T30L",
+			parse_proc_cpuinfo_hardware_tegra("picasso_e2"));
+		EXPECT_EQ("Nvidia Tegra T30L",
+			parse_proc_cpuinfo_hardware_tegra("tostab12BL"));
+		EXPECT_EQ("Nvidia Tegra T30L",
+			parse_proc_cpuinfo_hardware_tegra("txs03"));
+		EXPECT_EQ("Nvidia Tegra T33",
+			parse_proc_cpuinfo_hardware_tegra("bobsleigh"));
+		EXPECT_EQ("Nvidia Tegra T33",
+			parse_proc_cpuinfo_hardware_tegra("enrc2b"));
+		EXPECT_EQ("Nvidia Tegra T33",
+			parse_proc_cpuinfo_hardware_tegra("evitareul"));
+		EXPECT_EQ("Nvidia Tegra T33",
+			parse_proc_cpuinfo_hardware_tegra("tegra_fjdev103"));
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(PROC_CPUINFO_HARDWARE, rockchip_rk) {
 	EXPECT_EQ("Rockchip RK3126",
@@ -745,25 +763,27 @@ TEST(PROC_CPUINFO_HARDWARE, telechips) {
 		parse_proc_cpuinfo_hardware("tcc893x"));
 }
 
-TEST(PROC_CPUINFO_HARDWARE, texas_instruments_omap) {
-	EXPECT_EQ("Texas Instruments OMAP4430",
-		parse_proc_cpuinfo_hardware("OMAP4430"));
-	EXPECT_EQ("Texas Instruments OMAP4460",
-		parse_proc_cpuinfo_hardware("OMAP4460"));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(PROC_CPUINFO_HARDWARE, texas_instruments_omap) {
+		EXPECT_EQ("Texas Instruments OMAP4430",
+			parse_proc_cpuinfo_hardware("OMAP4430"));
+		EXPECT_EQ("Texas Instruments OMAP4460",
+			parse_proc_cpuinfo_hardware("OMAP4460"));
+	}
 
-TEST(PROC_CPUINFO_HARDWARE, texas_instruments_special) {
-	EXPECT_EQ("Texas Instruments OMAP4430",
-		parse_proc_cpuinfo_hardware("mapphone_CDMA"));
-	EXPECT_EQ("Texas Instruments OMAP4460",
-		parse_proc_cpuinfo_hardware("Tuna"));
-}
+	TEST(PROC_CPUINFO_HARDWARE, texas_instruments_special) {
+		EXPECT_EQ("Texas Instruments OMAP4430",
+			parse_proc_cpuinfo_hardware("mapphone_CDMA"));
+		EXPECT_EQ("Texas Instruments OMAP4460",
+			parse_proc_cpuinfo_hardware("Tuna"));
+	}
 
-TEST(PROC_CPUINFO_HARDWARE, wondermedia) {
-	EXPECT_EQ("WonderMedia WM8850",
-		parse_proc_cpuinfo_hardware("WMT", 1, 1200000));
-	EXPECT_EQ("WonderMedia WM8880",
-		parse_proc_cpuinfo_hardware("WMT", 2, 1500000));
-	EXPECT_EQ("WonderMedia WM8950",
-		parse_proc_cpuinfo_hardware("WMT", 1, 1008000));
-}
+	TEST(PROC_CPUINFO_HARDWARE, wondermedia) {
+		EXPECT_EQ("WonderMedia WM8850",
+			parse_proc_cpuinfo_hardware("WMT", 1, 1200000));
+		EXPECT_EQ("WonderMedia WM8880",
+			parse_proc_cpuinfo_hardware("WMT", 2, 1500000));
+		EXPECT_EQ("WonderMedia WM8950",
+			parse_proc_cpuinfo_hardware("WMT", 1, 1008000));
+	}
+#endif

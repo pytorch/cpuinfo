@@ -50,10 +50,12 @@ TEST(RO_PRODUCT_BOARD, qualcomm_msm) {
 		parse_ro_product_board("MSM8260A"));
 	EXPECT_EQ("Qualcomm MSM8274",
 		parse_ro_product_board("MSM8274"));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Qualcomm MSM8610",
 		parse_ro_product_board("MSM8610", 2));
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_ro_product_board("MSM8610", 4));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("Qualcomm MSM8612",
 		parse_ro_product_board("MSM8612"));
 	EXPECT_EQ("Qualcomm MSM8625",
@@ -300,12 +302,14 @@ TEST(RO_PRODUCT_BOARD, samsung_universal) {
 		parse_ro_product_board("universal8895"));
 }
 
-TEST(RO_PRODUCT_BOARD, samsung_smdk) {
-	EXPECT_EQ("Samsung Exynos 4212",
-		parse_ro_product_board("smdk4x12", 2));
-	EXPECT_EQ("Samsung Exynos 4412",
-		parse_ro_product_board("smdk4x12", 4));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(RO_PRODUCT_BOARD, samsung_smdk) {
+		EXPECT_EQ("Samsung Exynos 4212",
+			parse_ro_product_board("smdk4x12", 2));
+		EXPECT_EQ("Samsung Exynos 4412",
+			parse_ro_product_board("smdk4x12", 4));
+	}
+#endif
 
 TEST(RO_PRODUCT_BOARD, hisilicon_huawei) {
 	EXPECT_EQ("HiSilicon Kirin 659",
@@ -353,8 +357,10 @@ TEST(RO_PRODUCT_BOARD, hisilicon_special) {
 		parse_ro_product_board("hi6210sft"));
 	EXPECT_EQ("HiSilicon Kirin 650",
 		parse_ro_product_board("hi6250"));
+#if CPUINFO_ARCH_ARM
 	EXPECT_EQ("HiSilicon Kirin 920",
 		parse_ro_product_board("hi3630"));
+#endif /* CPUINFO_ARCH_ARM */
 	EXPECT_EQ("HiSilicon Kirin 930",
 		parse_ro_product_board("hi3635"));
 	EXPECT_EQ("HiSilicon Kirin 950",
@@ -365,69 +371,71 @@ TEST(RO_PRODUCT_BOARD, hisilicon_special) {
 		parse_ro_product_board("BEETHOVEN"));
 }
 
-TEST(RO_PRODUCT_BOARD, broadcom) {
-	EXPECT_EQ("Broadcom BCM28155",
-		parse_ro_product_board("capri", 2, 1200000));
-	EXPECT_EQ("Broadcom BCM28155",
-		parse_ro_product_board("capri", 2, 1300000));
-	EXPECT_EQ("Broadcom BCM28155",
-		parse_ro_product_board("capri", 2, 1399999));
-	EXPECT_EQ("Broadcom BCM28155",
-		parse_ro_product_board("capri", 2, 1399999));
-	EXPECT_EQ("Broadcom BCM23550",
-		parse_ro_product_board("java", 4, 1200000));
-	EXPECT_EQ("Broadcom BCM23550",
-		parse_ro_product_board("java", 4, 1300000));
-	EXPECT_EQ("Broadcom BCM21654",
-		parse_ro_product_board("rhea", 1, 849999));
-	EXPECT_EQ("Broadcom BCM21654G",
-		parse_ro_product_board("rhea", 1, 999999));
-	EXPECT_EQ("Broadcom BCM21663",
-		parse_ro_product_board("hawaii", 1, 999999));
-	EXPECT_EQ("Broadcom BCM21664",
-		parse_ro_product_board("hawaii", 2, 999999));
-	EXPECT_EQ("Broadcom BCM21664T",
-		parse_ro_product_board("hawaii", 2, 1200000));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(RO_PRODUCT_BOARD, broadcom) {
+		EXPECT_EQ("Broadcom BCM28155",
+			parse_ro_product_board("capri", 2, 1200000));
+		EXPECT_EQ("Broadcom BCM28155",
+			parse_ro_product_board("capri", 2, 1300000));
+		EXPECT_EQ("Broadcom BCM28155",
+			parse_ro_product_board("capri", 2, 1399999));
+		EXPECT_EQ("Broadcom BCM28155",
+			parse_ro_product_board("capri", 2, 1399999));
+		EXPECT_EQ("Broadcom BCM23550",
+			parse_ro_product_board("java", 4, 1200000));
+		EXPECT_EQ("Broadcom BCM23550",
+			parse_ro_product_board("java", 4, 1300000));
+		EXPECT_EQ("Broadcom BCM21654",
+			parse_ro_product_board("rhea", 1, 849999));
+		EXPECT_EQ("Broadcom BCM21654G",
+			parse_ro_product_board("rhea", 1, 999999));
+		EXPECT_EQ("Broadcom BCM21663",
+			parse_ro_product_board("hawaii", 1, 999999));
+		EXPECT_EQ("Broadcom BCM21664",
+			parse_ro_product_board("hawaii", 2, 999999));
+		EXPECT_EQ("Broadcom BCM21664T",
+			parse_ro_product_board("hawaii", 2, 1200000));
+	}
 
-TEST(RO_PRODUCT_BOARD, leadcore_lc) {
-	EXPECT_EQ("Leadcore LC1810",
-		parse_ro_product_board("lc1810"));
-}
+	TEST(RO_PRODUCT_BOARD, leadcore_lc) {
+		EXPECT_EQ("Leadcore LC1810",
+			parse_ro_product_board("lc1810"));
+	}
 
-TEST(RO_PRODUCT_BOARD, marvell_pxa) {
-	EXPECT_EQ("Marvell PXA1088",
-		parse_ro_product_board("PXA1088"));
-	EXPECT_EQ("Marvell PXA986",
-		parse_ro_product_board("PXA986"));
-	EXPECT_EQ("Marvell PXA988",
-		parse_ro_product_board("PXA988"));
-}
+	TEST(RO_PRODUCT_BOARD, marvell_pxa) {
+		EXPECT_EQ("Marvell PXA1088",
+			parse_ro_product_board("PXA1088"));
+		EXPECT_EQ("Marvell PXA986",
+			parse_ro_product_board("PXA986"));
+		EXPECT_EQ("Marvell PXA988",
+			parse_ro_product_board("PXA988"));
+	}
 
-TEST(RO_PRODUCT_BOARD, nvidia) {
-	EXPECT_EQ("Nvidia Tegra SL460N",
-		parse_ro_product_board("g2mv"));
-	EXPECT_EQ("Nvidia Tegra T132",
-		parse_ro_product_board("flounder"));
-	EXPECT_EQ("Nvidia Tegra T210",
-		parse_ro_product_board("dragon"));
-	EXPECT_EQ("Nvidia Tegra T30L",
-		parse_ro_product_board("grouper"));
-}
+	TEST(RO_PRODUCT_BOARD, nvidia) {
+		EXPECT_EQ("Nvidia Tegra SL460N",
+			parse_ro_product_board("g2mv"));
+		EXPECT_EQ("Nvidia Tegra T132",
+			parse_ro_product_board("flounder"));
+		EXPECT_EQ("Nvidia Tegra T210",
+			parse_ro_product_board("dragon"));
+		EXPECT_EQ("Nvidia Tegra T30L",
+			parse_ro_product_board("grouper"));
+	}
 
-TEST(RO_PRODUCT_BOARD, renesas) {
-	EXPECT_EQ("Renesas MP5232",
-		parse_ro_product_board("mp523x"));
-}
+	TEST(RO_PRODUCT_BOARD, renesas) {
+		EXPECT_EQ("Renesas MP5232",
+			parse_ro_product_board("mp523x"));
+	}
 
-TEST(RO_PRODUCT_BOARD, rockchip) {
-	EXPECT_EQ("Rockchip RK3066",
-		parse_ro_product_board("T7H"));
-	EXPECT_EQ("Rockchip RK3168",
-		parse_ro_product_board("hws7701u"));
-	EXPECT_EQ("Rockchip RK3188",
-		parse_ro_product_board("K00F"));
-}
+	TEST(RO_PRODUCT_BOARD, rockchip) {
+		EXPECT_EQ("Rockchip RK3066",
+			parse_ro_product_board("T7H"));
+		EXPECT_EQ("Rockchip RK3168",
+			parse_ro_product_board("hws7701u"));
+		EXPECT_EQ("Rockchip RK3188",
+			parse_ro_product_board("K00F"));
+	}
+#endif
 
 TEST(RO_PRODUCT_BOARD, spreadtrum) {
 	EXPECT_EQ("Spreadtrum SC6815AS",
@@ -464,7 +472,9 @@ TEST(RO_PRODUCT_BOARD, spreadtrum) {
 		parse_ro_product_board("SC9830I"));
 }
 
-TEST(RO_PRODUCT_BOARD, texas_instruments) {
-	EXPECT_EQ("Texas Instruments OMAP4460",
-		parse_ro_product_board("tuna"));
-}
+#if CPUINFO_ARCH_ARM
+	TEST(RO_PRODUCT_BOARD, texas_instruments) {
+		EXPECT_EQ("Texas Instruments OMAP4460",
+			parse_ro_product_board("tuna"));
+	}
+#endif /* CPUINFO_ARCH_ARM */
