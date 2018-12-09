@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
-#include <log.h>
+#include <cpuinfo/log.h>
 #include <mach/api.h>
 
 

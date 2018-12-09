@@ -9,7 +9,7 @@
 #include <linux/api.h>
 #include <arm/android/api.h>
 #include <arm/linux/api.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 #if CPUINFO_MOCK
 	#include <cpuinfo-mock.h>

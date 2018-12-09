@@ -11,8 +11,8 @@
 #include <arm/api.h>
 #include <arm/midr.h>
 #include <linux/api.h>
-#include <api.h>
-#include <log.h>
+#include <cpuinfo/internal-api.h>
+#include <cpuinfo/log.h>
 
 
 struct cpuinfo_arm_isa cpuinfo_isa = { 0 };

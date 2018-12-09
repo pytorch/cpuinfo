@@ -7,7 +7,7 @@
 #include <linux/api.h>
 #include <arm/linux/api.h>
 #include <arm/midr.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 /*
  * Size, in chars, of the on-stack buffer used for parsing lines of /proc/cpuinfo.

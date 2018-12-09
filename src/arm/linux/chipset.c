@@ -7,7 +7,7 @@
 #ifdef __ANDROID__
 	#include <arm/android/api.h>
 #endif
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 #define CPUINFO_COUNT_OF(x) (sizeof(x) / sizeof(0[x]))

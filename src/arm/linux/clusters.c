@@ -11,8 +11,8 @@
 #include <arm/api.h>
 #include <arm/midr.h>
 #include <linux/api.h>
-#include <api.h>
-#include <log.h>
+#include <cpuinfo/internal-api.h>
+#include <cpuinfo/log.h>
 
 static inline bool bitmask_all(uint32_t bitfield, uint32_t mask) {
 	return (bitfield & mask) == mask;

@@ -6,7 +6,7 @@
 #include <arm/linux/api.h>
 #include <arm/linux/cp.h>
 #include <arm/midr.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 #if CPUINFO_MOCK

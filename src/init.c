@@ -5,8 +5,8 @@
 #endif
 
 #include <cpuinfo.h>
-#include <api.h>
-#include <log.h>
+#include <cpuinfo/internal-api.h>
+#include <cpuinfo/log.h>
 
 #ifdef __APPLE__
 	#include "TargetConditionals.h"

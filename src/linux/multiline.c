@@ -14,7 +14,7 @@
 	#include <cpuinfo-mock.h>
 #endif
 #include <linux/api.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size, cpuinfo_line_callback callback, void* context)

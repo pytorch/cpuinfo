@@ -2,8 +2,8 @@
 #include <stdbool.h>
 
 #include <cpuinfo.h>
-#include <utils.h>
-#include <log.h>
+#include <cpuinfo/utils.h>
+#include <cpuinfo/log.h>
 #include <x86/api.h>
 #include <x86/cpuid.h>
 

@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 #include <arm/linux/api.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(

@@ -1,8 +1,8 @@
 #include <stddef.h>
 
 #include <cpuinfo.h>
-#include <api.h>
-#include <log.h>
+#include <cpuinfo/internal-api.h>
+#include <cpuinfo/log.h>
 
 
 bool cpuinfo_is_initialized = false;

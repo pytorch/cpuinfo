@@ -2,7 +2,7 @@
 
 #include <arm/api.h>
 #include <arm/midr.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 void cpuinfo_arm_decode_vendor_uarch(

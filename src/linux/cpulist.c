@@ -14,7 +14,7 @@
 	#include <cpuinfo-mock.h>
 #endif
 #include <linux/api.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 /*

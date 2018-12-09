@@ -5,8 +5,8 @@
 
 #include <cpuinfo.h>
 #include <x86/api.h>
-#include <api.h>
-#include <log.h>
+#include <cpuinfo/internal-api.h>
+#include <cpuinfo/log.h>
 
 #include <Windows.h>
 

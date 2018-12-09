@@ -11,8 +11,8 @@
 
 #include <cpuinfo.h>
 #include <mach/api.h>
-#include <api.h>
-#include <log.h>
+#include <cpuinfo/internal-api.h>
+#include <cpuinfo/log.h>
 
 
 struct cpuinfo_arm_isa cpuinfo_isa = {

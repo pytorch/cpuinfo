@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 #include <cpuinfo.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 #include <arm/api.h>
 #include <arm/midr.h>
 

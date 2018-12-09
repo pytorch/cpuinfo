@@ -18,7 +18,7 @@
 #include <cpuinfo-mock.h>
 #include <arm/linux/api.h>
 #include <arm/midr.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 static struct cpuinfo_mock_file* cpuinfo_mock_files = NULL;

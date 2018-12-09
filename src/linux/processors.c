@@ -13,7 +13,7 @@
 #endif
 
 #include <linux/api.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 
 #define STRINGIFY(token) #token

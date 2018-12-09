@@ -13,7 +13,7 @@
 #endif
 #include <cpuinfo.h>
 #include <arm/linux/api.h>
-#include <log.h>
+#include <cpuinfo/log.h>
 
 #if CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_ARM && !defined(__ANDROID__)
 	#include <sys/auxv.h>

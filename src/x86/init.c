@@ -4,8 +4,8 @@
 #include <cpuinfo.h>
 #include <x86/cpuid.h>
 #include <x86/api.h>
-#include <utils.h>
-#include <log.h>
+#include <cpuinfo/utils.h>
+#include <cpuinfo/log.h>
 
 
 struct cpuinfo_x86_isa cpuinfo_isa = { 0 };

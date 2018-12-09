@@ -7,8 +7,8 @@
 #include <x86/api.h>
 #include <x86/linux/api.h>
 #include <linux/api.h>
-#include <api.h>
-#include <log.h>
+#include <cpuinfo/internal-api.h>
+#include <cpuinfo/log.h>
 
 
 static inline uint32_t bit_mask(uint32_t bits) {
