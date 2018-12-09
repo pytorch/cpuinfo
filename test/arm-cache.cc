@@ -1072,113 +1072,115 @@ TEST(HISILICON, kirin_659) {
 	EXPECT_EQ(0, little_l3.size);
 }
 
-TEST(HISILICON, kirin_920) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 920,
-	};
+#if CPUINFO_ARCH_ARM
+	TEST(HISILICON, kirin_920) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 920,
+		};
 
-	struct cpuinfo_cache big_l1i = { 0 };
-	struct cpuinfo_cache big_l1d = { 0 };
-	struct cpuinfo_cache big_l2 = { 0 };
-	struct cpuinfo_cache big_l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
-		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2, &big_l3);
+		struct cpuinfo_cache big_l1i = { 0 };
+		struct cpuinfo_cache big_l1d = { 0 };
+		struct cpuinfo_cache big_l2 = { 0 };
+		struct cpuinfo_cache big_l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+			&chipset, 0, 8,
+			&big_l1i, &big_l1d, &big_l2, &big_l3);
 
-	struct cpuinfo_cache little_l1i = { 0 };
-	struct cpuinfo_cache little_l1d = { 0 };
-	struct cpuinfo_cache little_l2 = { 0 };
-	struct cpuinfo_cache little_l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
-		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2, &little_l3);
+		struct cpuinfo_cache little_l1i = { 0 };
+		struct cpuinfo_cache little_l1d = { 0 };
+		struct cpuinfo_cache little_l2 = { 0 };
+		struct cpuinfo_cache little_l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
+			&chipset, 1, 8,
+			&little_l1i, &little_l1d, &little_l2, &little_l3);
 
-	EXPECT_EQ(32 * 1024, big_l1i.size);
-	EXPECT_EQ(32 * 1024, big_l1d.size);
-	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
-	EXPECT_EQ(0, big_l3.size);
+		EXPECT_EQ(32 * 1024, big_l1i.size);
+		EXPECT_EQ(32 * 1024, big_l1d.size);
+		EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+		EXPECT_EQ(0, big_l3.size);
 
-	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
-	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
-	EXPECT_EQ(512 * 1024, little_l2.size);
-	EXPECT_EQ(0, little_l3.size);
-}
+		EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
+		EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
+		EXPECT_EQ(512 * 1024, little_l2.size);
+		EXPECT_EQ(0, little_l3.size);
+	}
 
-TEST(HISILICON, kirin_925) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 925,
-	};
+	TEST(HISILICON, kirin_925) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 925,
+		};
 
-	struct cpuinfo_cache big_l1i = { 0 };
-	struct cpuinfo_cache big_l1d = { 0 };
-	struct cpuinfo_cache big_l2 = { 0 };
-	struct cpuinfo_cache big_l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
-		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2, &big_l3);
+		struct cpuinfo_cache big_l1i = { 0 };
+		struct cpuinfo_cache big_l1d = { 0 };
+		struct cpuinfo_cache big_l2 = { 0 };
+		struct cpuinfo_cache big_l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+			&chipset, 0, 8,
+			&big_l1i, &big_l1d, &big_l2, &big_l3);
 
-	struct cpuinfo_cache little_l1i = { 0 };
-	struct cpuinfo_cache little_l1d = { 0 };
-	struct cpuinfo_cache little_l2 = { 0 };
-	struct cpuinfo_cache little_l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
-		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2, &little_l3);
+		struct cpuinfo_cache little_l1i = { 0 };
+		struct cpuinfo_cache little_l1d = { 0 };
+		struct cpuinfo_cache little_l2 = { 0 };
+		struct cpuinfo_cache little_l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
+			&chipset, 1, 8,
+			&little_l1i, &little_l1d, &little_l2, &little_l3);
 
-	EXPECT_EQ(32 * 1024, big_l1i.size);
-	EXPECT_EQ(32 * 1024, big_l1d.size);
-	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
-	EXPECT_EQ(0, big_l3.size);
+		EXPECT_EQ(32 * 1024, big_l1i.size);
+		EXPECT_EQ(32 * 1024, big_l1d.size);
+		EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+		EXPECT_EQ(0, big_l3.size);
 
-	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
-	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
-	EXPECT_EQ(512 * 1024, little_l2.size);
-	EXPECT_EQ(0, little_l3.size);
-}
+		EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
+		EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
+		EXPECT_EQ(512 * 1024, little_l2.size);
+		EXPECT_EQ(0, little_l3.size);
+	}
 
-TEST(HISILICON, kirin_928) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
-		.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
-		.model = 928,
-	};
+	TEST(HISILICON, kirin_928) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_hisilicon,
+			.series = cpuinfo_arm_chipset_series_hisilicon_kirin,
+			.model = 928,
+		};
 
-	struct cpuinfo_cache big_l1i = { 0 };
-	struct cpuinfo_cache big_l1d = { 0 };
-	struct cpuinfo_cache big_l2 = { 0 };
-	struct cpuinfo_cache big_l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
-		&chipset, 0, 8,
-		&big_l1i, &big_l1d, &big_l2, &big_l3);
+		struct cpuinfo_cache big_l1i = { 0 };
+		struct cpuinfo_cache big_l1d = { 0 };
+		struct cpuinfo_cache big_l2 = { 0 };
+		struct cpuinfo_cache big_l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+			&chipset, 0, 8,
+			&big_l1i, &big_l1d, &big_l2, &big_l3);
 
-	struct cpuinfo_cache little_l1i = { 0 };
-	struct cpuinfo_cache little_l1d = { 0 };
-	struct cpuinfo_cache little_l2 = { 0 };
-	struct cpuinfo_cache little_l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
-		&chipset, 1, 8,
-		&little_l1i, &little_l1d, &little_l2, &little_l3);
+		struct cpuinfo_cache little_l1i = { 0 };
+		struct cpuinfo_cache little_l1d = { 0 };
+		struct cpuinfo_cache little_l2 = { 0 };
+		struct cpuinfo_cache little_l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
+			&chipset, 1, 8,
+			&little_l1i, &little_l1d, &little_l2, &little_l3);
 
-	EXPECT_EQ(32 * 1024, big_l1i.size);
-	EXPECT_EQ(32 * 1024, big_l1d.size);
-	EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
-	EXPECT_EQ(0, big_l3.size);
+		EXPECT_EQ(32 * 1024, big_l1i.size);
+		EXPECT_EQ(32 * 1024, big_l1d.size);
+		EXPECT_EQ(2 * 1024 * 1024, big_l2.size);
+		EXPECT_EQ(0, big_l3.size);
 
-	EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
-	EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
-	EXPECT_EQ(512 * 1024, little_l2.size);
-	EXPECT_EQ(0, little_l3.size);
-}
+		EXPECT_EQ(32 * 1024, little_l1i.size); /* TODO: verify */
+		EXPECT_EQ(32 * 1024, little_l1d.size); /* TODO: verify */
+		EXPECT_EQ(512 * 1024, little_l2.size);
+		EXPECT_EQ(0, little_l3.size);
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(HISILICON, kirin_950) {
 	const struct cpuinfo_arm_chipset chipset = {
@@ -1324,212 +1326,214 @@ TEST(HISILICON, kirin_970) {
 	EXPECT_EQ(0, little_l3.size);
 }
 
-TEST(NVIDIA, tegra_ap20h) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
-		.model = 20,
-		.suffix = {
-			[0] = 'H',
-		},
-	};
+#if CPUINFO_ARCH_ARM
+	TEST(NVIDIA, tegra_ap20h) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+			.model = 20,
+			.suffix = {
+				[0] = 'H',
+			},
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_t20) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 20,
-	};
+	TEST(NVIDIA, tegra_t20) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 20,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a9, 2, UINT32_C(0x411FC090),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_t30l) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 30,
-		.suffix = {
-			[0] = 'L',
-		},
-	};
+	TEST(NVIDIA, tegra_t30l) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 30,
+			.suffix = {
+				[0] = 'L',
+			},
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_t30) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 30,
-	};
+	TEST(NVIDIA, tegra_t30) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 30,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_t33) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 33,
-	};
+	TEST(NVIDIA, tegra_t33) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 33,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_ap33) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
-		.model = 33,
-	};
+	TEST(NVIDIA, tegra_ap33) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_ap,
+			.model = 33,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x412FC099),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_t114) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 114,
-	};
+	TEST(NVIDIA, tegra_t114) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 114,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x412FC0F2),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x412FC0F2),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(2 * 1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(2 * 1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_sl460n) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_sl,
-		.model = 460,
-		.suffix = {
-			[0] = 'N',
-		},
-	};
+	TEST(NVIDIA, tegra_sl460n) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_sl,
+			.model = 460,
+			.suffix = {
+				[0] = 'N',
+			},
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x414FC091),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a9, 4, UINT32_C(0x414FC091),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(1 * 1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(1 * 1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(NVIDIA, tegra_t124) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_nvidia,
-		.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
-		.model = 124,
-	};
+	TEST(NVIDIA, tegra_t124) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_nvidia,
+			.series = cpuinfo_arm_chipset_series_nvidia_tegra_t,
+			.model = 124,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
-		&chipset, 0, 7,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a15, 4, UINT32_C(0x413FC0F3),
+			&chipset, 0, 7,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(2 * 1024 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(2 * 1024 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(NVIDIA, tegra_t132) {
 	const struct cpuinfo_arm_chipset chipset = {
