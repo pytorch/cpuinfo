@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cpuinfo.h>
+#include <cpuinfo/common.h>
 #include <arm/api.h>
 #include <arm/linux/api.h>
 
@@ -14,4 +15,5 @@ enum cpuinfo_android_chipset_property {
 	cpuinfo_android_chipset_property_max,
 };
 
-void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties properties[restrict static 1]);
+CPUINFO_INTERNAL void cpuinfo_arm_android_parse_properties(
+	struct cpuinfo_android_properties properties[restrict static 1]);

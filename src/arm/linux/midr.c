@@ -13,9 +13,8 @@
 #include <linux/api.h>
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
+#include <cpuinfo/common.h>
 
-
-#define CPUINFO_COUNT_OF(x) (sizeof(x) / sizeof(0[x]))
 
 #define CLUSTERS_MAX 3
 

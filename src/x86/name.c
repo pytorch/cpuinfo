@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include <cpuinfo.h>
+#include <cpuinfo/common.h>
 #include <x86/api.h>
 
 
@@ -665,8 +666,6 @@ uint32_t cpuinfo_x86_normalize_brand_string(
 		return (uint32_t) (output_ptr - normalized_name);
 	}
 }
-
-#define CPUINFO_COUNT_OF(x) (sizeof(x) / sizeof(0[x]))
 
 static const char* vendor_string_map[] = {
 	[cpuinfo_vendor_intel] = "Intel",

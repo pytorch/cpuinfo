@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include <cpuinfo.h>
+#include <cpuinfo/common.h>
 #include <arm/midr.h>
 #include <arm/api.h>
 #include <linux/api.h>
@@ -241,20 +242,20 @@ static inline bool cpuinfo_arm_linux_processor_not_equals(
 	return false;
 }
 
-bool cpuinfo_arm_linux_parse_proc_cpuinfo(
+CPUINFO_INTERNAL bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
 	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count]);
 
 #if CPUINFO_ARCH_ARM
-	bool cpuinfo_arm_linux_hwcap_from_getauxval(
+	CPUINFO_INTERNAL bool cpuinfo_arm_linux_hwcap_from_getauxval(
 		uint32_t hwcap[restrict static 1],
 		uint32_t hwcap2[restrict static 1]);
-	bool cpuinfo_arm_linux_hwcap_from_procfs(
+	CPUINFO_INTERNAL bool cpuinfo_arm_linux_hwcap_from_procfs(
 		uint32_t hwcap[restrict static 1],
 		uint32_t hwcap2[restrict static 1]);
 
-	void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
+	CPUINFO_INTERNAL void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		uint32_t features,
 		uint32_t features2,
 		uint32_t midr,
@@ -262,8 +263,8 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 		uint32_t architecture_flags,
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #elif CPUINFO_ARCH_ARM64
-	uint32_t cpuinfo_arm_linux_hwcap_from_getauxval(void);
-	void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
+	CPUINFO_INTERNAL uint32_t cpuinfo_arm_linux_hwcap_from_getauxval(void);
+	CPUINFO_INTERNAL void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		uint32_t features,
 		uint32_t midr,
 		const struct cpuinfo_arm_chipset chipset[restrict static 1],
@@ -271,50 +272,58 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 #endif
 
 #ifdef __ANDROID__
-	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset(
-		const struct cpuinfo_android_properties properties[restrict static 1],
-		uint32_t cores,
-		uint32_t max_cpu_freq_max);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset(
+			const struct cpuinfo_android_properties properties[restrict static 1],
+			uint32_t cores,
+			uint32_t max_cpu_freq_max);
 #else
-	struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset(
-		const char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
-		uint32_t cores,
-		uint32_t max_cpu_freq_max);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_linux_decode_chipset(
+			const char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+			uint32_t cores,
+			uint32_t max_cpu_freq_max);
 #endif
 
-struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_hardware(
-	const char proc_cpuinfo_hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
-	uint32_t cores, uint32_t max_cpu_freq_max, bool is_tegra);
+CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+	cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_hardware(
+		const char proc_cpuinfo_hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+		uint32_t cores, uint32_t max_cpu_freq_max, bool is_tegra);
 
 #ifdef __ANDROID__
-	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_product_board(
-		const char ro_product_board[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
-		uint32_t cores, uint32_t max_cpu_freq_max);
-	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_board_platform(
-		const char ro_board_platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
-		uint32_t cores, uint32_t max_cpu_freq_max);
-	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(
-		const char ro_mediatek_platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
-	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_arch(
-		const char ro_arch[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
-	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_chipname(
-		const char ro_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset_from_ro_product_board(
+			const char ro_product_board[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
+			uint32_t cores, uint32_t max_cpu_freq_max);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset_from_ro_board_platform(
+			const char ro_board_platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],
+			uint32_t cores, uint32_t max_cpu_freq_max);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset_from_ro_mediatek_platform(
+			const char ro_mediatek_platform[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset_from_ro_arch(
+			const char ro_arch[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset_from_ro_chipname(
+			const char ro_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
 #endif
 
-bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
+CPUINFO_INTERNAL bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 	uint32_t usable_processors,
 	uint32_t max_processors,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
 
-void cpuinfo_arm_linux_detect_core_clusters_by_sequential_scan(
+CPUINFO_INTERNAL void cpuinfo_arm_linux_detect_core_clusters_by_sequential_scan(
 	uint32_t max_processors,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
 
-void cpuinfo_arm_linux_count_cluster_processors(
+CPUINFO_INTERNAL void cpuinfo_arm_linux_count_cluster_processors(
 	uint32_t max_processors,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
 
-uint32_t cpuinfo_arm_linux_detect_cluster_midr(
+CPUINFO_INTERNAL uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	uint32_t max_processors,
 	uint32_t usable_processors,

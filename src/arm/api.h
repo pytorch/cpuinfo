@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include <cpuinfo.h>
+#include <cpuinfo/common.h>
 
 enum cpuinfo_arm_chipset_vendor {
 	cpuinfo_arm_chipset_vendor_unknown = 0,
@@ -77,14 +78,14 @@ struct cpuinfo_arm_chipset {
 #define CPUINFO_ARM_CHIPSET_NAME_MAX CPUINFO_PACKAGE_NAME_MAX
 
 #ifndef __cplusplus
-void cpuinfo_arm_chipset_to_string(
+CPUINFO_INTERNAL void cpuinfo_arm_chipset_to_string(
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	char name[restrict static CPUINFO_ARM_CHIPSET_NAME_MAX]);
 
-void cpuinfo_arm_fixup_chipset(
+CPUINFO_INTERNAL void cpuinfo_arm_fixup_chipset(
 	struct cpuinfo_arm_chipset chipset[restrict static 1], uint32_t cores, uint32_t max_cpu_freq_max);
 
-void cpuinfo_arm_decode_vendor_uarch(
+CPUINFO_INTERNAL void cpuinfo_arm_decode_vendor_uarch(
 	uint32_t midr,
 #if CPUINFO_ARCH_ARM
 	bool has_vfpv4,
@@ -92,7 +93,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 	enum cpuinfo_vendor vendor[restrict static 1],
 	enum cpuinfo_uarch uarch[restrict static 1]);
 
-void cpuinfo_arm_decode_cache(
+CPUINFO_INTERNAL void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
 	uint32_t cluster_cores,
 	uint32_t midr,
@@ -104,7 +105,7 @@ void cpuinfo_arm_decode_cache(
 	struct cpuinfo_cache l2[restrict static 1],
 	struct cpuinfo_cache l3[restrict static 1]);
 #else /* defined(__cplusplus) */
-void cpuinfo_arm_decode_cache(
+CPUINFO_INTERNAL void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
 	uint32_t cluster_cores,
 	uint32_t midr,

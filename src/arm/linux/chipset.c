@@ -8,9 +8,7 @@
 	#include <arm/android/api.h>
 #endif
 #include <cpuinfo/log.h>
-
-
-#define CPUINFO_COUNT_OF(x) (sizeof(x) / sizeof(0[x]))
+#include <cpuinfo/common.h>
 
 
 static inline bool is_ascii_whitespace(char c) {

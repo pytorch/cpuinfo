@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 #include <cpuinfo.h>
+#include <cpuinfo/common.h>
 
 
 #define CPUINFO_LINUX_FLAG_PRESENT            UINT32_C(0x00000001)
@@ -22,36 +23,36 @@
 
 
 typedef bool (*cpuinfo_cpulist_callback)(uint32_t, uint32_t, void*);
-bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback callback, void* context);
+CPUINFO_INTERNAL bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback callback, void* context);
 typedef bool (*cpuinfo_smallfile_callback)(const char*, const char*, void*);
-bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cpuinfo_smallfile_callback, void* context);
+CPUINFO_INTERNAL bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cpuinfo_smallfile_callback, void* context);
 typedef bool (*cpuinfo_line_callback)(const char*, const char*, void*, uint64_t);
-bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size, cpuinfo_line_callback, void* context);
+CPUINFO_INTERNAL bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size, cpuinfo_line_callback, void* context);
 
-uint32_t cpuinfo_linux_get_max_processors_count(void);
-uint32_t cpuinfo_linux_get_max_possible_processor(uint32_t max_processors_count);
-uint32_t cpuinfo_linux_get_max_present_processor(uint32_t max_processors_count);
-uint32_t cpuinfo_linux_get_processor_min_frequency(uint32_t processor);
-uint32_t cpuinfo_linux_get_processor_max_frequency(uint32_t processor);
-bool cpuinfo_linux_get_processor_package_id(uint32_t processor, uint32_t package_id[restrict static 1]);
-bool cpuinfo_linux_get_processor_core_id(uint32_t processor, uint32_t core_id[restrict static 1]);
+CPUINFO_INTERNAL uint32_t cpuinfo_linux_get_max_processors_count(void);
+CPUINFO_INTERNAL uint32_t cpuinfo_linux_get_max_possible_processor(uint32_t max_processors_count);
+CPUINFO_INTERNAL uint32_t cpuinfo_linux_get_max_present_processor(uint32_t max_processors_count);
+CPUINFO_INTERNAL uint32_t cpuinfo_linux_get_processor_min_frequency(uint32_t processor);
+CPUINFO_INTERNAL uint32_t cpuinfo_linux_get_processor_max_frequency(uint32_t processor);
+CPUINFO_INTERNAL bool cpuinfo_linux_get_processor_package_id(uint32_t processor, uint32_t package_id[restrict static 1]);
+CPUINFO_INTERNAL bool cpuinfo_linux_get_processor_core_id(uint32_t processor, uint32_t core_id[restrict static 1]);
 
-bool cpuinfo_linux_detect_possible_processors(uint32_t max_processors_count,
+CPUINFO_INTERNAL bool cpuinfo_linux_detect_possible_processors(uint32_t max_processors_count,
 	uint32_t* processor0_flags, uint32_t processor_struct_size, uint32_t possible_flag);
-bool cpuinfo_linux_detect_present_processors(uint32_t max_processors_count,
+CPUINFO_INTERNAL bool cpuinfo_linux_detect_present_processors(uint32_t max_processors_count,
 	uint32_t* processor0_flags, uint32_t processor_struct_size, uint32_t present_flag);
 
 typedef bool (*cpuinfo_siblings_callback)(uint32_t, uint32_t, uint32_t, void*);
-bool cpuinfo_linux_detect_core_siblings(
+CPUINFO_INTERNAL bool cpuinfo_linux_detect_core_siblings(
 	uint32_t max_processors_count,
 	uint32_t processor,
 	cpuinfo_siblings_callback callback,
 	void* context);
-bool cpuinfo_linux_detect_thread_siblings(
+CPUINFO_INTERNAL bool cpuinfo_linux_detect_thread_siblings(
 	uint32_t max_processors_count,
 	uint32_t processor,
 	cpuinfo_siblings_callback callback,
 	void* context);
 
-extern const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map;
-extern const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map;
+extern CPUINFO_INTERNAL const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map;
+extern CPUINFO_INTERNAL const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map;
