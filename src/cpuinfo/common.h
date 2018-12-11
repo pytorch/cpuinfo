@@ -28,3 +28,13 @@
     #define CPUINFO_INTERNAL
   #endif
 #endif
+
+#ifndef CPUINFO_PRIVATE
+  #if defined(__ELF__)
+    #define CPUINFO_PRIVATE __attribute__((__visibility__("hidden")))
+  #elif defined(__MACH__)
+    #define CPUINFO_PRIVATE __attribute__((__visibility__("hidden")))
+  #else
+    #define CPUINFO_PRIVATE
+  #endif
+#endif

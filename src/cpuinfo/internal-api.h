@@ -32,12 +32,12 @@ extern CPUINFO_INTERNAL uint32_t cpuinfo_clusters_count;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_packages_count;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
 
-CPUINFO_INTERNAL void cpuinfo_x86_mach_init(void);
-CPUINFO_INTERNAL void cpuinfo_x86_linux_init(void);
+CPUINFO_PRIVATE void cpuinfo_x86_mach_init(void);
+CPUINFO_PRIVATE void cpuinfo_x86_linux_init(void);
 #ifdef _WIN32
-	CPUINFO_INTERNAL BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context);
+	CPUINFO_PRIVATE BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context);
 #endif
-CPUINFO_INTERNAL void cpuinfo_arm_mach_init(void);
-CPUINFO_INTERNAL void cpuinfo_arm_linux_init(void);
+CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);
+CPUINFO_PRIVATE void cpuinfo_arm_linux_init(void);
 
 typedef void (*cpuinfo_processor_callback)(uint32_t);
