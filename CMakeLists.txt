@@ -173,8 +173,8 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
   ENDIF()
 
   IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
-    LIST(APPEND CPUINFO_SRCS  
-      src/linux/smallfile.c    
+    LIST(APPEND CPUINFO_SRCS
+      src/linux/smallfile.c
       src/linux/multiline.c
       src/linux/current.c
       src/linux/cpulist.c
@@ -199,7 +199,7 @@ ELSEIF(CPUINFO_LIBRARY_TYPE STREQUAL "static")
 ELSE()
   MESSAGE(FATAL_ERROR "Unsupported library type ${CPUINFO_LIBRARY_TYPE}")
 ENDIF()
-ADD_LIBRARY(cpuinfo_internals OBJECT ${CPUINFO_SRCS})
+ADD_LIBRARY(cpuinfo_internals STATIC ${CPUINFO_SRCS})
 CPUINFO_TARGET_ENABLE_C99(cpuinfo)
 CPUINFO_TARGET_ENABLE_C99(cpuinfo_internals)
 CPUINFO_TARGET_RUNTIME_LIBRARY(cpuinfo)
