@@ -4,7 +4,7 @@
 import confu
 parser = confu.standard_parser("cpuinfo configuration script")
 parser.add_argument("--log", dest="log_level",
-    choices=("none", "error", "warning", "info", "debug"), default="error")
+    choices=("none", "fatal", "error", "warning", "info", "debug"), default="error")
 parser.add_argument("--mock", dest="mock", action="store_true")
 
 
@@ -13,8 +13,8 @@ def main(args):
     build = confu.Build.from_options(options)
 
     macros = {
-        "CPUINFO_LOG_LEVEL": {"none": 0, "error": 1, "warning": 2, "info": 3, "debug": 4}[options.log_level],
-        "CPUINFO_LOG_TO_STDIO": int(not options.mock),
+        "CPUINFO_LOG_LEVEL": {"none": 0, "fatal": 1, "error": 2, "warning": 3, "info": 4, "debug": 5}[options.log_level],
+        "CLOG_LOG_TO_STDIO": int(not options.mock),
         "CPUINFO_MOCK": int(options.mock),
     }
     if build.target.is_linux or build.target.is_android:

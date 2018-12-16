@@ -37,7 +37,7 @@ struct cpuinfo_mach_topology cpuinfo_mach_detect_topology(void) {
 		packages = 1;
 	}
 
-	cpuinfo_log_info("mach topology: packages = %d, cores = %d, threads = %d", packages, (int) cores, (int) threads);
+	cpuinfo_log_debug("mach topology: packages = %d, cores = %d, threads = %d", packages, (int) cores, (int) threads);
 	struct cpuinfo_mach_topology topology = {
 		.packages = (uint32_t) packages,
 		.cores = (uint32_t) cores,
