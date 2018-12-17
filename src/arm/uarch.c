@@ -172,7 +172,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Nvidia CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+#if !defined(__ANDROID__)
 		case 'P':
 			*vendor = cpuinfo_vendor_apm;
 			switch (midr_get_part(midr)) {
