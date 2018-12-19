@@ -124,8 +124,8 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] armeabi ABI
   - [x] armeabiv7-a ABI
   - [x] arm64-v8a ABI
-  - [ ] mips ABI
-  - [ ] mips64 ABI
+  - [ ] ~~mips ABI~~
+  - [ ] ~~mips64 ABI~~
 - [x] Linux
   - [x] x86
   - [x] x86-64
@@ -133,6 +133,8 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] ARM64
   - [ ] PowerPC64
 - [x] iOS
+  - [x] x86 (iPhone simulator)
+  - [x] x86-64 (iPhone simulator)
   - [x] ARMv7
   - [x] ARM64
 - [x] OS X
@@ -161,7 +163,7 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] Intel-designed ARM cores (XScale up to 3rd-gen)
   - [x] Apple-designed ARM cores (up to Hurricane)
   - [x] Cavium-designed ARM cores (ThunderX)
-  - [ ] AppliedMicro-designed ARM cores
+  - [x] AppliedMicro-designed ARM cores (X-Gene)
 - Instruction set detection
   - [x] Using CPUID (x86/x86-64)
   - [x] Using dynamic code generation validator (Native Client/x86-64)
@@ -183,7 +185,6 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] Using `sysctlbyname` (Mach)
   - [x] Using sysfs `typology` directories (ARM/Linux)
   - [ ] Using sysfs `cache` directories (Linux)
-  - [ ] Using `clGetDeviceInfo` with `CL_DEVICE_GLOBAL_MEM_CACHE_SIZE`/`CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE` parameters (Android)
 - TLB detection
   - [x] Using CPUID leaf 0x00000002 (x86/x86-64)
   - [ ] Using CPUID leaves 0x80000005-0x80000006 and 0x80000019 (AMD x86/x86-64)
