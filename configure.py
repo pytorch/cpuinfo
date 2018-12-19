@@ -55,7 +55,6 @@ def main(args):
                     sources.append("arm/linux/aarch64-isa.c")
                 if build.target.is_android:
                     sources += [
-                        "arm/android/gpu.c",
                         "arm/android/properties.c",
                     ]
 
@@ -71,12 +70,6 @@ def main(args):
             ]
             if options.mock:
                 sources += ["linux/mockfile.c"]
-        if build.target.is_android:
-            sources.append("linux/gpu.c")
-            if options.mock:
-                sources.append("gpu/gles2-mock.c")
-            else:
-                sources.append("gpu/gles2.c")
         build.static_library("cpuinfo", map(build.cc, sources))
 
     with build.options(source_dir="tools", deps=[build, build.deps.clog]):
