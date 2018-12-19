@@ -692,7 +692,7 @@ static void cpuinfo_arm_linux_detect_cluster_midr_by_sequential_scan(
 {
 	uint32_t midr = default_midr;
 	for (uint32_t i = 0; i < processors_count; i++) {
-		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			if (processors[i].package_leader_id == i) {
 				if (bitmask_all(processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
 					midr = processors[i].midr;	
@@ -732,7 +732,7 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 	uint32_t last_processor_with_midr = max_processors;
 	uint32_t processors_with_midr_count = 0;
 	for (uint32_t i = 0; i < max_processors; i++) {
-		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			if (processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR) {
 				last_processor_in_cpuinfo = i;
 			}
@@ -817,7 +817,7 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 		 */
 		uint32_t clusters_with_midr_count = 0;
 		for (uint32_t i = 0; i < max_processors; i++) {
-			if (bitmask_all(processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_ARM_LINUX_VALID_MIDR)) {
+			if (bitmask_all(processors[i].flags, CPUINFO_LINUX_FLAG_VALID | CPUINFO_ARM_LINUX_VALID_MIDR)) {
 				if (processors[i].package_leader_id == i) {
 					clusters_with_midr_count += 1;
 				}

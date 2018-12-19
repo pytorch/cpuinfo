@@ -39,7 +39,7 @@ static bool cluster_siblings_parser(
 	uint32_t package_leader_id = processors[processor].package_leader_id;
 
 	for (uint32_t sibling = siblings_start; sibling < siblings_end; sibling++) {
-		if (!bitmask_all(processors[sibling].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (!bitmask_all(processors[sibling].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			cpuinfo_log_info("invalid processor %"PRIu32" reported as a sibling for processor %"PRIu32,
 				sibling, processor);
 			continue;
@@ -64,8 +64,8 @@ static int cmp_arm_linux_processor(const void* ptr_a, const void* ptr_b) {
 	const struct cpuinfo_arm_linux_processor* processor_b = (const struct cpuinfo_arm_linux_processor*) ptr_b;
 
 	/* Move usable processors towards the start of the array */
-	const bool usable_a = bitmask_all(processor_a->flags, CPUINFO_LINUX_MASK_USABLE);
-	const bool usable_b = bitmask_all(processor_b->flags, CPUINFO_LINUX_MASK_USABLE);
+	const bool usable_a = bitmask_all(processor_a->flags, CPUINFO_LINUX_FLAG_VALID);
+	const bool usable_b = bitmask_all(processor_b->flags, CPUINFO_LINUX_FLAG_VALID);
 	if (usable_a != usable_b) {
 		return (int) usable_b - (int) usable_a;
 	}
@@ -123,7 +123,21 @@ void cpuinfo_arm_linux_init(void) {
 		cpuinfo_linux_get_max_present_processor(max_processors_count);
 	cpuinfo_log_debug("maximum present processors count: %"PRIu32, max_present_processors_count);
 
-	const uint32_t arm_linux_processors_count = min(max_possible_processors_count, max_present_processors_count);
+	uint32_t valid_processor_mask = 0;
+	uint32_t arm_linux_processors_count = max_processors_count;
+	if (max_present_processors_count != 0) {
+		arm_linux_processors_count = min(arm_linux_processors_count, max_present_processors_count);
+		valid_processor_mask = CPUINFO_LINUX_FLAG_PRESENT;
+	}
+	if (max_possible_processors_count != 0) {
+		arm_linux_processors_count = min(arm_linux_processors_count, max_possible_processors_count);
+		valid_processor_mask |= CPUINFO_LINUX_FLAG_POSSIBLE;
+	}
+	if ((max_present_processors_count | max_possible_processors_count) == 0) {
+		cpuinfo_log_error("failed to parse both lists of possible and present processors");
+		return;
+	}
+
 	arm_linux_processors = calloc(arm_linux_processors_count, sizeof(struct cpuinfo_arm_linux_processor));
 	if (arm_linux_processors == NULL) {
 		cpuinfo_log_error(
@@ -133,15 +147,19 @@ void cpuinfo_arm_linux_init(void) {
 		return;
 	}
 
-	cpuinfo_linux_detect_possible_processors(
-		arm_linux_processors_count, &arm_linux_processors->flags,
-		sizeof(struct cpuinfo_arm_linux_processor),
-		CPUINFO_LINUX_FLAG_POSSIBLE);
+	if (max_possible_processors_count) {
+		cpuinfo_linux_detect_possible_processors(
+			arm_linux_processors_count, &arm_linux_processors->flags,
+			sizeof(struct cpuinfo_arm_linux_processor),
+			CPUINFO_LINUX_FLAG_POSSIBLE);
+	}
 
-	cpuinfo_linux_detect_present_processors(
-		arm_linux_processors_count, &arm_linux_processors->flags,
-		sizeof(struct cpuinfo_arm_linux_processor),
-		CPUINFO_LINUX_FLAG_PRESENT);
+	if (max_present_processors_count) {
+		cpuinfo_linux_detect_present_processors(
+			arm_linux_processors_count, &arm_linux_processors->flags,
+			sizeof(struct cpuinfo_arm_linux_processor),
+			CPUINFO_LINUX_FLAG_PRESENT);
+	}
 
 #if defined(__ANDROID__)
 	struct cpuinfo_android_properties android_properties;
@@ -163,20 +181,21 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (bitmask_all(arm_linux_processors[i].flags, valid_processor_mask)) {
+			arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_VALID;
 			cpuinfo_log_debug("parsed processor %"PRIu32" MIDR 0x%08"PRIx32,
 				i, arm_linux_processors[i].midr);
 		}
 	}
 
-	uint32_t usable_processors = 0, last_midr = 0;
+	uint32_t valid_processors = 0, last_midr = 0;
 	#if CPUINFO_ARCH_ARM
 	uint32_t last_architecture_version = 0, last_architecture_flags = 0;
 	#endif
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		arm_linux_processors[i].system_processor_id = i;
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
-			usable_processors += 1;
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			valid_processors += 1;
 
 			if (!(arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR)) {
 				/*
@@ -205,7 +224,7 @@ void cpuinfo_arm_linux_init(void) {
 
 #if defined(__ANDROID__)
 	const struct cpuinfo_arm_chipset chipset =
-		cpuinfo_arm_android_decode_chipset(&android_properties, usable_processors, 0);
+		cpuinfo_arm_android_decode_chipset(&android_properties, valid_processors, 0);
 #else
 	const struct cpuinfo_arm_chipset chipset = {
 		.vendor = cpuinfo_arm_chipset_vendor_unknown,
@@ -234,7 +253,7 @@ void cpuinfo_arm_linux_init(void) {
 					 */
 					uint32_t processors_with_features = 0;
 					for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-						if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_ARM_LINUX_VALID_FEATURES)) {
+						if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID | CPUINFO_ARM_LINUX_VALID_FEATURES)) {
 							if (processors_with_features == 0) {
 								isa_features = arm_linux_processors[i].features;
 								isa_features2 = arm_linux_processors[i].features2;
@@ -264,7 +283,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Detect min/max frequency and package ID */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			const uint32_t max_frequency = cpuinfo_linux_get_processor_max_frequency(i);
 			if (max_frequency != 0) {
 				arm_linux_processors[i].max_frequency = max_frequency;
@@ -290,7 +309,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	/* Propagate topology group IDs among siblings */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;
 		}
 
@@ -305,7 +324,7 @@ void cpuinfo_arm_linux_init(void) {
 	/* Propagate all cluster IDs */
 	uint32_t clustered_processors = 0;
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE | CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER)) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID | CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER)) {
 			clustered_processors += 1;
 
 			const uint32_t package_leader_id = arm_linux_processors[i].package_leader_id;
@@ -318,7 +337,7 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
-	if (clustered_processors != usable_processors) {
+	if (clustered_processors != valid_processors) {
 		/*
 		 * Topology information about some or all logical processors may be unavailable, for the following reasons:
 		 * - Linux kernel is too old, or configured without support for topology information in sysfs.
@@ -328,7 +347,7 @@ void cpuinfo_arm_linux_init(void) {
 		 * - Try heuristic cluster configurations (e.g. 6-core SoC usually has 4+2 big.LITTLE configuration).
 		 * - If heuristic failed, assign processors to core clusters in a sequential scan.
 		 */
-		if (!cpuinfo_arm_linux_detect_core_clusters_by_heuristic(usable_processors, arm_linux_processors_count, arm_linux_processors)) {
+		if (!cpuinfo_arm_linux_detect_core_clusters_by_heuristic(valid_processors, arm_linux_processors_count, arm_linux_processors)) {
 			cpuinfo_arm_linux_detect_core_clusters_by_sequential_scan(arm_linux_processors_count, arm_linux_processors);
 		}
 	}
@@ -337,11 +356,11 @@ void cpuinfo_arm_linux_init(void) {
 
 	const uint32_t cluster_count = cpuinfo_arm_linux_detect_cluster_midr(
 		&chipset,
-		arm_linux_processors_count, usable_processors, arm_linux_processors);
+		arm_linux_processors_count, valid_processors, arm_linux_processors);
 
 	/* Initialize core vendor, uarch, MIDR, and frequency for every logical processor */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			const uint32_t cluster_leader = arm_linux_processors[i].package_leader_id;
 			if (cluster_leader == i) {
 				/* Cluster leader: decode core vendor and uarch */
@@ -365,7 +384,7 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			cpuinfo_log_debug("post-analysis processor %"PRIu32": MIDR %08"PRIx32" frequency %"PRIu32,
 				i, arm_linux_processors[i].midr, arm_linux_processors[i].max_frequency);
 		}
@@ -375,7 +394,7 @@ void cpuinfo_arm_linux_init(void) {
 		sizeof(struct cpuinfo_arm_linux_processor), cmp_arm_linux_processor);
 
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_MASK_USABLE)) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			cpuinfo_log_debug("post-sort processor %"PRIu32": system id %"PRIu32" MIDR %08"PRIx32" frequency %"PRIu32,
 				i, arm_linux_processors[i].system_processor_id, arm_linux_processors[i].midr, arm_linux_processors[i].max_frequency);
 		}
@@ -388,21 +407,21 @@ void cpuinfo_arm_linux_init(void) {
 	 * - Level 2 and level 3 cache is shared between cores in the same cluster.
 	 */
 	cpuinfo_arm_chipset_to_string(&chipset, package.name);
-	package.processor_count = usable_processors;
-	package.core_count = usable_processors;
+	package.processor_count = valid_processors;
+	package.core_count = valid_processors;
 	package.cluster_count = cluster_count;
 
-	processors = calloc(usable_processors, sizeof(struct cpuinfo_processor));
+	processors = calloc(valid_processors, sizeof(struct cpuinfo_processor));
 	if (processors == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" logical processors",
-			usable_processors * sizeof(struct cpuinfo_processor), usable_processors);
+			valid_processors * sizeof(struct cpuinfo_processor), valid_processors);
 		goto cleanup;
 	}
 
-	cores = calloc(usable_processors, sizeof(struct cpuinfo_core));
+	cores = calloc(valid_processors, sizeof(struct cpuinfo_core));
 	if (cores == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
-			usable_processors * sizeof(struct cpuinfo_core), usable_processors);
+			valid_processors * sizeof(struct cpuinfo_core), valid_processors);
 		goto cleanup;
 	}
 
@@ -427,17 +446,17 @@ void cpuinfo_arm_linux_init(void) {
 		goto cleanup;
 	}
 
-	l1i = calloc(usable_processors, sizeof(struct cpuinfo_cache));
+	l1i = calloc(valid_processors, sizeof(struct cpuinfo_cache));
 	if (l1i == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
-			usable_processors * sizeof(struct cpuinfo_cache), usable_processors);
+			valid_processors * sizeof(struct cpuinfo_cache), valid_processors);
 		goto cleanup;
 	}
 
-	l1d = calloc(usable_processors, sizeof(struct cpuinfo_cache));
+	l1d = calloc(valid_processors, sizeof(struct cpuinfo_cache));
 	if (l1d == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
-			usable_processors * sizeof(struct cpuinfo_cache), usable_processors);
+			valid_processors * sizeof(struct cpuinfo_cache), valid_processors);
 		goto cleanup;
 	}
 
@@ -445,7 +464,7 @@ void cpuinfo_arm_linux_init(void) {
 	/* Indication whether L3 (if it exists) is shared between all cores */
 	bool shared_l3 = true;
 	/* Populate cache infromation structures in l1i, l1d */
-	for (uint32_t i = 0; i < usable_processors; i++) {
+	for (uint32_t i = 0; i < valid_processors; i++) {
 		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 			cluster_id += 1;
 			clusters[cluster_id] = (struct cpuinfo_cluster) {
@@ -564,7 +583,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	cluster_id = UINT32_MAX;
 	uint32_t l2_index = UINT32_MAX, l3_index = UINT32_MAX;
-	for (uint32_t i = 0; i < usable_processors; i++) {
+	for (uint32_t i = 0; i < valid_processors; i++) {
 		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 			cluster_id++;
 		}
@@ -610,7 +629,7 @@ void cpuinfo_arm_linux_init(void) {
 						.flags           = temp_l3.flags,
 						.processor_start = i,
 						.processor_count =
-							shared_l3 ? usable_processors : arm_linux_processors[i].package_processor_count,
+							shared_l3 ? valid_processors : arm_linux_processors[i].package_processor_count,
 					};
 				}
 			}
@@ -650,12 +669,12 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
 	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
 
-	cpuinfo_processors_count = usable_processors;
-	cpuinfo_cores_count = usable_processors;
+	cpuinfo_processors_count = valid_processors;
+	cpuinfo_cores_count = valid_processors;
 	cpuinfo_clusters_count = cluster_count;
 	cpuinfo_packages_count = 1;
-	cpuinfo_cache_count[cpuinfo_cache_level_1i] = usable_processors;
-	cpuinfo_cache_count[cpuinfo_cache_level_1d] = usable_processors;
+	cpuinfo_cache_count[cpuinfo_cache_level_1i] = valid_processors;
+	cpuinfo_cache_count[cpuinfo_cache_level_1d] = valid_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 

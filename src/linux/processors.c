@@ -228,7 +228,7 @@ uint32_t cpuinfo_linux_get_max_possible_processor(uint32_t max_processors_count)
 	uint32_t max_possible_processor = 0;
 	if (!cpuinfo_linux_parse_cpulist(POSSIBLE_CPULIST_FILENAME, max_processor_number_parser, &max_possible_processor)) {
 		cpuinfo_log_error("failed to parse the list of possible processors in %s", POSSIBLE_CPULIST_FILENAME);
-		return max_processors_count;
+		return UINT32_MAX;
 	}
 	if (max_possible_processor >= max_processors_count) {
 		cpuinfo_log_warning(
@@ -243,7 +243,7 @@ uint32_t cpuinfo_linux_get_max_present_processor(uint32_t max_processors_count) 
 	uint32_t max_present_processor = 0;
 	if (!cpuinfo_linux_parse_cpulist(PRESENT_CPULIST_FILENAME, max_processor_number_parser, &max_present_processor)) {
 		cpuinfo_log_error("failed to parse the list of present processors in %s", PRESENT_CPULIST_FILENAME);
-		return max_processors_count;
+		return UINT32_MAX;
 	}
 	if (max_present_processor >= max_processors_count) {
 		cpuinfo_log_warning(
@@ -271,7 +271,7 @@ static bool detect_processor_parser(uint32_t processor_list_start, uint32_t proc
 		if (processor >= max_processors_count) {
 			break;
 		}
-		*((uint32_t*) ((void*) processor0_flags + processor_struct_size * processor)) |= detected_flag;
+		*((uint32_t*) ((uintptr_t) processor0_flags + processor_struct_size * processor)) |= detected_flag;
 	}
 	return true;
 }

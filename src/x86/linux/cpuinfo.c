@@ -90,7 +90,7 @@ static bool parse_line(
 	if (line_start == line_end) {
 		return true;
 	}
-	
+
 	/* Search for ':' on the line. */
 	const char* separator = line_start;
 	for (; separator != line_end; separator++) {
@@ -100,7 +100,7 @@ static bool parse_line(
 	}
 	/* Skip line if no ':' separator was found. */
 	if (separator == line_end) {
-		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
+		cpuinfo_log_info("Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
 			(int) (line_end - line_start), line_start);
 		return true;
 	}
@@ -114,7 +114,7 @@ static bool parse_line(
 	}
 	/* Skip line if key contains nothing but spaces. */
 	if (key_end == line_start) {
-		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key contains only spaces",
+		cpuinfo_log_info("Line %.*s in /proc/cpuinfo is ignored: key contains only spaces",
 			(int) (line_end - line_start), line_start);
 		return true;
 	}
@@ -128,7 +128,7 @@ static bool parse_line(
 	}
 	/* Value part contains nothing but spaces. Skip line. */
 	if (value_start == line_end) {
-		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: value contains only spaces",
+		cpuinfo_log_info("Line %.*s in /proc/cpuinfo is ignored: value contains only spaces",
 			(int) (line_end - line_start), line_start);
 		return true;
 	}
@@ -176,6 +176,8 @@ static bool parse_line(
 					/* Log and ignore processor */
 					cpuinfo_log_warning("processor %"PRIu32" in /proc/cpuinfo is ignored: index exceeds system limit %"PRIu32,
 						new_processor_index, max_processors_count - 1);
+				} else {
+					processors[new_processor_index].flags |= CPUINFO_LINUX_FLAG_PROC_CPUINFO;
 				}
 				state->processor_index = new_processor_index;
 				return true;
