@@ -1356,6 +1356,7 @@ static inline bool cpuinfo_has_x86_sha(void) {
 		#endif
 		bool rdm;
 		bool fp16arith;
+		bool dot;
 		bool jscvt;
 		bool fcma;
 
@@ -1578,6 +1579,14 @@ static inline bool cpuinfo_has_arm_neon_fp16_arith(void) {
 static inline bool cpuinfo_has_arm_fp16_arith(void) {
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.fp16arith;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_neon_dot(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.dot;
 	#else
 		return false;
 	#endif

@@ -65,6 +65,25 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 			}
 			break;
 	}
+	/*
+	 * Many phones ship with an old kernel configuration that doesn't report UDOT/SDOT instructions.
+	 * Use a MIDR-based heuristic to whitelist processors known to support it:
+	 * - Processors with Qualcomm-modified Cortex-A76 cores
+	 * - Kirin 980 processor
+	 */
+	switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+		case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
+			isa->dot = true;
+			break;
+		default:
+			if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDDP) {
+				isa->dot = true;
+			}
+			if (chipset->series == cpuinfo_arm_chipset_series_hisilicon_kirin && chipset->model == 980) {
+				isa->dot = true;
+			}
+			break;
+	}
 	if (features & CPUINFO_ARM_LINUX_FEATURE_JSCVT) {
 		isa->jscvt = true;
 	}

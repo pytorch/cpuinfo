@@ -138,8 +138,9 @@ int main(int argc, char** argv) {
 		printf("\tNEON-FP16: %s\n", cpuinfo_has_arm_neon_fp16() ? "yes" : "no");
 		printf("\tNEON-FMA: %s\n", cpuinfo_has_arm_neon_fma() ? "yes" : "no");
 		printf("\tNEON VQRDMLAH/VQRDMLSH: %s\n", cpuinfo_has_arm_neon_rdm() ? "yes" : "no");
-		printf("\tNEON FP16 arithmetics: %s\n", cpuinfo_has_arm_fp16_arith() ? "yes" : "no");
+		printf("\tNEON FP16 arithmetics: %s\n", cpuinfo_has_arm_neon_fp16_arith() ? "yes" : "no");
 		printf("\tNEON complex: %s\n", cpuinfo_has_arm_fcma() ? "yes" : "no");
+		printf("\tNEON dot product: %s\n", cpuinfo_has_arm_neon_dot() ? "yes" : "no");
 
 	printf("Cryptography extensions:\n");
 		printf("\tAES: %s\n", cpuinfo_has_arm_aes() ? "yes" : "no");

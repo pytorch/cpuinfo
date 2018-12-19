@@ -342,6 +342,14 @@ TEST(ISA, fp16_arith) {
 	ASSERT_FALSE(cpuinfo_has_arm_fp16_arith());
 }
 
+TEST(ISA, neon_fp16_arith) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_fp16_arith());
+}
+
+TEST(ISA, neon_dot) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_dot());
+}
+
 TEST(ISA, jscvt) {
 	ASSERT_FALSE(cpuinfo_has_arm_jscvt());
 }

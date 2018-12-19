@@ -74,6 +74,23 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				}
 				break;
 		}
+
+		/*
+		 * NEON VDOT instructions are not indicated in /proc/cpuinfo.
+		 * Use a MIDR-based heuristic to whitelist processors known to support it:
+		 * - Processors with Qualcomm-modified Cortex-A76 cores
+		 * - Kirin 980 processor
+		 */
+		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+			case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
+				isa->dot = true;
+				break;
+			default:
+				if (chipset->series == cpuinfo_arm_chipset_series_hisilicon_kirin && chipset->model == 980) {
+					isa->dot = true;
+				}
+				break;
+		}
 	} else {
 		/* ARMv7 or lower: use feature flags to detect optional features */
 
