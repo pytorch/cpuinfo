@@ -42,7 +42,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x02:
@@ -55,7 +55,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 2,
 				.associativity = 2,
-				.pages = CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x03:
@@ -68,7 +68,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x04:
@@ -81,7 +81,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x05:
@@ -94,7 +94,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x06:
@@ -107,7 +107,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1i = (struct cpuinfo_x86_cache) {
 				.size = 8 * 1024,
 				.associativity = 4,
-				.line_size = 32
+				.sets = 64,
+				.partitions = 1,
+				.line_size = 32,
 			};
 			break;
 		case 0x08:
@@ -120,7 +122,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1i = (struct cpuinfo_x86_cache) {
 				.size = 16 * 1024,
 				.associativity = 4,
-				.line_size = 32
+				.sets = 128,
+				.partitions = 1,
+				.line_size = 32,
 			};
 			break;
 		case 0x09:
@@ -133,7 +137,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1i = (struct cpuinfo_x86_cache) {
 				.size = 32 * 1024,
 				.associativity = 4,
-				.line_size = 64
+				.sets = 128,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x0A:
@@ -146,7 +152,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 8 * 1024,
 				.associativity = 2,
-				.line_size = 32
+				.sets = 128,
+				.partitions = 1,
+				.line_size = 32,
 			};
 			break;
 		case 0x0B:
@@ -159,7 +167,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 4,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x0C:
@@ -172,7 +180,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 16 * 1024,
 				.associativity = 4,
-				.line_size = 32
+				.sets = 128,
+				.partitions = 1,
+				.line_size = 32,
 			};
 			break;
 		case 0x0D:
@@ -185,7 +195,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 16 * 1024,
 				.associativity = 4,
-				.line_size = 64
+				.sets = 64,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x0E:
@@ -198,7 +210,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 24 * 1024,
 				.associativity = 6,
-				.line_size = 64
+				.sets = 64,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x1D:
@@ -209,8 +223,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 128 * 1024,
 				.associativity = 2,
+				.sets = 1024,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 		case 0x21:
 			/*
@@ -222,8 +238,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 256 * 1024,
 				.associativity = 8,
+				.sets = 512,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x22:
@@ -236,8 +254,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 4,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x23:
@@ -250,8 +270,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 8,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x24:
@@ -262,8 +284,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 16,
+				.sets = 1024,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x25:
@@ -276,8 +300,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 2 * 1024 * 1024,
 				.associativity = 8,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x29:
@@ -290,8 +316,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 4 * 1024 * 1024,
 				.associativity = 8,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x2C:
@@ -304,8 +332,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 32 * 1024,
 				.associativity = 8,
+				.sets = 64,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x30:
@@ -318,7 +348,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1i = (struct cpuinfo_x86_cache) {
 				.size = 32 * 1024,
 				.associativity = 8,
-				.line_size = 64
+				.sets = 64,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x39:
@@ -326,8 +358,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 128 * 1024,
 				.associativity = 4,
+				.sets = 512,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x3A:
@@ -335,8 +369,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 192 * 1024,
 				.associativity = 6,
+				.sets = 512,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x3B:
@@ -344,8 +380,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 128 * 1024,
 				.associativity = 2,
+				.sets = 1024,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x3C:
@@ -353,8 +391,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 256 * 1024,
 				.associativity = 4,
+				.sets = 1024,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x3D:
@@ -362,8 +402,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 384 * 1024,
 				.associativity = 6,
+				.sets = 1024,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x3E:
@@ -371,8 +413,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 4,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x40:
@@ -393,8 +437,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 128 * 1024,
 				.associativity = 4,
+				.sets = 1024,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x42:
@@ -407,8 +453,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 256 * 1024,
 				.associativity = 4,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x43:
@@ -421,8 +469,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 4,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x44:
@@ -435,8 +485,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 4,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x45:
@@ -449,8 +501,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 2 * 1024 * 1024,
 				.associativity = 4,
+				.sets = 16384,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x46:
@@ -463,8 +517,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 4 * 1024 * 1024,
 				.associativity = 4,
+				.sets = 16384,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x47:
@@ -477,8 +533,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 8 * 1024 * 1024,
 				.associativity = 8,
+				.sets = 16384,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x48:
@@ -491,8 +549,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 3 * 1024 * 1024,
 				.associativity = 12,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x49:
@@ -509,15 +569,19 @@ void cpuinfo_x86_decode_cache_descriptor(
 				cache->l3 = (struct cpuinfo_x86_cache) {
 					.size = 4 * 1024 * 1024,
 					.associativity = 16,
+					.sets = 4096,
+					.partitions = 1,
 					.line_size = 64,
-					.flags = CPUINFO_CACHE_INCLUSIVE
+					.flags = CPUINFO_CACHE_INCLUSIVE,
 				};
 			} else {
 				cache->l2 = (struct cpuinfo_x86_cache) {
 					.size = 4 * 1024 * 1024,
 					.associativity = 16,
+					.sets = 4096,
+					.partitions = 1,
 					.line_size = 64,
-					.flags = CPUINFO_CACHE_INCLUSIVE
+					.flags = CPUINFO_CACHE_INCLUSIVE,
 				};
 			}
 			break;
@@ -531,8 +595,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 6 * 1024 * 1024,
 				.associativity = 12,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x4B:
@@ -545,8 +611,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 8 * 1024 * 1024,
 				.associativity = 16,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x4C:
@@ -559,8 +627,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 12 * 1024 * 1024,
 				.associativity = 12,
+				.sets = 16384,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x4D:
@@ -573,8 +643,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 16 * 1024 * 1024,
 				.associativity = 16,
+				.sets = 16384,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x4E:
@@ -587,8 +659,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 6 * 1024 * 1024,
 				.associativity = 24,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x4F:
@@ -602,7 +676,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 				.entries = 32,
 				/* Assume full associativity from nearby entries: manual lacks detail */
 				.associativity = 32,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x50:
@@ -615,7 +689,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = *itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 64,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x51:
@@ -628,7 +702,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = *itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 128,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x52:
@@ -641,7 +715,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = *itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 256,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x55:
@@ -654,7 +728,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 7,
 				.associativity = 7,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x56:
@@ -667,7 +741,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb0_4MB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x57:
@@ -680,7 +754,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb0_4KB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x59:
@@ -693,7 +767,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb0_4KB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 16,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x5A:
@@ -706,7 +780,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb0_2MB = *dtlb0_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x5B:
@@ -719,7 +793,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = *dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 64,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x5C:
@@ -732,7 +806,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = *dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 128,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x5D:
@@ -745,7 +819,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = *dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 256,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x60:
@@ -756,7 +830,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 16 * 1024,
 				.associativity = 8,
-				.line_size = 64
+				.sets = 32,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x61:
@@ -767,7 +843,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 48,
 				.associativity = 48,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x63:
@@ -779,12 +855,12 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_2MB = *dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			*dtlb_1GB = (struct cpuinfo_tlb) {
 				.entries = 4,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_1GB
+				.pages = CPUINFO_PAGE_SIZE_1GB,
 			};
 			break;
 		case 0x64:
@@ -796,7 +872,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 512,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x66:
@@ -807,7 +883,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 8 * 1024,
 				.associativity = 4,
-				.line_size = 64
+				.sets = 32,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x67:
@@ -818,7 +896,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 16 * 1024,
 				.associativity = 4,
-				.line_size = 64
+				.sets = 64,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x68:
@@ -829,7 +909,9 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l1d = (struct cpuinfo_x86_cache) {
 				.size = 32 * 1024,
 				.associativity = 4,
-				.line_size = 64
+				.sets = 128,
+				.partitions = 1,
+				.line_size = 64,
 			};
 			break;
 		case 0x6A:
@@ -842,7 +924,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 8,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x6B:
@@ -853,7 +935,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 8,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0x6C:
@@ -864,7 +946,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_2MB = *dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 8,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x6D:
@@ -875,7 +957,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_1GB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 16,
-				.pages = CPUINFO_PAGE_SIZE_1GB
+				.pages = CPUINFO_PAGE_SIZE_1GB,
 			};
 			break;
 		case 0x70:
@@ -894,14 +976,14 @@ void cpuinfo_x86_decode_cache_descriptor(
 					*dtlb_4KB = *itlb_4KB = (struct cpuinfo_tlb) {
 						.entries = 32,
 						.associativity = 4,
-						.pages = CPUINFO_PAGE_SIZE_4KB
+						.pages = CPUINFO_PAGE_SIZE_4KB,
 					};
 					break;
 #endif /* CPUINFO_ARCH_X86 */
 				default:
 					cache->trace = (struct cpuinfo_trace_cache) {
 						.uops = 12 * 1024,
-						.associativity = 8
+						.associativity = 8,
 					};
 			}
 			break;
@@ -914,7 +996,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 */
 			cache->trace = (struct cpuinfo_trace_cache) {
 				.uops = 16 * 1024,
-				.associativity = 8
+				.associativity = 8,
 			};
 			break;
 		case 0x72:
@@ -926,14 +1008,14 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 */
 			cache->trace = (struct cpuinfo_trace_cache) {
 				.uops = 32 * 1024,
-				.associativity = 8
+				.associativity = 8,
 			};
 			break;
 		case 0x73:
 			/* Where does this come from? */ 
 			cache->trace = (struct cpuinfo_trace_cache) {
 				.uops = 64 * 1024,
-				.associativity = 8
+				.associativity = 8,
 			};
 			break;
 		case 0x76:
@@ -946,7 +1028,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 8,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0x78:
@@ -959,8 +1041,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 4,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x79:
@@ -973,8 +1057,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 128 * 1024,
 				.associativity = 8,
+				.sets = 256,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x7A:
@@ -987,8 +1073,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 256 * 1024,
 				.associativity = 8,
+				.sets = 512,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x7B:
@@ -1001,8 +1089,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 8,
+				.sets = 1024,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x7C:
@@ -1015,8 +1105,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 8,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x7D:
@@ -1029,8 +1121,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 2 * 1024 * 1024,
 				.associativity = 8,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x7F:
@@ -1043,8 +1137,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 2,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x80:
@@ -1057,14 +1153,16 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Level 1 Cache, 16K, 4-way set associative, 16 Bytes/Line"
 			 */
 			switch (vendor) {
-#if CPUINFO_ARCH_X86
+#if CPUINFO_ARCH_X86 && !defined(__ANDROID__)
 				case cpuinfo_vendor_cyrix:
 				case cpuinfo_vendor_nsc:
 					cache->l1i = cache->l1d = (struct cpuinfo_x86_cache) {
 						.size = 16 * 1024,
 						.associativity = 4,
+						.sets = 256,
+						.partitions = 1,
 						.line_size = 16,
-						.flags = CPUINFO_CACHE_UNIFIED
+						.flags = CPUINFO_CACHE_UNIFIED,
 					};
 					break;
 #endif /* CPUINFO_ARCH_X86 */
@@ -1072,8 +1170,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 					cache->l2 = (struct cpuinfo_x86_cache) {
 						.size = 512 * 1024,
 						.associativity = 8,
+						.sets = 1024,
+						.partitions = 1,
 						.line_size = 64,
-						.flags = CPUINFO_CACHE_INCLUSIVE
+						.flags = CPUINFO_CACHE_INCLUSIVE,
 					};
 			}
 			break;
@@ -1087,8 +1187,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 256 * 1024,
 				.associativity = 4,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x83:
@@ -1101,8 +1203,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 8,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x84:
@@ -1115,8 +1219,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 8,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x85:
@@ -1129,8 +1235,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 2 * 1024 * 1024,
 				.associativity = 8,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 32,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x86:
@@ -1143,8 +1251,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 4,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x87:
@@ -1157,8 +1267,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 8,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xA0:
@@ -1169,7 +1281,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 32,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xB0:
@@ -1182,7 +1294,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xB1:
@@ -1195,12 +1307,12 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_2MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			*itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 4,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0xB2:
@@ -1213,7 +1325,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xB3:
@@ -1226,7 +1338,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xB4:
@@ -1239,7 +1351,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xB5:
@@ -1250,7 +1362,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 8,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xB6:
@@ -1261,7 +1373,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 8,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xBA:
@@ -1274,7 +1386,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xC0:
@@ -1287,7 +1399,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*itlb_4KB = *itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0xC1:
@@ -1298,7 +1410,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*stlb2_4KB = *stlb2_2MB = (struct cpuinfo_tlb) {
 				.entries = 1024,
 				.associativity = 8,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB,
 			};
 			break;
 		case 0xC2:
@@ -1309,7 +1421,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_4KB = *dtlb_2MB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB,
 			};
 			break;
 		case 0xC3:
@@ -1321,12 +1433,12 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*stlb2_4KB = *stlb2_2MB = (struct cpuinfo_tlb) {
 				.entries = 1536,
 				.associativity = 6,
-				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB
+				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB,
 			};
 			*stlb2_1GB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_1GB
+				.pages = CPUINFO_PAGE_SIZE_1GB,
 			};
 			break;
 		case 0xC4:
@@ -1337,7 +1449,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*dtlb_2MB = *dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB
+				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
 			break;
 		case 0xCA:
@@ -1350,7 +1462,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			*stlb2_4KB = (struct cpuinfo_tlb) {
 				.entries = 512,
 				.associativity = 4,
-				.pages = CPUINFO_PAGE_SIZE_4KB
+				.pages = CPUINFO_PAGE_SIZE_4KB,
 			};
 			break;
 		case 0xD0:
@@ -1363,8 +1475,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 4,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xD1:
@@ -1377,8 +1491,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 4,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xD2:
@@ -1391,8 +1507,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 2 * 1024 * 2014,
 				.associativity = 4,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xD6:
@@ -1405,8 +1523,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 1024 * 1024,
 				.associativity = 8,
-				.line_size = 8,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.sets = 2048,
+				.partitions = 1,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xD7:
@@ -1419,8 +1539,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 2 * 1024 * 1024,
 				.associativity = 8,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xD8:
@@ -1433,8 +1555,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 4 * 1024 * 1024,
 				.associativity = 8,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xDC:
@@ -1447,8 +1571,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 3 * 512 * 1024,
 				.associativity = 12,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xDD:
@@ -1461,8 +1587,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 3 * 1024 * 1024,
 				.associativity = 12,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xDE:
@@ -1475,8 +1603,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 6 * 1024 * 1024,
 				.associativity = 12,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xE2:
@@ -1489,8 +1619,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 2 * 1024 * 1024,
 				.associativity = 16,
+				.sets = 2048,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xE3:
@@ -1503,8 +1635,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 4 * 1024 * 1024,
 				.associativity = 16,
+				.sets = 4096,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xE4:
@@ -1517,8 +1651,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 8 * 1024 * 1024,
 				.associativity = 16,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xEA:
@@ -1531,8 +1667,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 12 * 1024 * 1024,
 				.associativity = 24,
+				.sets = 8192,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xEB:
@@ -1545,8 +1683,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 18 * 1024 * 1024,
 				.associativity = 24,
+				.sets = 12288,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xEC:
@@ -1559,8 +1699,10 @@ void cpuinfo_x86_decode_cache_descriptor(
 			cache->l3 = (struct cpuinfo_x86_cache) {
 				.size = 24 * 1024 * 1024,
 				.associativity = 24,
+				.sets = 16384,
+				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE
+				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0xF0:
