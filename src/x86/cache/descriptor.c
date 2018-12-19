@@ -335,7 +335,6 @@ void cpuinfo_x86_decode_cache_descriptor(
 				.sets = 64,
 				.partitions = 1,
 				.line_size = 64,
-				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
 			break;
 		case 0x30:
