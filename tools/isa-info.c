@@ -154,6 +154,7 @@ int main(int argc, char** argv) {
 		printf("\tARM v8.1 atomics: %s\n", cpuinfo_has_arm_atomics() ? "yes" : "no");
 		printf("\tARM v8.1 SQRDMLxH: %s\n", cpuinfo_has_arm_neon_rdm() ? "yes" : "no");
 		printf("\tARM v8.2 FP16 arithmetics: %s\n", cpuinfo_has_arm_fp16_arith() ? "yes" : "no");
+		printf("\tARM v8.3 dot product: %s\n", cpuinfo_has_arm_neon_dot() ? "yes" : "no");
 		printf("\tARM v8.3 JS conversion: %s\n", cpuinfo_has_arm_jscvt() ? "yes" : "no");
 		printf("\tARM v8.3 complex: %s\n", cpuinfo_has_arm_fcma() ? "yes" : "no");
 
