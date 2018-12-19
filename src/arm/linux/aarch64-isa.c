@@ -41,14 +41,26 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	} else if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDHP) {
 		cpuinfo_log_warning("FP16 arithmetics disabled: detected support only for SIMD operations");
 	}
-	/* Qualcomm Kryo 385 may have buggy kernel configuration that doesn't report VQRDMLAH/VQRDMLSH instructions */
+	/*
+	 * Many phones ship with an old kernel configuration that doesn't report
+	 * SQRDMLAH/SQRDMLSH/UQRDMLAH/UQRDMLSH instructions.
+	 * Use a MIDR-based heuristic to whitelist processors known to support it:
+	 * - Processors with Qualcomm-modified Cortex-A55 cores
+	 * - Processors with Qualcomm-modified Cortex-A75 cores
+	 * - Processors with Qualcomm-modified Cortex-A76 cores
+	 * - Kirin 980 processor
+	 */
 	switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 		case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
 		case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
+		case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
 			isa->rdm = true;
 			break;
 		default:
 			if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDRDM) {
+				isa->rdm = true;
+			}
+			if (chipset->series == cpuinfo_arm_chipset_series_hisilicon_kirin && chipset->model == 980) {
 				isa->rdm = true;
 			}
 			break;

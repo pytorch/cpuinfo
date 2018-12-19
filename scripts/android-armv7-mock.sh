@@ -34,6 +34,7 @@ adb push build/android/armeabi-v7a/huawei-honor-6-test /data/local/tmp/huawei-ho
 adb push build/android/armeabi-v7a/huawei-mate-8-test /data/local/tmp/huawei-mate-8-test
 adb push build/android/armeabi-v7a/huawei-mate-9-test /data/local/tmp/huawei-mate-9-test
 adb push build/android/armeabi-v7a/huawei-mate-10-test /data/local/tmp/huawei-mate-10-test
+adb push build/android/armeabi-v7a/huawei-mate-20-test /data/local/tmp/huawei-mate-20-test
 adb push build/android/armeabi-v7a/huawei-p8-lite-test /data/local/tmp/huawei-p8-lite-test
 adb push build/android/armeabi-v7a/huawei-p9-lite-test /data/local/tmp/huawei-p9-lite-test
 adb push build/android/armeabi-v7a/huawei-p20-pro-test /data/local/tmp/huawei-p20-pro-test
@@ -108,6 +109,7 @@ adb shell "/data/local/tmp/huawei-honor-6-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-8-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-9-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-mate-10-test --gtest_color=yes"
+adb shell "/data/local/tmp/huawei-mate-20-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-p8-lite-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-p9-lite-test --gtest_color=yes"
 adb shell "/data/local/tmp/huawei-p20-pro-test --gtest_color=yes"

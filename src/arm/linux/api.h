@@ -261,6 +261,7 @@ CPUINFO_INTERNAL bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 		uint32_t midr,
 		uint32_t architecture_version,
 		uint32_t architecture_flags,
+		const struct cpuinfo_arm_chipset chipset[restrict static 1],
 		struct cpuinfo_arm_isa isa[restrict static 1]);
 #elif CPUINFO_ARCH_ARM64
 	CPUINFO_INTERNAL uint32_t cpuinfo_arm_linux_hwcap_from_getauxval(void);

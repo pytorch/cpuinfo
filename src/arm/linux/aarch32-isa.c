@@ -30,6 +30,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t midr,
 	uint32_t architecture_version,
 	uint32_t architecture_flags,
+	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	struct cpuinfo_arm_isa isa[restrict static 1])
 {
 	if (architecture_version >= 8) {
@@ -52,28 +53,25 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		isa->neon = true;
 
 		/*
-		 * NEON FP16 compute extension is not indicated in /proc/cpuinfo.
+		 * NEON FP16 compute extension and VQRDMLAH/VQRDMLSH instructions are not indicated in /proc/cpuinfo.
 		 * Use a MIDR-based heuristic to whitelist processors known to support it:
-		 * - Processors with Qualcomm-modified Cortex-A75 and Cortex-A55 cores
+		 * - Processors with Qualcomm-modified Cortex-A55 cores
+		 * - Processors with Qualcomm-modified Cortex-A75 cores
+		 * - Processors with Qualcomm-modified Cortex-A76 cores
+		 * - Kirin 980 processor
 		 */
 		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 			case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
 			case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
-			case UINT32_C(0x51008040): /* Qualcomm Cortex-A76 */
+			case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
 				isa->fp16arith = true;
-				break;
-		}
-
-		/*
-		 * NEON VQRDMLAH/VQRDMLSH instructions are not indicated in /proc/cpuinfo.
-		 * Use a MIDR-based heuristic to whitelist processors known to support it:
-		 * - Processors with Qualcomm-modified Cortex-A75 and Cortex-A55 cores
-		 */
-		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
-			case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
-			case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
-			case UINT32_C(0x51008040): /* Qualcomm Cortex-A76 */
 				isa->rdm = true;
+				break;
+			default:
+				if (chipset->series == cpuinfo_arm_chipset_series_hisilicon_kirin && chipset->model == 980) {
+					isa->fp16arith = true;
+					isa->rdm = true;
+				}
 				break;
 		}
 	} else {
