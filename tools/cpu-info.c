@@ -197,6 +197,14 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Twister";
 		case cpuinfo_uarch_hurricane:
 			return "Hurricane";
+		case cpuinfo_uarch_monsoon:
+			return "Monsoon";
+		case cpuinfo_uarch_mistral:
+			return "Mistral";
+		case cpuinfo_uarch_vortex:
+			return "Vortex";
+		case cpuinfo_uarch_tempest:
+			return "Tempest";
 		case cpuinfo_uarch_thunderx:
 			return "ThunderX";
 		case cpuinfo_uarch_thunderx2:

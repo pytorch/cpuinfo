@@ -70,7 +70,7 @@ static uint64_t get_sys_info_by_name(const char* type_specifier) {
 	return result;
 }
 
-static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype, uint32_t core_index) {
+static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype, uint32_t core_index, uint32_t core_count) {
 	switch (cpu_family) {
 		case CPUFAMILY_ARM_SWIFT:
 			return cpuinfo_uarch_swift;
@@ -82,14 +82,17 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 			return cpuinfo_uarch_twister;
 		case CPUFAMILY_ARM_HURRICANE:
 			return cpuinfo_uarch_hurricane;
-#ifdef CPUFAMILY_ARM_MONSOON_MISTRAL
 		case CPUFAMILY_ARM_MONSOON_MISTRAL:
-#else
-		case 0xe81e7ef6:
-			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_MONSOON_MISTRAL */
-#endif
 			/* 2x Monsoon + 4x Mistral cores */
 			return core_index < 2 ? cpuinfo_uarch_monsoon : cpuinfo_uarch_mistral;
+#ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
+        case CPUFAMILY_ARM_VORTEX_TEMPEST:
+#else
+        case 0xe81e7ef6:
+            /* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
+#endif
+            /* Hexa-core: 2x Vortex + 4x Tempest; Octa-core: 4x Cortex + 4x Tempest */
+            return core_index + 4 < core_count ? cpuinfo_uarch_vortex : cpuinfo_uarch_tempest;
 		default:
 			/* Use hw.cpusubtype for detection */
 			break;
@@ -322,7 +325,7 @@ void cpuinfo_arm_mach_init(void) {
 			.core_id = i % cores_per_package,
 			.package = packages + i / cores_per_package,
 			.vendor = cpuinfo_vendor_apple,
-			.uarch = decode_uarch(cpu_family, cpu_subtype, i),
+			.uarch = decode_uarch(cpu_family, cpu_subtype, i, mach_topology.cores),
 		};
 		if (i != 0 && cores[i].uarch != cores[i - 1].uarch) {
 			num_clusters++;

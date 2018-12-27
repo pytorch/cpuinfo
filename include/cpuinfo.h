@@ -427,6 +427,10 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_monsoon   = 0x00700105,
 	/** Apple A11 processor (little cores). */
 	cpuinfo_uarch_mistral   = 0x00700106,
+	/** Apple A12 processor (big cores). */
+	cpuinfo_uarch_vortex    = 0x00700107,
+	/** Apple A12 processor (little cores). */
+	cpuinfo_uarch_tempest   = 0x00700108,
 
 	/** Cavium ThunderX. */
 	cpuinfo_uarch_thunderx = 0x00800100,
