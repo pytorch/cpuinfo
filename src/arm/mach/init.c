@@ -86,13 +86,13 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 			/* 2x Monsoon + 4x Mistral cores */
 			return core_index < 2 ? cpuinfo_uarch_monsoon : cpuinfo_uarch_mistral;
 #ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
-        case CPUFAMILY_ARM_VORTEX_TEMPEST:
+		case CPUFAMILY_ARM_VORTEX_TEMPEST:
 #else
-        case 0xe81e7ef6:
-            /* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
+		case 0xe81e7ef6:
+			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
 #endif
-            /* Hexa-core: 2x Vortex + 4x Tempest; Octa-core: 4x Cortex + 4x Tempest */
-            return core_index + 4 < core_count ? cpuinfo_uarch_vortex : cpuinfo_uarch_tempest;
+			/* Hexa-core: 2x Vortex + 4x Tempest; Octa-core: 4x Cortex + 4x Tempest */
+			return core_index + 4 < core_count ? cpuinfo_uarch_vortex : cpuinfo_uarch_tempest;
 		default:
 			/* Use hw.cpusubtype for detection */
 			break;
@@ -316,25 +316,27 @@ void cpuinfo_arm_mach_init(void) {
 			break;
 #endif
 	}
-    /*
-     * Support for ARMv8.1 Atomics & FP16 arithmetic instructions is supposed to be detected via
-     * sysctlbyname calls with "hw.optional.armv8_1_atomics" and "hw.optional.neon_fp16" arguments
-     * (see https://devstreaming-cdn.apple.com/videos/wwdc/2018/409t8zw7rumablsh/409/409_whats_new_in_llvm.pdf),
-     * but on new iOS versions these calls just fail with EPERM.
-     *
-     * Thus, we whitelist CPUs known to support these instructions.
-     */
-    switch (cpu_family) {
-        case CPUFAMILY_ARM_MONSOON_MISTRAL:
+	/*
+	 * Support for ARMv8.1 Atomics & FP16 arithmetic instructions is supposed to be detected via
+	 * sysctlbyname calls with "hw.optional.armv8_1_atomics" and "hw.optional.neon_fp16" arguments
+	 * (see https://devstreaming-cdn.apple.com/videos/wwdc/2018/409t8zw7rumablsh/409/409_whats_new_in_llvm.pdf),
+	 * but on new iOS versions these calls just fail with EPERM.
+	 *
+	 * Thus, we whitelist CPUs known to support these instructions.
+	 */
+	switch (cpu_family) {
+		case CPUFAMILY_ARM_MONSOON_MISTRAL:
 #ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
-        case CPUFAMILY_ARM_VORTEX_TEMPEST:
+		case CPUFAMILY_ARM_VORTEX_TEMPEST:
 #else
-        case 0xe81e7ef6:
-            /* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
+		case 0xe81e7ef6:
+			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
 #endif
-            cpuinfo_isa.atomics = true;
-            cpuinfo_isa.fp16arith = true;
-    }
+#if CPUINFO_ARCH_ARM64
+			cpuinfo_isa.atomics = true;
+#endif
+			cpuinfo_isa.fp16arith = true;
+	}
 
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
