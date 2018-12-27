@@ -46,26 +46,26 @@ static uint32_t get_sys_info(int type_specifier, const char* name) {
 	uint32_t result = 0;
 	int mib[2] = { CTL_HW, type_specifier };
 	if (sysctl(mib, 2, NULL, &size, NULL, 0) != 0) {
-		cpuinfo_log_error("sysctl(\"%s\") failed: %s", name, strerror(errno));
+		cpuinfo_log_info("sysctl(\"%s\") failed: %s", name, strerror(errno));
 	} else if (size == sizeof(uint32_t)) {
 		sysctl(mib, 2, &result, &size, NULL, 0);
 		cpuinfo_log_debug("%s: %"PRIu32 ", size = %lu", name, result, size);
 	} else {
-		cpuinfo_log_warning("sysctl does not support non-integer lookup for (\"%s\")", name);
+		cpuinfo_log_info("sysctl does not support non-integer lookup for (\"%s\")", name);
 	}
 	return result;
 }
 
-static uint64_t get_sys_info_by_name(const char* type_specifier) {
+static uint32_t get_sys_info_by_name(const char* type_specifier) {
 	size_t size = 0;
 	uint32_t result = 0;
 	if (sysctlbyname(type_specifier, NULL, &size, NULL, 0) != 0) {
-		cpuinfo_log_error("sysctlbyname(\"%s\") failed: %s", type_specifier, strerror(errno));
+		cpuinfo_log_info("sysctlbyname(\"%s\") failed: %s", type_specifier, strerror(errno));
 	} else if (size == sizeof(uint32_t)) {
 		sysctlbyname(type_specifier, &result, &size, NULL, 0);
 		cpuinfo_log_debug("%s: %"PRIu32 ", size = %lu", type_specifier, result, size);
 	} else {
-		cpuinfo_log_warning("sysctl does not support non-integer lookup for (\"%s\")", type_specifier);
+		cpuinfo_log_info("sysctl does not support non-integer lookup for (\"%s\")", type_specifier);
 	}
 	return result;
 }

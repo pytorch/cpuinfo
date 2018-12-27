@@ -8,6 +8,8 @@
 #include <cpuinfo/log.h>
 #include <mach/api.h>
 
+#include <TargetConditionals.h>
+
 
 struct cpuinfo_mach_topology cpuinfo_mach_detect_topology(void) {
 	int cores = 1;
@@ -29,6 +31,7 @@ struct cpuinfo_mach_topology cpuinfo_mach_detect_topology(void) {
 	}
 
 	int packages = 1;
+#if !TARGET_OS_IPHONE
 	size_t sizeof_packages = sizeof(packages);
 	if (sysctlbyname("hw.packages", &packages, &sizeof_packages, NULL, 0) != 0) {
 		cpuinfo_log_error("sysctlbyname(\"hw.packages\") failed: %s", strerror(errno));
@@ -36,6 +39,7 @@ struct cpuinfo_mach_topology cpuinfo_mach_detect_topology(void) {
 		cpuinfo_log_error("sysctlbyname(\"hw.packages\") returned invalid value %d", packages);
 		packages = 1;
 	}
+#endif
 
 	cpuinfo_log_debug("mach topology: packages = %d, cores = %d, threads = %d", packages, (int) cores, (int) threads);
 	struct cpuinfo_mach_topology topology = {
@@ -44,6 +48,7 @@ struct cpuinfo_mach_topology cpuinfo_mach_detect_topology(void) {
 		.threads = (uint32_t) threads
 	};
 
+#if !TARGET_OS_IPHONE
 	size_t cacheconfig_size = 0;
 	if (sysctlbyname("hw.cacheconfig", NULL, &cacheconfig_size, NULL, 0) != 0) {
 		cpuinfo_log_error("sysctlbyname(\"hw.cacheconfig\") failed: %s", strerror(errno));
@@ -63,5 +68,6 @@ struct cpuinfo_mach_topology cpuinfo_mach_detect_topology(void) {
 			}
 		}
 	}
+#endif
 	return topology;
 }
