@@ -316,6 +316,25 @@ void cpuinfo_arm_mach_init(void) {
 			break;
 #endif
 	}
+    /*
+     * Support for ARMv8.1 Atomics & FP16 arithmetic instructions is supposed to be detected via
+     * sysctlbyname calls with "hw.optional.armv8_1_atomics" and "hw.optional.neon_fp16" arguments
+     * (see https://devstreaming-cdn.apple.com/videos/wwdc/2018/409t8zw7rumablsh/409/409_whats_new_in_llvm.pdf),
+     * but on new iOS versions these calls just fail with EPERM.
+     *
+     * Thus, we whitelist CPUs known to support these instructions.
+     */
+    switch (cpu_family) {
+        case CPUFAMILY_ARM_MONSOON_MISTRAL:
+#ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
+        case CPUFAMILY_ARM_VORTEX_TEMPEST:
+#else
+        case 0xe81e7ef6:
+            /* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
+#endif
+            cpuinfo_isa.atomics = true;
+            cpuinfo_isa.fp16arith = true;
+    }
 
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
