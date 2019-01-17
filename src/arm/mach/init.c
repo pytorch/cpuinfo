@@ -88,7 +88,7 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 #ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
 		case CPUFAMILY_ARM_VORTEX_TEMPEST:
 #else
-		case 0xe81e7ef6:
+		case 0x07d34b9f:
 			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
 #endif
 			/* Hexa-core: 2x Vortex + 4x Tempest; Octa-core: 4x Cortex + 4x Tempest */
@@ -329,7 +329,7 @@ void cpuinfo_arm_mach_init(void) {
 #ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
 		case CPUFAMILY_ARM_VORTEX_TEMPEST:
 #else
-		case 0xe81e7ef6:
+		case 0x07d34b9f:
 			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
 #endif
 #if CPUINFO_ARCH_ARM64
