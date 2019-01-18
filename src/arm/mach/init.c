@@ -82,7 +82,12 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 			return cpuinfo_uarch_twister;
 		case CPUFAMILY_ARM_HURRICANE:
 			return cpuinfo_uarch_hurricane;
+#ifdef CPUFAMILY_ARM_MONSOON_MISTRAL
 		case CPUFAMILY_ARM_MONSOON_MISTRAL:
+#else
+		case 0xe81e7ef6:
+			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_MONSOON_MISTRAL */
+#endif
 			/* 2x Monsoon + 4x Mistral cores */
 			return core_index < 2 ? cpuinfo_uarch_monsoon : cpuinfo_uarch_mistral;
 #ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
@@ -325,7 +330,12 @@ void cpuinfo_arm_mach_init(void) {
 	 * Thus, we whitelist CPUs known to support these instructions.
 	 */
 	switch (cpu_family) {
+#ifdef CPUFAMILY_ARM_MONSOON_MISTRAL
 		case CPUFAMILY_ARM_MONSOON_MISTRAL:
+#else
+		case 0xe81e7ef6:
+			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_MONSOON_MISTRAL */
+#endif
 #ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
 		case CPUFAMILY_ARM_VORTEX_TEMPEST:
 #else
