@@ -17,6 +17,33 @@ OPTION(CPUINFO_BUILD_UNIT_TESTS "Build cpuinfo unit tests" ON)
 OPTION(CPUINFO_BUILD_MOCK_TESTS "Build cpuinfo mock tests" ON)
 OPTION(CPUINFO_BUILD_BENCHMARKS "Build cpuinfo micro-benchmarks" ON)
 
+# Configuration
+set(config_install_dir "lib/cmake/${PROJECT_NAME}")
+set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
+set(targets_export_name "${PROJECT_NAME}Targets")
+set(namespace "${PROJECT_NAME}::")
+
+# Include module with fuction 'write_basic_package_version_file'
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+        "cmake/Config.cmake.in"
+        "${project_config}"
+        INSTALL_DESTINATION "${config_install_dir}"
+)
+
+install(
+        FILES "${project_config}"
+        DESTINATION "${config_install_dir}"
+)
+
+install(
+        EXPORT "${targets_export_name}"
+        NAMESPACE "${namespace}"
+        DESTINATION "${config_install_dir}"
+)
+
 # ---[ CMake options
 IF(CPUINFO_BUILD_UNIT_TESTS OR CPUINFO_BUILD_MOCK_TESTS)
   ENABLE_TESTING()
@@ -204,7 +231,7 @@ CPUINFO_TARGET_ENABLE_C99(cpuinfo)
 CPUINFO_TARGET_ENABLE_C99(cpuinfo_internals)
 CPUINFO_TARGET_RUNTIME_LIBRARY(cpuinfo)
 SET_TARGET_PROPERTIES(cpuinfo PROPERTIES PUBLIC_HEADER include/cpuinfo.h)
-TARGET_INCLUDE_DIRECTORIES(cpuinfo BEFORE PUBLIC include)
+TARGET_INCLUDE_DIRECTORIES(cpuinfo BEFORE PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
 TARGET_INCLUDE_DIRECTORIES(cpuinfo BEFORE PRIVATE src)
 TARGET_INCLUDE_DIRECTORIES(cpuinfo_internals BEFORE PUBLIC include src)
 IF(CPUINFO_LOG_LEVEL STREQUAL "default")
@@ -255,6 +282,7 @@ TARGET_LINK_LIBRARIES(cpuinfo PRIVATE clog)
 TARGET_LINK_LIBRARIES(cpuinfo_internals PRIVATE clog)
 
 INSTALL(TARGETS cpuinfo
+  EXPORT "${targets_export_name}"
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
