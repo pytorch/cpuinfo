@@ -235,6 +235,53 @@ static bool match_sdm(
 }
 
 /**
+ * Tries to match /SM\d{4}$/ signature for Qualcomm Snapdragon chipsets.
+ * If match successful, extracts model information into \p chipset argument.
+ *
+ * @param start - start of the /proc/cpuinfo Hardware string to match.
+ * @param end - end of the /proc/cpuinfo Hardware string to match.
+ * @param[out] chipset - location where chipset information will be stored upon a successful match.
+ *
+ * @returns true if signature matched, false otherwise.
+ */
+static bool match_sm(
+        const char* start, const char* end,
+        struct cpuinfo_arm_chipset chipset[restrict static 1])
+{
+    /* Expect exactly 6 symbols: 2 symbols "SM" + 4 digits */
+    if (start + 6 != end) {
+        return false;
+    }
+
+    /* Check that string starts with "SM".
+     * The first three characters are loaded and compared as 16-bit little endian word.
+     */
+    const uint32_t expected_sm = load_u16le(start);
+    if (expected_sm != UINT32_C(0x00004D53) /* "MS" = reverse("SM") */) {
+        return false;
+    }
+
+    /* Validate and parse 4-digit model number */
+    uint32_t model = 0;
+    for (uint32_t i = 2; i < 6; i++) {
+        const uint32_t digit = (uint32_t) (uint8_t) start[i] - '0';
+        if (digit >= 10) {
+            /* Not really a digit */
+            return false;
+        }
+        model = model * 10 + digit;
+    }
+
+    /* Return parsed chipset. */
+    *chipset = (struct cpuinfo_arm_chipset) {
+            .vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+            .series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+            .model = model,
+    };
+    return true;
+}
+
+/**
  * Tries to match /Samsung Exynos\d{4}$/ signature (case-insensitive) for Samsung Exynos chipsets.
  * If match successful, extracts model information into \p chipset argument.
  *
@@ -2184,6 +2231,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 						if (match_sdm(pos, hardware_end, &chipset)) {
 							cpuinfo_log_debug(
 								"matched Qualcomm SDM signature in /proc/cpuinfo Hardware string \"%.*s\"",
+								(int) hardware_length, hardware);
+							return chipset;
+						}
+
+						/* Check SMxxxx (Qualcomm Snapdragon) signature */
+						if (match_sm(pos, hardware_end, &chipset)) {
+							cpuinfo_log_debug(
+								"matched Qualcomm SM signature in /proc/cpuinfo Hardware string \"%.*s\"",
 								(int) hardware_length, hardware);
 							return chipset;
 						}
