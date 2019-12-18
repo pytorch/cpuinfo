@@ -80,10 +80,12 @@ IF(NOT CMAKE_SYSTEM_NAME)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
   SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
 ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|Darwin|Linux|Android)$")
-  MESSAGE(WARNING
-    "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
-    "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
-  SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
+  IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    MESSAGE(WARNING
+      "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
+      "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
+    SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
+  ENDIF()
 ENDIF()
 
 # ---[ Download deps
@@ -179,7 +181,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       src/linux/current.c
       src/linux/cpulist.c
       src/linux/processors.c)
-  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
     LIST(APPEND CPUINFO_SRCS src/mach/topology.c)
   ENDIF()
 
