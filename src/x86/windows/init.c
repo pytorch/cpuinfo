@@ -571,6 +571,8 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	cpuinfo_clusters_count = packages_count;
 	cpuinfo_packages_count = packages_count;
 
+	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
+
 	MemoryBarrier();
 
 	cpuinfo_is_initialized = true;

@@ -1,9 +1,11 @@
 #include <stdint.h>
 
 #include <cpuinfo.h>
+#include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 #include <arm/api.h>
 #include <arm/midr.h>
+
 
 void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,
@@ -109,7 +111,7 @@ void cpuinfo_arm_decode_cache(
 			 *      memory accesses and has been optimized for use with the Cortex-A5 processor.
 			 * 8.1.7. Exclusive L2 cache
 			 *    The Cortex-A5 processor can be connected to an L2 cache that supports an exclusive cache mode.
-			 *    This mode must be activated both in the Cortex-A5 processor and in the L2 cache controller. 
+			 *    This mode must be activated both in the Cortex-A5 processor and in the L2 cache controller.
 			 *
 			 *  +--------------------+-----------+-----------+----------+-----------+
 			 *  | Processor model    | L1D cache | L1I cache | L2 cache | Reference |
@@ -698,7 +700,7 @@ void cpuinfo_arm_decode_cache(
 			 * [3] https://en.wikichip.org/wiki/hisilicon/kirin/980
 			 */
 			if (midr_is_qualcomm_cortex_a55_silver(midr)) {
-				/* Qualcomm-modified Cortex-A55 in Snapdragon 710 / 845 */
+				/* Qualcomm-modified Cortex-A55 in Snapdragon 670 / 710 / 845 */
 				uint32_t l3_size = 1024 * 1024;
 				switch (chipset->series) {
 					case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
@@ -827,6 +829,62 @@ void cpuinfo_arm_decode_cache(
 				.flags = CPUINFO_CACHE_INCLUSIVE
 			};
 			break;
+		case cpuinfo_uarch_cortex_a65:
+		{
+			/*
+			 * ARM Cortex‑A65 Core Technical Reference Manual
+			 * A6.1. About the L1 memory system
+			 *   The L1 memory system enhances the performance and power efficiency in the Cortex‑A65 core.
+			 *   It consists of separate instruction and data caches. You can configure instruction and data caches
+			 *   independently during implementation to sizes of 32KB or 64KB.
+			 *
+			 *   L1 instruction-side memory system
+			 *   The L1 instruction-side memory system provides an instruction stream to the DPU. Its key features are:
+			 *    - 64-byte instruction side cache line length.
+			 *    - 4-way set associative L1 instruction cache.
+			 *
+			 *   L1 data-side memory system
+			 *    - 64-byte data side cache line length.
+			 *    - 4-way set associative L1 data cache.
+			 *
+			 * A7.1 About the L2 memory system
+			 *   The Cortex‑A65 L2 memory system is required to interface the Cortex‑A65 cores to the L3 memory system.
+			 *   The L2 memory subsystem consists of:
+			 *    - An optional 4-way, set-associative L2 cache with a configurable size of 64KB, 128KB, or 256KB.
+			 *      Cache lines have a fixed length of 64 bytes.
+			 *
+			 *   The main features of the L2 memory system are:
+			 *    - Strictly exclusive with L1 data cache.
+			 *    - Pseudo-inclusive with L1 instruction cache.
+			 *    - Private per-core unified L2 cache.
+			 */
+			const uint32_t l1_size = 32 * 1024;
+			const uint32_t l2_size = 128 * 1024;
+			const uint32_t l3_size = 512 * 1024;
+			*l1i = (struct cpuinfo_cache) {
+				.size = l1_size,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = l1_size,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = l2_size,
+				.associativity = 4,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_INCLUSIVE
+			};
+			*l3 = (struct cpuinfo_cache) {
+				.size = l3_size,
+				/* DynamIQ */
+				.associativity = 16,
+				.line_size = 64,
+			};
+			break;
+		}
 		case cpuinfo_uarch_cortex_a72:
 		{
 			/*
@@ -1047,6 +1105,7 @@ void cpuinfo_arm_decode_cache(
 			break;
 		}
 		case cpuinfo_uarch_cortex_a76:
+		case cpuinfo_uarch_cortex_a76ae:
 		{
 			/*
 			 * ARM Cortex-A76 Core Technical Reference Manual
@@ -1096,6 +1155,57 @@ void cpuinfo_arm_decode_cache(
 				default:
 					break;
 			}
+			*l1i = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = l2_size,
+				.associativity = 8,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_INCLUSIVE,
+			};
+			*l3 = (struct cpuinfo_cache) {
+				.size = l3_size,
+				.associativity = 16,
+				.line_size = 64,
+			};
+			break;
+		}
+		case cpuinfo_uarch_cortex_a77:
+		{
+			/*
+			 * ARM Cortex-A77 Core Technical Reference Manual
+			 * A6.1. About the L1 memory system
+			 *   The L1 memory system consists of separate instruction and data caches. Both have a fixed size of 64KB.
+			 *
+			 * A6.1.1 L1 instruction-side memory system
+			 *   The L1 instruction memory system has the following key features:
+			 *    - Virtually Indexed, Physically Tagged (VIPT), which behaves as a Physically Indexed,
+			 *      Physically Tagged (PIPT) 4-way set-associative L1 data cache.
+			 *    - Fixed cache line length of 64 bytes.
+			 *
+			 * A6.1.2 L1 data-side memory system
+			 *   The L1 data memory system has the following features:
+			 *    - Virtually Indexed, Physically Tagged (VIPT), which behaves as a Physically Indexed,
+			 *      Physically Tagged (PIPT) 4-way set-associative L1 data cache.
+			 *    - Fixed cache line length of 64 bytes.
+			 *    - Pseudo-LRU cache replacement policy.
+			 *
+			 * A7.1 About the L2 memory system
+			 *   The L2 memory subsystem consist of:
+			 *    - An 8-way set associative L2 cache with a configurable size of 128KB, 256KB or 512KB. Cache lines
+			 *      have a fixed length of 64 bytes.
+			 *    - Strictly inclusive with L1 data cache. Weakly inclusive with L1 instruction cache.
+			 */
+			const uint32_t l2_size = 256 * 1024;
+			const uint32_t l3_size = 1024 * 1024;
 			*l1i = (struct cpuinfo_cache) {
 				.size = 64 * 1024,
 				.associativity = 4,
@@ -1248,8 +1358,8 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
-		case cpuinfo_uarch_mongoose_m1:
-		case cpuinfo_uarch_mongoose_m2:
+		case cpuinfo_uarch_exynos_m1:
+		case cpuinfo_uarch_exynos_m2:
 			/*
 			 * - "Moving past branch prediction we can see some elements of how the cache is set up for the L1 I$,
 			 *    namely 64 KB split into four sets with 128-byte line sizes for 128 cache lines per set" [1]
@@ -1283,7 +1393,7 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64
 			};
 			break;
-		case cpuinfo_uarch_meerkat_m3:
+		case cpuinfo_uarch_exynos_m3:
 			/*
 			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
 			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | L3 cache | Reference  |
@@ -1294,19 +1404,19 @@ void cpuinfo_arm_decode_cache(
 			 * [1] https://www.anandtech.com/show/12478/exynos-9810-handson-awkward-first-results
 			 */
 			*l1i = (struct cpuinfo_cache) {
-				.size = 64 * 1024 /* assume same as in Mongoose cores */,
-				.associativity = 4 /* assume same as in Mongoose cores */,
-				.line_size = 128 /* assume same as in Mongoose cores */
+				.size = 64 * 1024 /* assume same as in Exynos M1/M2 cores */,
+				.associativity = 4 /* assume same as in Exynos M1/M2 cores */,
+				.line_size = 128 /* assume same as in Exynos M1/M2 cores */
 			};
 			*l1d = (struct cpuinfo_cache) {
 				.size = 64 * 1024,
-				.associativity = 8 /* assume same as in Mongoose cores */,
-				.line_size = 64 /* assume same as in Mongoose cores */,
+				.associativity = 8 /* assume same as in Exynos M1/M2 cores */,
+				.line_size = 64 /* assume same as in Exynos M1/M2 cores */,
 			};
 			*l2 = (struct cpuinfo_cache) {
 				.size = 512 * 1024,
-				.associativity = 16 /* assume same as in Mongoose cores */,
-				.line_size = 64 /* assume same as in Mongoose cores */,
+				.associativity = 16 /* assume same as in Exynos M1/M2 cores */,
+				.line_size = 64 /* assume same as in Exynos M1/M2 cores */,
 			};
 			*l3 = (struct cpuinfo_cache) {
 				.size = 4 * 1024 * 1024,
@@ -1391,5 +1501,126 @@ void cpuinfo_arm_decode_cache(
 			l3->sets = l3->size / (l3->associativity * l3->line_size);
 			l3->partitions = 1;
 		}
+	}
+}
+
+uint32_t cpuinfo_arm_compute_max_cache_size(const struct cpuinfo_processor* processor) {
+	/*
+	 * There is no precise way to detect cache size on ARM/ARM64, and cache size reported by cpuinfo
+	 * may underestimate the actual cache size. Thus, we use microarchitecture-specific maximum.
+	 */
+	switch (processor->core->uarch) {
+		case cpuinfo_uarch_xscale:
+		case cpuinfo_uarch_arm11:
+		case cpuinfo_uarch_scorpion:
+		case cpuinfo_uarch_krait:
+		case cpuinfo_uarch_kryo:
+		case cpuinfo_uarch_exynos_m1:
+		case cpuinfo_uarch_exynos_m2:
+		case cpuinfo_uarch_exynos_m3:
+			/* cpuinfo-detected cache size always correct */
+			return cpuinfo_compute_max_cache_size(processor);
+		case cpuinfo_uarch_cortex_a5:
+			/* Max observed (NXP Vybrid SoC) */
+			return 512 * 1024;
+		case cpuinfo_uarch_cortex_a7:
+			/*
+			 * Cortex-A7 MPCore Technical Reference Manual:
+			 * 7.1. About the L2 Memory system
+			 *   The L2 memory system consists of an:
+			 *    - Optional tightly-coupled L2 cache that includes:
+			 *      - Configurable L2 cache size of 128KB, 256KB, 512KB, and 1MB.
+			 */
+			return 1024 * 1024;
+		case cpuinfo_uarch_cortex_a8:
+			/*
+			 * Cortex-A8 Technical Reference Manual:
+			 * 8.1. About the L2 memory system
+			 *   The key features of the L2 memory system include:
+			 *    - configurable cache size of 0KB, 128KB, 256KB, 512KB, and 1MB
+			 */
+			return 1024 * 1024;
+		case cpuinfo_uarch_cortex_a9:
+			/* Max observed (e.g. Exynos 4212) */
+			return 1024 * 1024;
+		case cpuinfo_uarch_cortex_a12:
+		case cpuinfo_uarch_cortex_a17:
+			/*
+			 * ARM Cortex-A17 MPCore Processor Technical Reference Manual:
+			 * 7.1. About the L2 Memory system
+			 *   The key features of the L2 memory system include:
+			 *    - An integrated L2 cache:
+			 *      - The cache size is implemented as either 256KB, 512KB, 1MB, 2MB, 4MB or 8MB.
+			 */
+			return 8 * 1024 * 1024;
+		case cpuinfo_uarch_cortex_a15:
+			/*
+			 * ARM Cortex-A15 MPCore Processor Technical Reference Manual:
+			 * 7.1. About the L2 memory system
+			 *   The features of the L2 memory system include:
+			 *    - Configurable L2 cache size of 512KB, 1MB, 2MB and 4MB.
+			 */
+			return 4 * 1024 * 1024;
+		case cpuinfo_uarch_cortex_a35:
+			/*
+			 * ARM Cortex‑A35 Processor Technical Reference Manual:
+			 * 7.1 About the L2 memory system
+			 *   L2 cache
+			 *    - Further features of the L2 cache are:
+			 *      - Configurable size of 128KB, 256KB, 512KB, and 1MB.
+			 */
+			return 1024 * 1024;
+		case cpuinfo_uarch_cortex_a53:
+			/*
+			 * ARM Cortex-A53 MPCore Processor Technical Reference Manual:
+			 * 7.1. About the L2 memory system
+			 *   The L2 memory system consists of an:
+			 *    - Optional tightly-coupled L2 cache that includes:
+			 *      - Configurable L2 cache size of 128KB, 256KB, 512KB, 1MB and 2MB.
+			 */
+			return 2 * 1024 * 1024;
+		case cpuinfo_uarch_cortex_a57:
+			/*
+			 * ARM Cortex-A57 MPCore Processor Technical Reference Manual:
+			 * 7.1 About the L2 memory system
+			 *   The features of the L2 memory system include:
+			 *    - Configurable L2 cache size of 512KB, 1MB, and 2MB.
+			 */
+			return 2 * 1024 * 1024;
+		case cpuinfo_uarch_cortex_a72:
+			/*
+			 * ARM Cortex-A72 MPCore Processor Technical Reference Manual:
+			 * 7.1 About the L2 memory system
+			 *   The features of the L2 memory system include:
+			 *    - Configurable L2 cache size of 512KB, 1MB, 2MB and 4MB.
+			 */
+			return 4 * 1024 * 1024;
+		case cpuinfo_uarch_cortex_a73:
+			/*
+			 * ARM Cortex‑A73 MPCore Processor Technical Reference Manual
+			 * 7.1 About the L2 memory system
+			 *   The L2 memory system consists of:
+			 *    - A tightly-integrated L2 cache with:
+			 *       - A configurable size of 256KB, 512KB, 1MB, 2MB, 4MB, or 8MB.
+			 */
+			return 8 * 1024 * 1024;
+		case cpuinfo_uarch_cortex_a55:
+		case cpuinfo_uarch_cortex_a75:
+		case cpuinfo_uarch_cortex_a76:
+		case cpuinfo_uarch_exynos_m4:
+		default:
+			/*
+			 * ARM DynamIQ Shared Unit Technical Reference Manual
+			 * 1.3 Implementation options
+			 *   L3_CACHE_SIZE
+			 *    - 256KB
+			 *    - 512KB
+			 *    - 1024KB
+			 *    - 1536KB
+			 *    - 2048KB
+			 *    - 3072KB
+			 *    - 4096KB
+			 */
+			return 4 * 1024 * 1024;
 	}
 }

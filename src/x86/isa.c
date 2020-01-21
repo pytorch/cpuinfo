@@ -42,8 +42,10 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 {
 	struct cpuinfo_x86_isa isa = { 0 };
 
-	const struct cpuid_regs structured_feature_info =
+	const struct cpuid_regs structured_feature_info0 =
 		(max_base_index >= 7) ? cpuidex(7, 0) : (struct cpuid_regs) { 0, 0, 0, 0};
+	const struct cpuid_regs structured_feature_info1 =
+		(max_base_index >= 7) ? cpuidex(7, 1) : (struct cpuid_regs) { 0, 0, 0, 0};
 
 	const uint32_t processor_capacity_info_index = UINT32_C(0x80000008);
 	const struct cpuid_regs processor_capacity_info =
@@ -144,9 +146,9 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * CLFLUSHOPT instruction:
-	 * - Intel: ebx[bit 23] in structured feature info.
+	 * - Intel: ebx[bit 23] in structured feature info (ecx = 0).
 	 */
-	isa.clflushopt = !!(structured_feature_info.ebx & UINT32_C(0x00800000));
+	isa.clflushopt = !!(structured_feature_info0.ebx & UINT32_C(0x00800000));
 
 	/*
 	 * MWAIT/MONITOR instructions:
@@ -273,9 +275,9 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * PREFETCHWT1 instruction:
-	 * - Intel: ecx[bit 0] of structured feature info. Reserved bit on AMD.
+	 * - Intel: ecx[bit 0] of structured feature info (ecx = 0). Reserved bit on AMD.
 	 */
-	isa.prefetchwt1 = !!(structured_feature_info.ecx & UINT32_C(0x00000001));
+	isa.prefetchwt1 = !!(structured_feature_info0.ecx & UINT32_C(0x00000001));
 
 #if CPUINFO_ARCH_X86
 	/*
@@ -386,111 +388,123 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * AVX2 instructions:
-	 * - Intel: ebx[bit 5] in structured feature info.
+	 * - Intel: ebx[bit 5] in structured feature info (ecx = 0).
 	 */
-	isa.avx2 = avx_regs && !!(structured_feature_info.ebx & UINT32_C(0x00000020));
+	isa.avx2 = avx_regs && !!(structured_feature_info0.ebx & UINT32_C(0x00000020));
 
 	/*
 	 * AVX512F instructions:
-	 * - Intel: ebx[bit 16] in structured feature info.
+	 * - Intel: ebx[bit 16] in structured feature info (ecx = 0).
 	 */
-	isa.avx512f = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x00010000));
+	isa.avx512f = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x00010000));
 
 	/*
 	 * AVX512PF instructions:
-	 * - Intel: ebx[bit 26] in structured feature info.
+	 * - Intel: ebx[bit 26] in structured feature info (ecx = 0).
 	 */
-	isa.avx512pf = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x04000000));
+	isa.avx512pf = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x04000000));
 
 	/*
 	 * AVX512ER instructions:
-	 * - Intel: ebx[bit 27] in structured feature info.
+	 * - Intel: ebx[bit 27] in structured feature info (ecx = 0).
 	 */
-	isa.avx512er = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x08000000));
+	isa.avx512er = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x08000000));
 
 	/*
 	 * AVX512CD instructions:
-	 * - Intel: ebx[bit 28] in structured feature info.
+	 * - Intel: ebx[bit 28] in structured feature info (ecx = 0).
 	 */
-	isa.avx512cd = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x10000000));
+	isa.avx512cd = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x10000000));
 
 	/*
 	 * AVX512DQ instructions:
-	 * - Intel: ebx[bit 17] in structured feature info.
+	 * - Intel: ebx[bit 17] in structured feature info (ecx = 0).
 	 */
-	isa.avx512dq = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x00020000));
+	isa.avx512dq = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x00020000));
 
 	/*
 	 * AVX512BW instructions:
-	 * - Intel: ebx[bit 30] in structured feature info.
+	 * - Intel: ebx[bit 30] in structured feature info (ecx = 0).
 	 */
-	isa.avx512bw = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x40000000));
+	isa.avx512bw = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x40000000));
 
 	/*
 	 * AVX512VL instructions:
-	 * - Intel: ebx[bit 31] in structured feature info.
+	 * - Intel: ebx[bit 31] in structured feature info (ecx = 0).
 	 */
-	isa.avx512vl = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x80000000));
+	isa.avx512vl = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x80000000));
 
 	/*
 	 * AVX512IFMA instructions:
-	 * - Intel: ebx[bit 21] in structured feature info.
+	 * - Intel: ebx[bit 21] in structured feature info (ecx = 0).
 	 */
-	isa.avx512ifma = avx512_regs && !!(structured_feature_info.ebx & UINT32_C(0x00200000));
+	isa.avx512ifma = avx512_regs && !!(structured_feature_info0.ebx & UINT32_C(0x00200000));
 
 	/*
 	 * AVX512VBMI instructions:
-	 * - Intel: ecx[bit 1] in structured feature info.
+	 * - Intel: ecx[bit 1] in structured feature info (ecx = 0).
 	 */
-	isa.avx512vbmi = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00000002));
+	isa.avx512vbmi = avx512_regs && !!(structured_feature_info0.ecx & UINT32_C(0x00000002));
 
 	/*
 	 * AVX512VBMI2 instructions:
-	 * - Intel: ecx[bit 6] in structured feature info.
+	 * - Intel: ecx[bit 6] in structured feature info (ecx = 0).
 	 */
-	isa.avx512vbmi2 = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00000040));
+	isa.avx512vbmi2 = avx512_regs && !!(structured_feature_info0.ecx & UINT32_C(0x00000040));
 
 	/*
 	 * AVX512BITALG instructions:
-	 * - Intel: ecx[bit 12] in structured feature info.
+	 * - Intel: ecx[bit 12] in structured feature info (ecx = 0).
 	 */
-	isa.avx512bitalg = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00001000));
+	isa.avx512bitalg = avx512_regs && !!(structured_feature_info0.ecx & UINT32_C(0x00001000));
 
 	/*
 	 * AVX512VPOPCNTDQ instructions:
-	 * - Intel: ecx[bit 14] in structured feature info.
+	 * - Intel: ecx[bit 14] in structured feature info (ecx = 0).
 	 */
-	isa.avx512vpopcntdq = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00004000));
+	isa.avx512vpopcntdq = avx512_regs && !!(structured_feature_info0.ecx & UINT32_C(0x00004000));
 
 	/*
 	 * AVX512VNNI instructions:
-	 * - Intel: ecx[bit 11] in structured feature info.
+	 * - Intel: ecx[bit 11] in structured feature info (ecx = 0).
 	 */
-	isa.avx512vnni = avx512_regs && !!(structured_feature_info.ecx & UINT32_C(0x00000800));
+	isa.avx512vnni = avx512_regs && !!(structured_feature_info0.ecx & UINT32_C(0x00000800));
 
 	/*
 	 * AVX512_4VNNIW instructions:
-	 * - Intel: edx[bit 2] in structured feature info.
+	 * - Intel: edx[bit 2] in structured feature info (ecx = 0).
 	 */
-	isa.avx512_4vnniw = avx512_regs && !!(structured_feature_info.edx & UINT32_C(0x00000004));
+	isa.avx512_4vnniw = avx512_regs && !!(structured_feature_info0.edx & UINT32_C(0x00000004));
 
 	/*
 	 * AVX512_4FMAPS instructions:
-	 * - Intel: edx[bit 3] in structured feature info.
+	 * - Intel: edx[bit 3] in structured feature info (ecx = 0).
 	 */
-	isa.avx512_4fmaps = avx512_regs && !!(structured_feature_info.edx & UINT32_C(0x00000008));
+	isa.avx512_4fmaps = avx512_regs && !!(structured_feature_info0.edx & UINT32_C(0x00000008));
+
+	/*
+	 * AVX512_VP2INTERSECT instructions:
+	 * - Intel: edx[bit 8] in structured feature info (ecx = 0).
+	 */
+	isa.avx512vp2intersect = avx512_regs && !!(structured_feature_info0.edx & UINT32_C(0x00000100));
+
+	/*
+	 * AVX512_BF16 instructions:
+	 * - Intel: eax[bit 5] in structured feature info (ecx = 1).
+	 */
+	isa.avx512bf16 = avx512_regs && !!(structured_feature_info1.eax & UINT32_C(0x00000020));
 
 	/*
 	 * HLE instructions:
-	 * - Intel: ebx[bit 4] in structured feature info.
+	 * - Intel: ebx[bit 4] in structured feature info (ecx = 0).
 	 */
-	isa.hle = !!(structured_feature_info.ebx & UINT32_C(0x00000010));
+	isa.hle = !!(structured_feature_info0.ebx & UINT32_C(0x00000010));
 
 	/*
 	 * RTM instructions:
-	 * - Intel: ebx[bit 11] in structured feature info.
+	 * - Intel: ebx[bit 11] in structured feature info (ecx = 0).
 	 */
-	isa.rtm = !!(structured_feature_info.ebx & UINT32_C(0x00000800));
+	isa.rtm = !!(structured_feature_info0.ebx & UINT32_C(0x00000800));
 
 	/*
 	 * XTEST instruction:
@@ -500,9 +514,9 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * MPX registers and instructions:
-	 * - Intel: ebx[bit 14] in structured feature info.
+	 * - Intel: ebx[bit 14] in structured feature info (ecx = 0).
 	 */
-	isa.mpx = mpx_regs && !!(structured_feature_info.ebx & UINT32_C(0x00004000));
+	isa.mpx = mpx_regs && !!(structured_feature_info0.ebx & UINT32_C(0x00004000));
 
 #if CPUINFO_ARCH_X86
 	/*
@@ -528,9 +542,9 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * CLWB instruction:
-	 * - Intel: ebx[bit 24] in structured feature info.
+	 * - Intel: ebx[bit 24] in structured feature info (ecx = 0).
 	 */
-	isa.clwb = !!(structured_feature_info.ebx & UINT32_C(0x01000000));
+	isa.clwb = !!(structured_feature_info0.ebx & UINT32_C(0x01000000));
 
 	/*
 	 * MOVBE instruction:
@@ -549,9 +563,9 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * RDFSBASE/RDGSBASE/WRFSBASE/WRGSBASE instructions.
-	 * - Intel: ebx[bit 0] in structured feature info.
+	 * - Intel: ebx[bit 0] in structured feature info (ecx = 0).
 	 */
-	isa.fs_gs_base = !!(structured_feature_info.ebx & UINT32_C(0x00000001));
+	isa.fs_gs_base = !!(structured_feature_info0.ebx & UINT32_C(0x00000001));
 
 	/*
 	 * LZCNT instruction:
@@ -573,21 +587,21 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * BMI instructions:
-	 * - Intel, AMD: ebx[bit 3] in structured feature info.
+	 * - Intel, AMD: ebx[bit 3] in structured feature info (ecx = 0).
 	 */
-	isa.bmi = !!(structured_feature_info.ebx & UINT32_C(0x00000008));
+	isa.bmi = !!(structured_feature_info0.ebx & UINT32_C(0x00000008));
 
 	/*
 	 * BMI2 instructions:
-	 * - Intel: ebx[bit 8] in structured feature info.
+	 * - Intel: ebx[bit 8] in structured feature info (ecx = 0).
 	 */
-	isa.bmi2 = !!(structured_feature_info.ebx & UINT32_C(0x00000100));
+	isa.bmi2 = !!(structured_feature_info0.ebx & UINT32_C(0x00000100));
 
 	/*
 	 * ADCX/ADOX instructions:
-	 * - Intel: ebx[bit 19] in structured feature info.
+	 * - Intel: ebx[bit 19] in structured feature info (ecx = 0).
 	 */
-	isa.adx = !!(structured_feature_info.ebx & UINT32_C(0x00080000));
+	isa.adx = !!(structured_feature_info0.ebx & UINT32_C(0x00080000));
 
 	/*
 	 * AES instructions:
@@ -597,9 +611,9 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * VAES instructions:
-	 * - Intel: ecx[bit 9] in structured feature info.
+	 * - Intel: ecx[bit 9] in structured feature info (ecx = 0).
 	 */
-	isa.vaes = !!(structured_feature_info.ecx & UINT32_C(0x00000200));
+	isa.vaes = !!(structured_feature_info0.ecx & UINT32_C(0x00000200));
 
 	/*
 	 * PCLMULQDQ instruction:
@@ -609,15 +623,15 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * VPCLMULQDQ instruction:
-	 * - Intel: ecx[bit 10] in structured feature info.
+	 * - Intel: ecx[bit 10] in structured feature info (ecx = 0).
 	 */
-	isa.vpclmulqdq = !!(structured_feature_info.ecx & UINT32_C(0x00000400));
+	isa.vpclmulqdq = !!(structured_feature_info0.ecx & UINT32_C(0x00000400));
 
 	/*
 	 * GFNI instructions:
-	 * - Intel: ecx[bit 8] in structured feature info.
+	 * - Intel: ecx[bit 8] in structured feature info (ecx = 0).
 	 */
-	isa.gfni = !!(structured_feature_info.ecx & UINT32_C(0x00000100));
+	isa.gfni = !!(structured_feature_info0.ecx & UINT32_C(0x00000100));
 
 	/*
 	 * RDRAND instruction:
@@ -627,15 +641,15 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * RDSEED instruction:
-	 * - Intel: ebx[bit 18] in structured feature info.
+	 * - Intel: ebx[bit 18] in structured feature info (ecx = 0).
 	 */
-	isa.rdseed = !!(structured_feature_info.ebx & UINT32_C(0x00040000));
+	isa.rdseed = !!(structured_feature_info0.ebx & UINT32_C(0x00040000));
 
 	/*
 	 * SHA instructions:
-	 * - Intel: ebx[bit 29] in structured feature info.
+	 * - Intel: ebx[bit 29] in structured feature info (ecx = 0).
 	 */
-	isa.sha = !!(structured_feature_info.ebx & UINT32_C(0x20000000));
+	isa.sha = !!(structured_feature_info0.ebx & UINT32_C(0x20000000));
 
 	if (vendor == cpuinfo_vendor_via) {
 		const struct cpuid_regs padlock_meta_info = cpuid(UINT32_C(0xC0000000));
@@ -700,9 +714,9 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 
 	/*
 	 * RDPID instruction:
-	 * - Intel: ecx[bit 22] in structured feature info.
+	 * - Intel: ecx[bit 22] in structured feature info (ecx = 0).
 	 */
-	isa.rdpid = !!(structured_feature_info.ecx & UINT32_C(0x00400000));
+	isa.rdpid = !!(structured_feature_info0.ecx & UINT32_C(0x00400000));
 
 	return isa;
 }

@@ -73,8 +73,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Broadwell";
 		case cpuinfo_uarch_sky_lake:
 			return "Sky Lake";
-		case cpuinfo_uarch_kaby_lake:
-			return "Kaby Lake";
+		case cpuinfo_uarch_palm_cove:
+			return "Palm Cove";
+		case cpuinfo_uarch_sunny_cove:
+			return "Sunny Cove";
 		case cpuinfo_uarch_willamette:
 			return "Willamette";
 		case cpuinfo_uarch_prescott:
@@ -87,6 +89,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Silvermont";
 		case cpuinfo_uarch_airmont:
 			return "Airmont";
+		case cpuinfo_uarch_goldmont:
+			return "Goldmont";
+		case cpuinfo_uarch_goldmont_plus:
+			return "Goldmont Plus";
 		case cpuinfo_uarch_knights_ferry:
 			return "Knights Ferry";
 		case cpuinfo_uarch_knights_corner:
@@ -117,6 +123,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Excavator";
 		case cpuinfo_uarch_zen:
 			return "Zen";
+		case cpuinfo_uarch_zen2:
+			return "Zen 2";
 		case cpuinfo_uarch_geode:
 			return "Geode";
 		case cpuinfo_uarch_bobcat:
@@ -157,6 +165,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Cortex-A55";
 		case cpuinfo_uarch_cortex_a57:
 			return "Cortex-A57";
+		case cpuinfo_uarch_cortex_a65:
+			return "Cortex-A65";
 		case cpuinfo_uarch_cortex_a72:
 			return "Cortex-A72";
 		case cpuinfo_uarch_cortex_a73:
@@ -165,6 +175,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Cortex-A75";
 		case cpuinfo_uarch_cortex_a76:
 			return "Cortex-A76";
+		case cpuinfo_uarch_cortex_a76ae:
+			return "Cortex-A76AE";
+		case cpuinfo_uarch_cortex_a77:
+			return "Cortex-A77";
 		case cpuinfo_uarch_scorpion:
 			return "Scorpion";
 		case cpuinfo_uarch_krait:
@@ -181,12 +195,16 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Denver 2";
 		case cpuinfo_uarch_carmel:
 			return "Carmel";
-		case cpuinfo_uarch_mongoose_m1:
-			return "Mongoose M1";
-		case cpuinfo_uarch_mongoose_m2:
-			return "Mongoose M2";
-		case cpuinfo_uarch_meerkat_m3:
-			return "Meerkat M3";
+		case cpuinfo_uarch_exynos_m1:
+			return "Exynos M1";
+		case cpuinfo_uarch_exynos_m2:
+			return "Exynos M2";
+		case cpuinfo_uarch_exynos_m3:
+			return "Exynos M3";
+		case cpuinfo_uarch_exynos_m4:
+			return "Exynos M4";
+		case cpuinfo_uarch_exynos_m5:
+			return "Exynos M5";
 		case cpuinfo_uarch_swift:
 			return "Swift";
 		case cpuinfo_uarch_cyclone:
@@ -258,13 +276,23 @@ int main(int argc, char** argv) {
 			printf(", %s %s\n", vendor_string, uarch_string);
 		}
 	}
-	printf("Logical processors:\n");
+	printf("Logical processors");
+  #if defined(__linux__)
+    printf(" (System ID)");
+  #endif
+  printf(":\n");
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
 		const struct cpuinfo_processor* processor = cpuinfo_get_processor(i);
+    printf("\t%"PRIu32"", i);
+
+    #if defined(__linux__)
+      printf(" (%"PRId32")", processor->linux_id);
+    #endif
+
 		#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
-			printf("\t%"PRIu32": APIC ID 0x%08"PRIx32"\n", i, processor->apic_id);
+			printf(": APIC ID 0x%08"PRIx32"\n", processor->apic_id);
 		#else
-			printf("\t%"PRIu32"\n", i);
+			printf("\n");
 		#endif
 	}
 }

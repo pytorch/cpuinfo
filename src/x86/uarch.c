@@ -74,13 +74,19 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x4F: // Broadwell-E
 						case 0x56: // Broadwell-DE
 							return cpuinfo_uarch_broadwell;
-						case 0x4E: // Skylake-U/Y
-						case 0x55: // Skylake Server (SKX)
-						case 0x5E: // Skylake-H/S
+						case 0x4E: // Sky Lake Client Y/U
+						case 0x55: // Sky/Cascade/Cooper Lake Server
+						case 0x5E: // Sky Lake Client DT/H/S
+						case 0x8E: // Kaby/Whiskey/Amber/Comet Lake Y/U
+						case 0x9E: // Kaby/Coffee Lake DT/H/S
 							return cpuinfo_uarch_sky_lake;
-						case 0x8E: // Kaby Lake U/Y
-						case 0x9E: // Kaby Lake H/S
-							return cpuinfo_uarch_kaby_lake;
+						case 0x66: // Cannon Lake (Core i3-8121U)
+							return cpuinfo_uarch_palm_cove;
+						case 0x6A: // Ice Lake-DE
+						case 0x6C: // Ice Lake-SP
+						case 0x7D: // Ice Lake-Y
+						case 0x7E: // Ice Lake-U
+							return cpuinfo_uarch_sunny_cove;
 
 						/* Low-power cores */
 						case 0x1C: // Diamondville, Silverthorne, Pineview
@@ -90,18 +96,20 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x35: // Cloverview
 						case 0x36: // Cedarview, Centerton 
 							return cpuinfo_uarch_saltwell;
-						case 0x37:
-						case 0x4A:
-						case 0x4D:
+						case 0x37: // Bay Trail
+						case 0x4A: // Merrifield
+						case 0x4D: // Avoton, Rangeley
 						case 0x5A: // Moorefield
 						case 0x5D: // SoFIA
 							return cpuinfo_uarch_silvermont;
-						case 0x4C: // Braswell
-						case 0x5F: // Denverton
+						case 0x4C: // Braswell, Cherry Trail
 						case 0x75: // Spreadtrum SC9853I-IA
-						case 0x7A: // Goldmont+
 							return cpuinfo_uarch_airmont;
-
+						case 0x5C: // Apollo Lake
+						case 0x5F: // Denverton
+							return cpuinfo_uarch_goldmont;
+						case 0x7A: // Gemini Lake
+							return cpuinfo_uarch_goldmont_plus;
 						/* Knights-series cores */
 						case 0x57:
 							return cpuinfo_uarch_knights_landing;
@@ -190,7 +198,15 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						return cpuinfo_uarch_jaguar;
 					}
 				case 0x17:
-					return cpuinfo_uarch_zen;
+					switch (model_info->model) {
+						case 0x01: // 14 nm Naples, Whitehaven, Summit Ridge, Snowy Owl
+						case 0x08: // 12 nm Pinnacle Ridge
+						case 0x11: // 14 nm Raven Ridge
+						case 0x18: // 12 nm Picasso
+							return cpuinfo_uarch_zen;
+						case 0x71: // Matisse
+							return cpuinfo_uarch_zen2;
+					}
 			}
 			break;
 		default:

@@ -60,6 +60,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD05:
 					*uarch = cpuinfo_uarch_cortex_a55;
 					break;
+				case 0xD06:
+					*uarch = cpuinfo_uarch_cortex_a65;
+					break;
 				case 0xD07:
 					*uarch = cpuinfo_uarch_cortex_a57;
 					break;
@@ -75,6 +78,22 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD0B:
 					*uarch = cpuinfo_uarch_cortex_a76;
 					break;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+				case 0xD0C:
+					*uarch = cpuinfo_uarch_neoverse_n1;
+					break;
+#endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
+				case 0xD0D:
+					*uarch = cpuinfo_uarch_cortex_a77;
+					break;
+				case 0xD0E:
+					*uarch = cpuinfo_uarch_cortex_a76ae;
+					break;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+				case 0xD4A:
+					*uarch = cpuinfo_uarch_neoverse_e1;
+					break;
+#endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
 				default:
 					switch (midr_get_part(midr) >> 8) {
 #if CPUINFO_ARCH_ARM
@@ -242,9 +261,13 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a55;
 					break;
-				case 0x804:
+				case 0x804: /* High-performance Kryo 485 "Gold" / "Gold Prime" -> Cortex-A76 */
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a76;
+					break;
+				case 0x805: /* Low-performance Kryo 485 "Silver" -> Cortex-A55 */
+					*vendor = cpuinfo_vendor_arm;
+					*uarch = cpuinfo_uarch_cortex_a55;
 					break;
 #if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 				case 0xC00:
@@ -263,27 +286,43 @@ void cpuinfo_arm_decode_vendor_uarch(
 			switch (midr & (CPUINFO_ARM_MIDR_VARIANT_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 				case 0x00100010:
 					/*
-					 * Exynos 8890 MIDR = 0x531F0011, assume Mongoose M1 has:
+					 * Exynos 8890 MIDR = 0x531F0011, assume Exynos M1 has:
 					 * - CPU variant 0x1
 					 * - CPU part 0x001
 					 */
-					*uarch = cpuinfo_uarch_mongoose_m1;
+					*uarch = cpuinfo_uarch_exynos_m1;
 					break;
 				case 0x00400010:
 					/*
-					 * Exynos 8895 MIDR = 0x534F0010, assume Mongoose M2 has:
+					 * Exynos 8895 MIDR = 0x534F0010, assume Exynos M2 has:
 					 * - CPU variant 0x4
 					 * - CPU part 0x001
 					 */
-					*uarch = cpuinfo_uarch_mongoose_m2;
+					*uarch = cpuinfo_uarch_exynos_m2;
 					break;
 				case 0x00100020:
 					/*
-					 * Exynos 9810 MIDR = 0x531F0020, assume Meerkat M3 has:
+					 * Exynos 9810 MIDR = 0x531F0020, assume Exynos M3 has:
 					 * - CPU variant 0x1
 					 * - CPU part 0x002
 					 */
-					*uarch = cpuinfo_uarch_meerkat_m3;
+					*uarch = cpuinfo_uarch_exynos_m3;
+					break;
+				case 0x00100030:
+					/*
+					 * Exynos 9820 MIDR = 0x531F0030, assume Exynos M4 has:
+					 * - CPU variant 0x1
+					 * - CPU part 0x003
+					 */
+					*uarch = cpuinfo_uarch_exynos_m4;
+					break;
+				case 0x00100040:
+					/*
+					 * Exynos 9820 MIDR = 0x531F0040, assume Exynos M5 has:
+					 * - CPU variant 0x1
+					 * - CPU part 0x004
+					 */
+					*uarch = cpuinfo_uarch_exynos_m5;
 					break;
 				default:
 					cpuinfo_log_warning("unknown Samsung CPU variant 0x%01"PRIx32" part 0x%03"PRIx32" ignored",

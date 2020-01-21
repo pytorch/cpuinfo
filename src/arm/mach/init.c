@@ -562,6 +562,8 @@ void cpuinfo_arm_mach_init(void) {
 	cpuinfo_clusters_count = num_clusters;
 	cpuinfo_packages_count = mach_topology.packages;
 
+	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
+
 	__sync_synchronize();
 
 	cpuinfo_is_initialized = true;
