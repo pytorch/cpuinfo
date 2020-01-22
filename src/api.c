@@ -18,6 +18,7 @@ uint32_t cpuinfo_cores_count = 0;
 uint32_t cpuinfo_clusters_count = 0;
 uint32_t cpuinfo_packages_count = 0;
 uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max] = { 0 };
+uint32_t cpuinfo_max_cache_size = 0;
 
 
 const struct cpuinfo_processor* cpuinfo_get_processors(void) {
@@ -243,4 +244,11 @@ uint32_t CPUINFO_ABI cpuinfo_get_l4_caches_count(void) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l4_caches_count");
 	}
 	return cpuinfo_cache_count[cpuinfo_cache_level_4];
+}
+
+uint32_t CPUINFO_ABI cpuinfo_get_max_cache_size(void) {
+	if (!cpuinfo_is_initialized) {
+		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "max_cache_size");
+	}
+	return cpuinfo_max_cache_size;
 }

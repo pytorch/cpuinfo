@@ -60,6 +60,8 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "failed to initialize CPU information\n");
 		exit(EXIT_FAILURE);
 	}
+	printf("Max cache size (upper bound): %"PRIu32" bytes\n", cpuinfo_get_max_cache_size());
+
 	if (cpuinfo_get_l1i_caches_count() != 0 && (cpuinfo_get_l1i_cache(0)->flags & CPUINFO_CACHE_UNIFIED) == 0) {
 		report_cache(cpuinfo_get_l1i_caches_count(), cpuinfo_get_l1i_cache(0), 1, "instruction");
 	}

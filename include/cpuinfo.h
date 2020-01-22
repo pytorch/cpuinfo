@@ -38,8 +38,16 @@
 	#define CPUINFO_ARCH_PNACL 1
 #endif
 
-#if defined(EMSCRIPTEN)
+#if defined(__asmjs__)
 	#define CPUINFO_ARCH_ASMJS 1
+#endif
+
+#if defined(__wasm__)
+	#if defined(__wasm_simd128__)
+		#define CPUINFO_ARCH_WASMSIMD 1
+	#else
+		#define CPUINFO_ARCH_WASM 1
+	#endif
 #endif
 
 #if CPUINFO_ARCH_X86 && defined(_MSC_VER)
@@ -78,6 +86,14 @@
 
 #ifndef CPUINFO_ARCH_ASMJS
 	#define CPUINFO_ARCH_ASMJS 0
+#endif
+
+#ifndef CPUINFO_ARCH_WASM
+	#define CPUINFO_ARCH_WASM 0
+#endif
+
+#ifndef CPUINFO_ARCH_WASMSIMD
+	#define CPUINFO_ARCH_WASMSIMD 0
 #endif
 
 #define CPUINFO_CACHE_UNIFIED          0x00000001
@@ -278,10 +294,14 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_haswell      = 0x00100208,
 	/** Intel Broadwell microarchitecture. */
 	cpuinfo_uarch_broadwell    = 0x00100209,
-	/** Intel Sky Lake microarchitecture. */
+	/** Intel Sky Lake microarchitecture (14 nm, including Kaby/Coffee/Whiskey/Amber/Comet/Cascade/Cooper Lake). */
 	cpuinfo_uarch_sky_lake     = 0x0010020A,
-	/** Intel Kaby Lake microarchitecture. */
-	cpuinfo_uarch_kaby_lake    = 0x0010020B,
+	/** DEPRECATED (Intel Kaby Lake microarchitecture). */
+	cpuinfo_uarch_kaby_lake    = 0x0010020A,
+	/** Intel Palm Cove microarchitecture (10 nm, Cannon Lake). */
+	cpuinfo_uarch_palm_cove    = 0x0010020B,
+	/** Intel Sunny Cove microarchitecture (10 nm, Ice Lake). */
+	cpuinfo_uarch_sunny_cove   = 0x0010020C,
 
 	/** Pentium 4 with Willamette, Northwood, or Foster cores. */
 	cpuinfo_uarch_willamette = 0x00100300,
@@ -289,13 +309,17 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_prescott   = 0x00100301,
 
 	/** Intel Atom on 45 nm process. */
-	cpuinfo_uarch_bonnell    = 0x00100400,
+	cpuinfo_uarch_bonnell       = 0x00100400,
 	/** Intel Atom on 32 nm process. */
-	cpuinfo_uarch_saltwell   = 0x00100401,
+	cpuinfo_uarch_saltwell      = 0x00100401,
 	/** Intel Silvermont microarchitecture (22 nm out-of-order Atom). */
-	cpuinfo_uarch_silvermont = 0x00100402,
+	cpuinfo_uarch_silvermont    = 0x00100402,
 	/** Intel Airmont microarchitecture (14 nm out-of-order Atom). */
-	cpuinfo_uarch_airmont    = 0x00100403,
+	cpuinfo_uarch_airmont       = 0x00100403,
+	/** Intel Goldmont microarchitecture (Denverton, Apollo Lake). */
+	cpuinfo_uarch_goldmont      = 0x00100404,
+	/** Intel Goldmont Plus microarchitecture (Gemini Lake). */
+	cpuinfo_uarch_goldmont_plus = 0x00100405,
 
 	/** Intel Knights Ferry HPC boards. */
 	cpuinfo_uarch_knights_ferry   = 0x00100500,
@@ -335,8 +359,10 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_steamroller = 0x00200107,
 	/** AMD Excavator microarchitecture (Carizzo APUs). */
 	cpuinfo_uarch_excavator   = 0x00200108,
-	/** AMD Zen microarchitecture (Ryzen CPUs). */
+	/** AMD Zen microarchitecture (12/14 nm Ryzen and EPYC CPUs). */
 	cpuinfo_uarch_zen         = 0x00200109,
+	/** AMD Zen 2 microarchitecture (7 nm Ryzen and EPYC CPUs). */
+	cpuinfo_uarch_zen2        = 0x0020010A,
 
 	/** NSC Geode and AMD Geode GX and LX. */
 	cpuinfo_uarch_geode  = 0x00200200,
@@ -370,23 +396,34 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_cortex_a17 = 0x00300217,
 
 	/** ARM Cortex-A32. */
-	cpuinfo_uarch_cortex_a32 = 0x00300332,
+	cpuinfo_uarch_cortex_a32   = 0x00300332,
 	/** ARM Cortex-A35. */
-	cpuinfo_uarch_cortex_a35 = 0x00300335,
+	cpuinfo_uarch_cortex_a35   = 0x00300335,
 	/** ARM Cortex-A53. */
-	cpuinfo_uarch_cortex_a53 = 0x00300353,
+	cpuinfo_uarch_cortex_a53   = 0x00300353,
 	/** ARM Cortex-A55. */
-	cpuinfo_uarch_cortex_a55 = 0x00300355,
+	cpuinfo_uarch_cortex_a55   = 0x00300355,
 	/** ARM Cortex-A57. */
-	cpuinfo_uarch_cortex_a57 = 0x00300357,
+	cpuinfo_uarch_cortex_a57   = 0x00300357,
+	/** ARM Cortex-A65. */
+	cpuinfo_uarch_cortex_a65   = 0x00300365,
 	/** ARM Cortex-A72. */
-	cpuinfo_uarch_cortex_a72 = 0x00300372,
+	cpuinfo_uarch_cortex_a72   = 0x00300372,
 	/** ARM Cortex-A73. */
-	cpuinfo_uarch_cortex_a73 = 0x00300373,
+	cpuinfo_uarch_cortex_a73   = 0x00300373,
 	/** ARM Cortex-A75. */
-	cpuinfo_uarch_cortex_a75 = 0x00300375,
+	cpuinfo_uarch_cortex_a75   = 0x00300375,
 	/** ARM Cortex-A76. */
-	cpuinfo_uarch_cortex_a76 = 0x00300376,
+	cpuinfo_uarch_cortex_a76   = 0x00300376,
+	/** ARM Cortex-A76AE. */
+	cpuinfo_uarch_cortex_a76ae = 0x00300378,
+	/** ARM Cortex-A77. */
+	cpuinfo_uarch_cortex_a77   = 0x00300377,
+
+	/** ARM Neoverse N1. */
+	cpuinfo_uarch_neoverse_n1  = 0x00300400,
+	/** ARM Neoverse E1. */
+	cpuinfo_uarch_neoverse_e1  = 0x00300401,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
@@ -406,12 +443,22 @@ enum cpuinfo_uarch {
 	/** Nvidia Carmel. */
 	cpuinfo_uarch_carmel   = 0x00500102,
 
-	/** Samsung Mongoose M1 (Exynos 8890 big cores). */
+	/** Samsung Exynos M1 (Exynos 8890 big cores). */
+	cpuinfo_uarch_exynos_m1 = 0x00600100,
+	/** Samsung Exynos M2 (Exynos 8895 big cores). */
+	cpuinfo_uarch_exynos_m2 = 0x00600101,
+	/** Samsung Exynos M3 (Exynos 9810 big cores). */
+	cpuinfo_uarch_exynos_m3  = 0x00600102,
+	/** Samsung Exynos M4 (Exynos 9820 big cores). */
+	cpuinfo_uarch_exynos_m4  = 0x00600103,
+	/** Samsung Exynos M5 (Exynos 9830 big cores). */
+	cpuinfo_uarch_exynos_m5  = 0x00600104,
+
+	/* Old names for Exynos. */
 	cpuinfo_uarch_mongoose_m1 = 0x00600100,
-	/** Samsung Mongoose M2 (Exynos 8895 big cores). */
 	cpuinfo_uarch_mongoose_m2 = 0x00600101,
-	/** Samsung Meerkat M3 (Exynos 9810 big cores). */
 	cpuinfo_uarch_meerkat_m3  = 0x00600102,
+	cpuinfo_uarch_meerkat_m4  = 0x00600103,
 
 	/** Apple A6 and A6X processors. */
 	cpuinfo_uarch_swift     = 0x00700100,
@@ -640,6 +687,8 @@ void CPUINFO_ABI cpuinfo_deinitialize(void);
 		bool avx512bitalg;
 		bool avx512vpopcntdq;
 		bool avx512vnni;
+		bool avx512bf16;
+		bool avx512vp2intersect;
 		bool avx512_4vnniw;
 		bool avx512_4fmaps;
 		bool hle;
@@ -1105,6 +1154,22 @@ static inline bool cpuinfo_has_x86_avx512vpopcntdq(void) {
 static inline bool cpuinfo_has_x86_avx512vnni(void) {
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		return cpuinfo_isa.avx512vnni;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512bf16(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512bf16;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512vp2intersect(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512vp2intersect;
 	#else
 		return false;
 	#endif
@@ -1681,6 +1746,11 @@ uint32_t CPUINFO_ABI cpuinfo_get_l1d_caches_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l2_caches_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l3_caches_count(void);
 uint32_t CPUINFO_ABI cpuinfo_get_l4_caches_count(void);
+
+/**
+ * Returns upper bound on cache size.
+ */
+uint32_t CPUINFO_ABI cpuinfo_get_max_cache_size(void);
 
 const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_current_processor(void);
 const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_current_core(void);

@@ -220,7 +220,7 @@ static const struct cluster_config cluster_configs[] = {
 		.model = UINT16_C(7420),
 		.clusters = 2,
 		.cluster_cores = {
-			[0] = 4, 
+			[0] = 4,
 			[1] = 4,
 		},
 		.cluster_midr = {
@@ -229,7 +229,7 @@ static const struct cluster_config cluster_configs[] = {
 		},
 	},
 	{
-		/* Exynos 8890: 4x Mongoose + 4x Cortex-A53 */
+		/* Exynos 8890: 4x Exynos M1 + 4x Cortex-A53 */
 		.cores = 8,
 		.series = cpuinfo_arm_chipset_series_samsung_exynos,
 		.model = UINT16_C(8890),
@@ -695,7 +695,7 @@ static void cpuinfo_arm_linux_detect_cluster_midr_by_sequential_scan(
 		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			if (processors[i].package_leader_id == i) {
 				if (bitmask_all(processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR)) {
-					midr = processors[i].midr;	
+					midr = processors[i].midr;
 				} else {
 					cpuinfo_log_info("assume processor %"PRIu32" to have MIDR %08"PRIx32, i, midr);
 					/* To be consistent, we copy the MIDR entirely, rather than by parts */
@@ -836,7 +836,7 @@ uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 			 *    - Clusters preceeding the first reported MIDR value are assumed to have the last reported MIDR value.
 			 *    - Clusters following any reported MIDR value to have that MIDR value.
 			 */
-			
+
 			if (cpuinfo_arm_linux_detect_cluster_midr_by_chipset(
 				chipset, clusters_count, cluster_leaders, usable_processors, processors, true))
 			{

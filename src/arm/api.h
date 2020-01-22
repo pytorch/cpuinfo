@@ -104,6 +104,9 @@ CPUINFO_INTERNAL void cpuinfo_arm_decode_cache(
 	struct cpuinfo_cache l1d[restrict static 1],
 	struct cpuinfo_cache l2[restrict static 1],
 	struct cpuinfo_cache l3[restrict static 1]);
+
+CPUINFO_INTERNAL uint32_t cpuinfo_arm_compute_max_cache_size(
+	const struct cpuinfo_processor processor[restrict static 1]);
 #else /* defined(__cplusplus) */
 CPUINFO_INTERNAL void cpuinfo_arm_decode_cache(
 	enum cpuinfo_uarch uarch,

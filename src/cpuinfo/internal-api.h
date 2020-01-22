@@ -31,6 +31,7 @@ extern CPUINFO_INTERNAL uint32_t cpuinfo_cores_count;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_clusters_count;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_packages_count;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
+extern CPUINFO_INTERNAL uint32_t cpuinfo_max_cache_size;
 
 CPUINFO_PRIVATE void cpuinfo_x86_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_x86_linux_init(void);
@@ -39,5 +40,7 @@ CPUINFO_PRIVATE void cpuinfo_x86_linux_init(void);
 #endif
 CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_arm_linux_init(void);
+
+CPUINFO_PRIVATE uint32_t cpuinfo_compute_max_cache_size(const struct cpuinfo_processor* processor);
 
 typedef void (*cpuinfo_processor_callback)(uint32_t);

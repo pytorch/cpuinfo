@@ -678,6 +678,8 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 
+	cpuinfo_max_cache_size = cpuinfo_arm_compute_max_cache_size(&processors[0]);
+
 	__sync_synchronize();
 
 	cpuinfo_is_initialized = true;
