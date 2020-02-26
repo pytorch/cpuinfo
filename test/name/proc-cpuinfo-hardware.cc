@@ -288,6 +288,11 @@ TEST(PROC_CPUINFO_HARDWARE, qualcomm_sdm) {
 		parse_proc_cpuinfo_hardware("Qualcomm Technologies, Inc SDM660"));
 }
 
+TEST(PROC_CPUINFO_HARDWARE, qualcomm_sm) {
+	EXPECT_EQ("Qualcomm Snapdragon 8150",
+		parse_proc_cpuinfo_hardware("Qualcomm Technologies, Inc SM8150"));
+}
+
 TEST(PROC_CPUINFO_HARDWARE, mediatek_mt) {
 	EXPECT_EQ("MediaTek MT5507",
 		parse_proc_cpuinfo_hardware("MT5507"));

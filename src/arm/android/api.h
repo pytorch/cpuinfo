@@ -12,6 +12,7 @@ enum cpuinfo_android_chipset_property {
 	cpuinfo_android_chipset_property_ro_mediatek_platform,
 	cpuinfo_android_chipset_property_ro_arch,
 	cpuinfo_android_chipset_property_ro_chipname,
+	cpuinfo_android_chipset_property_ro_hardware_chipname,
 	cpuinfo_android_chipset_property_max,
 };
 
