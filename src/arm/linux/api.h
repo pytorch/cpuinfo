@@ -24,6 +24,7 @@
 		char ro_mediatek_platform[CPUINFO_BUILD_PROP_VALUE_MAX];
 		char ro_arch[CPUINFO_BUILD_PROP_VALUE_MAX];
 		char ro_chipname[CPUINFO_BUILD_PROP_VALUE_MAX];
+		char ro_hardware_chipname[CPUINFO_BUILD_PROP_VALUE_MAX];
 	};
 #endif
 
@@ -322,6 +323,9 @@ CPUINFO_INTERNAL struct cpuinfo_arm_chipset
 	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
 		cpuinfo_arm_android_decode_chipset_from_ro_chipname(
 			const char ro_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset_from_ro_hardware_chipname(
+			const char ro_hardware_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
 #endif
 
 CPUINFO_INTERNAL bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(

@@ -829,7 +829,7 @@ TEST(SAMSUNG, exynos_8890) {
 	struct cpuinfo_cache big_l2 = { 0 };
 	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_mongoose_m1, 4, UINT32_C(0x531F0011),
+		cpuinfo_uarch_exynos_m1, 4, UINT32_C(0x531F0011),
 		&chipset, 0, 8,
 		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
@@ -865,7 +865,7 @@ TEST(SAMSUNG, exynos_8895) {
 	struct cpuinfo_cache big_l2 = { 0 };
 	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_mongoose_m2, 4, UINT32_C(0x534F0010),
+		cpuinfo_uarch_exynos_m2, 4, UINT32_C(0x534F0010),
 		&chipset, 0, 8,
 		&big_l1i, &big_l1d, &big_l2, &big_l3);
 
@@ -901,7 +901,7 @@ TEST(SAMSUNG, exynos_9810) {
 	struct cpuinfo_cache big_l2 = { 0 };
 	struct cpuinfo_cache big_l3 = { 0 };
 	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_meerkat_m3, 4, UINT32_C(0x531F0020),
+		cpuinfo_uarch_exynos_m3, 4, UINT32_C(0x531F0020),
 		&chipset, 0, 8,
 		&big_l1i, &big_l1d, &big_l2, &big_l3);
 

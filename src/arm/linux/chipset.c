@@ -235,6 +235,53 @@ static bool match_sdm(
 }
 
 /**
+ * Tries to match /SM\d{4}$/ signature for Qualcomm Snapdragon chipsets.
+ * If match successful, extracts model information into \p chipset argument.
+ *
+ * @param start - start of the /proc/cpuinfo Hardware string to match.
+ * @param end - end of the /proc/cpuinfo Hardware string to match.
+ * @param[out] chipset - location where chipset information will be stored upon a successful match.
+ *
+ * @returns true if signature matched, false otherwise.
+ */
+static bool match_sm(
+	const char* start, const char* end,
+	struct cpuinfo_arm_chipset chipset[restrict static 1])
+{
+	/* Expect exactly 6 symbols: 2 symbols "SM" + 4 digits */
+	if (start + 6 != end) {
+		return false;
+	}
+
+	/* Check that string starts with "SM".
+	 * The first three characters are loaded and compared as 16-bit little endian word.
+	 */
+	const uint32_t expected_sm = load_u16le(start);
+	if (expected_sm != UINT16_C(0x4D53) /* "MS" = reverse("SM") */) {
+		return false;
+	}
+
+	/* Validate and parse 4-digit model number */
+	uint32_t model = 0;
+	for (uint32_t i = 2; i < 6; i++) {
+		const uint32_t digit = (uint32_t) (uint8_t) start[i] - '0';
+		if (digit >= 10) {
+			/* Not really a digit */
+			return false;
+		}
+		model = model * 10 + digit;
+	}
+
+	/* Return parsed chipset. */
+	*chipset = (struct cpuinfo_arm_chipset) {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_snapdragon,
+		.model = model,
+	};
+	return true;
+}
+
+/**
  * Tries to match /Samsung Exynos\d{4}$/ signature (case-insensitive) for Samsung Exynos chipsets.
  * If match successful, extracts model information into \p chipset argument.
  *
@@ -735,7 +782,7 @@ static bool match_rk(
 }
 
 /**
- * Tries to match, case-insentitively, /sc\d{4}[a-z]*|scx15$/ signature for Spreadtrum SC chipsets.
+ * Tries to match, case-insentitively, /s[cp]\d{4}[a-z]*|scx15$/ signature for Spreadtrum SC chipsets.
  * If match successful, extracts model information into \p chipset argument.
  *
  * @param start - start of the platform identifier (/proc/cpuinfo Hardware string, ro.product.board,
@@ -756,12 +803,16 @@ static bool match_sc(
 	}
 
 	/*
-	 * Check that string starts with "SC" (case-insensitive).
+	 * Check that string starts with "S[CP]" (case-insensitive).
 	 * The first two characters are loaded as 16-bit little endian word and converted to lowercase.
 	 */
-	const uint16_t expected_sc = UINT16_C(0x2020) | load_u16le(start);
-	if (expected_sc != UINT16_C(0x6373) /* "cs" = reverse("sc") */) {
-		return false;
+	const uint16_t expected_sc_or_sp = UINT16_C(0x2020) | load_u16le(start);
+	switch (expected_sc_or_sp) {
+		case UINT16_C(0x6373): /* "cs" = reverse("sc") */
+		case UINT16_C(0x7073): /* "ps" = reverse("sp") */
+			break;
+		default:
+			return false;
 	}
 
 	/* Special case: "scx" prefix (SC7715 reported as "scx15") */
@@ -785,7 +836,7 @@ static bool match_sc(
 		return true;
 	}
 
-	/* Expect at least 6 symbols: "SC" (2 symbols) + 4-digit model number */
+	/* Expect at least 6 symbols: "S[CP]" (2 symbols) + 4-digit model number */
 	if (start + 6 > end) {
 		return false;
 	}
@@ -2188,6 +2239,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 							return chipset;
 						}
 
+						/* Check SMxxxx (Qualcomm Snapdragon) signature */
+						if (match_sm(pos, hardware_end, &chipset)) {
+							cpuinfo_log_debug(
+								"matched Qualcomm SM signature in /proc/cpuinfo Hardware string \"%.*s\"",
+								(int) hardware_length, hardware);
+							return chipset;
+						}
+
 						/* Check MediaTek MT signature */
 						if (match_mt(pos, hardware_end, true, &chipset)) {
 							cpuinfo_log_debug(
@@ -2949,13 +3008,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 	}
 
 	/*
-	 * Decodes chipset name from ro.chipname Android system property.
+	 * Decodes chipset name from ro.chipname or ro.hardware.chipname Android system property.
 	 *
-	 * @param[in] chipname - ro.chipname value.
+	 * @param[in] chipname - ro.chipname or ro.hardware.chipname value.
 	 *
 	 * @returns Decoded chipset name. If chipset could not be decoded, the resulting structure would use `unknown` vendor
 	 *          and series identifiers.
 	 */
+
 	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_chipname(
 		const char chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
 	{
@@ -2967,6 +3027,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 		if (match_msm_apq(chipname, chipname_end, &chipset)) {
 			cpuinfo_log_debug(
 				"matched Qualcomm MSM/APQ signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Check SMxxxx (Qualcomm Snapdragon) signature */
+		if (match_sm(chipname, chipname_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Qualcomm SM signature in /proc/cpuinfo Hardware string \"%.*s\"",
 				(int) chipname_length, chipname);
 			return chipset;
 		}
@@ -3181,12 +3249,6 @@ void cpuinfo_arm_fixup_chipset(
 			}
 			break;
 		}
-		case cpuinfo_arm_chipset_series_qualcomm_snapdragon:
-			/* Snapdragon 670 was renamed to Snapdragon 710 */
-			if (chipset->model == 670) {
-				chipset->model = 710;
-			}
-			break;
 		case cpuinfo_arm_chipset_series_samsung_exynos:
 			switch (chipset->model) {
 #if CPUINFO_ARCH_ARM
@@ -3372,8 +3434,12 @@ void cpuinfo_arm_chipset_to_string(
 		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
 		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
 		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
-		const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1])
+		const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_hardware_chipname_chipset[restrict static 1])
 	{
+		if (ro_hardware_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_hardware_chipname_chipset;
+		}
 		if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
 			return *ro_chipname_chipset;
 		}
@@ -3524,6 +3590,8 @@ void cpuinfo_arm_chipset_to_string(
 				cpuinfo_arm_android_decode_chipset_from_ro_arch(properties->ro_arch),
 			[cpuinfo_android_chipset_property_ro_chipname] =
 				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname),
+			[cpuinfo_android_chipset_property_ro_hardware_chipname] =
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_hardware_chipname),
 		};
 		enum cpuinfo_arm_chipset_vendor vendor = cpuinfo_arm_chipset_vendor_unknown;
 		for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
@@ -3592,7 +3660,8 @@ void cpuinfo_arm_chipset_to_string(
 								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
 								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
 								&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
-								&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
+								&chipsets[cpuinfo_android_chipset_property_ro_chipname],
+								&chipsets[cpuinfo_android_chipset_property_ro_hardware_chipname]);
 						case cpuinfo_arm_chipset_vendor_mediatek:
 							return disambiguate_mediatek_chipset(
 								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],

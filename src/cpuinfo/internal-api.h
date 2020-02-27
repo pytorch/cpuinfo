@@ -40,6 +40,7 @@ CPUINFO_PRIVATE void cpuinfo_x86_linux_init(void);
 #endif
 CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_arm_linux_init(void);
+CPUINFO_PRIVATE void cpuinfo_emscripten_init(void);
 
 CPUINFO_PRIVATE uint32_t cpuinfo_compute_max_cache_size(const struct cpuinfo_processor* processor);
 
