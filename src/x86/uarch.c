@@ -79,6 +79,8 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x5E: // Sky Lake Client DT/H/S
 						case 0x8E: // Kaby/Whiskey/Amber/Comet Lake Y/U
 						case 0x9E: // Kaby/Coffee Lake DT/H/S
+						case 0xA5: // Comet Lake H/S
+						case 0xA6: // Comet Lake U/Y
 							return cpuinfo_uarch_sky_lake;
 						case 0x66: // Cannon Lake (Core i3-8121U)
 							return cpuinfo_uarch_palm_cove;
@@ -94,7 +96,7 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							return cpuinfo_uarch_bonnell;
 						case 0x27: // Medfield
 						case 0x35: // Cloverview
-						case 0x36: // Cedarview, Centerton 
+						case 0x36: // Cedarview, Centerton
 							return cpuinfo_uarch_saltwell;
 						case 0x37: // Bay Trail
 						case 0x4A: // Merrifield
@@ -110,6 +112,7 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							return cpuinfo_uarch_goldmont;
 						case 0x7A: // Gemini Lake
 							return cpuinfo_uarch_goldmont_plus;
+
 						/* Knights-series cores */
 						case 0x57:
 							return cpuinfo_uarch_knights_landing;
@@ -173,7 +176,7 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x38: // Godavari
 						case 0x30: // Kaveri
 							return cpuinfo_uarch_steamroller;
-						case 0x60: // Carrizo 
+						case 0x60: // Carrizo
 						case 0x65: // Bristol Ridge
 						case 0x70: // Stoney Ridge
 							return cpuinfo_uarch_excavator;
@@ -201,12 +204,20 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 					switch (model_info->model) {
 						case 0x01: // 14 nm Naples, Whitehaven, Summit Ridge, Snowy Owl
 						case 0x08: // 12 nm Pinnacle Ridge
-						case 0x11: // 14 nm Raven Ridge
+						case 0x11: // 14 nm Raven Ridge, Great Horned Owl
 						case 0x18: // 12 nm Picasso
 							return cpuinfo_uarch_zen;
+						case 0x31: // Rome, Castle Peak
+						case 0x60: // Renoir
 						case 0x71: // Matisse
 							return cpuinfo_uarch_zen2;
 					}
+			}
+			break;
+		case cpuinfo_vendor_hygon:
+			switch (model_info->family) {
+				case 0x00:
+					return cpuinfo_uarch_dhyana;
 			}
 			break;
 		default:

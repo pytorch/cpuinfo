@@ -58,7 +58,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*uarch = cpuinfo_uarch_cortex_a35;
 					break;
 				case 0xD05:
-					*uarch = cpuinfo_uarch_cortex_a55;
+					// Note: use Variant, not Revision, field
+					*uarch = (midr & CPUINFO_ARM_MIDR_VARIANT_MASK) == 0 ?
+						cpuinfo_uarch_cortex_a55r0 : cpuinfo_uarch_cortex_a55;
 					break;
 				case 0xD06:
 					*uarch = cpuinfo_uarch_cortex_a65;
@@ -257,9 +259,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a75;
 					break;
-				case 0x803: /* Low-power Kryo 385 "Silver" -> Cortex-A55 */
+				case 0x803: /* Low-power Kryo 385 "Silver" -> Cortex-A55r0 */
 					*vendor = cpuinfo_vendor_arm;
-					*uarch = cpuinfo_uarch_cortex_a55;
+					*uarch = cpuinfo_uarch_cortex_a55r0;
 					break;
 				case 0x804: /* High-performance Kryo 485 "Gold" / "Gold Prime" -> Cortex-A76 */
 					*vendor = cpuinfo_vendor_arm;

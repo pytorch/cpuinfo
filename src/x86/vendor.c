@@ -26,6 +26,11 @@
 #define auls UINT32_C(0x736C7561)
 #define VIA  UINT32_C(0x20414956)
 
+/* Hygon vendor string: "HygonGenuine" */
+#define Hygo UINT32_C(0x6F677948)
+#define nGen UINT32_C(0x6E65476E)
+#define uine UINT32_C(0x656E6975)
+
 /* Transmeta vendor strings: "GenuineTMx86", "TransmetaCPU" */
 #define ineT UINT32_C(0x54656E69)
 #define Mx86 UINT32_C(0x3638784D)
@@ -103,6 +108,12 @@ enum cpuinfo_vendor cpuinfo_x86_decode_vendor(uint32_t ebx, uint32_t ecx, uint32
 			if (edx == aurH && ecx == auls) {
 				/* "CentaurHauls" */
 				return cpuinfo_vendor_via;
+			}
+			break;
+		case Hygo:
+			if (edx == nGen && ecx == uine) {
+				/* "HygonGenuine" */
+				return cpuinfo_vendor_hygon;
 			}
 			break;
 #if CPUINFO_ARCH_X86

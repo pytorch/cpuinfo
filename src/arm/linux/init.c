@@ -106,12 +106,14 @@ void cpuinfo_arm_linux_init(void) {
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
 	struct cpuinfo_cluster* clusters = NULL;
-	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
-	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
+	struct cpuinfo_uarch_info* uarchs = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
 	struct cpuinfo_cache* l3 = NULL;
+	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
+	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
+	uint32_t* linux_cpu_to_uarch_index_map = NULL;
 
 	const uint32_t max_processors_count = cpuinfo_linux_get_max_processors_count();
 	cpuinfo_log_debug("system maximum processors count: %"PRIu32, max_processors_count);
@@ -400,6 +402,18 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
+	uint32_t uarchs_count = 0;
+	enum cpuinfo_uarch last_uarch;
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			if (uarchs_count == 0 || arm_linux_processors[i].uarch != last_uarch) {
+				last_uarch = arm_linux_processors[i].uarch;
+				uarchs_count += 1;
+			}
+			arm_linux_processors[i].uarch_index = uarchs_count - 1;
+		}
+	}
+
 	/*
 	 * Assumptions:
 	 * - No SMP (i.e. each core supports only one hardware thread).
@@ -432,6 +446,13 @@ void cpuinfo_arm_linux_init(void) {
 		goto cleanup;
 	}
 
+	uarchs = calloc(uarchs_count, sizeof(struct cpuinfo_uarch_info));
+	if (uarchs == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" microarchitectures",
+			uarchs_count * sizeof(struct cpuinfo_uarch_info), uarchs_count);
+		goto cleanup;
+	}
+
 	linux_cpu_to_processor_map = calloc(arm_linux_processors_count, sizeof(struct cpuinfo_processor*));
 	if (linux_cpu_to_processor_map == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" logical processor mapping entries",
@@ -446,6 +467,15 @@ void cpuinfo_arm_linux_init(void) {
 		goto cleanup;
 	}
 
+	if (uarchs_count > 1) {
+		linux_cpu_to_uarch_index_map = calloc(arm_linux_processors_count, sizeof(uint32_t));
+		if (linux_cpu_to_uarch_index_map == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" uarch index mapping entries",
+				arm_linux_processors_count * sizeof(uint32_t), arm_linux_processors_count);
+			goto cleanup;
+		}
+	}
+
 	l1i = calloc(valid_processors, sizeof(struct cpuinfo_cache));
 	if (l1i == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
@@ -458,6 +488,22 @@ void cpuinfo_arm_linux_init(void) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
 			valid_processors * sizeof(struct cpuinfo_cache), valid_processors);
 		goto cleanup;
+	}
+
+	uint32_t uarchs_index = 0;
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			if (uarchs_index == 0 || arm_linux_processors[i].uarch != last_uarch) {
+				last_uarch = arm_linux_processors[i].uarch;
+				uarchs[uarchs_index] = (struct cpuinfo_uarch_info) {
+					.uarch = arm_linux_processors[i].uarch,
+					.midr = arm_linux_processors[i].midr,
+				};
+				uarchs_index += 1;
+			}
+			uarchs[uarchs_index - 1].processor_count += 1;
+			uarchs[uarchs_index - 1].core_count += 1;
+		}
 	}
 
 	uint32_t l2_count = 0, l3_count = 0, big_l3_size = 0, cluster_id = UINT32_MAX;
@@ -498,6 +544,11 @@ void cpuinfo_arm_linux_init(void) {
 		cores[i].uarch = arm_linux_processors[i].uarch;
 		cores[i].midr = arm_linux_processors[i].midr;
 		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
+
+		if (linux_cpu_to_uarch_index_map != NULL) {
+			linux_cpu_to_uarch_index_map[arm_linux_processors[i].system_processor_id] =
+				arm_linux_processors[i].uarch_index;
+		}
 
 		struct cpuinfo_cache temp_l2 = { 0 }, temp_l3 = { 0 };
 		cpuinfo_arm_decode_cache(
@@ -658,12 +709,11 @@ void cpuinfo_arm_linux_init(void) {
 	}
 
 	/* Commit */
-	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
-	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
 	cpuinfo_clusters = clusters;
 	cpuinfo_packages = &package;
+	cpuinfo_uarchs = uarchs;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
@@ -673,33 +723,42 @@ void cpuinfo_arm_linux_init(void) {
 	cpuinfo_cores_count = valid_processors;
 	cpuinfo_clusters_count = cluster_count;
 	cpuinfo_packages_count = 1;
+	cpuinfo_uarchs_count = uarchs_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = valid_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = valid_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
-
 	cpuinfo_max_cache_size = cpuinfo_arm_compute_max_cache_size(&processors[0]);
+
+	cpuinfo_linux_cpu_max = arm_linux_processors_count;
+	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
+	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
+	cpuinfo_linux_cpu_to_uarch_index_map = linux_cpu_to_uarch_index_map;
 
 	__sync_synchronize();
 
 	cpuinfo_is_initialized = true;
 
-	linux_cpu_to_processor_map = NULL;
-	linux_cpu_to_core_map = NULL;
 	processors = NULL;
 	cores = NULL;
 	clusters = NULL;
+	uarchs = NULL;
 	l1i = l1d = l2 = l3 = NULL;
+	linux_cpu_to_processor_map = NULL;
+	linux_cpu_to_core_map = NULL;
+	linux_cpu_to_uarch_index_map = NULL;
 
 cleanup:
 	free(arm_linux_processors);
-	free(linux_cpu_to_processor_map);
-	free(linux_cpu_to_core_map);
 	free(processors);
 	free(cores);
 	free(clusters);
+	free(uarchs);
 	free(l1i);
 	free(l1d);
 	free(l2);
 	free(l3);
+	free(linux_cpu_to_processor_map);
+	free(linux_cpu_to_core_map);
+	free(linux_cpu_to_uarch_index_map);
 }

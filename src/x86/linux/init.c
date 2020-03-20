@@ -569,9 +569,6 @@ void cpuinfo_x86_linux_init(void) {
 	}
 
 	/* Commit changes */
-	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
-	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
-
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
 	cpuinfo_clusters = clusters;
@@ -591,24 +588,32 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
-
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
+
+	cpuinfo_global_uarch = (struct cpuinfo_uarch_info) {
+		.uarch = x86_processor.uarch,
+		.cpuid = x86_processor.cpuid,
+		.processor_count = processors_count,
+		.core_count = cores_count,
+	};
+
+	cpuinfo_linux_cpu_max = x86_linux_processors_count;
+	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
+	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
 
 	__sync_synchronize();
 
 	cpuinfo_is_initialized = true;
 
-	linux_cpu_to_processor_map = NULL;
-	linux_cpu_to_core_map = NULL;
 	processors = NULL;
 	cores = NULL;
 	clusters = NULL;
 	packages = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
+	linux_cpu_to_processor_map = NULL;
+	linux_cpu_to_core_map = NULL;
 
 cleanup:
-	free(linux_cpu_to_processor_map);
-	free(linux_cpu_to_core_map);
 	free(x86_linux_processors);
 	free(processors);
 	free(cores);
@@ -619,4 +624,6 @@ cleanup:
 	free(l2);
 	free(l3);
 	free(l4);
+	free(linux_cpu_to_processor_map);
+	free(linux_cpu_to_core_map);
 }

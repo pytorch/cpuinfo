@@ -305,29 +305,33 @@ void cpuinfo_x86_mach_init(void) {
 	}
 
 	/* Commit changes */
+	cpuinfo_processors = processors;
+	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
+	cpuinfo_packages = packages;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
 	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
 	cpuinfo_cache[cpuinfo_cache_level_4]  = l4;
 
-	cpuinfo_processors = processors;
-	cpuinfo_cores = cores;
-	cpuinfo_clusters = clusters;
-	cpuinfo_packages = packages;
-
+	cpuinfo_processors_count = mach_topology.threads;
+	cpuinfo_cores_count = mach_topology.cores;
+	cpuinfo_clusters_count = mach_topology.packages;
+	cpuinfo_packages_count = mach_topology.packages;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
-
-	cpuinfo_processors_count = mach_topology.threads;
-	cpuinfo_cores_count = mach_topology.cores;
-	cpuinfo_clusters_count = mach_topology.packages;
-	cpuinfo_packages_count = mach_topology.packages;
-
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
+
+	cpuinfo_global_uarch = (struct cpuinfo_uarch_info) {
+		.uarch = x86_processor.uarch,
+		.cpuid = x86_processor.cpuid,
+		.processor_count = mach_topology.threads,
+		.core_count = mach_topology.cores,
+	};
 
 	__sync_synchronize();
 

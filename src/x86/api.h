@@ -93,7 +93,6 @@ CPUINFO_INTERNAL struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	const struct cpuid_regs basic_info, const struct cpuid_regs extended_info,
 	uint32_t max_base_index, uint32_t max_extended_index,
 	enum cpuinfo_vendor vendor, enum cpuinfo_uarch uarch);
-CPUINFO_INTERNAL struct cpuinfo_x86_isa cpuinfo_x86_nacl_detect_isa(void);
 
 CPUINFO_INTERNAL void cpuinfo_x86_detect_topology(
 	uint32_t max_base_index,

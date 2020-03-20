@@ -244,6 +244,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 			 */
 			break;
 		case cpuinfo_vendor_amd:
+		case cpuinfo_vendor_hygon:
 			isa.prefetch = !!((extended_info.ecx & UINT32_C(0x00000100)) | (extended_info.edx & UINT32_C(0xE0000000)));
 			break;
 		default:
@@ -265,6 +266,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	 */
 	switch (vendor) {
 		case cpuinfo_vendor_amd:
+		case cpuinfo_vendor_hygon:
 			isa.prefetchw = !!((extended_info.ecx & UINT32_C(0x00000100)) | (extended_info.edx & UINT32_C(0xE0000000)));
 			break;
 		default:

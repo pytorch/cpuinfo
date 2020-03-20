@@ -21,4 +21,13 @@ static void cpuinfo_get_current_core(benchmark::State& state) {
 }
 BENCHMARK(cpuinfo_get_current_core)->Unit(benchmark::kNanosecond);
 
+static void cpuinfo_get_current_uarch_index(benchmark::State& state) {
+	cpuinfo_initialize();
+	while (state.KeepRunning()) {
+		const uint32_t uarch_index = cpuinfo_get_current_uarch_index();
+		benchmark::DoNotOptimize(uarch_index);
+	}
+}
+BENCHMARK(cpuinfo_get_current_uarch_index)->Unit(benchmark::kNanosecond);
+
 BENCHMARK_MAIN();

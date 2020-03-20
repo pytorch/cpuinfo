@@ -671,6 +671,7 @@ static const char* vendor_string_map[] = {
 	[cpuinfo_vendor_intel] = "Intel",
 	[cpuinfo_vendor_amd] = "AMD",
 	[cpuinfo_vendor_via] = "VIA",
+	[cpuinfo_vendor_hygon] = "Hygon",
 	[cpuinfo_vendor_rdc] = "RDC",
 	[cpuinfo_vendor_dmp] = "DM&P",
 	[cpuinfo_vendor_transmeta] = "Transmeta",

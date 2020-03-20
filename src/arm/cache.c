@@ -659,6 +659,7 @@ void cpuinfo_arm_decode_cache(
 				};
 			}
 			break;
+		case cpuinfo_uarch_cortex_a55r0:
 		case cpuinfo_uarch_cortex_a55:
 			/*
 			 * ARM Cortex-A55 Core Technical Reference Manual
