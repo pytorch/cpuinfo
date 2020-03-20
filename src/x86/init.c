@@ -61,12 +61,8 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 
 		cpuinfo_x86_detect_topology(max_base_index, max_extended_index, leaf1, &processor->topology);
 
-		#ifdef __native_client__
-			cpuinfo_isa = cpuinfo_x86_nacl_detect_isa();			
-		#else
-			cpuinfo_isa = cpuinfo_x86_detect_isa(leaf1, leaf0x80000001,
-				max_base_index, max_extended_index, vendor, uarch);
-		#endif
+		cpuinfo_isa = cpuinfo_x86_detect_isa(leaf1, leaf0x80000001,
+			max_base_index, max_extended_index, vendor, uarch);
 	}
 	if (max_extended_index >= UINT32_C(0x80000004)) {
 		struct cpuid_regs brand_string[3];

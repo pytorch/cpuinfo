@@ -65,7 +65,7 @@ iterate_descriptors:
 			}
 		}
 
-		if (vendor != cpuinfo_vendor_amd && max_base_index >= 4) {
+		if (vendor != cpuinfo_vendor_amd && vendor != cpuinfo_vendor_hygon && max_base_index >= 4) {
 			struct cpuid_regs leaf4;
 			uint32_t input_ecx = 0;
 			uint32_t package_cores_max = 0;

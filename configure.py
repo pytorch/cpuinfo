@@ -26,8 +26,8 @@ def main(args):
         sources = ["init.c", "api.c"]
         if build.target.is_x86 or build.target.is_x86_64:
             sources += [
-                "x86/init.c", "x86/info.c", "x86/vendor.c", "x86/uarch.c", "x86/name.c",
-                "x86/topology.c",
+                "x86/init.c", "x86/info.c", "x86/isa.c", "x86/vendor.c",
+                "x86/uarch.c", "x86/name.c", "x86/topology.c",
                 "x86/cache/init.c", "x86/cache/descriptor.c", "x86/cache/deterministic.c",
             ]
             if build.target.is_macos:
@@ -37,7 +37,6 @@ def main(args):
                     "x86/linux/init.c",
                     "x86/linux/cpuinfo.c",
                 ]
-            sources.append("x86/isa.c" if not build.target.is_nacl else "x86/nacl/isa.c")
         if build.target.is_arm or build.target.is_arm64:
             sources += ["arm/uarch.c", "arm/cache.c"]
             if build.target.is_linux or build.target.is_android:

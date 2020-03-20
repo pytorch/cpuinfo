@@ -152,21 +152,20 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] Using `ro.chipname`, `ro.board.platform`, `ro.product.board`, `ro.mediatek.platform`, `ro.arch` properties (Android)
   - [ ] Using kernel log (`dmesg`) on ARM Linux
 - Vendor and microarchitecture detection
-  - [x] Intel-designed x86/x86-64 cores (up to Kaby Lake, Airmont, and Knights Mill)
-  - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen)
+  - [x] Intel-designed x86/x86-64 cores (up to Sunny Cove, Goldmont Plus, and Knights Mill)
+  - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen 2)
   - [ ] VIA-designed x86/x86-64 cores
   - [ ] Other x86 cores (DM&P, RDC, Transmeta, Cyrix, Rise)
-  - [x] ARM-designed ARM cores (up to Cortex-A55 and Cortex-A75)
-  - [x] Qualcomm-designed ARM cores (up to Kryo, Kryo-280, and Kryo-385)
-  - [x] Nvidia-designed ARM cores (Denver)
+  - [x] ARM-designed ARM cores (up to Cortex-A55, Cortex-A77, and Neoverse E1/N1)
+  - [x] Qualcomm-designed ARM cores (Scorpion, Krait, and Kryo)
+  - [x] Nvidia-designed ARM cores (Denver and Carmel)
   - [x] Samsung-designed ARM cores (Exynos)
   - [x] Intel-designed ARM cores (XScale up to 3rd-gen)
-  - [x] Apple-designed ARM cores (up to Hurricane)
+  - [x] Apple-designed ARM cores (up to Lightning and Thunder)
   - [x] Cavium-designed ARM cores (ThunderX)
   - [x] AppliedMicro-designed ARM cores (X-Gene)
 - Instruction set detection
   - [x] Using CPUID (x86/x86-64)
-  - [x] Using dynamic code generation validator (Native Client/x86-64)
   - [x] Using `/proc/cpuinfo` on 32-bit ARM EABI (Linux)
   - [x] Using microarchitecture heuristics on (32-bit ARM)
   - [x] Using `FPSID` and `WCID` registers (32-bit ARM)

@@ -153,6 +153,7 @@ struct cpuinfo_arm_linux_processor {
 	uint32_t midr;
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
+	uint32_t uarch_index;
 	/**
 	 * ID of the physical package which includes this logical processor.
 	 * The value is parsed from /sys/devices/system/cpu/cpu<N>/topology/physical_package_id
@@ -346,3 +347,6 @@ CPUINFO_INTERNAL uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 	uint32_t max_processors,
 	uint32_t usable_processors,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
+
+extern CPUINFO_INTERNAL const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map;
+extern CPUINFO_INTERNAL uint32_t cpuinfo_linux_cpu_to_uarch_index_map_entries;

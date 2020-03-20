@@ -417,9 +417,6 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	for (uint32_t i = 0; i < processors_count; i++) {
 		const uint32_t apic_id = processors[i].apic_id;
 
-		//linux_cpu_to_processor_map[x86_linux_processors[i].linux_id] = processors + processor_index;
-		//linux_cpu_to_core_map[x86_linux_processors[i].linux_id] = cores + core_index;
-
 		if (x86_processor.cache.l1i.size != 0) {
 			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processor.cache.l1i.apic_bits);
 			processors[i].cache.l1i = &l1i[l1i_index];
@@ -549,29 +546,33 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 
 
 	/* Commit changes */
+	cpuinfo_processors = processors;
+	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
+	cpuinfo_packages = packages;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
 	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
 	cpuinfo_cache[cpuinfo_cache_level_4]  = l4;
 
-	cpuinfo_processors = processors;
-	cpuinfo_cores = cores;
-	cpuinfo_clusters = clusters;
-	cpuinfo_packages = packages;
-
+	cpuinfo_processors_count = processors_count;
+	cpuinfo_cores_count = cores_count;
+	cpuinfo_clusters_count = packages_count;
+	cpuinfo_packages_count = packages_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4]  = l4_count;
-
-	cpuinfo_processors_count = processors_count;
-	cpuinfo_cores_count = cores_count;
-	cpuinfo_clusters_count = packages_count;
-	cpuinfo_packages_count = packages_count;
-
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
+
+	cpuinfo_global_uarch = (struct cpuinfo_uarch_info) {
+		.uarch = x86_processor.uarch,
+		.cpuid = x86_processor.cpuid,
+		.processor_count = processors_count,
+		.core_count = cores_count,
+	};
 
 	MemoryBarrier();
 

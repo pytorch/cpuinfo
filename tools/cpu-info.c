@@ -14,6 +14,8 @@ static const char* vendor_to_string(enum cpuinfo_vendor vendor) {
 			return "Intel";
 		case cpuinfo_vendor_amd:
 			return "AMD";
+		case cpuinfo_vendor_hygon:
+			return "Hygon";
 		case cpuinfo_vendor_arm:
 			return "ARM";
 		case cpuinfo_vendor_qualcomm:
@@ -161,6 +163,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Cortex-A35";
 		case cpuinfo_uarch_cortex_a53:
 			return "Cortex-A53";
+		case cpuinfo_uarch_cortex_a55r0:
+			return "Cortex-A55r0";
 		case cpuinfo_uarch_cortex_a55:
 			return "Cortex-A55";
 		case cpuinfo_uarch_cortex_a57:
@@ -223,6 +227,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Vortex";
 		case cpuinfo_uarch_tempest:
 			return "Tempest";
+		case cpuinfo_uarch_lightning:
+			return "Lightning";
+		case cpuinfo_uarch_thunder:
+			return "Thunder";
 		case cpuinfo_uarch_thunderx:
 			return "ThunderX";
 		case cpuinfo_uarch_thunderx2:
@@ -253,6 +261,17 @@ int main(int argc, char** argv) {
 			printf("\t%"PRIu32": %s\n", i, cpuinfo_get_package(i)->name);
 		}
 	#endif
+	printf("Microarchitectures:\n");
+	for (uint32_t i = 0; i < cpuinfo_get_uarchs_count(); i++) {
+		const struct cpuinfo_uarch_info* uarch_info = cpuinfo_get_uarch(i);
+		const char* uarch_string = uarch_to_string(uarch_info->uarch);
+		if (uarch_string == NULL) {
+			printf("\t%"PRIu32"x Unknown (0x%08"PRIx32"\n",
+				uarch_info->core_count, (uint32_t) uarch_info->uarch);
+		} else {
+			printf("\t%"PRIu32"x %s\n", uarch_info->core_count, uarch_string);
+		}
+	}
 	printf("Cores:\n");
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
 		const struct cpuinfo_core* core = cpuinfo_get_core(i);
@@ -277,17 +296,17 @@ int main(int argc, char** argv) {
 		}
 	}
 	printf("Logical processors");
-  #if defined(__linux__)
-    printf(" (System ID)");
-  #endif
-  printf(":\n");
+	#if defined(__linux__)
+		printf(" (System ID)");
+	#endif
+	printf(":\n");
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
 		const struct cpuinfo_processor* processor = cpuinfo_get_processor(i);
-    printf("\t%"PRIu32"", i);
+		printf("\t%"PRIu32"", i);
 
-    #if defined(__linux__)
-      printf(" (%"PRId32")", processor->linux_id);
-    #endif
+		#if defined(__linux__)
+			printf(" (%"PRId32")", processor->linux_id);
+		#endif
 
 		#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 			printf(": APIC ID 0x%08"PRIx32"\n", processor->apic_id);

@@ -207,7 +207,7 @@ TEST(CORES, uarch) {
 			case 5:
 			case 6:
 			case 7:
-				ASSERT_EQ(cpuinfo_uarch_cortex_a55, cpuinfo_get_core(i)->uarch);
+				ASSERT_EQ(cpuinfo_uarch_cortex_a55r0, cpuinfo_get_core(i)->uarch);
 				break;
 		}
 	}
@@ -329,7 +329,7 @@ TEST(CLUSTERS, uarch) {
 				ASSERT_EQ(cpuinfo_uarch_exynos_m3, cpuinfo_get_cluster(i)->uarch);
 				break;
 			case 1:
-				ASSERT_EQ(cpuinfo_uarch_cortex_a55, cpuinfo_get_cluster(i)->uarch);
+				ASSERT_EQ(cpuinfo_uarch_cortex_a55r0, cpuinfo_get_cluster(i)->uarch);
 				break;
 		}
 	}

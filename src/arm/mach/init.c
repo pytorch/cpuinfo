@@ -14,6 +14,16 @@
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 
+/* Polyfill recent CPUFAMILY_ARM_* values for older SDKs */
+#ifndef CPUFAMILY_ARM_MONSOON_MISTRAL
+	#define CPUFAMILY_ARM_MONSOON_MISTRAL   0xE81E7EF6
+#endif
+#ifndef CPUFAMILY_ARM_VORTEX_TEMPEST
+	#define CPUFAMILY_ARM_VORTEX_TEMPEST    0x07D34B9F
+#endif
+#ifndef CPUFAMILY_ARM_LIGHTNING_THUNDER
+	#define CPUFAMILY_ARM_LIGHTNING_THUNDER 0x462504D2
+#endif
 
 struct cpuinfo_arm_isa cpuinfo_isa = {
 #if CPUINFO_ARCH_ARM
@@ -82,37 +92,34 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 			return cpuinfo_uarch_twister;
 		case CPUFAMILY_ARM_HURRICANE:
 			return cpuinfo_uarch_hurricane;
-#ifdef CPUFAMILY_ARM_MONSOON_MISTRAL
 		case CPUFAMILY_ARM_MONSOON_MISTRAL:
-#else
-		case 0xe81e7ef6:
-			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_MONSOON_MISTRAL */
-#endif
 			/* 2x Monsoon + 4x Mistral cores */
 			return core_index < 2 ? cpuinfo_uarch_monsoon : cpuinfo_uarch_mistral;
-#ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
 		case CPUFAMILY_ARM_VORTEX_TEMPEST:
-#else
-		case 0x07d34b9f:
-			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
-#endif
 			/* Hexa-core: 2x Vortex + 4x Tempest; Octa-core: 4x Cortex + 4x Tempest */
 			return core_index + 4 < core_count ? cpuinfo_uarch_vortex : cpuinfo_uarch_tempest;
+		case CPUFAMILY_ARM_LIGHTNING_THUNDER:
+			/* Hexa-core: 2x Lightning + 4x Thunder; Octa-core (presumed): 4x Lightning + 4x Thunder */
+			return core_index + 4 < core_count ? cpuinfo_uarch_lightning : cpuinfo_uarch_thunder;
 		default:
 			/* Use hw.cpusubtype for detection */
 			break;
 	}
 
-	switch (cpu_subtype) {
-		case CPU_SUBTYPE_ARM_V7:
-			return cpuinfo_uarch_cortex_a8;
-		case CPU_SUBTYPE_ARM_V7F:
-			return cpuinfo_uarch_cortex_a9;
-		case CPU_SUBTYPE_ARM_V7K:
-			return cpuinfo_uarch_cortex_a7;
-		default:
-			return cpuinfo_uarch_unknown;
-	}
+	#if CPUINFO_ARCH_ARM
+		switch (cpu_subtype) {
+			case CPU_SUBTYPE_ARM_V7:
+				return cpuinfo_uarch_cortex_a8;
+			case CPU_SUBTYPE_ARM_V7F:
+				return cpuinfo_uarch_cortex_a9;
+			case CPU_SUBTYPE_ARM_V7K:
+				return cpuinfo_uarch_cortex_a7;
+			default:
+				return cpuinfo_uarch_unknown;
+		}
+	#else
+		return cpuinfo_uarch_unknown;
+	#endif
 }
 
 static void decode_package_name(char* package_name) {
@@ -244,6 +251,7 @@ void cpuinfo_arm_mach_init(void) {
 	struct cpuinfo_core* cores = NULL;
 	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_package* packages = NULL;
+	struct cpuinfo_uarch_info* uarchs = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
@@ -330,21 +338,12 @@ void cpuinfo_arm_mach_init(void) {
 	 * Thus, we whitelist CPUs known to support these instructions.
 	 */
 	switch (cpu_family) {
-#ifdef CPUFAMILY_ARM_MONSOON_MISTRAL
 		case CPUFAMILY_ARM_MONSOON_MISTRAL:
-#else
-		case 0xe81e7ef6:
-			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_MONSOON_MISTRAL */
-#endif
-#ifdef CPUFAMILY_ARM_VORTEX_TEMPEST
 		case CPUFAMILY_ARM_VORTEX_TEMPEST:
-#else
-		case 0x07d34b9f:
-			/* Hard-coded value for older SDKs which do not define CPUFAMILY_ARM_VORTEX_TEMPEST */
-#endif
-#if CPUINFO_ARCH_ARM64
-			cpuinfo_isa.atomics = true;
-#endif
+		case CPUFAMILY_ARM_LIGHTNING_THUNDER:
+			#if CPUINFO_ARCH_ARM64
+				cpuinfo_isa.atomics = true;
+			#endif
 			cpuinfo_isa.fp16arith = true;
 	}
 
@@ -379,10 +378,22 @@ void cpuinfo_arm_mach_init(void) {
 			num_clusters * sizeof(struct cpuinfo_cluster), num_clusters);
 		goto cleanup;
 	}
+	uarchs = calloc(num_clusters, sizeof(struct cpuinfo_uarch_info));
+	if (uarchs == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %"PRIu32" uarchs",
+			num_clusters * sizeof(enum cpuinfo_uarch), num_clusters);
+		goto cleanup;
+	}
 	uint32_t cluster_idx = UINT32_MAX;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		if (i == 0 || cores[i].uarch != cores[i - 1].uarch) {
 			cluster_idx++;
+			uarchs[cluster_idx] = (struct cpuinfo_uarch_info) {
+				.uarch = cores[i].uarch,
+				.processor_count = 1,
+				.core_count = 1,
+			};
 			clusters[cluster_idx] = (struct cpuinfo_cluster) {
 				.processor_start = i * threads_per_core,
 				.processor_count = 1,
@@ -394,6 +405,8 @@ void cpuinfo_arm_mach_init(void) {
 				.uarch = cores[i].uarch,
 			};
 		} else {
+			uarchs[cluster_idx].processor_count++;
+			uarchs[cluster_idx].core_count++;
 			clusters[cluster_idx].processor_count++;
 			clusters[cluster_idx].core_count++;
 		}
@@ -542,26 +555,25 @@ void cpuinfo_arm_mach_init(void) {
 	}
 
 	/* Commit changes */
+	cpuinfo_processors = processors;
+	cpuinfo_cores = cores;
+	cpuinfo_clusters = clusters;
+	cpuinfo_packages = packages;
+	cpuinfo_uarchs = uarchs;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
 	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
 	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
 
-	cpuinfo_processors = processors;
-	cpuinfo_cores = cores;
-	cpuinfo_clusters = clusters;
-	cpuinfo_packages = packages;
-
-	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
-	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1_count;
-	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
-	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
-
 	cpuinfo_processors_count = mach_topology.threads;
 	cpuinfo_cores_count = mach_topology.cores;
 	cpuinfo_clusters_count = num_clusters;
 	cpuinfo_packages_count = mach_topology.packages;
-
+	cpuinfo_uarchs_count = num_clusters;
+	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
 
 	__sync_synchronize();
@@ -572,6 +584,7 @@ void cpuinfo_arm_mach_init(void) {
 	cores = NULL;
 	clusters = NULL;
 	packages = NULL;
+	uarchs = NULL;
 	l1i = l1d = l2 = l3 = NULL;
 
 cleanup:
@@ -579,6 +592,7 @@ cleanup:
 	free(cores);
 	free(clusters);
 	free(packages);
+	free(uarchs);
 	free(l1i);
 	free(l1d);
 	free(l2);
