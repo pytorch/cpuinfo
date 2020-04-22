@@ -10,6 +10,9 @@
 
 	#include <unistd.h>
 	#include <sys/syscall.h>
+	#if !defined(__NR_getcpu)
+		#include <asm-generic/unistd.h>
+	#endif
 #endif
 
 bool cpuinfo_is_initialized = false;
