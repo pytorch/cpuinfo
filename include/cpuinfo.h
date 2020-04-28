@@ -499,6 +499,9 @@ enum cpuinfo_uarch {
 	/** Applied Micro X-Gene. */
 	cpuinfo_uarch_xgene = 0x00B00100,
 
+	/** Huawei hisilicon Kunpeng Series CPU. */
+	cpuinfo_uarch_taishanv110 = 0x00C00100,
+
 	/* Hygon Dhyana (a modification of AMD Zen for Chinese market). */
 	cpuinfo_uarch_dhyana = 0x01000100,
 };
