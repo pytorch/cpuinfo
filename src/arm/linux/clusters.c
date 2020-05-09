@@ -47,7 +47,7 @@ static inline bool bitmask_all(uint32_t bitfield, uint32_t mask) {
  *
  * @param usable_processors - number of processors in the @p processors array with CPUINFO_LINUX_FLAG_VALID flags.
  * @param max_processors - number of elements in the @p processors array.
- * @param[in,out] processors - processor descriptors with pre-parsed POSSIBLE and PRESENT flags, minimum/maximum 
+ * @param[in,out] processors - processor descriptors with pre-parsed POSSIBLE and PRESENT flags, minimum/maximum
  *                             frequency, MIDR infromation, and core cluster (package siblings list) information.
  *
  * @retval true if the heuristic successfully assigned all processors into clusters of cores.
@@ -308,7 +308,7 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
  * @p processors array have cluster information.
  *
  * @param max_processors - number of elements in the @p processors array.
- * @param[in,out] processors - processor descriptors with pre-parsed POSSIBLE and PRESENT flags, minimum/maximum 
+ * @param[in,out] processors - processor descriptors with pre-parsed POSSIBLE and PRESENT flags, minimum/maximum
  *                             frequency, MIDR infromation, and core cluster (package siblings list) information.
  *
  * @retval true if the heuristic successfully assigned all processors into clusters of cores.
@@ -466,7 +466,7 @@ new_cluster:
  * This function should be called after all processors are assigned to core clusters.
  *
  * @param max_processors - number of elements in the @p processors array.
- * @param[in,out] processors - processor descriptors with pre-parsed POSSIBLE and PRESENT flags, 
+ * @param[in,out] processors - processor descriptors with pre-parsed POSSIBLE and PRESENT flags,
  *                             and decoded core cluster (package_leader_id) information.
  *                             The function expects the value of processors[i].package_processor_count to be zero.
  *                             Upon return, processors[i].package_processor_count will contain the number of logical
@@ -482,12 +482,12 @@ void cpuinfo_arm_linux_count_cluster_processors(
 			const uint32_t package_leader_id = processors[i].package_leader_id;
 			processors[package_leader_id].package_processor_count += 1;
 		}
-	}	
+	}
 	/* Second pass: copy the package_processor_count from the group leader processor */
 	for (uint32_t i = 0; i < max_processors; i++) {
 		if (bitmask_all(processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			const uint32_t package_leader_id = processors[i].package_leader_id;
 			processors[i].package_processor_count = processors[package_leader_id].package_processor_count;
 		}
-	}	
+	}
 }

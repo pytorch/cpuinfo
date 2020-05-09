@@ -314,7 +314,7 @@ void report_gles_attributes(void) {
 		fprintf(stderr, "failed to get the number of EGL frame buffer configurations\n");
 		goto cleanup;
 	}
-	
+
 	configs = (EGLConfig*) malloc(configs_count * sizeof(EGLConfig));
 	if (configs == NULL) {
 		fprintf(stderr, "failed to allocate %zu bytes for %d frame buffer configurations\n",

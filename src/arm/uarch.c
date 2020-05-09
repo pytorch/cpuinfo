@@ -155,9 +155,11 @@ void cpuinfo_arm_decode_vendor_uarch(
 		case 'H':
 			*vendor = cpuinfo_vendor_huawei;
 			switch (midr_get_part(midr)) {
-				case 0xD01: /* Kunpeng920 ARM-base CPU*/
-					*uarch = cpuinfo_uarch_taishanv110;
+#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+				case 0xD01: /* Kunpeng 920 series */
+					*uarch = cpuinfo_uarch_taishan_v110;
 					break;
+#endif
 				case 0xD40: /* Kirin 980 Big/Medium cores -> Cortex-A76 */
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a76;

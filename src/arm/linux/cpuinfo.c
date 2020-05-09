@@ -44,7 +44,7 @@ static uint32_t parse_processor_number(
 
 /*
  *	Full list of ARM features reported in /proc/cpuinfo:
- *	
+ *
  *	* swp - support for SWP instruction (deprecated in ARMv7, can be removed in future)
  *	* half - support for half-word loads and stores. These instruction are part of ARMv4,
  *	         so no need to check it on supported CPUs.
@@ -620,7 +620,7 @@ static void parse_cache_number(
 				break;
 			default:
 				cpuinfo_log_warning("invalid %s %.*s is ignored: a value of 16, 32, 64, or 128 expected",
-					number_name, (int) (number_end - number_start), number_start);			
+					number_name, (int) (number_end - number_start), number_start);
 		}
 	}
 
@@ -670,7 +670,7 @@ static bool parse_line(
 	if (line_start == line_end) {
 		return true;
 	}
-	
+
 	/* Search for ':' on the line. */
 	const char* separator = line_start;
 	for (; separator != line_end; separator++) {

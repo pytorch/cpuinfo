@@ -1,4 +1,4 @@
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
 	#include <windows.h>
 #elif !defined(__EMSCRIPTEN__) || defined(__EMSCRIPTEN_PTHREADS__)
 	#include <pthread.h>
@@ -13,7 +13,7 @@
 #endif
 
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
 	static INIT_ONCE init_guard = INIT_ONCE_STATIC_INIT;
 #elif !defined(__EMSCRIPTEN__) || defined(__EMSCRIPTEN_PTHREADS__)
 	static pthread_once_t init_guard = PTHREAD_ONCE_INIT;
@@ -27,7 +27,7 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 		pthread_once(&init_guard, &cpuinfo_x86_mach_init);
 	#elif defined(__linux__)
 		pthread_once(&init_guard, &cpuinfo_x86_linux_init);
-	#elif defined(_WIN32)
+	#elif defined(_WIN32) || defined(__CYGWIN__)
 		InitOnceExecuteOnce(&init_guard, &cpuinfo_x86_windows_init, NULL, NULL);
 	#else
 		cpuinfo_log_error("operating system is not supported in cpuinfo");

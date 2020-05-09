@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
 	#include <windows.h>
 #endif
 
@@ -50,7 +50,7 @@ extern CPUINFO_INTERNAL uint32_t cpuinfo_max_cache_size;
 
 CPUINFO_PRIVATE void cpuinfo_x86_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_x86_linux_init(void);
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
 	CPUINFO_PRIVATE BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context);
 #endif
 CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);

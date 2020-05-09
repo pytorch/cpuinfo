@@ -135,7 +135,7 @@ static inline bool is_frequency(const char* token_start, const char* token_end) 
 	const size_t token_length = (size_t) (token_end - token_start);
 	if (token_length > 3 && token_end[-2] == 'H' && token_end[-1] == 'z') {
 		switch (token_end[-3]) {
-			case 'K': 
+			case 'K':
 			case 'M':
 			case 'G':
 				return true;
@@ -347,7 +347,7 @@ static bool transform_token(char* token_start, char* token_end, struct parser_st
 				return false;
 			}
 			/*
-			 * Erase "Mobile" when it is not part of the processor name, 
+			 * Erase "Mobile" when it is not part of the processor name,
 			 * e.g. in "AMD Turion(tm) X2 Ultra Dual-Core Mobile ZM-82"
 			 */
 			if (previousState.context_core != NULL) {
@@ -540,8 +540,7 @@ uint32_t cpuinfo_x86_normalize_brand_string(
 	char* name_end = &name[48];
 	while (name_end[-1] == '\0') {
 		/*
-		 * Adject name_end by 1 position and 
-		 * check that we didn't reach the start of the brand string.
+		 * Adject name_end by 1 position and check that we didn't reach the start of the brand string.
 		 * This is possible if all characters are zero.
 		 */
 		if (--name_end == name) {
@@ -704,6 +703,6 @@ uint32_t cpuinfo_x86_format_package_name(
 	} else {
 		snprintf(package_name, CPUINFO_PACKAGE_NAME_MAX,
 			"%s %s", vendor_string, normalized_brand_string);
-		return strlen(vendor_string) + 1;
+		return (uint32_t) strlen(vendor_string) + 1;
 	}
 }

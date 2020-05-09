@@ -6,7 +6,7 @@ switch (uarch) {
 		 * Cortex-A5 Technical Reference Manual:
 		 * 6.3.1. Micro TLB
 		 *   The first level of caching for the page table information is a micro TLB of
-		 *   10 entries that is implemented on each of the instruction and data sides. 
+		 *   10 entries that is implemented on each of the instruction and data sides.
 		 * 6.3.2. Main TLB
 		 *   Misses from the instruction and data micro TLBs are handled by a unified main TLB.
 		 *   The main TLB is 128-entry two-way set-associative.

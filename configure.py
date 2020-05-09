@@ -23,7 +23,7 @@ def main(args):
     build.export_cpath("include", ["cpuinfo.h"])
 
     with build.options(source_dir="src", macros=macros, extra_include_dirs="src", deps=build.deps.clog):
-        sources = ["init.c", "api.c"]
+        sources = ["api.c", "init.c", "cache.c"]
         if build.target.is_x86 or build.target.is_x86_64:
             sources += [
                 "x86/init.c", "x86/info.c", "x86/isa.c", "x86/vendor.c",
@@ -61,7 +61,6 @@ def main(args):
             sources += ["mach/topology.c"]
         if build.target.is_linux or build.target.is_android:
             sources += [
-                "linux/current.c",
                 "linux/cpulist.c",
                 "linux/smallfile.c",
                 "linux/multiline.c",

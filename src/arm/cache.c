@@ -1448,23 +1448,24 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 64 /* assumption */
 			};
 			break;
-		case cpuinfo_uarch_taishanv110:
+		case cpuinfo_uarch_taishan_v110:
 			/*
-			 *  Kunpeng920 series CPU designed by Huawei hisilicon for server, 
-			 *  L1 and L2 cache is private to each core, L3 is shared with all cores.
-			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
-			 *  | Processor model    | Cores | L1D cache | L1I cache | L2 cache  | L3 cache | Reference  |
-			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
-			 *  | Kunpeng920-3226    |  32   |    64K    |     64K   |    512K   |    32M   |     [1]    |
-			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
-			 *  | Kunpeng920-4826    |  48   |    64K    |     64K   |    512K   |    48M   |     [2]    |
-			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
-			 *  | Kunpeng920-6426    |  64   |    64K    |     64K   |    512K   |    64M   |     [3]    |
-			 *  +--------------------+-------+-----------+-----------+-----------+----------+------------+
+			 * It features private 64 KiB L1 instruction and data caches as well as 512 KiB of private L2. [1]
 			 *
-			 * [1] https://en.wikichip.org/wiki/hisilicon/kunpeng/920-3226
-			 * [2] https://en.wikichip.org/wiki/hisilicon/kunpeng/920-4826
-			 * [3] https://en.wikichip.org/wiki/hisilicon/kunpeng/920-6426
+			 *  +------------------+-------+-----------+-----------+-----------+----------+-----------+
+			 *  | Processor model  | Cores | L1D cache | L1I cache | L2 cache  | L3 cache | Reference |
+			 *  +------------------+-------+-----------+-----------+-----------+----------+-----------+
+			 *  | Kunpeng 920-3226 |  32   |    64K    |    64K    |    512K   |    32M   |     [2]   |
+			 *  +------------------+-------+-----------+-----------+-----------+----------+-----------+
+			 *  | Kunpeng 920-4826 |  48   |    64K    |    64K    |    512K   |    48M   |     [3]   |
+			 *  +------------------+-------+-----------+-----------+-----------+----------+-----------+
+			 *  | Kunpeng 920-6426 |  64   |    64K    |    64K    |    512K   |    64M   |     [4]   |
+			 *  +------------------+-------+-----------+-----------+-----------+----------+-----------+
+			 *
+			 * [1] https://en.wikichip.org/wiki/hisilicon/microarchitectures/taishan_v110
+			 * [2] https://en.wikichip.org/wiki/hisilicon/kunpeng/920-3226
+			 * [3] https://en.wikichip.org/wiki/hisilicon/kunpeng/920-4826
+			 * [4] https://en.wikichip.org/wiki/hisilicon/kunpeng/920-6426
 			 */
 			*l1i = (struct cpuinfo_cache) {
 				.size = 64 * 1024,
@@ -1482,11 +1483,11 @@ void cpuinfo_arm_decode_cache(
 				.line_size = 128 /* assumption */,
 				.flags = CPUINFO_CACHE_INCLUSIVE /* assumption */,
 			};
-		        *l3 = (struct cpuinfo_cache) {
-			        .size = cluster_cores * 1024 * 1024,
-			        .associativity = 16 /* assumption */,
-			        .line_size = 128 /* assumption */,
-		        };
+			*l3 = (struct cpuinfo_cache) {
+				.size = cluster_cores * 1024 * 1024,
+				.associativity = 16 /* assumption */,
+				.line_size = 128 /* assumption */,
+			};
 			break;
 #endif
 		case cpuinfo_uarch_cortex_a12:
