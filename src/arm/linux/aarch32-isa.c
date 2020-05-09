@@ -193,7 +193,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				CPUINFO_ARM_LINUX_FEATURE_VFPD32 | CPUINFO_ARM_LINUX_FEATURE_VFPV4 | CPUINFO_ARM_LINUX_FEATURE_NEON;
 			if ((architecture_version >= 7) || (features & vfpv3_mask)) {
 				isa->vfpv3 = true;
-			
+
 				const uint32_t d32_mask = CPUINFO_ARM_LINUX_FEATURE_VFPD32 | CPUINFO_ARM_LINUX_FEATURE_NEON;
 				if (features & d32_mask) {
 					isa->d32 = true;

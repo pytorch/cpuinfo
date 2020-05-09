@@ -34,7 +34,7 @@ void CPUINFO_ABI cpuinfo_mock_filesystem(struct cpuinfo_mock_file* files) {
 		file_count += 1;
 	}
 	cpuinfo_mock_files = files;
-	cpuinfo_mock_file_count = file_count;	
+	cpuinfo_mock_file_count = file_count;
 }
 
 int CPUINFO_ABI cpuinfo_mock_open(const char* path, int oflag) {

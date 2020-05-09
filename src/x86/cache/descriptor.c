@@ -353,7 +353,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			};
 			break;
 		case 0x39:
-			/* Where does this come from? */ 
+			/* Where does this come from? */
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 128 * 1024,
 				.associativity = 4,
@@ -364,7 +364,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			};
 			break;
 		case 0x3A:
-			/* Where does this come from? */ 
+			/* Where does this come from? */
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 192 * 1024,
 				.associativity = 6,
@@ -375,7 +375,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			};
 			break;
 		case 0x3B:
-			/* Where does this come from? */ 
+			/* Where does this come from? */
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 128 * 1024,
 				.associativity = 2,
@@ -386,7 +386,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			};
 			break;
 		case 0x3C:
-			/* Where does this come from? */ 
+			/* Where does this come from? */
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 256 * 1024,
 				.associativity = 4,
@@ -397,7 +397,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			};
 			break;
 		case 0x3D:
-			/* Where does this come from? */ 
+			/* Where does this come from? */
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 384 * 1024,
 				.associativity = 6,
@@ -408,7 +408,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			};
 			break;
 		case 0x3E:
-			/* Where does this come from? */ 
+			/* Where does this come from? */
 			cache->l2 = (struct cpuinfo_x86_cache) {
 				.size = 512 * 1024,
 				.associativity = 4,
@@ -1011,7 +1011,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			};
 			break;
 		case 0x73:
-			/* Where does this come from? */ 
+			/* Where does this come from? */
 			cache->trace = (struct cpuinfo_trace_cache) {
 				.uops = 64 * 1024,
 				.associativity = 8,

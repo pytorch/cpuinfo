@@ -499,11 +499,11 @@ enum cpuinfo_uarch {
 	/** Applied Micro X-Gene. */
 	cpuinfo_uarch_xgene = 0x00B00100,
 
-	/** Huawei hisilicon Kunpeng Series CPU. */
-	cpuinfo_uarch_taishanv110 = 0x00C00100,
-
 	/* Hygon Dhyana (a modification of AMD Zen for Chinese market). */
 	cpuinfo_uarch_dhyana = 0x01000100,
+
+	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
+	cpuinfo_uarch_taishan_v110 = 0x00C00100,
 };
 
 struct cpuinfo_processor {
@@ -523,7 +523,7 @@ struct cpuinfo_processor {
 	 */
 	int linux_id;
 #endif
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__CYGWIN__)
 	/** Windows-specific ID for the group containing the logical processor. */
 	uint16_t windows_group_id;
 	/**
@@ -1799,12 +1799,21 @@ const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_current_core(void);
 
 /**
  * Identify the microarchitecture index of the core that executes the current thread.
- * If the system does not support such identification, the function return 0.
+ * If the system does not support such identification, the function returns 0.
  *
  * There is no guarantee that the thread will stay on the same type of core for any time.
  * Callers should treat the result as only a hint.
  */
 uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index(void);
+
+/**
+ * Identify the microarchitecture index of the core that executes the current thread.
+ * If the system does not support such identification, the function returns the user-specified default value.
+ *
+ * There is no guarantee that the thread will stay on the same type of core for any time.
+ * Callers should treat the result as only a hint.
+ */
+uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index_with_default(uint32_t default_uarch_index);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -10,6 +10,13 @@
 
 #include <Windows.h>
 
+#ifdef __GNUC__
+  #define CPUINFO_ALLOCA __builtin_alloca
+#else
+  #define CPUINFO_ALLOCA _alloca
+#endif
+
+
 static inline uint32_t bit_mask(uint32_t bits) {
 	return (UINT32_C(1) << bits) - UINT32_C(1);
 }
@@ -118,7 +125,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	cpuinfo_log_debug("detected %"PRIu32" processor groups", max_group_count);
 
 	uint32_t processors_count = 0;
-	uint32_t* processors_per_group = (uint32_t*) _alloca(max_group_count * sizeof(uint32_t));
+	uint32_t* processors_per_group = (uint32_t*) CPUINFO_ALLOCA(max_group_count * sizeof(uint32_t));
 	for (uint32_t i = 0; i < max_group_count; i++) {
 		processors_per_group[i] = GetMaximumProcessorCount((WORD) i);
 		cpuinfo_log_debug("detected %"PRIu32" processors in group %"PRIu32,
@@ -126,7 +133,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		processors_count += processors_per_group[i];
 	}
 
-	uint32_t* processors_before_group = (uint32_t*) _alloca(max_group_count * sizeof(uint32_t));
+	uint32_t* processors_before_group = (uint32_t*) CPUINFO_ALLOCA(max_group_count * sizeof(uint32_t));
 	for (uint32_t i = 0, count = 0; i < max_group_count; i++) {
 		processors_before_group[i] = count;
 		cpuinfo_log_debug("detected %"PRIu32" processors before group %"PRIu32,
@@ -196,7 +203,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		/* Iterate processor groups and set the package part of APIC ID */
 		for (uint32_t i = 0; i < package_info->Processor.GroupCount; i++) {
 			const uint32_t group_id = package_info->Processor.GroupMask[i].Group;
-			/* Global index of the first logical processor belonging to this group */ 
+			/* Global index of the first logical processor belonging to this group */
 			const uint32_t group_processors_start = processors_before_group[group_id];
 			/* Bitmask representing processors in this group belonging to this package */
 			KAFFINITY group_processors_mask = package_info->Processor.GroupMask[i].Mask;
@@ -245,7 +252,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		/* Iterate processor groups and set the core & SMT parts of APIC ID */
 		for (uint32_t i = 0; i < core_info->Processor.GroupCount; i++) {
 			const uint32_t group_id = core_info->Processor.GroupMask[i].Group;
-			/* Global index of the first logical processor belonging to this group */ 
+			/* Global index of the first logical processor belonging to this group */
 			const uint32_t group_processors_start = processors_before_group[group_id];
 			/* Bitmask representing processors in this group belonging to this package */
 			KAFFINITY group_processors_mask = core_info->Processor.GroupMask[i].Mask;
@@ -259,7 +266,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 					current_package_apic_id = processors[processor_id].apic_id;
 				}
 				/* Core ID w.r.t package */
-				const uint32_t package_core_id = core_id - package_core_start; 
+				const uint32_t package_core_id = core_id - package_core_start;
 
 				/* Update APIC ID with core and SMT parts */
 				processors[processor_id].apic_id |=

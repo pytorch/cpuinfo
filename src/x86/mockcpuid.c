@@ -14,7 +14,7 @@ static uint32_t cpuinfo_mock_cpuid_leaf4_iteration = 0;
 
 void CPUINFO_ABI cpuinfo_mock_set_cpuid(struct cpuinfo_mock_cpuid* dump, size_t entries) {
 	cpuinfo_mock_cpuid_data = dump;
-	cpuinfo_mock_cpuid_entries = entries;	
+	cpuinfo_mock_cpuid_entries = entries;
 };
 
 void CPUINFO_ABI cpuinfo_mock_get_cpuid(uint32_t eax, uint32_t regs[4]) {

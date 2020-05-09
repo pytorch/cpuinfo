@@ -374,3 +374,33 @@ uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index(void) {
 		return 0;
 	#endif
 }
+
+uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index_with_default(uint32_t default_uarch_index) {
+	if CPUINFO_UNLIKELY(!cpuinfo_is_initialized) {
+		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "current_uarch_index_with_default");
+	}
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		#ifdef __linux__
+			if (cpuinfo_linux_cpu_to_uarch_index_map == NULL) {
+				/* Special case: avoid syscall on systems with only a single type of cores */
+				return 0;
+			}
+
+			/* General case */
+			unsigned cpu;
+			if CPUINFO_UNLIKELY(syscall(__NR_getcpu, &cpu, NULL, NULL) != 0) {
+				return default_uarch_index;
+			}
+			if CPUINFO_UNLIKELY((uint32_t) cpu >= cpuinfo_linux_cpu_max) {
+				return default_uarch_index;
+			}
+			return cpuinfo_linux_cpu_to_uarch_index_map[cpu];
+		#else
+			/* Fallback: no API to query current core, use default uarch index. */
+			return default_uarch_index;
+		#endif
+	#else
+		/* Only ARM/ARM64 processors may include cores of different types in the same package. */
+		return 0;
+	#endif
+}

@@ -79,7 +79,7 @@ enum cpuinfo_vendor cpuinfo_x86_decode_vendor(uint32_t ebx, uint32_t ecx, uint32
 				case ineI:
 					if (ecx == ntel) {
 						/* "GenuineIntel" */
-						return cpuinfo_vendor_intel;						
+						return cpuinfo_vendor_intel;
 					}
 					break;
 #if CPUINFO_ARCH_X86
