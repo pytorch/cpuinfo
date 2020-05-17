@@ -5,12 +5,12 @@ LOCAL_MODULE := cpuinfo
 LOCAL_SRC_FILES := \
 	src/init.c \
 	src/api.c \
-	src/linux/current.c \
+	src/cache.c \
 	src/linux/processors.c \
 	src/linux/smallfile.c \
 	src/linux/multiline.c \
 	src/linux/cpulist.c
-ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi armeabi-v7a arm64-v8a))
+ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),armeabi-v7a arm64-v8a))
 LOCAL_SRC_FILES += \
 	src/arm/uarch.c \
 	src/arm/cache.c \
@@ -21,9 +21,6 @@ LOCAL_SRC_FILES += \
 	src/arm/linux/midr.c \
 	src/arm/linux/hwcap.c \
 	src/arm/android/properties.c
-ifeq ($(TARGET_ARCH_ABI),armeabi)
-LOCAL_SRC_FILES += src/arm/linux/aarch32-isa.c.arm
-endif # armeabi
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 LOCAL_SRC_FILES += src/arm/linux/aarch32-isa.c
 endif # armeabi-v7a
@@ -62,8 +59,8 @@ else
 LOCAL_CFLAGS += -DCPUINFO_LOG_LEVEL=0
 endif
 LOCAL_STATIC_LIBRARIES := clog
-include $(BUILD_STATIC_LIBRARY)
-
+# include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 
 $(call import-add-path,$(LOCAL_PATH)/deps)
 
