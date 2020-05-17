@@ -27,7 +27,7 @@ endif # armeabi-v7a
 ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
 LOCAL_SRC_FILES += src/arm/linux/aarch64-isa.c
 endif # arm64-v8a
-endif # armeabi, armeabi-v7a, or arm64-v8a
+endif # armeabi-v7a, or arm64-v8a
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI),x86 x86_64))
 LOCAL_SRC_FILES += \
 	src/x86/init.c \
@@ -59,8 +59,7 @@ else
 LOCAL_CFLAGS += -DCPUINFO_LOG_LEVEL=0
 endif
 LOCAL_STATIC_LIBRARIES := clog
-# include $(BUILD_STATIC_LIBRARY)
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
 
 $(call import-add-path,$(LOCAL_PATH)/deps)
 
