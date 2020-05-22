@@ -8,12 +8,7 @@
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 
-#if defined(__MINGW32__)
-// Windows header filename must be all lower case on MinGW
 #include <windows.h>
-#else
-#include <Windows.h>
-#endif
 
 #ifdef __GNUC__
   #define CPUINFO_ALLOCA __builtin_alloca
