@@ -8,7 +8,7 @@
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 
-#include <Windows.h>
+#include <windows.h>
 
 #ifdef __GNUC__
   #define CPUINFO_ALLOCA __builtin_alloca
