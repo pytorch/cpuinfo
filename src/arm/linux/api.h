@@ -11,6 +11,8 @@
 
 /* No hard limit in the kernel, maximum length observed on non-rogue kernels is 64 */
 #define CPUINFO_HARDWARE_VALUE_MAX 64
+/* No hard limit in the kernel, maximum length on Raspberry Pi is 8. Add 1 symbol to detect overly large revision strings */
+#define CPUINFO_REVISION_VALUE_MAX 9
 
 #ifdef __ANDROID__
 	/* As per include/sys/system_properties.h in Android NDK */
@@ -259,6 +261,7 @@ static inline bool cpuinfo_arm_linux_processor_not_equals(
 
 CPUINFO_INTERNAL bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+	char revision[restrict static CPUINFO_REVISION_VALUE_MAX],
 	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count]);
 
@@ -297,6 +300,7 @@ CPUINFO_INTERNAL bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
 		cpuinfo_arm_linux_decode_chipset(
 			const char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+			const char revision[restrict static CPUINFO_REVISION_VALUE_MAX],
 			uint32_t cores,
 			uint32_t max_cpu_freq_max);
 #endif
@@ -327,6 +331,10 @@ CPUINFO_INTERNAL struct cpuinfo_arm_chipset
 	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
 		cpuinfo_arm_android_decode_chipset_from_ro_hardware_chipname(
 			const char ro_hardware_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
+#else
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_revision(
+			const char proc_cpuinfo_revision[restrict static CPUINFO_REVISION_VALUE_MAX]);
 #endif
 
 CPUINFO_INTERNAL bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(

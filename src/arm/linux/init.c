@@ -167,8 +167,9 @@ void cpuinfo_arm_linux_init(void) {
 	struct cpuinfo_android_properties android_properties;
 	cpuinfo_arm_android_parse_properties(&android_properties);
 #else
-	char proc_cpuinfo_hardware[CPUINFO_HARDWARE_VALUE_MAX] = { 0 };
+	char proc_cpuinfo_hardware[CPUINFO_HARDWARE_VALUE_MAX];
 #endif
+	char proc_cpuinfo_revision[CPUINFO_REVISION_VALUE_MAX];
 
 	if (!cpuinfo_arm_linux_parse_proc_cpuinfo(
 #if defined(__ANDROID__)
@@ -176,6 +177,7 @@ void cpuinfo_arm_linux_init(void) {
 #else
 			proc_cpuinfo_hardware,
 #endif
+			proc_cpuinfo_revision,
 			arm_linux_processors_count,
 			arm_linux_processors)) {
 		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
@@ -228,10 +230,8 @@ void cpuinfo_arm_linux_init(void) {
 	const struct cpuinfo_arm_chipset chipset =
 		cpuinfo_arm_android_decode_chipset(&android_properties, valid_processors, 0);
 #else
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_unknown,
-		.series = cpuinfo_arm_chipset_series_unknown,
-	};
+	const struct cpuinfo_arm_chipset chipset =
+		cpuinfo_arm_linux_decode_chipset(proc_cpuinfo_hardware, proc_cpuinfo_revision, valid_processors, 0);
 #endif
 
 	#if CPUINFO_ARCH_ARM
