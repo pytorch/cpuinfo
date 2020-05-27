@@ -1012,11 +1012,58 @@ write_chipset:
 }
 
 /**
+ * Tries to match /BCM\d{4}$/ signature for Broadcom BCM chipsets.
+ * If match successful, extracts model information into \p chipset argument.
+ *
+ * @param start - start of the /proc/cpuinfo Hardware string to match.
+ * @param end - end of the /proc/cpuinfo Hardware string to match.
+ * @param[out] chipset - location where chipset information will be stored upon a successful match.
+ *
+ * @returns true if signature matched, false otherwise.
+ */
+static bool match_bcm(
+	const char* start, const char* end,
+	struct cpuinfo_arm_chipset chipset[restrict static 1])
+{
+	/* Expect exactly 7 symbols: "BCM" (3 symbols) + 4-digit model number */
+	if (start + 7 != end) {
+		return false;
+	}
+
+	/* Check that the string starts with "BCM".
+	 * The first three characters are loaded and compared as a 24-bit little endian word.
+	 */
+	const uint32_t expected_bcm = load_u24le(start);
+	if (expected_bcm != UINT32_C(0x004D4342) /* "MCB" = reverse("BCM") */) {
+		return false;
+	}
+
+	/* Validate and parse 4-digit model number */
+	uint32_t model = 0;
+	for (uint32_t i = 3; i < 7; i++) {
+		const uint32_t digit = (uint32_t) (uint8_t) start[i] - '0';
+		if (digit >= 10) {
+			/* Not really a digit */
+			return false;
+		}
+		model = model * 10 + digit;
+	}
+
+	/* Return parsed chipset. */
+	*chipset = (struct cpuinfo_arm_chipset) {
+		.vendor = cpuinfo_arm_chipset_vendor_broadcom,
+		.series = cpuinfo_arm_chipset_series_broadcom_bcm,
+		.model = model,
+	};
+	return true;
+}
+
+/**
  * Tries to match /OMAP\d{4}$/ signature for Texas Instruments OMAP chipsets.
  * If match successful, extracts model information into \p chipset argument.
  *
  * @param start - start of the /proc/cpuinfo Hardware string to match.
- * @param end - end of the /proc/cpuinfo Hardaware string to match.
+ * @param end - end of the /proc/cpuinfo Hardware string to match.
  * @param[out] chipset - location where chipset information will be stored upon a successful match.
  *
  * @returns true if signature matched, false otherwise.
@@ -2324,6 +2371,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 		if (match_and_parse_sunxi(hardware, hardware_end, cores, &chipset)) {
 			cpuinfo_log_debug(
 				"matched sunxi (Allwinner Ax) signature in /proc/cpuinfo Hardware string \"%.*s\"",
+				(int) hardware_length, hardware);
+			return chipset;
+		}
+
+		/* Check Broadcom BCM signature */
+		if (match_bcm(hardware, hardware_end, &chipset)) {
+			cpuinfo_log_debug(
+				"matched Broadcom BCM signature in /proc/cpuinfo Hardware string \"%.*s\"",
 				(int) hardware_length, hardware);
 			return chipset;
 		}
@@ -3713,6 +3768,62 @@ void cpuinfo_arm_chipset_to_string(
 		return chipset;
 	}
 #else /* !defined(__ANDROID__) */
+	/*
+	 * Fix commonly misreported Broadcom BCM models on Raspberry Pi boards.
+	 *
+	 * @param[in,out] chipset - chipset name to fix.
+	 * @param[in] revision - /proc/cpuinfo Revision string.
+	 */
+	void cpuinfo_arm_fixup_raspberry_pi_chipset(
+		struct cpuinfo_arm_chipset chipset[restrict static 1],
+		const char revision[restrict static CPUINFO_HARDWARE_VALUE_MAX])
+	{
+		const size_t revision_length = strnlen(revision, CPUINFO_REVISION_VALUE_MAX);
+
+		/* Parse revision codes according to https://www.raspberrypi.org/documentation/hardware/raspberrypi/revision-codes/README.md */
+		#if CPUINFO_ARCH_ARM
+			if (revision_length == 4) {
+				/*
+				 * Old-style revision codes.
+				 * All Raspberry Pi models with old-style revision code use Broadcom BCM2835.
+				 */
+
+				/* BCM2835 often misreported as BCM2708 */
+				if (chipset->model == 2708) {
+					chipset->model = 2835;
+				}
+				return;
+			}
+		#endif
+		if ((size_t) (revision_length - 5) <= (size_t) (8 - 5) /* 5 <= length(revision) <= 8 */) {
+			/* New-style revision codes */
+
+			uint32_t model = 0;
+			switch (revision[revision_length - 4]) {
+				case '0':
+					/* BCM2835 */
+					model = 2835;
+					break;
+				case '1':
+					/* BCM2836 */
+					model = 2836;
+					break;
+				case '2':
+					/* BCM2837 */
+					model = 2837;
+					break;
+				case '3':
+					/* BCM2711 */
+					model = 2711;
+					break;
+			}
+
+			if (model != 0) {
+				chipset->model = model;
+				chipset->suffix[0] = 0;
+			}
+		}
+	}
 
 	/*
 	 * Decodes chipset name from /proc/cpuinfo Hardware string.
@@ -3727,6 +3838,7 @@ void cpuinfo_arm_chipset_to_string(
 	 */
 	struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset(
 		const char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+		const char revision[restrict static CPUINFO_REVISION_VALUE_MAX],
 		uint32_t cores,
 		uint32_t max_cpu_freq_max)
 	{
@@ -3736,6 +3848,9 @@ void cpuinfo_arm_chipset_to_string(
 		if (chipset.vendor == cpuinfo_arm_chipset_vendor_unknown) {
 			cpuinfo_log_warning(
 				"chipset detection failed: /proc/cpuinfo Hardware string did not match known signatures");
+		} else if (chipset.vendor == cpuinfo_arm_chipset_vendor_broadcom) {
+			/* Raspberry Pi kernel reports bogus chipset models; detect chipset from RPi revision */
+			cpuinfo_arm_fixup_raspberry_pi_chipset(&chipset, revision);
 		} else {
 			cpuinfo_arm_fixup_chipset(&chipset, cores, max_cpu_freq_max);
 		}

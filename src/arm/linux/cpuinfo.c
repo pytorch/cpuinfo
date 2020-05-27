@@ -631,6 +631,7 @@ static void parse_cache_number(
 
 struct proc_cpuinfo_parser_state {
 	char* hardware;
+	char* revision;
 	uint32_t processor_index;
 	uint32_t max_processors_count;
 	struct cpuinfo_arm_linux_processor* processors;
@@ -791,7 +792,17 @@ static bool parse_line(
 				memcpy(state->hardware, value_start, value_length);
 				cpuinfo_log_debug("parsed /proc/cpuinfo Hardware = \"%.*s\"", (int) value_length, value_start);
 			} else if (memcmp(line_start, "Revision", key_length) == 0) {
-				/* Board revision, no use for now */
+				size_t value_length = value_end - value_start;
+				if (value_length > CPUINFO_REVISION_VALUE_MAX) {
+					cpuinfo_log_info(
+						"length of Revision value \"%.*s\" in /proc/cpuinfo exceeds limit (%d): truncating to the limit",
+						(int) value_length, value_start, CPUINFO_REVISION_VALUE_MAX);
+					value_length = CPUINFO_REVISION_VALUE_MAX;
+				} else {
+					state->revision[value_length] = '\0';
+				}
+				memcpy(state->revision, value_start, value_length);
+				cpuinfo_log_debug("parsed /proc/cpuinfo Revision = \"%.*s\"", (int) value_length, value_start);
 			} else {
 				goto unknown;
 			}
@@ -881,11 +892,13 @@ static bool parse_line(
 
 bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
+	char revision[restrict static CPUINFO_REVISION_VALUE_MAX],
 	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count])
 {
 	struct proc_cpuinfo_parser_state state = {
 		.hardware = hardware,
+		.revision = revision,
 		.processor_index = 0,
 		.max_processors_count = max_processors_count,
 		.processors = processors,

@@ -635,6 +635,13 @@ void cpuinfo_arm_decode_cache(
 								break;
 						}
 						break;
+					case cpuinfo_arm_chipset_series_broadcom_bcm:
+						switch (chipset->model) {
+							case 2837: /* BCM2837 */
+								l2_size = 512 * 1024;
+								break;
+						}
+						break;
 					case cpuinfo_arm_chipset_series_samsung_exynos:
 						l1_size = 32 * 1024;
 						break;
@@ -922,11 +929,13 @@ void cpuinfo_arm_decode_cache(
 			 *  | MediaTek Helio X23  | 2(+4+4) |     ?     |     ?     |     ?      |           |
 			 *  | MediaTek Helio X25  | 2(+4+4) |     ?     |     ?     |     ?      |           |
 			 *  | MediaTek Helio X27  | 2(+4+4) |     ?     |     ?     |     ?      |           |
+			 *  | Broadcom BCM2711    |    4    |    32K    |    48K    |     1M     |    [4]    |
 			 *  +---------------------+---------+-----------+-----------+------------+-----------+
 			 *
 			 * [1] http://pdadb.net/index.php?m=processor&id=578&c=qualcomm_snapdragon_618_msm8956__snapdragon_650
 			 * [2] http://pdadb.net/index.php?m=processor&id=667&c=qualcomm_snapdragon_620_apq8076__snapdragon_652
 			 * [3] http://pdadb.net/index.php?m=processor&id=692&c=qualcomm_snapdragon_653_msm8976sg__msm8976_pro
+			 * [4] https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711/README.md
 			 */
 			uint32_t l2_size;
 			switch (chipset->series) {

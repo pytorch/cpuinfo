@@ -36,3 +36,9 @@ TEST(CURRENT_UARCH_INDEX, within_bounds) {
 
 	ASSERT_LT(cpuinfo_get_current_uarch_index(), cpuinfo_get_uarchs_count());
 }
+
+TEST(CURRENT_UARCH_INDEX_WITH_DEFAULT, within_bounds) {
+	ASSERT_TRUE(cpuinfo_initialize());
+
+	ASSERT_LE(cpuinfo_get_current_uarch_index_with_default(cpuinfo_get_uarchs_count()), cpuinfo_get_uarchs_count());
+}
