@@ -314,7 +314,8 @@ const struct cpuinfo_processor* CPUINFO_ABI cpuinfo_get_current_processor(void) 
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "current_processor");
 	}
 	#ifdef __linux__
-		unsigned cpu;
+		/* Initializing this variable silences a MemorySanitizer error. */
+		unsigned cpu = 0;
 		if CPUINFO_UNLIKELY(syscall(__NR_getcpu, &cpu, NULL, NULL) != 0) {
 			return 0;
 		}
@@ -332,7 +333,8 @@ const struct cpuinfo_core* CPUINFO_ABI cpuinfo_get_current_core(void) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "current_core");
 	}
 	#ifdef __linux__
-		unsigned cpu;
+		/* Initializing this variable silences a MemorySanitizer error. */
+		unsigned cpu = 0;
 		if CPUINFO_UNLIKELY(syscall(__NR_getcpu, &cpu, NULL, NULL) != 0) {
 			return 0;
 		}
@@ -357,7 +359,8 @@ uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index(void) {
 			}
 
 			/* General case */
-			unsigned cpu;
+			/* Initializing this variable silences a MemorySanitizer error. */
+			unsigned cpu = 0;
 			if CPUINFO_UNLIKELY(syscall(__NR_getcpu, &cpu, NULL, NULL) != 0) {
 				return 0;
 			}
@@ -387,7 +390,8 @@ uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index_with_default(uint32_t defau
 			}
 
 			/* General case */
-			unsigned cpu;
+			/* Initializing this variable silences a MemorySanitizer error. */
+			unsigned cpu = 0;
 			if CPUINFO_UNLIKELY(syscall(__NR_getcpu, &cpu, NULL, NULL) != 0) {
 				return default_uarch_index;
 			}
