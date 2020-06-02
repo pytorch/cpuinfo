@@ -347,6 +347,15 @@ void cpuinfo_arm_mach_init(void) {
 			cpuinfo_isa.fp16arith = true;
 	}
 
+	/*
+	 * There does not yet seem to exist an OS mechanism to detect support for
+	 * ARMv8.2 optional dot-product instructions, so we currently whitelist CPUs
+	 * known to support these instruction.
+	 */
+	if (cpu_family == CPUFAMILY_ARM_LIGHTNING_THUNDER) {
+		cpuinfo_isa.dot = true;
+	}
+
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		cores[i] = (struct cpuinfo_core) {

@@ -88,8 +88,8 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD0D:
 					*uarch = cpuinfo_uarch_cortex_a77;
 					break;
-				case 0xD0E:
-					*uarch = cpuinfo_uarch_cortex_a76ae;
+				case 0xD0E: /* Cortex-A76AE */
+					*uarch = cpuinfo_uarch_cortex_a76;
 					break;
 #if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 				case 0xD4A:

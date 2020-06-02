@@ -189,22 +189,28 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100D0A0): /* Cortex-A75 */
 		case UINT32_C(0x4100D090): /* Cortex-A73 */
 		case UINT32_C(0x4100D080): /* Cortex-A72 */
+#if CPUINFO_ARCH_ARM
 		case UINT32_C(0x4100C0F0): /* Cortex-A15 */
 		case UINT32_C(0x4100C0E0): /* Cortex-A17 */
 		case UINT32_C(0x4100C0D0): /* Rockchip RK3288 cores */
 		case UINT32_C(0x4100C0C0): /* Cortex-A12 */
+#endif /* CPUINFO_ARCH_ARM */
 			/* These cores are always in big role */
 			return 5;
 		case UINT32_C(0x4100D070): /* Cortex-A57 */
 			/* Cortex-A57 can be in LITTLE role w.r.t. Denver 2, or in big role w.r.t. Cortex-A53 */
 			return 4;
+#if CPUINFO_ARCH_ARM64
 		case UINT32_C(0x4100D060): /* Cortex-A65 */
+#endif /* CPUINFO_ARCH_ARM64 */
 		case UINT32_C(0x4100D050): /* Cortex-A55 */
 		case UINT32_C(0x4100D030): /* Cortex-A53 */
 			/* Cortex-A53 is usually in LITTLE role, but can be in big role w.r.t. Cortex-A35 */
 			return 2;
 		case UINT32_C(0x4100D040): /* Cortex-A35 */
+#if CPUINFO_ARCH_ARM
 		case UINT32_C(0x4100C070): /* Cortex-A7 */
+#endif /* CPUINFO_ARCH_ARM */
 		case UINT32_C(0x51008050): /* Kryo 485 Silver */
 		case UINT32_C(0x51008030): /* Kryo 385 Silver */
 		case UINT32_C(0x51008010): /* Kryo 260 / 280 Silver */

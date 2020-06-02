@@ -46,14 +46,6 @@
 	#endif
 #endif
 
-#if CPUINFO_ARCH_X86 && defined(_MSC_VER)
-	#define CPUINFO_ABI __cdecl
-#elif CPUINFO_ARCH_X86 && defined(__GNUC__)
-	#define CPUINFO_ABI __attribute__((__cdecl__))
-#else
-	#define CPUINFO_ABI
-#endif
-
 /* Define other architecture-specific macros as 0 */
 
 #ifndef CPUINFO_ARCH_X86
@@ -86,6 +78,14 @@
 
 #ifndef CPUINFO_ARCH_WASMSIMD
 	#define CPUINFO_ARCH_WASMSIMD 0
+#endif
+
+#if CPUINFO_ARCH_X86 && defined(_MSC_VER)
+	#define CPUINFO_ABI __cdecl
+#elif CPUINFO_ARCH_X86 && defined(__GNUC__)
+	#define CPUINFO_ABI __attribute__((__cdecl__))
+#else
+	#define CPUINFO_ABI
 #endif
 
 #define CPUINFO_CACHE_UNIFIED          0x00000001
@@ -415,8 +415,6 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_cortex_a75   = 0x00300375,
 	/** ARM Cortex-A76. */
 	cpuinfo_uarch_cortex_a76   = 0x00300376,
-	/** ARM Cortex-A76AE. */
-	cpuinfo_uarch_cortex_a76ae = 0x00300378,
 	/** ARM Cortex-A77. */
 	cpuinfo_uarch_cortex_a77   = 0x00300377,
 
@@ -454,7 +452,9 @@ enum cpuinfo_uarch {
 	/** Samsung Exynos M5 (Exynos 9830 big cores). */
 	cpuinfo_uarch_exynos_m5  = 0x00600104,
 
-	/* Old names for Exynos. */
+	/* Deprecated synonym for Cortex-A76 */
+	cpuinfo_uarch_cortex_a76ae = 0x00300376,
+	/* Deprecated names for Exynos. */
 	cpuinfo_uarch_mongoose_m1 = 0x00600100,
 	cpuinfo_uarch_mongoose_m2 = 0x00600101,
 	cpuinfo_uarch_meerkat_m3  = 0x00600102,
