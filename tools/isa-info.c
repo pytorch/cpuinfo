@@ -121,6 +121,7 @@ int main(int argc, char** argv) {
 		printf("\tARMv6-K: %s\n", cpuinfo_has_arm_v6k() ? "yes" : "no");
 		printf("\tARMv7: %s\n", cpuinfo_has_arm_v7() ? "yes" : "no");
 		printf("\tARMv7 MP: %s\n", cpuinfo_has_arm_v7mp() ? "yes" : "no");
+		printf("\tARMv8: %s\n", cpuinfo_has_arm_v8() ? "yes" : "no");
 		printf("\tIDIV: %s\n", cpuinfo_has_arm_idiv() ? "yes" : "no");
 
 	printf("Floating-Point support:\n");
