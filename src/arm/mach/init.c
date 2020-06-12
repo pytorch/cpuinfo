@@ -307,6 +307,7 @@ void cpuinfo_arm_mach_init(void) {
 		case CPU_TYPE_ARM:
 			switch (cpu_subtype) {
 				case CPU_SUBTYPE_ARM_V8:
+					cpuinfo_isa.armv8 = true;
 					cpuinfo_isa.aes = true;
 					cpuinfo_isa.sha1 = true;
 					cpuinfo_isa.sha2 = true;

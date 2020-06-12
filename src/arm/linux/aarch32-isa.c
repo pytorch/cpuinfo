@@ -43,6 +43,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		isa->armv6k  = true;
 		isa->armv7   = true;
 		isa->armv7mp = true;
+		isa->armv8   = true;
 		isa->thumb  = true;
 		isa->thumb2 = true;
 		isa->idiv = true;

@@ -417,6 +417,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_cortex_a76   = 0x00300376,
 	/** ARM Cortex-A77. */
 	cpuinfo_uarch_cortex_a77   = 0x00300377,
+	/** ARM Cortex-A78. */
+	cpuinfo_uarch_cortex_a78   = 0x00300378,
 
 	/** ARM Neoverse N1. */
 	cpuinfo_uarch_neoverse_n1  = 0x00300400,
@@ -1434,6 +1436,7 @@ static inline bool cpuinfo_has_x86_sha(void) {
 			bool armv6k;
 			bool armv7;
 			bool armv7mp;
+			bool armv8;
 			bool idiv;
 
 			bool vfpv2;
@@ -1516,6 +1519,16 @@ static inline bool cpuinfo_has_arm_v7(void) {
 static inline bool cpuinfo_has_arm_v7mp(void) {
 	#if CPUINFO_ARCH_ARM
 		return cpuinfo_isa.armv7mp;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_v8(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.armv8;
 	#else
 		return false;
 	#endif
@@ -1640,6 +1653,16 @@ static inline bool cpuinfo_has_arm_neon_fma(void) {
 		return true;
 	#elif CPUINFO_ARCH_ARM
 		return cpuinfo_isa.neon && cpuinfo_isa.fma;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_neon_v8(void) {
+	#if CPUINFO_ARCH_ARM64
+		return true;
+	#elif CPUINFO_ARCH_ARM
+		return cpuinfo_isa.neon && cpuinfo_isa.armv8;
 	#else
 		return false;
 	#endif
