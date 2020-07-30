@@ -90,8 +90,13 @@ static bool uint32_parser(const char* text_start, const char* text_end, void* co
 	uint32_t kernel_max = 0;
 	const char* parsed_end = parse_number(text_start, text_end, &kernel_max);
 	if (parsed_end == text_start) {
+#if defined(__UCLIBC__)
+		cpuinfo_log_warning("failed to parse file %s: \"%.*s\" is not an unsigned number",
+			KERNEL_MAX_FILENAME, (int) (text_end - text_start), text_start);
+#else
 		cpuinfo_log_error("failed to parse file %s: \"%.*s\" is not an unsigned number",
 			KERNEL_MAX_FILENAME, (int) (text_end - text_start), text_start);
+#endif
 		return false;
 	} else {
 		for (const char* char_ptr = parsed_end; char_ptr != text_end; char_ptr++) {

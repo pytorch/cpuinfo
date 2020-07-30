@@ -234,6 +234,8 @@ void cpuinfo_arm_linux_init(void) {
 		cpuinfo_arm_linux_decode_chipset(proc_cpuinfo_hardware, proc_cpuinfo_revision, valid_processors, 0);
 #endif
 
+#if !defined(__UCLIBC__)
+
 	#if CPUINFO_ARCH_ARM
 		uint32_t isa_features = 0, isa_features2 = 0;
 		#ifdef __ANDROID__
@@ -282,7 +284,7 @@ void cpuinfo_arm_linux_init(void) {
 		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 			isa_features, last_midr, &chipset, &cpuinfo_isa);
 	#endif
-
+#endif
 	/* Detect min/max frequency and package ID */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
