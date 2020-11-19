@@ -25,6 +25,10 @@
 	#define CPUFAMILY_ARM_LIGHTNING_THUNDER 0x462504D2
 #endif
 
+#ifndef CPUFAMILY_ARM_FIRESTORM_ICESTORM
+	#define CPUFAMILY_ARM_FIRESTORM_ICESTORM 0x1B588BB3
+#endif
+
 struct cpuinfo_arm_isa cpuinfo_isa = {
 #if CPUINFO_ARCH_ARM
 	.thumb = true,
@@ -101,6 +105,9 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 		case CPUFAMILY_ARM_LIGHTNING_THUNDER:
 			/* Hexa-core: 2x Lightning + 4x Thunder; Octa-core (presumed): 4x Lightning + 4x Thunder */
 			return core_index + 4 < core_count ? cpuinfo_uarch_lightning : cpuinfo_uarch_thunder;
+		case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
+			/* Hexa-core: 2x Firestorm + 4x Icestorm; Octa-core: 4x Firestorm + 4x Icestorm */
+			return core_index + 4 < core_count ? cpuinfo_uarch_firestorm : cpuinfo_uarch_icestorm;
 		default:
 			/* Use hw.cpusubtype for detection */
 			break;
