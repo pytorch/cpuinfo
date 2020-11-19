@@ -106,7 +106,7 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 			/* Hexa-core: 2x Lightning + 4x Thunder; Octa-core (presumed): 4x Lightning + 4x Thunder */
 			return core_index + 4 < core_count ? cpuinfo_uarch_lightning : cpuinfo_uarch_thunder;
 		case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
-			/* Hexa-core: 2x Firestorm + 4x Icestorm; Octa-core (presumed): 4x Firestorm + 4x Icestorm */
+			/* Hexa-core: 2x Firestorm + 4x Icestorm; Octa-core: 4x Firestorm + 4x Icestorm */
 			return core_index + 4 < core_count ? cpuinfo_uarch_firestorm : cpuinfo_uarch_icestorm;
 		default:
 			/* Use hw.cpusubtype for detection */
