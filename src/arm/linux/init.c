@@ -277,10 +277,11 @@ void cpuinfo_arm_linux_init(void) {
 			last_midr, last_architecture_version, last_architecture_flags,
 			&chipset, &cpuinfo_isa);
 	#elif CPUINFO_ARCH_ARM64
+		uint32_t isa_features = 0, isa_features2 = 0;
 		/* getauxval is always available on ARM64 Android */
-		const uint32_t isa_features = cpuinfo_arm_linux_hwcap_from_getauxval();
+		cpuinfo_arm_linux_hwcap_from_getauxval(&isa_features, &isa_features2);
 		cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
-			isa_features, last_midr, &chipset, &cpuinfo_isa);
+			isa_features, isa_features2, last_midr, &chipset, &cpuinfo_isa);
 	#endif
 
 	/* Detect min/max frequency and package ID */

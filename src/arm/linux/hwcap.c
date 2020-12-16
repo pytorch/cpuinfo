@@ -29,12 +29,10 @@
 		mock_hwcap = hwcap;
 	}
 
-	#if CPUINFO_ARCH_ARM
-		static uint32_t mock_hwcap2 = 0;
-		void cpuinfo_set_hwcap2(uint32_t hwcap2) {
-			mock_hwcap2 = hwcap2;
-		}
-	#endif
+	static uint32_t mock_hwcap2 = 0;
+	void cpuinfo_set_hwcap2(uint32_t hwcap2) {
+		mock_hwcap2 = hwcap2;
+	}
 #endif
 
 
@@ -145,11 +143,17 @@
 		}
 	#endif /* __ANDROID__ */
 #elif CPUINFO_ARCH_ARM64
-	uint32_t cpuinfo_arm_linux_hwcap_from_getauxval(void) {
+	void cpuinfo_arm_linux_hwcap_from_getauxval(
+		uint32_t hwcap[restrict static 1],
+		uint32_t hwcap2[restrict static 1])
+	{
 		#if CPUINFO_MOCK
-			return mock_hwcap;
+			*hwcap  = mock_hwcap;
+			*hwcap2 = mock_hwcap2;
 		#else
-			return (uint32_t) getauxval(AT_HWCAP);
+			*hwcap  = (uint32_t) getauxval(AT_HWCAP);
+			*hwcap2 = (uint32_t) getauxval(AT_HWCAP2);
+			return ;
 		#endif
 	}
 #endif

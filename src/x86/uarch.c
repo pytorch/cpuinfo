@@ -209,9 +209,23 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							return cpuinfo_uarch_zen;
 						case 0x31: // Rome, Castle Peak
 						case 0x60: // Renoir
+						case 0x68: // Lucienne
 						case 0x71: // Matisse
+						case 0x90: // Van Gogh
+						case 0x98: // Mero
 							return cpuinfo_uarch_zen2;
 					}
+					break;
+				case 0x19:
+					switch (model_info->model) {
+						case 0x01: // Genesis
+						case 0x21: // Vermeer
+						case 0x30: // Badami, Trento
+						case 0x40: // Rembrandt
+						case 0x50: // Cezanne
+							return cpuinfo_uarch_zen3;
+					}
+					break;
 			}
 			break;
 		case cpuinfo_vendor_hygon:

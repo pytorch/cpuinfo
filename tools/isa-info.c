@@ -161,6 +161,10 @@ int main(int argc, char** argv) {
 		printf("\tARM v8.3 JS conversion: %s\n", cpuinfo_has_arm_jscvt() ? "yes" : "no");
 		printf("\tARM v8.3 complex: %s\n", cpuinfo_has_arm_fcma() ? "yes" : "no");
 
+	printf("SIMD extensions:\n");
+		printf("\tARM SVE: %s\n", cpuinfo_has_arm_sve() ? "yes" : "no");
+		printf("\tARM SVE 2: %s\n", cpuinfo_has_arm_sve2() ? "yes" : "no");
+
 	printf("Cryptography extensions:\n");
 		printf("\tAES: %s\n", cpuinfo_has_arm_aes() ? "yes" : "no");
 		printf("\tSHA1: %s\n", cpuinfo_has_arm_sha1() ? "yes" : "no");
