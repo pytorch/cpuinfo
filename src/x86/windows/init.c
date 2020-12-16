@@ -95,6 +95,15 @@ static void cpuinfo_x86_count_caches(
 	*l4_count_ptr  = l4_count;
 }
 
+static bool cpuinfo_x86_windows_is_wine(void) {
+	HMODULE ntdll = GetModuleHandleW(L"ntdll.dll");
+	if (ntdll == NULL) {
+		return false;
+	}
+
+	return GetProcAddress(ntdll, "wine_get_version") != NULL;
+}
+
 BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context) {
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
@@ -108,6 +117,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX processor_infos = NULL;
 
 	HANDLE heap = GetProcessHeap();
+	const bool is_wine = cpuinfo_x86_windows_is_wine();
 
 	struct cpuinfo_x86_processor x86_processor;
 	ZeroMemory(&x86_processor, sizeof(x86_processor));
@@ -121,7 +131,8 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		x86_processor.topology.thread_bits_offset + x86_processor.topology.thread_bits_length,
 		x86_processor.topology.core_bits_offset + x86_processor.topology.core_bits_length);
 
-	const uint32_t max_group_count = (uint32_t) GetMaximumProcessorGroupCount();
+	/* WINE doesn't implement GetMaximumProcessorGroupCount and aborts when calling it */
+	const uint32_t max_group_count = is_wine ? 1 : (uint32_t) GetMaximumProcessorGroupCount();
 	cpuinfo_log_debug("detected %"PRIu32" processor groups", max_group_count);
 
 	uint32_t processors_count = 0;

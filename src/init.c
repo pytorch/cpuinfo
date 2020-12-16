@@ -35,8 +35,6 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	#if defined(__linux__)
 		pthread_once(&init_guard, &cpuinfo_arm_linux_init);
-	#elif defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
-		pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 	#elif defined(__MACH__) && defined(__APPLE__)
 		pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 	#else

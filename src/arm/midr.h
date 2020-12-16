@@ -171,9 +171,10 @@ inline static bool midr_is_kryo_gold(uint32_t midr) {
 inline static uint32_t midr_score_core(uint32_t midr) {
 	const uint32_t core_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
 	switch (midr & core_mask) {
-		case UINT32_C(0x53000040): /* Exynos M5 */
 		case UINT32_C(0x53000030): /* Exynos M4 */
-			/* These cores are in big role w.r.t Cortex-A75 or Cortex-A76 */
+		case UINT32_C(0x53000040): /* Exynos M5 */
+		case UINT32_C(0x4100D440): /* Cortex-X1 */
+			/* These cores are in big role w.r.t Cortex-A75/-A76/-A77/-A78 */
 			return 6;
 		case UINT32_C(0x4E000030): /* Denver 2 */
 		case UINT32_C(0x53000010): /* Exynos M1 and Exynos M2 */

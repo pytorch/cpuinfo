@@ -361,6 +361,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_zen         = 0x00200109,
 	/** AMD Zen 2 microarchitecture (7 nm Ryzen and EPYC CPUs). */
 	cpuinfo_uarch_zen2        = 0x0020010A,
+	/** AMD Zen 3 microarchitecture. */
+	cpuinfo_uarch_zen3        = 0x0020010B,
 
 	/** NSC Geode and AMD Geode GX and LX. */
 	cpuinfo_uarch_geode  = 0x00200200,
@@ -424,6 +426,9 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_neoverse_n1  = 0x00300400,
 	/** ARM Neoverse E1. */
 	cpuinfo_uarch_neoverse_e1  = 0x00300401,
+
+	/** ARM Cortex-X1. */
+	cpuinfo_uarch_cortex_x1    = 0x00300500,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
@@ -1455,6 +1460,8 @@ static inline bool cpuinfo_has_x86_sha(void) {
 		#endif
 		#if CPUINFO_ARCH_ARM64
 			bool atomics;
+			bool sve;
+			bool sve2;
 		#endif
 		bool rdm;
 		bool fp16arith;
@@ -1765,6 +1772,22 @@ static inline bool cpuinfo_has_arm_pmull(void) {
 static inline bool cpuinfo_has_arm_crc32(void) {
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.crc32;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_sve(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.sve;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_sve2(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.sve2;
 	#else
 		return false;
 	#endif
