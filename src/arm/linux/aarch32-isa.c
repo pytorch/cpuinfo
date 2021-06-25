@@ -73,6 +73,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D050): /* Cortex-A55 */
 				case UINT32_C(0x4100D060): /* Cortex-A65 */
 				case UINT32_C(0x4100D0B0): /* Cortex-A76 */
+                		case UINT32_C(0x4100D440): /* Cortex-X1 */
 				case UINT32_C(0x4100D0C0): /* Neoverse N1 */
 				case UINT32_C(0x4100D0D0): /* Cortex-A77 */
 				case UINT32_C(0x4100D0E0): /* Cortex-A76AE */
