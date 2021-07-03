@@ -46,6 +46,10 @@
 	#endif
 #endif
 
+#if defined(__loongarch__) && defined(__loongarch64)
+	#define CPUINFO_ARCH_LOONGARCH64 1
+#endif
+
 /* Define other architecture-specific macros as 0 */
 
 #ifndef CPUINFO_ARCH_X86
@@ -255,6 +259,9 @@ enum cpuinfo_vendor {
 	 * Sold its ARM designs in 1997. The last processor design was released in 1997.
 	 */
 	cpuinfo_vendor_dec       = 57,
+
+	/** Loongson Technologies, Inc. Vendor of LOONGARCH processor microarchitectures. */
+	cpuinfo_vendor_loongarch     = 258,
 };
 
 /**

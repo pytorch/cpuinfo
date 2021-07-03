@@ -42,6 +42,8 @@ static const char* vendor_to_string(enum cpuinfo_vendor vendor) {
 			return "Broadcom";
 		case cpuinfo_vendor_apm:
 			return "Applied Micro";
+		case cpuinfo_vendor_loongarch:
+			return "LoongArch";
 		default:
 			return NULL;
 	}
