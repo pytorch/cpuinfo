@@ -1,7 +1,11 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5 FATAL_ERROR)
 
 # ---[ Project and semantic versioning.
-PROJECT(cpuinfo C CXX)
+PROJECT(
+    cpuinfo
+    LANGUAGES C CXX
+    HOMEPAGE_URL https://github.com/pytorch/cpuinfo
+    VERSION 0.1.0)
 
 # ---[ Options.
 SET(CPUINFO_LIBRARY_TYPE "default" CACHE STRING "Type of cpuinfo library (shared, static, or default) to build")
@@ -14,6 +18,7 @@ OPTION(CPUINFO_BUILD_TOOLS "Build command-line tools" ON)
 OPTION(CPUINFO_BUILD_UNIT_TESTS "Build cpuinfo unit tests" ON)
 OPTION(CPUINFO_BUILD_MOCK_TESTS "Build cpuinfo mock tests" ON)
 OPTION(CPUINFO_BUILD_BENCHMARKS "Build cpuinfo micro-benchmarks" ON)
+OPTION(CPUINFO_BUILD_PKG_CONFIG "Build pkg-config manifest" ON)
 
 # ---[ CMake options
 INCLUDE(GNUInstallDirs)
@@ -821,3 +826,32 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_TOOLS)
     INSTALL(TARGETS cpuid-dump RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
   ENDIF()
 ENDIF()
+
+# ---[ pkg-config manifest. This is mostly from JsonCpp...
+if(CPUINFO_BUILD_PKG_CONFIG AND (CPUINFO_LIBRARY_TYPE STREQUAL "default" OR CPUINFO_LIBRARY_TYPE STREQUAL "shared"))
+
+    function(join_paths joined_path first_path_segment)
+        set(temp_path "${first_path_segment}")
+        foreach(current_segment IN LISTS ARGN)
+            if(NOT ("${current_segment}" STREQUAL ""))
+                if(IS_ABSOLUTE "${current_segment}")
+                    set(temp_path "${current_segment}")
+                else()
+                    set(temp_path "${temp_path}/${current_segment}")
+                endif()
+            endif()
+        endforeach()
+        set(${joined_path} "${temp_path}" PARENT_SCOPE)
+    endfunction()
+
+    join_paths(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
+    join_paths(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
+
+    configure_file(
+        "libcpuinfo.pc.in"
+        "libcpuinfo.pc"
+        @ONLY)
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libcpuinfo.pc"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+endif()
+

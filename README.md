@@ -100,6 +100,68 @@ for (uint32_t i = 0; i < current_l2->processor_count; i++) {
 pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 ```
 
+## Use via pkg-config
+
+If you would like to automatically have your project's build environment use the appropriate compiler and linker build flags, [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) can greatly simplify things. It is the portable international _de facto_ standard for determining build flags. Here is an example:
+
+### GNU Autotools
+
+To [use](https://autotools.io/pkgconfig/pkg_check_modules.html) with the GNU Autotools, as an example, include the following snippet in your project's `configure.ac`:
+
+```makefile
+# CPU INFOrmation library...
+PKG_CHECK_MODULES(
+    [libcpuinfo], [libcpuinfo >= 0.1], [],
+    [AC_MSG_ERROR([libcpuinfo >= 0.1 missing...])])
+YOURPROJECT_CXXFLAGS="$YOURPROJECT_CXXFLAGS $libcpuinfo_CFLAGS"
+YOURPROJECT_LIBS="$YOURPROJECT_LIBS $libcpuinfo_LIBS"
+```
+
+### Meson
+
+To use with Meson, you just need to add `dependency('libcpuinfo')` as a dependency for your executable.
+
+```meson
+project(
+    'MyCpuInfoProject',
+    'cpp',
+    meson_version: '>=0.55.0'
+)
+
+executable(
+    'MyCpuInfoExecutable',
+    sources: 'main.cpp',
+    dependencies: dependency('libcpuinfo')
+)
+```
+
+### CMake
+
+To use with a CMake build environment, use the [FindPkgConfig](https://cmake.org/cmake/help/latest/module/FindPkgConfig.html) module. Here is an example:
+
+```cmake
+cmake_minimum_required(VERSION 3.6)
+project("MyCpuInfoProject")
+
+find_package(PkgConfig)
+pkg_check_modules(CpuInfo REQUIRED IMPORTED_TARGET libcpuinfo)
+
+add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} PkgConfig::CpuInfo)
+```
+
+### Makefile
+
+To use within a vanilla makefile, you can call `pkg-config` directly to supply compiler and linker flags using shell substitution.
+
+```makefile
+CFLAGS=-g3 -Wall -Wextra -Werror ...
+LDFLAGS=-lfoo ...
+...
+CFLAGS+= $(pkg-config --cflags libcpuinfo)
+LDFLAGS+= $(pkg-config --libs libcpuinfo)
+```
+
 ## Exposed information
 - [x] Processor (SoC) name
 - [x] Microarchitecture
@@ -202,3 +264,4 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
   - [x] Using `GetLogicalProcessorInformationEx` (Windows)
   - [x] Using sysfs (Linux)
   - [x] Using chipset name (ARM/Linux)
+
