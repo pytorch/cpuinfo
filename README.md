@@ -102,11 +102,27 @@ pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpu_set);
 
 ## Use via pkg-config
 
-If you would like to automatically have your project's build environment use the appropriate compiler and linker build flags, [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) can greatly simplify things. It is the portable international _de facto_ standard for determining build flags. Here is an example:
+If you would like to provide your project's build environment with the necessary compiler and linker flags in a portable manner, the library by default when built enables `CPUINFO_BUILD_PKG_CONFIG` and will generate a [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) manifest (_libcpuinfo.pc_). Here are several examples of how to use it:
+
+### Command Line
+
+If you used your distro's package manager to install the library, you can verify that it is available to your build environment like so:
+
+```console
+$ pkg-config --cflags --libs libcpuinfo
+-I/usr/include/x86_64-linux-gnu/ -L/lib/x86_64-linux-gnu/ -lcpuinfo
+```
+
+If you have installed the library from source into a non-standard prefix, pkg-config may need help finding it:
+
+```console
+$ PKG_CONFIG_PATH="/home/me/projects/cpuinfo/prefix/lib/pkgconfig/:$PKG_CONFIG_PATH" pkg-config --cflags --libs libcpuinfo
+-I/home/me/projects/cpuinfo/prefix/include -L/home/me/projects/cpuinfo/prefix/lib -lcpuinfo
+```
 
 ### GNU Autotools
 
-To [use](https://autotools.io/pkgconfig/pkg_check_modules.html) with the GNU Autotools, as an example, include the following snippet in your project's `configure.ac`:
+To [use](https://autotools.io/pkgconfig/pkg_check_modules.html) with the GNU Autotools include the following snippet in your project's `configure.ac`:
 
 ```makefile
 # CPU INFOrmation library...
@@ -119,7 +135,7 @@ YOURPROJECT_LIBS="$YOURPROJECT_LIBS $libcpuinfo_LIBS"
 
 ### Meson
 
-To use with Meson, you just need to add `dependency('libcpuinfo')` as a dependency for your executable.
+To use with Meson you just need to add `dependency('libcpuinfo')` as a dependency for your executable.
 
 ```meson
 project(
@@ -137,7 +153,7 @@ executable(
 
 ### CMake
 
-To use with a CMake build environment, use the [FindPkgConfig](https://cmake.org/cmake/help/latest/module/FindPkgConfig.html) module. Here is an example:
+To use with CMake use the [FindPkgConfig](https://cmake.org/cmake/help/latest/module/FindPkgConfig.html) module. Here is an example:
 
 ```cmake
 cmake_minimum_required(VERSION 3.6)
@@ -152,7 +168,7 @@ target_link_libraries(${PROJECT_NAME} PkgConfig::CpuInfo)
 
 ### Makefile
 
-To use within a vanilla makefile, you can call `pkg-config` directly to supply compiler and linker flags using shell substitution.
+To use within a vanilla makefile, you can call pkg-config directly to supply compiler and linker flags using shell substitution.
 
 ```makefile
 CFLAGS=-g3 -Wall -Wextra -Werror ...

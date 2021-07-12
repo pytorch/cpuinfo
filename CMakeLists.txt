@@ -830,28 +830,28 @@ ENDIF()
 # ---[ pkg-config manifest. This is mostly from JsonCpp...
 if(CPUINFO_BUILD_PKG_CONFIG AND (CPUINFO_LIBRARY_TYPE STREQUAL "default" OR CPUINFO_LIBRARY_TYPE STREQUAL "shared"))
 
-    function(join_paths joined_path first_path_segment)
-        set(temp_path "${first_path_segment}")
-        foreach(current_segment IN LISTS ARGN)
-            if(NOT ("${current_segment}" STREQUAL ""))
-                if(IS_ABSOLUTE "${current_segment}")
-                    set(temp_path "${current_segment}")
-                else()
-                    set(temp_path "${temp_path}/${current_segment}")
-                endif()
-            endif()
-        endforeach()
-        set(${joined_path} "${temp_path}" PARENT_SCOPE)
-    endfunction()
+  function(join_paths joined_path first_path_segment)
+    set(temp_path "${first_path_segment}")
+    foreach(current_segment IN LISTS ARGN)
+      if(NOT ("${current_segment}" STREQUAL ""))
+        if(IS_ABSOLUTE "${current_segment}")
+          set(temp_path "${current_segment}")
+        else()
+          set(temp_path "${temp_path}/${current_segment}")
+        endif()
+      endif()
+    endforeach()
+    set(${joined_path} "${temp_path}" PARENT_SCOPE)
+  endfunction()
 
-    join_paths(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
-    join_paths(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
+join_paths(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
+join_paths(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
 
-    configure_file(
-        "libcpuinfo.pc.in"
-        "libcpuinfo.pc"
-        @ONLY)
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libcpuinfo.pc"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+configure_file(
+  "libcpuinfo.pc.in"
+  "libcpuinfo.pc"
+  @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libcpuinfo.pc"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 endif()
 
