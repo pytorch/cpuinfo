@@ -127,8 +127,8 @@ To [use](https://autotools.io/pkgconfig/pkg_check_modules.html) with the GNU Aut
 ```makefile
 # CPU INFOrmation library...
 PKG_CHECK_MODULES(
-    [libcpuinfo], [libcpuinfo >= 0.1], [],
-    [AC_MSG_ERROR([libcpuinfo >= 0.1 missing...])])
+    [libcpuinfo], [libcpuinfo], [],
+    [AC_MSG_ERROR([libcpuinfo missing...])])
 YOURPROJECT_CXXFLAGS="$YOURPROJECT_CXXFLAGS $libcpuinfo_CFLAGS"
 YOURPROJECT_LIBS="$YOURPROJECT_LIBS $libcpuinfo_LIBS"
 ```

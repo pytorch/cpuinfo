@@ -827,7 +827,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_TOOLS)
 ENDIF()
 
 # ---[ pkg-config manifest. This is mostly from JsonCpp...
-if(CPUINFO_BUILD_PKG_CONFIG)
+IF(CPUINFO_BUILD_PKG_CONFIG)
 
   FUNCTION(JOIN_PATHS joined_path first_path_segment)
     SET(temp_path "${first_path_segment}")
@@ -843,14 +843,16 @@ if(CPUINFO_BUILD_PKG_CONFIG)
     SET(${joined_path} "${temp_path}" PARENT_SCOPE)
   ENDFUNCTION()
 
-JOIN_PATHS(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
-JOIN_PATHS(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
+  JOIN_PATHS(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
+  JOIN_PATHS(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
 
-configure_file(
-  "libcpuinfo.pc.in"
-  "libcpuinfo.pc"
-  @ONLY)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libcpuinfo.pc"
+  CONFIGURE_FILE(
+    "libcpuinfo.pc.in"
+    "libcpuinfo.pc"
+    @ONLY)
+
+  INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/libcpuinfo.pc"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
-endif()
+
+ENDIF()
 
