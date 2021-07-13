@@ -1,11 +1,10 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5 FATAL_ERROR)
 
-# ---[ Project and semantic versioning.
+# ---[ Setup project
 PROJECT(
     cpuinfo
     LANGUAGES C CXX
-    HOMEPAGE_URL https://github.com/pytorch/cpuinfo
-    VERSION 0.1.0)
+    HOMEPAGE_URL https://github.com/pytorch/cpuinfo)
 
 # ---[ Options.
 SET(CPUINFO_LIBRARY_TYPE "default" CACHE STRING "Type of cpuinfo library (shared, static, or default) to build")
@@ -828,24 +827,24 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_TOOLS)
 ENDIF()
 
 # ---[ pkg-config manifest. This is mostly from JsonCpp...
-if(CPUINFO_BUILD_PKG_CONFIG AND (CPUINFO_LIBRARY_TYPE STREQUAL "default" OR CPUINFO_LIBRARY_TYPE STREQUAL "shared"))
+if(CPUINFO_BUILD_PKG_CONFIG)
 
-  function(join_paths joined_path first_path_segment)
-    set(temp_path "${first_path_segment}")
-    foreach(current_segment IN LISTS ARGN)
-      if(NOT ("${current_segment}" STREQUAL ""))
-        if(IS_ABSOLUTE "${current_segment}")
-          set(temp_path "${current_segment}")
-        else()
-          set(temp_path "${temp_path}/${current_segment}")
-        endif()
-      endif()
-    endforeach()
-    set(${joined_path} "${temp_path}" PARENT_SCOPE)
-  endfunction()
+  FUNCTION(JOIN_PATHS joined_path first_path_segment)
+    SET(temp_path "${first_path_segment}")
+    FOREACH(current_segment IN LISTS ARGN)
+      IF(NOT ("${current_segment}" STREQUAL ""))
+        IF(IS_ABSOLUTE "${current_segment}")
+          SET(temp_path "${current_segment}")
+        ELSE()
+          SET(temp_path "${temp_path}/${current_segment}")
+        ENDIF()
+      ENDIF()
+    ENDFOREACH()
+    SET(${joined_path} "${temp_path}" PARENT_SCOPE)
+  ENDFUNCTION()
 
-join_paths(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
-join_paths(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
+JOIN_PATHS(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
+JOIN_PATHS(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
 
 configure_file(
   "libcpuinfo.pc.in"

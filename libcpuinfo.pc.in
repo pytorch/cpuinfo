@@ -5,7 +5,7 @@ includedir=@includedir_for_pc_file@
 
 Name: lib@CMAKE_PROJECT_NAME@
 Description: Library to detect essential performance optimization information about host CPU.
-Version: @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
+Version: 
 URL: @PROJECT_HOMEPAGE_URL@
 Libs: -L${libdir} -lcpuinfo
 Cflags: -I${includedir}
