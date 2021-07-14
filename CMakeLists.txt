@@ -1,7 +1,10 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5 FATAL_ERROR)
 
-# ---[ Project and semantic versioning.
-PROJECT(cpuinfo C CXX)
+# ---[ Setup project
+PROJECT(
+    cpuinfo
+    LANGUAGES C CXX
+    HOMEPAGE_URL https://github.com/pytorch/cpuinfo)
 
 # ---[ Options.
 SET(CPUINFO_LIBRARY_TYPE "default" CACHE STRING "Type of cpuinfo library (shared, static, or default) to build")
@@ -14,6 +17,7 @@ OPTION(CPUINFO_BUILD_TOOLS "Build command-line tools" ON)
 OPTION(CPUINFO_BUILD_UNIT_TESTS "Build cpuinfo unit tests" ON)
 OPTION(CPUINFO_BUILD_MOCK_TESTS "Build cpuinfo mock tests" ON)
 OPTION(CPUINFO_BUILD_BENCHMARKS "Build cpuinfo micro-benchmarks" ON)
+OPTION(CPUINFO_BUILD_PKG_CONFIG "Build pkg-config manifest" ON)
 
 # ---[ CMake options
 INCLUDE(GNUInstallDirs)
@@ -821,3 +825,34 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_TOOLS)
     INSTALL(TARGETS cpuid-dump RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
   ENDIF()
 ENDIF()
+
+# ---[ pkg-config manifest. This is mostly from JsonCpp...
+IF(CPUINFO_BUILD_PKG_CONFIG)
+
+  FUNCTION(JOIN_PATHS joined_path first_path_segment)
+    SET(temp_path "${first_path_segment}")
+    FOREACH(current_segment IN LISTS ARGN)
+      IF(NOT ("${current_segment}" STREQUAL ""))
+        IF(IS_ABSOLUTE "${current_segment}")
+          SET(temp_path "${current_segment}")
+        ELSE()
+          SET(temp_path "${temp_path}/${current_segment}")
+        ENDIF()
+      ENDIF()
+    ENDFOREACH()
+    SET(${joined_path} "${temp_path}" PARENT_SCOPE)
+  ENDFUNCTION()
+
+  JOIN_PATHS(libdir_for_pc_file "\${exec_prefix}" "${CMAKE_INSTALL_LIBDIR}")
+  JOIN_PATHS(includedir_for_pc_file "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
+
+  CONFIGURE_FILE(
+    "libcpuinfo.pc.in"
+    "libcpuinfo.pc"
+    @ONLY)
+
+  INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/libcpuinfo.pc"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+
+ENDIF()
+
