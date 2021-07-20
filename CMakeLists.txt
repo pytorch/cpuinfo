@@ -4,7 +4,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.5 FATAL_ERROR)
 PROJECT(
     cpuinfo
     LANGUAGES C CXX
-    HOMEPAGE_URL https://github.com/pytorch/cpuinfo)
+    )
 
 # ---[ Options.
 SET(CPUINFO_LIBRARY_TYPE "default" CACHE STRING "Type of cpuinfo library (shared, static, or default) to build")
