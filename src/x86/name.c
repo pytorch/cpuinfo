@@ -234,7 +234,7 @@ static bool transform_token(char* token_start, char* token_end, struct parser_st
 				return true;
 			}
 			/*
-			 * Erase everywhing after "SOC" on AMD System-on-Chips, e.g.
+			 * Erase everything after "SOC" on AMD System-on-Chips, e.g.
 			 *  "AMD GX-212JC SOC with Radeon(TM) R2E Graphics  \0"
 			 */
 			if (erase_matching(token_start, token_length, "SOC")) {
