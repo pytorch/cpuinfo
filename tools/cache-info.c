@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <inttypes.h>
 
 #include <cpuinfo.h>
@@ -55,26 +56,76 @@ void report_cache(
 	}
 }
 
+void report_distinct_caches(
+	uint32_t count, const struct cpuinfo_cache *cache,
+	uint32_t level, const char *label)
+{
+	uint32_t similar_count = 0;
+	uint32_t prev = 0;
+	for(uint32_t i=0; i<count; ++i){
+		if(i != prev &&
+			(cache[i].size != cache[prev].size
+			|| cache[i].associativity != cache[prev].associativity
+			|| cache[i].sets != cache[prev].sets
+			|| cache[i].partitions != cache[prev].partitions
+			|| cache[i].line_size != cache[prev].line_size
+			|| cache[i].flags != cache[prev].flags
+			|| cache[i].processor_count != cache[prev].processor_count))
+		{
+			similar_count = i - prev;
+			report_cache(similar_count, &cache[prev], level, label);
+			prev = i;
+		}
+	}
+
+	similar_count = count - prev;
+	if(similar_count > 0){
+		report_cache(similar_count, &cache[prev], level, label);
+	}
+}
+
+void debug_print_caches(const char *label, const struct cpuinfo_cache * const cache, uint32_t count)
+{
+	for(uint32_t i=0; i<count; ++i){
+		printf("%s cache[%"PRIu32"]: processors [%"PRIu32"-%"PRIu32"]\n", label, i, cache[i].processor_start, (cache[i].processor_start + cache[i].processor_count - 1));
+		printf("\tsize: %"PRIu32"\n", cache[i].size);
+		printf("\tassociativity: %"PRIu32"\n", cache[i].associativity);
+		printf("\tsets: %"PRIu32"\n", cache[i].sets);
+		printf("\tpartitions: %"PRIu32"\n", cache[i].partitions);
+		printf("\tline_size: %"PRIu32"\n", cache[i].line_size);
+		printf("\tflags: %"PRIu32"\n", cache[i].flags);
+	}
+}
+
 int main(int argc, char** argv) {
 	if (!cpuinfo_initialize()) {
 		fprintf(stderr, "failed to initialize CPU information\n");
 		exit(EXIT_FAILURE);
 	}
+
+	if(argc > 1 && 0 == strcmp(argv[1], "-verbose")){
+		debug_print_caches("L1I", cpuinfo_get_l1i_caches(), cpuinfo_get_l1i_caches_count());
+		debug_print_caches("L1D", cpuinfo_get_l1d_caches(), cpuinfo_get_l1d_caches_count());
+		debug_print_caches("L2", cpuinfo_get_l2_caches(), cpuinfo_get_l2_caches_count());
+		debug_print_caches("L3", cpuinfo_get_l3_caches(), cpuinfo_get_l3_caches_count());
+		debug_print_caches("L4", cpuinfo_get_l4_caches(), cpuinfo_get_l4_caches_count());
+	}
+
 	printf("Max cache size (upper bound): %"PRIu32" bytes\n", cpuinfo_get_max_cache_size());
 
 	if (cpuinfo_get_l1i_caches_count() != 0 && (cpuinfo_get_l1i_cache(0)->flags & CPUINFO_CACHE_UNIFIED) == 0) {
-		report_cache(cpuinfo_get_l1i_caches_count(), cpuinfo_get_l1i_cache(0), 1, "instruction");
+		report_distinct_caches(cpuinfo_get_l1i_caches_count(), cpuinfo_get_l1i_caches(), 1, "instruction");
 	}
 	if (cpuinfo_get_l1d_caches_count() != 0) {
-		report_cache(cpuinfo_get_l1d_caches_count(), cpuinfo_get_l1d_cache(0), 1, "data");
+		report_distinct_caches(cpuinfo_get_l1d_caches_count(), cpuinfo_get_l1d_caches(), 1, "data");
 	}
 	if (cpuinfo_get_l2_caches_count() != 0) {
-		report_cache(cpuinfo_get_l2_caches_count(), cpuinfo_get_l2_cache(0), 2, "data");
+		report_distinct_caches(cpuinfo_get_l2_caches_count(), cpuinfo_get_l2_caches(), 2, "data");
 	}
 	if (cpuinfo_get_l3_caches_count() != 0) {
-		report_cache(cpuinfo_get_l3_caches_count(), cpuinfo_get_l3_cache(0), 3, "data");
+		report_distinct_caches(cpuinfo_get_l3_caches_count(), cpuinfo_get_l3_caches(), 3, "data");
 	}
 	if (cpuinfo_get_l4_caches_count() != 0) {
-		report_cache(cpuinfo_get_l4_caches_count(), cpuinfo_get_l4_cache(0), 4, "data");
+		report_distinct_caches(cpuinfo_get_l4_caches_count(), cpuinfo_get_l4_caches(), 4, "data");
 	}
 }
