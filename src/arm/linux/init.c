@@ -544,6 +544,8 @@ void cpuinfo_arm_linux_init(void) {
 		cores[i].vendor = arm_linux_processors[i].vendor;
 		cores[i].uarch = arm_linux_processors[i].uarch;
 		cores[i].midr = arm_linux_processors[i].midr;
+		cores[i].frequency = arm_linux_processors[i].max_frequency;
+        cores[i].min_frequency = arm_linux_processors[i].min_frequency;
 		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
 
 		if (linux_cpu_to_uarch_index_map != NULL) {

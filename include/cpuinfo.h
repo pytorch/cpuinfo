@@ -585,6 +585,7 @@ struct cpuinfo_core {
 #endif
 	/** Clock rate (non-Turbo) of the core, in Hz */
 	uint64_t frequency;
+    uint64_t min_frequency;
 };
 
 struct cpuinfo_cluster {
