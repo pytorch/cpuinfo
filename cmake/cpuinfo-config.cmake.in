@@ -1,0 +1,15 @@
+@PACKAGE_INIT@
+
+get_filename_component(_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+file(GLOB CONFIG_FILES "${_DIR}/cpuinfo-config-*.cmake")
+foreach(f ${CONFIG_FILES})
+  include(${f})
+endforeach()
+
+include("${_DIR}/cpuinfo-targets.cmake")
+file(GLOB TARGET_FILES "${_DIR}/cpuinfo-targets-*.cmake")
+foreach(f ${TARGET_FILES})
+  include(${f})
+endforeach()
+
+check_required_components(@PROJECT_NAME@)
