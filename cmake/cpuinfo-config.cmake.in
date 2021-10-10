@@ -6,10 +6,7 @@ foreach(f ${CONFIG_FILES})
   include(${f})
 endforeach()
 
+# ${_DIR}/cpuinfo-targets-*.cmake will be included here
 include("${_DIR}/cpuinfo-targets.cmake")
-file(GLOB TARGET_FILES "${_DIR}/cpuinfo-targets-*.cmake")
-foreach(f ${TARGET_FILES})
-  include(${f})
-endforeach()
 
 check_required_components(@PROJECT_NAME@)
