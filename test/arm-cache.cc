@@ -1684,7 +1684,7 @@ TEST(BROADCOM, bcm2835) {
 	EXPECT_EQ(16 * 1024, l1i.size);
 	EXPECT_EQ(16 * 1024, l1d.size);
 	EXPECT_EQ(0, l2.size);
-	EXPECT_EQ(0, big_l3.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(BROADCOM, bcm2836) {
@@ -1706,7 +1706,7 @@ TEST(BROADCOM, bcm2836) {
 	EXPECT_EQ(32 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(512 * 1024, l2.size);
-	EXPECT_EQ(0, big_l3.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(BROADCOM, bcm2837) {
@@ -1728,7 +1728,7 @@ TEST(BROADCOM, bcm2837) {
 	EXPECT_EQ(16 * 1024, l1i.size);
 	EXPECT_EQ(16 * 1024, l1d.size);
 	EXPECT_EQ(512 * 1024, l2.size);
-	EXPECT_EQ(0, big_l3.size);
+	EXPECT_EQ(0, l3.size);
 }
 
 TEST(BROADCOM, bcm2711) {
@@ -1750,5 +1750,5 @@ TEST(BROADCOM, bcm2711) {
 	EXPECT_EQ(48 * 1024, l1i.size);
 	EXPECT_EQ(32 * 1024, l1d.size);
 	EXPECT_EQ(1024 * 1024, l2.size);
-	EXPECT_EQ(0, big_l3.size);
+	EXPECT_EQ(0, l3.size);
 }
