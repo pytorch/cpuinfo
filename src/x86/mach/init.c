@@ -75,6 +75,7 @@ void cpuinfo_x86_mach_init(void) {
 			.vendor = x86_processor.vendor,
 			.uarch = x86_processor.uarch,
 			.cpuid = x86_processor.cpuid,
+			.is_power_efficient = false,
 		};
 		packages[i].processor_start = i * threads_per_package;
 		packages[i].processor_count = threads_per_package;

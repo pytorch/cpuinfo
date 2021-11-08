@@ -74,8 +74,8 @@ static int cmp_arm_linux_processor(const void* ptr_a, const void* ptr_b) {
 	const uint32_t midr_a = processor_a->midr;
 	const uint32_t midr_b = processor_b->midr;
 	if (midr_a != midr_b) {
-		const uint32_t score_a = midr_score_core(midr_a);
-		const uint32_t score_b = midr_score_core(midr_b);
+		const uint32_t score_a = cpuinfo_arm_cpu_perf_score(midr_a);
+		const uint32_t score_b = cpuinfo_arm_cpu_perf_score(midr_b);
 		if (score_a != score_b) {
 			return score_a > score_b ? -1 : 1;
 		}
@@ -398,7 +398,7 @@ void cpuinfo_arm_linux_init(void) {
 
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
-			cpuinfo_log_debug("post-sort processor %"PRIu32": system id %"PRIu32" MIDR %08"PRIx32" frequency %"PRIu32,
+			cpuinfo_log_debug("post-sort processor %"PRIu32": system id %"PRIu32" MIDR %08"PRIx32" frequency %"PRIu32"\n",
 				i, arm_linux_processors[i].system_processor_id, arm_linux_processors[i].midr, arm_linux_processors[i].max_frequency);
 		}
 	}
@@ -524,6 +524,7 @@ void cpuinfo_arm_linux_init(void) {
 				.vendor = arm_linux_processors[i].vendor,
 				.uarch = arm_linux_processors[i].uarch,
 				.midr = arm_linux_processors[i].midr,
+				.is_power_efficient = false,
 			};
 		}
 
@@ -614,6 +615,11 @@ void cpuinfo_arm_linux_init(void) {
 			}
 		}
 	}
+
+	/* post-sorting, if the last (least capable) cluster's first core is a little core mark it as power efficient  */
+	struct cpuinfo_cluster* last_cluster = &clusters[cluster_count - 1];
+	last_cluster->is_power_efficient =
+		cpuinfo_arm_cpu_is_little(arm_linux_processors[last_cluster->core_start].midr);
 
 	if (l2_count != 0) {
 		l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
