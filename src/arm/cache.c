@@ -535,6 +535,7 @@ void cpuinfo_arm_decode_cache(
 								l2_size = 1024 * 1024;
 								break;
 							case 660:
+							case 662:
 								/* Snapdragon 660: 1 MB L2 (little cores only) */
 								l2_size = 1024 * 1024;
 								break;
