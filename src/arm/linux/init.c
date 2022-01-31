@@ -510,7 +510,7 @@ void cpuinfo_arm_linux_init(void) {
 	uint32_t l2_count = 0, l3_count = 0, big_l3_size = 0, cluster_id = UINT32_MAX;
 	/* Indication whether L3 (if it exists) is shared between all cores */
 	bool shared_l3 = true;
-	/* Populate cache infromation structures in l1i, l1d */
+	/* Populate cache information structures in l1i, l1d */
 	for (uint32_t i = 0; i < valid_processors; i++) {
 		if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 			cluster_id += 1;

@@ -1427,7 +1427,7 @@ static bool match_and_parse_sunxi(
 		return false;
 	}
 
-	/* Compare sunXi platform id and number of cores to tabluted values to decode chipset name */
+	/* Compare sunXi platform id and number of cores to tabulated values to decode chipset name */
 	uint32_t model = 0;
 	char suffix = 0;
 	for (size_t i = 0; i < CPUINFO_COUNT_OF(sunxi_map_entries); i++) {
