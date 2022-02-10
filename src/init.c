@@ -37,6 +37,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 		pthread_once(&init_guard, &cpuinfo_arm_linux_init);
 	#elif defined(__MACH__) && defined(__APPLE__)
 		pthread_once(&init_guard, &cpuinfo_arm_mach_init);
+	#elif defined(_WIN32)
+		InitOnceExecuteOnce(&init_guard, &cpuinfo_arm_windows_init, NULL, NULL);
 	#else
 		cpuinfo_log_error("operating system is not supported in cpuinfo");
 	#endif
