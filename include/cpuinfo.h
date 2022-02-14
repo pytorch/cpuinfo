@@ -426,6 +426,10 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_neoverse_n1  = 0x00300400,
 	/** ARM Neoverse E1. */
 	cpuinfo_uarch_neoverse_e1  = 0x00300401,
+	/** ARM Neoverse V1. */
+	cpuinfo_uarch_neoverse_v1  = 0x00300402,
+	/** ARM Neoverse N2. */
+	cpuinfo_uarch_neoverse_n2  = 0x00300403,
 
 	/** ARM Cortex-X1. */
 	cpuinfo_uarch_cortex_x1    = 0x00300500,
@@ -1460,7 +1464,9 @@ static inline bool cpuinfo_has_x86_sha(void) {
 		#endif
 		#if CPUINFO_ARCH_ARM64
 			bool atomics;
+			bool bf16;
 			bool sve;
+			bool svebf16;
 			bool sve2;
 		#endif
 		bool rdm;
@@ -1788,6 +1794,22 @@ static inline bool cpuinfo_has_arm_sve(void) {
 static inline bool cpuinfo_has_arm_sve2(void) {
 	#if CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.sve2;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_bf16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.bf16;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_svebf16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.svebf16;
 	#else
 		return false;
 	#endif
