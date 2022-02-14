@@ -187,6 +187,7 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100D410): /* Cortex-A78 */
 		case UINT32_C(0x4100D0D0): /* Cortex-A77 */
 		case UINT32_C(0x4100D0E0): /* Cortex-A76AE */
+		case UINT32_C(0x4100D0C0): /* Neoverse-N1 */
 		case UINT32_C(0x4100D0B0): /* Cortex-A76 */
 		case UINT32_C(0x4100D0A0): /* Cortex-A75 */
 		case UINT32_C(0x4100D090): /* Cortex-A73 */
