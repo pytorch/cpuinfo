@@ -239,7 +239,7 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
   - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen 2)
   - [ ] VIA-designed x86/x86-64 cores
   - [ ] Other x86 cores (DM&P, RDC, Transmeta, Cyrix, Rise)
-  - [x] ARM-designed ARM cores (up to Cortex-A55, Cortex-A77, and Neoverse E1/N1)
+  - [x] ARM-designed ARM cores (up to Cortex-A55, Cortex-A77, and Neoverse E1/N1/V1/N2)
   - [x] Qualcomm-designed ARM cores (Scorpion, Krait, and Kryo)
   - [x] Nvidia-designed ARM cores (Denver and Carmel)
   - [x] Samsung-designed ARM cores (Exynos)

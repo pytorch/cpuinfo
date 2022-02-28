@@ -1239,6 +1239,63 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		}
+		case cpuinfo_uarch_neoverse_n1:
+		case cpuinfo_uarch_neoverse_v1:
+		case cpuinfo_uarch_neoverse_n2:
+		{
+                        /*
+                         * ARM Neoverse-n1 Core Technical Reference Manual
+                         * A6.1. About the L1 memory system
+			 *   The L1 memory system consists of separate instruction and data caches. Both have a fixed size of 64KB.
+                         *
+                         * A6.1.1 L1 instruction-side memory system
+                         *   The L1 instruction memory system has the following key features:
+                         *    - Virtually Indexed, Physically Tagged (VIPT), which behaves as a Physically Indexed,
+                         *      Physically Tagged (PIPT) 4-way set-associative L1 data cache.
+                         *    - Fixed cache line length of 64 bytes.
+                         *
+                         * A6.1.2 L1 data-side memory system
+                         *   The L1 data memory system has the following features:
+                         *    - Virtually Indexed, Physically Tagged (VIPT), which behaves as a Physically Indexed,
+                         *      Physically Tagged (PIPT) 4-way set-associative L1 data cache.
+                         *    - Fixed cache line length of 64 bytes.
+                         *    - Pseudo-LRU cache replacement policy.
+                         *
+                         * A7.1 About the L2 memory system
+                         *   The L2 memory subsystem consist of:
+			 *    - An 8-way set associative L2 cache with a configurable size of 256KB, 512KB, or 1024KB. Cache lines
+			 *      have a fixed length of 64 bytes.
+                         *    - Strictly inclusive with L1 data cache.
+			 *    - When configured with instruction cache hardware coherency, strictly inclusive with L1 instruction cache.
+			 *    - When configured without instruction cache hardware coherency, weakly inclusive with L1 instruction cache.
+                         */
+
+			const uint32_t min_l2_size_KB= 256;
+			const uint32_t min_l3_size_KB = 0;
+
+			*l1i = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l1d = (struct cpuinfo_cache) {
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l2 = (struct cpuinfo_cache) {
+				.size = min_l2_size_KB * 1024,
+				.associativity = 8,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_INCLUSIVE,
+			};
+			*l3 = (struct cpuinfo_cache) {
+				.size = min_l3_size_KB * 1024,
+				.associativity = 16,
+				.line_size = 64,
+			};
+			break;
+		}
 #if CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_8A__)
 		case cpuinfo_uarch_scorpion:
 			/*
@@ -1656,6 +1713,9 @@ uint32_t cpuinfo_arm_compute_max_cache_size(const struct cpuinfo_processor* proc
 			 */
 			return 8 * 1024 * 1024;
 		case cpuinfo_uarch_cortex_a55:
+		case cpuinfo_uarch_neoverse_n1:
+		case cpuinfo_uarch_neoverse_v1:
+		case cpuinfo_uarch_neoverse_n2:
 		case cpuinfo_uarch_cortex_a75:
 		case cpuinfo_uarch_cortex_a76:
 		case cpuinfo_uarch_exynos_m4:
