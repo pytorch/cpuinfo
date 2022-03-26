@@ -48,7 +48,7 @@ Detect if target is a 32-bit or 64-bit ARM system:
 #endif
 ```
 
-Check if the host CPU support ARM NEON
+Check if the host CPU supports ARM NEON
 
 ```c
 cpuinfo_initialize();
@@ -148,6 +148,36 @@ executable(
     'MyCpuInfoExecutable',
     sources: 'main.cpp',
     dependencies: dependency('libcpuinfo')
+)
+```
+
+### Bazel
+
+This project can be built using [Bazel](https://bazel.build/install). 
+
+You can also use this library as a dependency to your Bazel project. Add to the `WORKSPACE` file:
+
+```python
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "org_pytorch_cpuinfo",
+    branch = "master",
+    remote = "https://github.com/Vertexwahn/cpuinfo.git",
+)
+```
+
+And to your `BUILD` file:
+
+```python
+cc_binary(
+    name = "cpuinfo_test",
+    srcs = [
+        # ...
+    ],
+    deps = [
+        "@org_pytorch_cpuinfo//:cpuinfo",
+    ],
 )
 ```
 
