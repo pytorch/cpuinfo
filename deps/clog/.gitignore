@@ -2,7 +2,6 @@
 build.ninja
 
 # Build objects and artifacts
-deps/
 build/
 bin/
 lib/
