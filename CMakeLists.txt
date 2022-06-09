@@ -52,7 +52,7 @@ ENDMACRO()
 
 # -- [ Determine target processor
 SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_SYSTEM_PROCESSOR}")
-IF(IOS OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_OSX_ARCHITECTURES MATCHES "^(x86_64|arm64)$"))
+IF(IOS OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_OSX_ARCHITECTURES MATCHES "^(x86_64|arm64|loongarch64)$"))
   SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_OSX_ARCHITECTURES}")
 ENDIF()
 
@@ -65,7 +65,7 @@ IF(NOT CMAKE_SYSTEM_PROCESSOR)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
     SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
   ENDIF()
-ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64)$")
+ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64|loongarch64)$")
   MESSAGE(WARNING
     "Target processor architecture \"${CPUINFO_TARGET_PROCESSOR}\" is not supported in cpuinfo. "
     "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
@@ -170,6 +170,20 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
     IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
       LIST(APPEND CPUINFO_SRCS
         src/arm/android/properties.c)
+    ENDIF()
+  ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(loongarch64)$")
+    LIST(APPEND CPUINFO_SRCS
+      src/loongarch/uarch.c
+      src/loongarch/cache.c)
+    IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+      LIST(APPEND CPUINFO_SRCS
+        src/loongarch/linux/init.c
+        src/loongarch/linux/cpuinfo.c
+        src/loongarch/linux/clusters.c
+        src/loongarch/linux/chipset.c
+        src/loongarch/linux/cpucfg.c
+        src/loongarch/linux/hwcap.c
+        src/loongarch/linux/loongarch64-isa.c)
     ENDIF()
   ENDIF()
 
