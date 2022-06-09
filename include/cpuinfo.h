@@ -30,6 +30,10 @@
 	#define CPUINFO_ARCH_ARM64 1
 #endif
 
+#if defined(__loongarch64)
+	#define CPUINFO_ARCH_LOONGARCH64 1
+#endif
+
 #if defined(__PPC64__) || defined(__powerpc64__) || defined(_ARCH_PPC64)
 	#define CPUINFO_ARCH_PPC64 1
 #endif
@@ -62,6 +66,10 @@
 
 #ifndef CPUINFO_ARCH_ARM64
 	#define CPUINFO_ARCH_ARM64 0
+#endif
+
+#ifndef CPUINFO_ARCH_LOONGARCH64
+	#define CPUINFO_ARCH_LOONGARCH64 0
 #endif
 
 #ifndef CPUINFO_ARCH_PPC64
@@ -255,6 +263,10 @@ enum cpuinfo_vendor {
 	 * Sold its ARM designs in 1997. The last processor design was released in 1997.
 	 */
 	cpuinfo_vendor_dec       = 57,
+	/**
+	 * Loongson. Vendor of LOONGARCH processor microarchitecture.
+	 */
+	cpuinfo_vendor_loongson = 58,
 };
 
 /**
@@ -519,6 +531,9 @@ enum cpuinfo_uarch {
 
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
+
+	/** Loongson LA4 64 (Loongarch3 series processors). */
+	cpuinfo_uarch_LA464 = 0x00D00100,
 };
 
 struct cpuinfo_processor {
@@ -550,6 +565,10 @@ struct cpuinfo_processor {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	/** APIC ID (unique x86-specific ID of the logical processor) */
 	uint32_t apic_id;
+#endif
+#if CPUINFO_ARCH_LOONGARCH64
+	/** CPUCFG ID (unique loongarch-specific ID of the logical processor) */
+	uint32_t cpucfg_id;
 #endif
 	struct {
 		/** Level 1 instruction cache */
@@ -586,6 +605,9 @@ struct cpuinfo_core {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) for this core */
 	uint32_t midr;
+#elif CPUINFO_ARCH_LOONGARCH64
+	/** Value of CPUCFG for this core */
+	uint32_t cpucfg;
 #endif
 	/** Clock rate (non-Turbo) of the core, in Hz */
 	uint64_t frequency;
@@ -614,6 +636,9 @@ struct cpuinfo_cluster {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) of the cores in the cluster */
 	uint32_t midr;
+#elif CPUINFO_ARCH_LOONGARCH64
+	/** Value of CPUCFG for this cores in the cluster */
+	uint32_t cpucfg;
 #endif
 	/** Clock rate (non-Turbo) of the cores in the cluster, in Hz */
 	uint64_t frequency;
@@ -647,6 +672,9 @@ struct cpuinfo_uarch_info {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) for the microarchitecture */
 	uint32_t midr;
+#elif CPUINFO_ARCH_LOONGARCH64
+	/** Value of CPUCFG for the microarchitecture */
+	uint32_t cpucfg;
 #endif
 	/** Number of logical processors with the microarchitecture */
 	uint32_t processor_count;
@@ -1810,6 +1838,132 @@ static inline bool cpuinfo_has_arm_bf16(void) {
 static inline bool cpuinfo_has_arm_svebf16(void) {
 	#if CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.svebf16;
+	#else
+		return false;
+	#endif
+}
+
+#if CPUINFO_ARCH_LOONGARCH64
+	/* This structure is not a part of stable API. Use cpuinfo_has_loongarch_* functions instead. */
+	struct cpuinfo_loongarch_isa {
+		bool cpucfg;
+		bool lam;
+		bool ual;
+		bool fpu;
+		bool lsx;
+		bool lasx;
+
+		bool crc32;
+		bool complex;
+		bool crypto;
+		bool lvz;
+		bool lbt_x86;
+		bool lbt_arm;
+		bool lbt_mips;
+	};
+
+	extern struct cpuinfo_loongarch_isa cpuinfo_isa;
+#endif
+
+static inline bool cpuinfo_has_loongarch_cpucfg(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.cpucfg;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lam(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.lam;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_ual(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.ual;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_fpu(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+			return cpuinfo_isa.fpu;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lsx(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+			return cpuinfo_isa.lsx;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lasx(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+			return cpuinfo_isa.lasx;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_crc32(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.crc32;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_complex(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.complex;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_crypto(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.crypto;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lvz(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.lvz;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lbt_x86(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.lbt_x86;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lbt_arm(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.lbt_arm;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lbt_mips(void) {
+	#if CPUINFO_ARCH_LOONGARCH64
+		return cpuinfo_isa.lbt_mips;
 	#else
 		return false;
 	#endif
