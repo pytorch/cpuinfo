@@ -264,6 +264,8 @@ ENDIF()
 TARGET_LINK_LIBRARIES(cpuinfo PRIVATE clog)
 TARGET_LINK_LIBRARIES(cpuinfo_internals PRIVATE clog)
 
+ADD_LIBRARY(${PROJECT_NAME}::cpuinfo ALIAS cpuinfo)
+
 # support find_package(cpuinfo CONFIG)
 INCLUDE(CMakePackageConfigHelpers)
 GET_FILENAME_COMPONENT(CONFIG_FILE_PATH ${CMAKE_CURRENT_BINARY_DIR}/cpuinfo-config.cmake ABSOLUTE)
