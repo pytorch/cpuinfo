@@ -65,7 +65,7 @@ IF(NOT CMAKE_SYSTEM_PROCESSOR)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
     SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
   ENDIF()
-ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64)$")
+ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64|ARM64)$")
   MESSAGE(WARNING
     "Target processor architecture \"${CPUINFO_TARGET_PROCESSOR}\" is not supported in cpuinfo. "
     "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
@@ -171,6 +171,9 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       LIST(APPEND CPUINFO_SRCS
         src/arm/android/properties.c)
     ENDIF()
+  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CPUINFO_TARGET_PROCESSOR STREQUAL "ARM64")
+    LIST(APPEND CPUINFO_SRCS src/arm/windows/init-by-logical-sys-info.c)
+    LIST(APPEND CPUINFO_SRCS src/arm/windows/init.c)
   ENDIF()
 
   IF(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")

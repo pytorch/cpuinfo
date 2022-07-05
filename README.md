@@ -256,6 +256,7 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
 - [x] Windows
   - [x] x86
   - [x] x86-64
+  - [x] arm64
 
 ## Methods
 
@@ -264,6 +265,7 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
   - [x] Using `/proc/cpuinfo` on ARM
   - [x] Using `ro.chipname`, `ro.board.platform`, `ro.product.board`, `ro.mediatek.platform`, `ro.arch` properties (Android)
   - [ ] Using kernel log (`dmesg`) on ARM Linux
+  - [x] Using Windows registry on ARM64 Windows
 - Vendor and microarchitecture detection
   - [x] Intel-designed x86/x86-64 cores (up to Sunny Cove, Goldmont Plus, and Knights Mill)
   - [x] AMD-designed x86/x86-64 cores (up to Puma/Jaguar and Zen 2)
@@ -286,6 +288,7 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
   - [x] Using `/proc/self/auxv` (Android/ARM)
   - [ ] Using instruction probing on ARM (Linux)
   - [ ] Using CPUID registers on ARM64 (Linux)
+  - [x] Using IsProcessorFeaturePresent on ARM64 Windows
 - Cache detection
   - [x] Using CPUID leaf 0x00000002 (x86/x86-64)
   - [x] Using CPUID leaf 0x00000004 (non-AMD x86/x86-64)
@@ -297,6 +300,7 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
   - [x] Using `sysctlbyname` (Mach)
   - [x] Using sysfs `typology` directories (ARM/Linux)
   - [ ] Using sysfs `cache` directories (Linux)
+  - [x] Using `GetLogicalProcessorInformationEx` on ARM64 Windows
 - TLB detection
   - [x] Using CPUID leaf 0x00000002 (x86/x86-64)
   - [ ] Using CPUID leaves 0x80000005-0x80000006 and 0x80000019 (AMD x86/x86-64)
