@@ -33,6 +33,9 @@ uint32_t cpuinfo_max_cache_size = 0;
 #if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	struct cpuinfo_uarch_info* cpuinfo_uarchs = NULL;
 	uint32_t cpuinfo_uarchs_count = 0;
+#elif CPUINFO_ARCH_LOONGARCH64
+	struct cpuinfo_uarch_info* cpuinfo_uarchs = NULL;
+	uint32_t cpuinfo_uarchs_count = 0;
 #else
 	struct cpuinfo_uarch_info cpuinfo_global_uarch = { cpuinfo_uarch_unknown };
 #endif
@@ -42,6 +45,8 @@ uint32_t cpuinfo_max_cache_size = 0;
 	const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map = NULL;
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map = NULL;
+	#elif CPUINFO_ARCH_LOONGARCH64
 		const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map = NULL;
 	#endif
 #endif
@@ -80,6 +85,8 @@ const struct cpuinfo_uarch_info* cpuinfo_get_uarchs() {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "uarchs");
 	}
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_uarchs;
+	#elif CPUINFO_ARCH_LOONGARCH64
 		return cpuinfo_uarchs;
 	#else
 		return &cpuinfo_global_uarch;
@@ -135,6 +142,11 @@ const struct cpuinfo_uarch_info* cpuinfo_get_uarch(uint32_t index) {
 			return NULL;
 		}
 		return &cpuinfo_uarchs[index];
+	#elif CPUINFO_ARCH_LOONGARCH64
+		if CPUINFO_UNLIKELY(index >= cpuinfo_uarchs_count) {
+			return NULL;
+		}
+		return &cpuinfo_uarchs[index];
 	#else
 		if CPUINFO_UNLIKELY(index != 0) {
 			return NULL;
@@ -176,6 +188,8 @@ uint32_t cpuinfo_get_uarchs_count(void) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "uarchs_count");
 	}
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_uarchs_count;
+	#elif CPUINFO_ARCH_LOONGARCH64
 		return cpuinfo_uarchs_count;
 	#else
 		return 1;
