@@ -68,7 +68,7 @@ struct cache_array {
 /*
  * iOS 15 and macOS Monterey 12 added sysctls to describe configuration information
  * where not all cores are the same (number of cores, cache sizes).
- * 
+ *
  * Each perflevel sysctl has a prefix of `hw.perflevel??.` where ?? is the
  * perflevel index, starting at zero.  The total number of perflevels are
  * exposed via the `hw.nperflevels` sysctl.  Higher performance perflevels
@@ -76,7 +76,7 @@ struct cache_array {
  *
  * sysctls:
  * - hw.nperflevels     - number of different types of cores / cache configs (perflevels)
- * - hw.perflevel?? 
+ * - hw.perflevel??
  *   - .physicalcpu     - number of enabled physical cores for perflevel ??
  *   - .physicalcpu_max - number of physical cores for perflevel ??
  *   - .logicalcpu      - number of enabled logical cores for perflevel ??
@@ -920,7 +920,7 @@ void cpuinfo_arm_mach_init(void) {
 
 	struct cpuinfo_mach_topology mach_topology = cpuinfo_mach_detect_topology();
 
-	/* 
+	/*
 	 * iOS 15 and macOS Monterey 12 added sysctls for specifying different performance
 	 * levels.  Probe `hw.nperflevels` to see if they're present.  If so,
 	 * read and validate them.
