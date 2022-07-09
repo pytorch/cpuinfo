@@ -1466,7 +1466,6 @@ static inline bool cpuinfo_has_x86_sha(void) {
 			bool atomics;
 			bool bf16;
 			bool sve;
-			bool svebf16;
 			bool sve2;
 		#endif
 		bool rdm;
@@ -1629,6 +1628,22 @@ static inline bool cpuinfo_has_arm_vfpv4_d32(void) {
 	#endif
 }
 
+static inline bool cpuinfo_has_arm_fp16_arith(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.fp16arith;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_bf16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.bf16;
+	#else
+		return false;
+	#endif
+}
+
 static inline bool cpuinfo_has_arm_wmmx(void) {
 	#if CPUINFO_ARCH_ARM
 		return cpuinfo_isa.wmmx;
@@ -1711,17 +1726,17 @@ static inline bool cpuinfo_has_arm_neon_fp16_arith(void) {
 	#endif
 }
 
-static inline bool cpuinfo_has_arm_fp16_arith(void) {
+static inline bool cpuinfo_has_arm_neon_dot(void) {
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
-		return cpuinfo_isa.fp16arith;
+		return cpuinfo_isa.dot;
 	#else
 		return false;
 	#endif
 }
 
-static inline bool cpuinfo_has_arm_neon_dot(void) {
-	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
-		return cpuinfo_isa.dot;
+static inline bool cpuinfo_has_arm_neon_bf16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.bf16;
 	#else
 		return false;
 	#endif
@@ -1791,25 +1806,17 @@ static inline bool cpuinfo_has_arm_sve(void) {
 	#endif
 }
 
+static inline bool cpuinfo_has_arm_sve_bf16(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.sve && cpuinfo_isa.bf16;
+	#else
+		return false;
+	#endif
+}
+
 static inline bool cpuinfo_has_arm_sve2(void) {
 	#if CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.sve2;
-	#else
-		return false;
-	#endif
-}
-
-static inline bool cpuinfo_has_arm_bf16(void) {
-	#if CPUINFO_ARCH_ARM64
-		return cpuinfo_isa.bf16;
-	#else
-		return false;
-	#endif
-}
-
-static inline bool cpuinfo_has_arm_svebf16(void) {
-	#if CPUINFO_ARCH_ARM64
-		return cpuinfo_isa.svebf16;
 	#else
 		return false;
 	#endif

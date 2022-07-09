@@ -164,7 +164,6 @@ int main(int argc, char** argv) {
 
 	printf("SIMD extensions:\n");
 		printf("\tARM SVE: %s\n", cpuinfo_has_arm_sve() ? "yes" : "no");
-		printf("\tARM SVE BF16: %s\n", cpuinfo_has_arm_svebf16() ? "yes" : "no");
 		printf("\tARM SVE 2: %s\n", cpuinfo_has_arm_sve2() ? "yes" : "no");
 
 	printf("Cryptography extensions:\n");
