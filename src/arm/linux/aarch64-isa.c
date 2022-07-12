@@ -82,6 +82,9 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 				break;
 		}
 	}
+	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_I8MM) {
+		isa->i8mm = true;
+	}
 
 	/*
 	 * Many phones ship with an old kernel configuration that doesn't report UDOT/SDOT instructions.
