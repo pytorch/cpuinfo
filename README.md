@@ -250,9 +250,10 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
   - [x] x86-64 (iPhone simulator)
   - [x] ARMv7
   - [x] ARM64
-- [x] OS X
+- [x] macOS
   - [x] x86
   - [x] x86-64
+  - [x] ARM64 (Apple silicon)
 - [x] Windows
   - [x] x86
   - [x] x86-64
