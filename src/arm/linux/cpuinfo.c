@@ -177,6 +177,10 @@ static void parse_features(
 					#if CPUINFO_ARCH_ARM64
 						processor->features |= CPUINFO_ARM_LINUX_FEATURE_FCMA;
 					#endif
+				} else if (memcmp(feature_start, "i8mm", feature_length) == 0) {
+					#if CPUINFO_ARCH_ARM64
+						processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_I8MM;
+					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "half", feature_length) == 0) {
 					processor->features |= CPUINFO_ARM_LINUX_FEATURE_HALF;

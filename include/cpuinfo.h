@@ -1467,6 +1467,7 @@ static inline bool cpuinfo_has_x86_sha(void) {
 			bool bf16;
 			bool sve;
 			bool sve2;
+			bool i8mm;
 		#endif
 		bool rdm;
 		bool fp16arith;
@@ -1753,6 +1754,14 @@ static inline bool cpuinfo_has_arm_jscvt(void) {
 static inline bool cpuinfo_has_arm_fcma(void) {
 	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.fcma;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_i8mm(void) {
+	#if CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.i8mm;
 	#else
 		return false;
 	#endif
