@@ -408,13 +408,13 @@ void cpuinfo_arm_mach_init(void) {
 		cpuinfo_isa.i8mm = true;
 	}
 
-	const uint32_t has_FEAT_FHM = get_sys_info_by_name("hw.optional.arm.FEAT_FHM");
-	if (has_FEAT_FHM != 0) {
+	const uint32_t has_feat_fhm = get_sys_info_by_name("hw.optional.arm.FEAT_FHM");
+	if (has_feat_fhm != 0) {
 		cpuinfo_isa.fhm = true;
 	} else {
 		// Prior to iOS 15, use 'hw.optional.armv8_2_fhm'
-		const uint32_t has_FEAT_FHM_legacy = get_sys_info_by_name("hw.optional.armv8_2_fhm");
-		if (has_FEAT_FHM_legacy != 0) {
+		const uint32_t has_feat_fhm_legacy = get_sys_info_by_name("hw.optional.armv8_2_fhm");
+		if (has_feat_fhm_legacy != 0) {
 			cpuinfo_isa.fhm = true;
 		}
 	}

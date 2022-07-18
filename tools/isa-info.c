@@ -133,7 +133,6 @@ int main(int argc, char** argv) {
 		printf("\tVFPv4: %s\n", cpuinfo_has_arm_vfpv4() ? "yes" : "no");
 		printf("\tVFPv4+D32: %s\n", cpuinfo_has_arm_vfpv4_d32() ? "yes" : "no");
 		printf("\tVJCVT: %s\n", cpuinfo_has_arm_jscvt() ? "yes" : "no");
-		printf("\tFMLAL/FMLSL: %s\n", cpuinfo_has_arm_fhm() ? "yes" : "no");
 
 	printf("SIMD extensions:\n");
 		printf("\tWMMX: %s\n", cpuinfo_has_arm_wmmx() ? "yes" : "no");
@@ -146,6 +145,7 @@ int main(int argc, char** argv) {
 		printf("\tNEON complex: %s\n", cpuinfo_has_arm_fcma() ? "yes" : "no");
 		printf("\tNEON dot product: %s\n", cpuinfo_has_arm_neon_dot() ? "yes" : "no");
 		printf("\tNEON VFMLAL/VFMLSL: %s\n", cpuinfo_has_arm_fhm() ? "yes" : "no");
+		printf("\tFMLAL/FMLSL: %s\n", cpuinfo_has_arm_fhm() ? "yes" : "no");
 
 	printf("Cryptography extensions:\n");
 		printf("\tAES: %s\n", cpuinfo_has_arm_aes() ? "yes" : "no");
@@ -159,8 +159,8 @@ int main(int argc, char** argv) {
 		printf("\tARM v8.1 atomics: %s\n", cpuinfo_has_arm_atomics() ? "yes" : "no");
 		printf("\tARM v8.1 SQRDMLxH: %s\n", cpuinfo_has_arm_neon_rdm() ? "yes" : "no");
 		printf("\tARM v8.2 FP16 arithmetics: %s\n", cpuinfo_has_arm_fp16_arith() ? "yes" : "no");
-		printf("\tARM v8.2 BF16: %s\n", cpuinfo_has_arm_bf16() ? "yes" : "no");
 		printf("\tARM v8.2 FHM: %s\n", cpuinfo_has_arm_fhm() ? "yes" : "no");
+		printf("\tARM v8.2 BF16: %s\n", cpuinfo_has_arm_bf16() ? "yes" : "no");
 		printf("\tARM v8.3 dot product: %s\n", cpuinfo_has_arm_neon_dot() ? "yes" : "no");
 		printf("\tARM v8.3 JS conversion: %s\n", cpuinfo_has_arm_jscvt() ? "yes" : "no");
 		printf("\tARM v8.3 complex: %s\n", cpuinfo_has_arm_fcma() ? "yes" : "no");
