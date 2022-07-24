@@ -75,11 +75,11 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D050): /* Cortex-A55 */
 				case UINT32_C(0x4100D060): /* Cortex-A65 */
 				case UINT32_C(0x4100D0B0): /* Cortex-A76 */
-				case UINT32_C(0x4100D0C0): /* Neoverse N1 */
 				case UINT32_C(0x4100D0D0): /* Cortex-A77 */
 				case UINT32_C(0x4100D0E0): /* Cortex-A76AE */
-				case UINT32_C(0x4100D400): /* Neoverse V1 */
-				case UINT32_C(0x4100D490): /* Neoverse N2 */
+				case UINT32_C(0x4100D460): /* Cortex-A510 */
+				case UINT32_C(0x4100D470): /* Cortex-A710 */
+				case UINT32_C(0x4100D480): /* Cortex-X2 */
 				case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
 				case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
 				case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
@@ -102,6 +102,9 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 			case UINT32_C(0x4100D0D0): /* Cortex-A77 */
 			case UINT32_C(0x4100D0E0): /* Cortex-A76AE */
 			case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
+			case UINT32_C(0x4100D460): /* Cortex-A510 */
+			case UINT32_C(0x4100D470): /* Cortex-A710 */
+			case UINT32_C(0x4100D480): /* Cortex-X2 */
 			case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
 			case UINT32_C(0x51008050): /* Kryo 485 Silver (Cortex-A55) */
 			case UINT32_C(0x53000030): /* Exynos-M4 */

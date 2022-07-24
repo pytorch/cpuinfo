@@ -432,7 +432,14 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_neoverse_n2  = 0x00300403,
 
 	/** ARM Cortex-X1. */
-	cpuinfo_uarch_cortex_x1    = 0x00300500,
+	cpuinfo_uarch_cortex_x1    = 0x00300501,
+	/** ARM Cortex-X2. */
+	cpuinfo_uarch_cortex_x2    = 0x00300502,
+
+	/** ARM Cortex-A510. */
+	cpuinfo_uarch_cortex_a510  = 0x00300551,
+	/** ARM Cortex-A710. */
+	cpuinfo_uarch_cortex_a710  = 0x00300571,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
