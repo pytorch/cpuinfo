@@ -338,7 +338,7 @@ void cpuinfo_arm_mach_init(void) {
 	}
 
 	/*
-	 * iOS 15 and macOS 12 added sysctls for Arm features.  Use them where
+	 * iOS 15 and macOS 12 added sysctls for ARM features.  Use them where
 	 * possible.  Otherwise, fallback to hardcoded set of CPUs with known
 	 * support.
 	 */
