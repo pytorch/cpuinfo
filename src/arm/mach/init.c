@@ -343,8 +343,8 @@ void cpuinfo_arm_mach_init(void) {
 	 * support.
 	 */
 
-	const uint32_t has_FEAT_LSE = get_sys_info_by_name("hw.optional.arm.FEAT_LSE");
-	if (has_FEAT_LSE != 0) {
+	const uint32_t has_feat_lse = get_sys_info_by_name("hw.optional.arm.FEAT_LSE");
+	if (has_feat_lse != 0) {
 		cpuinfo_isa.atomics = true;
 	}
 	#if CPUINFO_ARCH_ARM64
@@ -359,13 +359,13 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	#endif
 
-	const uint32_t has_FEAT_RDM = get_sys_info_by_name("hw.optional.arm.FEAT_RDM");
-	if (has_FEAT_RDM != 0) {
+	const uint32_t has_feat_rdm = get_sys_info_by_name("hw.optional.arm.FEAT_RDM");
+	if (has_feat_rdm != 0) {
 		cpuinfo_isa.rdm = true;
 	}
 
-	const uint32_t has_FEAT_FP16 = get_sys_info_by_name("hw.optional.arm.FEAT_FP16");
-	if (has_FEAT_FP16 != 0) {
+	const uint32_t has_feat_fp16 = get_sys_info_by_name("hw.optional.arm.FEAT_FP16");
+	if (has_feat_fp16 != 0) {
 		cpuinfo_isa.fp16arith = true;
 	} else {
 		switch (cpu_family) {
@@ -377,8 +377,8 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_FEAT_DotProd = get_sys_info_by_name("hw.optional.arm.FEAT_DotProd");
-	if (has_FEAT_DotProd != 0) {
+	const uint32_t has_feat_dotprod = get_sys_info_by_name("hw.optional.arm.FEAT_DotProd");
+	if (has_feat_dotprod != 0) {
 		cpuinfo_isa.dot = true;
 	} else {
 		switch (cpu_family) {
@@ -388,13 +388,13 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_FEAT_JSCVT = get_sys_info_by_name("hw.optional.arm.FEAT_JSCVT");
-	if (has_FEAT_JSCVT != 0) {
+	const uint32_t has_feat_jscvt = get_sys_info_by_name("hw.optional.arm.FEAT_JSCVT");
+	if (has_feat_jscvt != 0) {
 		cpuinfo_isa.jscvt = true;
 	}
 
-	const uint32_t has_FEAT_FCMA = get_sys_info_by_name("hw.optional.arm.FEAT_FCMA");
-	if (has_FEAT_FCMA != 0) {
+	const uint32_t has_feat_fcma = get_sys_info_by_name("hw.optional.arm.FEAT_FCMA");
+	if (has_feat_fcma != 0) {
 		cpuinfo_isa.fcma = true;
 	}
 
