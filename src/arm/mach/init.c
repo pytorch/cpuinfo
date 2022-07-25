@@ -336,34 +336,66 @@ void cpuinfo_arm_mach_init(void) {
 			break;
 #endif
 	}
-	/*
-	 * Support for ARMv8.1 Atomics & FP16 arithmetic instructions is supposed to be detected via
-	 * sysctlbyname calls with "hw.optional.armv8_1_atomics" and "hw.optional.neon_fp16" arguments
-	 * (see https://devstreaming-cdn.apple.com/videos/wwdc/2018/409t8zw7rumablsh/409/409_whats_new_in_llvm.pdf),
-	 * but on new iOS versions these calls just fail with EPERM.
-	 *
-	 * Thus, we whitelist CPUs known to support these instructions.
-	 */
-	switch (cpu_family) {
-		case CPUFAMILY_ARM_MONSOON_MISTRAL:
-		case CPUFAMILY_ARM_VORTEX_TEMPEST:
-		case CPUFAMILY_ARM_LIGHTNING_THUNDER:
-		case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
-			#if CPUINFO_ARCH_ARM64
-				cpuinfo_isa.atomics = true;
-			#endif
-			cpuinfo_isa.fp16arith = true;
-	}
 
 	/*
-	 * There does not yet seem to exist an OS mechanism to detect support for
-	 * ARMv8.2 optional dot-product instructions, so we currently whitelist CPUs
-	 * known to support these instruction.
+	 * iOS 15 and macOS 12 added sysctls for ARM features.  Use them where
+	 * possible.  Otherwise, fallback to hardcoded set of CPUs with known
+	 * support.
 	 */
-	switch (cpu_family) {
-		case CPUFAMILY_ARM_LIGHTNING_THUNDER:
-		case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
-			cpuinfo_isa.dot = true;
+
+	const uint32_t has_feat_lse = get_sys_info_by_name("hw.optional.arm.FEAT_LSE");
+	if (has_feat_lse != 0) {
+		cpuinfo_isa.atomics = true;
+	}
+	#if CPUINFO_ARCH_ARM64
+		else {
+			switch (cpu_family) {
+				case CPUFAMILY_ARM_MONSOON_MISTRAL:
+				case CPUFAMILY_ARM_VORTEX_TEMPEST:
+				case CPUFAMILY_ARM_LIGHTNING_THUNDER:
+				case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
+					cpuinfo_isa.atomics = true;
+			}
+		}
+	#endif
+
+	const uint32_t has_feat_rdm = get_sys_info_by_name("hw.optional.arm.FEAT_RDM");
+	if (has_feat_rdm != 0) {
+		cpuinfo_isa.rdm = true;
+	}
+
+	const uint32_t has_feat_fp16 = get_sys_info_by_name("hw.optional.arm.FEAT_FP16");
+	if (has_feat_fp16 != 0) {
+		cpuinfo_isa.fp16arith = true;
+	} else {
+		switch (cpu_family) {
+			case CPUFAMILY_ARM_MONSOON_MISTRAL:
+			case CPUFAMILY_ARM_VORTEX_TEMPEST:
+			case CPUFAMILY_ARM_LIGHTNING_THUNDER:
+			case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
+				cpuinfo_isa.fp16arith = true;
+		}
+	}
+
+	const uint32_t has_feat_dotprod = get_sys_info_by_name("hw.optional.arm.FEAT_DotProd");
+	if (has_feat_dotprod != 0) {
+		cpuinfo_isa.dot = true;
+	} else {
+		switch (cpu_family) {
+			case CPUFAMILY_ARM_LIGHTNING_THUNDER:
+			case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
+				cpuinfo_isa.dot = true;
+		}
+	}
+
+	const uint32_t has_feat_jscvt = get_sys_info_by_name("hw.optional.arm.FEAT_JSCVT");
+	if (has_feat_jscvt != 0) {
+		cpuinfo_isa.jscvt = true;
+	}
+
+	const uint32_t has_feat_fcma = get_sys_info_by_name("hw.optional.arm.FEAT_FCMA");
+	if (has_feat_fcma != 0) {
+		cpuinfo_isa.fcma = true;
 	}
 
 	const uint32_t has_FEAT_BF16 = get_sys_info_by_name("hw.optional.arm.FEAT_BF16");
