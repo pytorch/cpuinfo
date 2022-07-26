@@ -168,14 +168,36 @@ inline static bool midr_is_kryo_gold(uint32_t midr) {
 	return (midr & uarch_mask) == (CPUINFO_ARM_MIDR_KRYO_GOLD & uarch_mask);
 }
 
-inline static uint32_t midr_score_core(uint32_t midr) {
+/* higher => more capable CPU, don't rely on actual values other than relative comparison */
+typedef enum {
+		cpuinfo_arm_cpu_perf_level_max         = 7, /* max */
+
+		cpuinfo_arm_cpu_perf_level_6           = 6, /* bigger than big e.g. prime, gold, Cortex-X, etc. */
+		cpuinfo_arm_cpu_perf_level_5           = 5, /* always in a big role */
+		cpuinfo_arm_cpu_perf_level_4           = 4, /* ~big but can be in a little role */
+
+		cpuinfo_arm_cpu_perf_level_3           = 3, /* assigned only when cpu midr is unknown also future proofing */
+
+		cpuinfo_arm_cpu_perf_level_max_little  = 2, /* no little can be above this */
+		cpuinfo_arm_cpu_perf_level_2           = cpuinfo_arm_cpu_perf_level_max_little, /* some times in a little role */
+		cpuinfo_arm_cpu_perf_level_1           = 1, /* always in a little role */
+
+		cpuinfo_arm_cpu_perf_level_unknown     = 0  /* unknown - for non ARM */
+} cpuinfo_arm_cpu_perf_level;
+
+/*
+ * Return relative performance level for a given CPU midr
+ * This can be used to sort available cores in a system based on their relative capabilities
+ * Do not rely on the actual values for anything other than relative comparison.
+ */
+inline static cpuinfo_arm_cpu_perf_level cpuinfo_arm_cpu_perf_score(uint32_t midr) {
 	const uint32_t core_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
 	switch (midr & core_mask) {
 		case UINT32_C(0x53000030): /* Exynos M4 */
 		case UINT32_C(0x53000040): /* Exynos M5 */
 		case UINT32_C(0x4100D440): /* Cortex-X1 */
 			/* These cores are in big role w.r.t Cortex-A75/-A76/-A77/-A78 */
-			return 6;
+			return cpuinfo_arm_cpu_perf_level_6;
 		case UINT32_C(0x4E000030): /* Denver 2 */
 		case UINT32_C(0x53000010): /* Exynos M1 and Exynos M2 */
 		case UINT32_C(0x53000020): /* Exynos M3 */
@@ -201,17 +223,17 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100C0C0): /* Cortex-A12 */
 #endif /* CPUINFO_ARCH_ARM */
 			/* These cores are always in big role */
-			return 5;
+			return cpuinfo_arm_cpu_perf_level_5;
 		case UINT32_C(0x4100D070): /* Cortex-A57 */
 			/* Cortex-A57 can be in LITTLE role w.r.t. Denver 2, or in big role w.r.t. Cortex-A53 */
-			return 4;
+			return cpuinfo_arm_cpu_perf_level_4;
 #if CPUINFO_ARCH_ARM64
 		case UINT32_C(0x4100D060): /* Cortex-A65 */
 #endif /* CPUINFO_ARCH_ARM64 */
 		case UINT32_C(0x4100D050): /* Cortex-A55 */
 		case UINT32_C(0x4100D030): /* Cortex-A53 */
 			/* Cortex-A53 is usually in LITTLE role, but can be in big role w.r.t. Cortex-A35 */
-			return 2;
+			return cpuinfo_arm_cpu_perf_level_2;
 		case UINT32_C(0x4100D040): /* Cortex-A35 */
 #if CPUINFO_ARCH_ARM
 		case UINT32_C(0x4100C070): /* Cortex-A7 */
@@ -222,7 +244,7 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x51002110): /* Kryo Silver (Snapdragon 820) */
 		case UINT32_C(0x51002010): /* Kryo Silver (Snapdragon 821) */
 			/* These cores are always in LITTLE core */
-			return 1;
+			return cpuinfo_arm_cpu_perf_level_1;
 		default:
 			/*
 			 * Unknown cores, or cores which do not have big/LITTLE roles.
@@ -230,8 +252,14 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 			 * Cortex-A57/A72/A73/A75 and Cortex-A53/A55. Then at least future cores paired with
 			 * one of these known cores will be properly scored.
 			 */
-			return 3;
+			return cpuinfo_arm_cpu_perf_level_3;
 	}
+}
+
+inline static bool cpuinfo_arm_cpu_is_little(uint32_t midr) {
+		cpuinfo_arm_cpu_perf_level l = cpuinfo_arm_cpu_perf_score(midr);
+		return l != cpuinfo_arm_cpu_perf_level_unknown
+			&& l <= cpuinfo_arm_cpu_perf_level_max_little;
 }
 
 inline static uint32_t midr_little_core_for_big(uint32_t midr) {

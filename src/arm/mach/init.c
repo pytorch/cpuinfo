@@ -128,6 +128,13 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 	#endif
 }
 
+static bool is_cpu_power_efficient(enum cpuinfo_uarch u) {
+	return u == cpuinfo_uarch_mistral
+		|| u == cpuinfo_uarch_tempest
+		|| u == cpuinfo_uarch_icestorm
+		|| u == cpuinfo_uarch_thunder;
+}
+
 static void decode_package_name(char* package_name) {
 	size_t size;
 	if (sysctlbyname("hw.machine", NULL, &size, NULL, 0) != 0) {
@@ -464,6 +471,7 @@ void cpuinfo_arm_mach_init(void) {
 				.package = cores[i].package,
 				.vendor = cores[i].vendor,
 				.uarch = cores[i].uarch,
+				.is_power_efficient = is_cpu_power_efficient(cores[i].uarch),
 			};
 		} else {
 			uarchs[cluster_idx].processor_count++;

@@ -617,6 +617,12 @@ struct cpuinfo_cluster {
 #endif
 	/** Clock rate (non-Turbo) of the cores in the cluster, in Hz */
 	uint64_t frequency;
+	/** Is this a cluster of power_efficient/little cores?
+	 * For ARM/ARM64, with Linux or Mach: set to true if the first core in the
+	 *     least capable cluster is a little core
+	 * For others: set to false for now
+	 */
+	bool is_power_efficient;
 };
 
 #define CPUINFO_PACKAGE_NAME_MAX 48

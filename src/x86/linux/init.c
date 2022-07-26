@@ -417,6 +417,7 @@ void cpuinfo_x86_linux_init(void) {
 				clusters[cluster_index].vendor = x86_processor.vendor;
 				clusters[cluster_index].uarch = x86_processor.uarch;
 				clusters[cluster_index].cpuid = x86_processor.cpuid;
+				clusters[cluster_index].is_power_efficient = false;
 				packages[package_index].cluster_count += 1;
 				last_apic_cluster_id = apic_cluster_id;
 			} else {

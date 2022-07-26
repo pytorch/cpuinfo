@@ -176,6 +176,7 @@ void cpuinfo_emscripten_init(void) {
 			.vendor = cpuinfo_vendor_unknown,
 			.uarch = cpuinfo_uarch_unknown,
 			.frequency = 0,
+			.is_power_efficient = false,
 		};
 
 		static_x86_l3.processor_count = processor_count;
