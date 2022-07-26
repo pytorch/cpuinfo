@@ -145,7 +145,6 @@ int main(int argc, char** argv) {
 		printf("\tNEON complex: %s\n", cpuinfo_has_arm_fcma() ? "yes" : "no");
 		printf("\tNEON dot product: %s\n", cpuinfo_has_arm_neon_dot() ? "yes" : "no");
 		printf("\tNEON VFMLAL/VFMLSL: %s\n", cpuinfo_has_arm_fhm() ? "yes" : "no");
-		printf("\tFMLAL/FMLSL: %s\n", cpuinfo_has_arm_fhm() ? "yes" : "no");
 
 	printf("Cryptography extensions:\n");
 		printf("\tAES: %s\n", cpuinfo_has_arm_aes() ? "yes" : "no");
