@@ -289,7 +289,7 @@ static void parse_features(
 					#endif
 				} else if (memcmp(feature_start, "asimdfhm", feature_length) == 0) {
 					#if CPUINFO_ARCH_ARM64
-					processor->features |= CPUINFO_ARM_LINUX_FEATURE_ASIMDFHM;
+					  processor->features |= CPUINFO_ARM_LINUX_FEATURE_ASIMDFHM;
 					#endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "fastmult", feature_length) == 0) {
