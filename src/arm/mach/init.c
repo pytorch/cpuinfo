@@ -398,13 +398,13 @@ void cpuinfo_arm_mach_init(void) {
 		cpuinfo_isa.fcma = true;
 	}
 
-	const uint32_t has_FEAT_BF16 = get_sys_info_by_name("hw.optional.arm.FEAT_BF16");
-	if (has_FEAT_BF16 != 0) {
+	const uint32_t has_feat_bf16 = get_sys_info_by_name("hw.optional.arm.FEAT_BF16");
+	if (has_feat_bf16 != 0) {
 		cpuinfo_isa.bf16 = true;
 	}
 
-	const uint32_t has_FEAT_I8MM = get_sys_info_by_name("hw.optional.arm.FEAT_I8MM");
-	if (has_FEAT_I8MM != 0) {
+	const uint32_t has_feat_i8mm = get_sys_info_by_name("hw.optional.arm.FEAT_I8MM");
+	if (has_feat_i8mm != 0) {
 		cpuinfo_isa.i8mm = true;
 	}
 
