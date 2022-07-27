@@ -1474,6 +1474,7 @@ static inline bool cpuinfo_has_x86_sha(void) {
 		bool dot;
 		bool jscvt;
 		bool fcma;
+		bool fhm;
 
 		bool aes;
 		bool sha1;
@@ -1722,6 +1723,14 @@ static inline bool cpuinfo_has_arm_neon_fp16_arith(void) {
 		return cpuinfo_isa.neon && cpuinfo_isa.fp16arith;
 	#elif CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.fp16arith;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_arm_fhm(void) {
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		return cpuinfo_isa.fhm;
 	#else
 		return false;
 	#endif

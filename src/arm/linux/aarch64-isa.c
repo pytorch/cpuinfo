@@ -138,5 +138,8 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	if (features2 & (CPUINFO_ARM_LINUX_FEATURE2_BF16 | CPUINFO_ARM_LINUX_FEATURE2_SVEBF16)) {
 		isa->bf16 = true;
 	}
+	if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDFHM) {
+		isa->fhm = true;
+	}
 }
 
