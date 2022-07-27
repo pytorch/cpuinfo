@@ -102,6 +102,15 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD44: /* Cortex-X1 */
 					*uarch = cpuinfo_uarch_cortex_x1;
 					break;
+				case 0xD46: /* Cortex-A510 */
+					*uarch = cpuinfo_uarch_cortex_a510;
+					break;
+				case 0xD47: /* Cortex-A710 */
+					*uarch = cpuinfo_uarch_cortex_a710;
+					break;
+				case 0xD48: /* Cortex-X2 */
+					*uarch = cpuinfo_uarch_cortex_x2;
+					break;
 #if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 				case 0xD49:
 					*uarch = cpuinfo_uarch_neoverse_n2;
