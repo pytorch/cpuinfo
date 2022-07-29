@@ -14,12 +14,6 @@
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 
-#define SAFE_FREE_NULL(x) 	\
-	do { 					\
-		if((x)) free((x));	\
-		(x) = NULL;			\
-	} while(0);
-
 /* Polyfill recent CPUFAMILY_ARM_* values for older SDKs */
 #ifndef CPUFAMILY_ARM_MONSOON_MISTRAL
 	#define CPUFAMILY_ARM_MONSOON_MISTRAL   0xE81E7EF6
@@ -467,63 +461,71 @@ static struct mach_perflevel * read_perflevels(const uint32_t nperflevels) {
 	uint32_t core_index = 0;
 	uint32_t processor_index = 0;
 
-	bool success = true;
 	uint32_t i = 0;
 	for (; i<nperflevels; ++i) {
 		sysctl_physicalcpu = alloc_sysctl_perflevel_string(i, "physicalcpu");
 		if (!sysctl_physicalcpu) {
-			success = false;
-			break;
+			goto failure;
 		}
 		perflevels[i].physicalcpu = get_sys_info_by_name(sysctl_physicalcpu);
+		free(sysctl_physicalcpu);
+		sysctl_physicalcpu = NULL;
 
 		sysctl_physicalcpu_max = alloc_sysctl_perflevel_string(i, "physicalcpu_max");
 		if (!sysctl_physicalcpu_max) {
-			success = false;
-			break;
+			goto failure;
 		}
 		perflevels[i].physicalcpu_max = get_sys_info_by_name(sysctl_physicalcpu_max);
+		free(sysctl_physicalcpu_max);
+		sysctl_physicalcpu_max = NULL;
 
 		sysctl_logicalcpu_max = alloc_sysctl_perflevel_string(i, "logicalcpu_max");
 		if (!sysctl_logicalcpu_max) {
-			success = false;
-			break;
+			goto failure;
 		}
 		perflevels[i].logicalcpu_max = get_sys_info_by_name(sysctl_logicalcpu_max);
+		free(sysctl_logicalcpu_max);
+		sysctl_logicalcpu_max = NULL;
 
 		sysctl_l1icachesize = alloc_sysctl_perflevel_string(i, "l1icachesize");
 		if (!sysctl_l1icachesize) {
-			success = false;
-			break;
+			goto failure;
 		}
 		perflevels[i].l1icachesize = get_sys_info_by_name(sysctl_l1icachesize);
+		free(sysctl_l1icachesize);
+		sysctl_l1icachesize = NULL;
 
 		sysctl_l1dcachesize = alloc_sysctl_perflevel_string(i, "l1dcachesize");
 		if (!sysctl_l1dcachesize) {
-			success = false;
-			break;
+			goto failure;
 		}
 		perflevels[i].l1dcachesize = get_sys_info_by_name(sysctl_l1dcachesize);
+		free(sysctl_l1dcachesize);
+		sysctl_l1dcachesize = NULL;
 
 		sysctl_l2cachesize = alloc_sysctl_perflevel_string(i, "l2cachesize");
 		if (!sysctl_l2cachesize) {
-			success = false;
-			break;
+			goto failure;
 		}
 		perflevels[i].l2cachesize = get_sys_info_by_name(sysctl_l2cachesize);
+		free(sysctl_l2cachesize);
+		sysctl_l2cachesize = NULL;
 
 		sysctl_cpusperl2 = alloc_sysctl_perflevel_string(i, "cpusperl2");
 		if (!sysctl_cpusperl2) {
-			success = false;
-			break;
+			goto failure;
 		}
 		perflevels[i].cpusperl2 = get_sys_info_by_name(sysctl_cpusperl2);
+		free(sysctl_cpusperl2);
+		sysctl_cpusperl2 = NULL;
 
 		sysctl_l3cachesize = alloc_sysctl_perflevel_string(i, "l3cachesize");
 		if (!sysctl_l3cachesize) {
 			/* May not have L3 */
 		} else {
 			perflevels[i].l3cachesize = get_sys_info_by_name(sysctl_l3cachesize);
+			free(sysctl_l3cachesize);
+			sysctl_l3cachesize = NULL;
 		}
 
 		sysctl_cpusperl3 = alloc_sysctl_perflevel_string(i, "cpusperl3");
@@ -531,6 +533,8 @@ static struct mach_perflevel * read_perflevels(const uint32_t nperflevels) {
 			/* May not have L3 */
 		} else{
 			perflevels[i].cpusperl3 = get_sys_info_by_name(sysctl_cpusperl3);
+			free(sysctl_cpusperl3);
+			sysctl_cpusperl3 = NULL;
 		}
 
 		perflevels[i].core_start = core_index;
@@ -540,43 +544,19 @@ static struct mach_perflevel * read_perflevels(const uint32_t nperflevels) {
 		perflevels[i].processor_start = processor_index;
 		processor_index += perflevels[i].logicalcpu_max;
 		cpuinfo_log_debug("perflevel%"PRIu32".processor_start: %"PRIu32, i, perflevels[i].processor_start);
-
-		/* Cleanup */
-		SAFE_FREE_NULL(sysctl_physicalcpu);
-		SAFE_FREE_NULL(sysctl_physicalcpu_max);
-		SAFE_FREE_NULL(sysctl_logicalcpu);
-		SAFE_FREE_NULL(sysctl_logicalcpu_max);
-		SAFE_FREE_NULL(sysctl_l1icachesize);
-		SAFE_FREE_NULL(sysctl_l1dcachesize);
-		SAFE_FREE_NULL(sysctl_l2cachesize);
-		SAFE_FREE_NULL(sysctl_cpusperl2);
-		SAFE_FREE_NULL(sysctl_l3cachesize);
-		SAFE_FREE_NULL(sysctl_cpusperl3);
-	}
-
-
-	if (!success) {
-		/* We exited loop early (error).  Cleanup */
-		SAFE_FREE_NULL(sysctl_physicalcpu);
-		SAFE_FREE_NULL(sysctl_physicalcpu_max);
-		SAFE_FREE_NULL(sysctl_logicalcpu);
-		SAFE_FREE_NULL(sysctl_logicalcpu_max);
-		SAFE_FREE_NULL(sysctl_l1icachesize);
-		SAFE_FREE_NULL(sysctl_l1dcachesize);
-		SAFE_FREE_NULL(sysctl_l2cachesize);
-		SAFE_FREE_NULL(sysctl_cpusperl2);
-		SAFE_FREE_NULL(sysctl_l3cachesize);
-		SAFE_FREE_NULL(sysctl_cpusperl3);
-
-		/* free / NULL return value */
-		SAFE_FREE_NULL(perflevels);
 	}
 
 	return perflevels;
+
+failure:
+	if(perflevels){
+		free(perflevels);
+	}
+
+	return NULL;
 }
 
 bool detect_caches_legacy(
-	const struct cpuinfo_mach_topology mach_topology,
 	struct cache_array *l1i,
 	struct cache_array *l1d,
 	struct cache_array *l2,
