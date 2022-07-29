@@ -182,7 +182,7 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t cpu_subtype
 	#endif
 }
 
-static void decode_hw_machine_package_name(char* package_name) {
+static void decode_package_name(char* package_name) {
 	size_t size;
 	if (sysctlbyname("hw.machine", NULL, &size, NULL, 0) != 0) {
 		cpuinfo_log_warning("sysctlbyname(\"hw.machine\") failed: %s", strerror(errno));
@@ -304,29 +304,6 @@ static void decode_hw_machine_package_name(char* package_name) {
 	if (chip_model != 0) {
 		snprintf(package_name, CPUINFO_PACKAGE_NAME_MAX, "Apple A%"PRIu32"%c", chip_model, suffix);
 	}
-}
-
-static void read_package_name(char* package_name) {
-	decode_hw_machine_package_name(package_name);
-	if (package_name[0] != '\0') {
-		return;
-	}
-
-	/* Try to pull package name from machdep.cpu.brand_string */
-	size_t size;
-	if (sysctlbyname("machdep.cpu.brand_string", NULL, &size, NULL, 0) != 0) {
-		cpuinfo_log_warning("sysctlbyname(\"machdep.cpu.brand_string\") failed: %s", strerror(errno));
-		return;
-	}
-
-	char *brand_string = alloca(size);
-	if (sysctlbyname("machdep.cpu.brand_string", brand_string, &size, NULL, 0) != 0) {
-		cpuinfo_log_warning("sysctlbyname(\"machdep.cpu.brand_string\") failed: %s", strerror(errno));
-		return;
-	}
-	cpuinfo_log_debug("machdep.cpu.brand_string: %s", brand_string);
-
-	strlcpy(package_name, brand_string, CPUINFO_PACKAGE_NAME_MAX);
 }
 
 static void detect_isa(uint32_t cpu_family, uint32_t cpu_type, uint32_t cpu_subtype) {
@@ -994,7 +971,7 @@ void cpuinfo_arm_mach_init(void) {
 	const uint32_t cores_per_package = mach_topology.cores / mach_topology.packages;
 
 	char package_name[CPUINFO_PACKAGE_NAME_MAX] = {0};
-	read_package_name(package_name);
+	decode_package_name(package_name);
 
 	for (uint32_t i = 0; i < mach_topology.packages; i++) {
 		packages[i] = (struct cpuinfo_package) {
