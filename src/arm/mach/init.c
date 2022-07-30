@@ -54,11 +54,6 @@ struct cpuinfo_arm_isa cpuinfo_isa = {
 #endif
 };
 
-struct cache_array {
-	struct cpuinfo_cache *caches;
-	uint32_t count;
-};
-
 /*
  * iOS 15 and macOS Monterey 12 added sysctls to describe configuration information
  * where not all cores are the same (number of cores, cache sizes).
@@ -557,13 +552,18 @@ failure:
 }
 
 bool detect_caches_legacy(
-	struct cache_array *l1i,
-	struct cache_array *l1d,
-	struct cache_array *l2,
-	struct cache_array *l3
+	const struct cpuinfo_mach_topology mach_topology,
+	struct cpuinfo_cache **l1i_caches, uint32_t *l1i_count,
+	struct cpuinfo_cache **l1d_caches, uint32_t *l1d_count,
+	struct cpuinfo_cache **l2_caches, uint32_t *l2_count,
+	struct cpuinfo_cache **l3_caches, uint32_t *l3_count
 )
 {
-	if (!l1i || !l1d || !l2 || !l3) {
+	if (!l1i_caches || !l1i_count ||
+		!l1d_caches || !l1d_count ||
+		!l2_caches || !l2_count ||
+		!l3_caches || !l3_count)
+	{
 		cpuinfo_log_error("cannot detect caches. no place to store results.");
 		return false;
 	}
@@ -587,36 +587,36 @@ bool detect_caches_legacy(
 	if (l1i_cache_size != 0 || l1d_cache_size != 0) {
 		/* Assume L1 caches are private to each core */
 		threads_per_l1 = 1;
-		l1i->count = mach_topology.threads / threads_per_l1;
-		l1d->count = l1i->count;
-		cpuinfo_log_debug("detected %"PRIu32" L1 caches", l1i->count);
+		*l1i_count = mach_topology.threads / threads_per_l1;
+		*l1d_count = *l1i_count;
+		cpuinfo_log_debug("detected %"PRIu32" L1 caches", *l1i_count);
 	}
 
 	uint32_t threads_per_l2 = 0;
 	if (l2_cache_size != 0) {
 		/* Assume L2 cache is shared between all cores */
 		threads_per_l2 = mach_topology.cores;
-		l2->count = 1;
-		cpuinfo_log_debug("detected %"PRIu32" L2 caches", l2->count);
+		*l2_count = 1;
+		cpuinfo_log_debug("detected %"PRIu32" L2 caches", *l2_count);
 	}
 
 	uint32_t threads_per_l3 = 0;
 	if (l3_cache_size != 0) {
 		/* Assume L3 cache is shared between all cores */
 		threads_per_l3 = mach_topology.cores;
-		l3->count = 1;
-		cpuinfo_log_debug("detected %"PRIu32" L3 caches", l3->count);
+		*l3_count = 1;
+		cpuinfo_log_debug("detected %"PRIu32" L3 caches", *l3_count);
 	}
 
 	if (l1i_cache_size != 0) {
-		l1i->caches = calloc(l1i->count, sizeof(*(l1i->caches)));
-		if (l1i->caches == NULL) {
+		*l1i_caches = calloc(*l1i_count, sizeof(struct cpuinfo_cache));
+		if (*l1i_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
-				l1i->count * sizeof(*(l1i->caches)), l1i->count);
+				*l1i_count * sizeof(struct cpuinfo_cache), *l1i_count);
 			return false;
 		}
-		for (uint32_t c = 0; c < l1i->count; c++) {
-			l1i->caches[c] = (struct cpuinfo_cache) {
+		for (uint32_t c = 0; c < *l1i_count; c++) {
+			(*l1i_caches)[c] = (struct cpuinfo_cache) {
 				.size            = l1i_cache_size,
 				.associativity   = l1_cache_associativity,
 				.sets            = l1i_cache_size / (l1_cache_associativity * cacheline_size),
@@ -630,14 +630,14 @@ bool detect_caches_legacy(
 	}
 
 	if (l1d_cache_size != 0) {
-		l1d->caches = calloc(l1d->count, sizeof(*(l1d->caches)));
-		if (l1d->caches == NULL) {
+		*l1d_caches = calloc(*l1d_count, sizeof(struct cpuinfo_cache));
+		if (*l1d_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
-				l1d->count * sizeof(*(l1d->caches)), l1d->count);
+				*l1d_count * sizeof(struct cpuinfo_cache), *l1d_count);
 			return false;
 		}
-		for (uint32_t c = 0; c < l1d->count; c++) {
-			l1d->caches[c] = (struct cpuinfo_cache) {
+		for (uint32_t c = 0; c < *l1d_count; c++) {
+			(*l1d_caches)[c] = (struct cpuinfo_cache) {
 				.size            = l1d_cache_size,
 				.associativity   = l1_cache_associativity,
 				.sets            = l1d_cache_size / (l1_cache_associativity * cacheline_size),
@@ -650,15 +650,15 @@ bool detect_caches_legacy(
 		}
 	}
 
-	if (l2->count != 0) {
-		l2->caches = calloc(l2->count, sizeof(*(l2->caches)));
-		if (l2->caches == NULL) {
+	if (*l2_count != 0) {
+		*l2_caches = calloc(*l2_count, sizeof(struct cpuinfo_cache));
+		if (*l2_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
-				l2->count * sizeof(*(l2->caches)), l2->count);
+				*l2_count * sizeof(struct cpuinfo_cache), *l2_count);
 			return false;
 		}
-		for (uint32_t c = 0; c < l2->count; c++) {
-			l2->caches[c] = (struct cpuinfo_cache) {
+		for (uint32_t c = 0; c < *l2_count; c++) {
+			(*l2_caches)[c] = (struct cpuinfo_cache) {
 				.size            = l2_cache_size,
 				.associativity   = l2_cache_associativity,
 				.sets            = l2_cache_size / (l2_cache_associativity * cacheline_size),
@@ -671,15 +671,15 @@ bool detect_caches_legacy(
 		}
 	}
 
-	if (l3->count != 0) {
-		l3->caches = calloc(l3->count, sizeof(*(l3->caches)));
-		if (l3->caches == NULL) {
+	if (*l3_count != 0) {
+		*l3_caches = calloc(*l3_count, sizeof(struct cpuinfo_cache));
+		if (*l3_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
-												l3->count * sizeof(*(l3->caches)), l3->count);
+												*l3_count * sizeof(struct cpuinfo_cache), *l3_count);
 			return false;
 		}
-		for (uint32_t c = 0; c < l3->count; c++) {
-			l3->caches[c] = (struct cpuinfo_cache) {
+		for (uint32_t c = 0; c < *l3_count; c++) {
+			(*l3_caches)[c] = (struct cpuinfo_cache) {
 				.size            = l3_cache_size,
 				.associativity   = l3_cache_associativity,
 				.sets            = l3_cache_size / (l3_cache_associativity * cacheline_size),
@@ -699,13 +699,17 @@ bool detect_caches_using_perflevels(
 	const struct cpuinfo_mach_topology mach_topology,
 	const struct mach_perflevel * const perflevels,
 	const uint32_t nperflevels,
-	struct cache_array *l1i,
-	struct cache_array *l1d,
-	struct cache_array *l2,
-	struct cache_array *l3
+	struct cpuinfo_cache **l1i_caches, uint32_t *l1i_count,
+	struct cpuinfo_cache **l1d_caches, uint32_t *l1d_count,
+	struct cpuinfo_cache **l2_caches, uint32_t *l2_count,
+	struct cpuinfo_cache **l3_caches, uint32_t *l3_count
 )
 {
-	if (!l1i || !l1d || !l2 || !l3) {
+	if (!l1i_caches || !l1i_count ||
+		!l1d_caches || !l1d_count ||
+		!l2_caches || !l2_count ||
+		!l3_caches || !l3_count)
+	{
 		cpuinfo_log_error("cannot detect caches. no place to store results.");
 		return false;
 	}
@@ -721,35 +725,35 @@ bool detect_caches_using_perflevels(
 	const uint32_t cache_partitions = 1;
 	const uint32_t cache_flags = 0;
 
-	l1i->count = 0;
-	l1d->count = 0;
-	l2->count = 0;
-	l3->count = 0;
+	*l1i_count = 0;
+	*l1d_count = 0;
+	*l2_count = 0;
+	*l3_count = 0;
 	for (uint32_t pl=0; pl<nperflevels; ++pl) {
 		if (perflevels[pl].l1icachesize != 0) {
 			/* One l1i cache per core */
-			l1i->count += perflevels[pl].physicalcpu_max;
+			*l1i_count += perflevels[pl].physicalcpu_max;
 		}
 
 		if (perflevels[pl].l1dcachesize != 0) {
 			/* One l1d cache per core */
-			l1d->count += perflevels[pl].physicalcpu_max;
+			*l1d_count += perflevels[pl].physicalcpu_max;
 		}
 
 		if (perflevels[pl].cpusperl2 != 0) {
-			l2->count += perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl2;
+			*l2_count += perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl2;
 		}
 
 		if (perflevels[pl].cpusperl3 != 0) {
-			l3->count += perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl3;
+			*l3_count += perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl3;
 		}
 	}
 
-	if (l1i->count != 0) {
-		l1i->caches = calloc(l1i->count, sizeof(*(l1i->caches)));
-		if (l1i->caches == NULL) {
+	if (*l1i_count != 0) {
+		*l1i_caches = calloc(*l1i_count, sizeof(struct cpuinfo_cache));
+		if (*l1i_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
-				l1i->count * sizeof(*(l1i->caches)), l1i->count);
+				*l1i_count * sizeof(struct cpuinfo_cache), *l1i_count);
 			return false;
 		}
 		for (uint32_t pl=0; pl<nperflevels; ++pl) {
@@ -760,7 +764,7 @@ bool detect_caches_using_perflevels(
 				uint32_t cache_start = perflevels[pl].core_start;
 				uint32_t cache_end = cache_start + perflevels[pl].physicalcpu_max;
 				for (uint32_t c=cache_start; c<cache_end; ++c) {
-					l1i->caches[c] = (struct cpuinfo_cache) {
+					(*l1i_caches)[c] = (struct cpuinfo_cache) {
 						.size            = perflevels[pl].l1icachesize,
 						.associativity   = l1_cache_associativity,
 						.sets            = perflevels[pl].l1icachesize / (l1_cache_associativity * cacheline_size),
@@ -775,11 +779,11 @@ bool detect_caches_using_perflevels(
 		}
 	}
 
-	if (l1d->count != 0) {
-		l1d->caches = calloc(l1d->count, sizeof(*(l1d->caches)));
-		if (l1d->caches == NULL) {
+	if (*l1d_count != 0) {
+		*l1d_caches = calloc(*l1d_count, sizeof(struct cpuinfo_cache));
+		if (*l1d_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
-				l1d->count * sizeof(*(l1d->caches)), l1d->count);
+				*l1d_count * sizeof(struct cpuinfo_cache), *l1d_count);
 			return false;
 		}
 		for (uint32_t pl=0; pl<nperflevels; ++pl) {
@@ -790,7 +794,7 @@ bool detect_caches_using_perflevels(
 				uint32_t cache_start = perflevels[pl].core_start;
 				uint32_t cache_end = cache_start + perflevels[pl].physicalcpu_max;
 				for (uint32_t c=cache_start; c<cache_end; ++c) {
-					l1d->caches[c] = (struct cpuinfo_cache) {
+					(*l1d_caches)[c] = (struct cpuinfo_cache) {
 						.size            = perflevels[pl].l1dcachesize,
 						.associativity   = l1_cache_associativity,
 						.sets            = perflevels[pl].l1dcachesize / (l1_cache_associativity * cacheline_size),
@@ -805,11 +809,11 @@ bool detect_caches_using_perflevels(
 		}
 	}
 
-	if (l2->count != 0) {
-		l2->caches = calloc(l2->count, sizeof(*(l2->caches)));
-		if (l2->caches == NULL) {
+	if (*l2_count != 0) {
+		*l2_caches = calloc(*l2_count, sizeof(struct cpuinfo_cache));
+		if (*l2_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
-				l2->count * sizeof(*(l2->caches)), l2->count);
+				*l2_count * sizeof(struct cpuinfo_cache), *l2_count);
 			return false;
 		}
 		uint32_t cache_index = 0;
@@ -820,7 +824,7 @@ bool detect_caches_using_perflevels(
 				uint32_t threads_per_l2 = threads_per_core * perflevels[pl].cpusperl2;
 				uint32_t cache_end = cache_index + l2_cache_count;
 				for (; cache_index<cache_end; ++cache_index) {
-					l2->caches[cache_index] = (struct cpuinfo_cache) {
+					(*l2_caches)[cache_index] = (struct cpuinfo_cache) {
 						.size            = perflevels[pl].l2cachesize,
 						.associativity   = l2_cache_associativity,
 						.sets            = perflevels[pl].l2cachesize / (l2_cache_associativity * cacheline_size),
@@ -835,11 +839,11 @@ bool detect_caches_using_perflevels(
 		}
 	}
 
-	if (l3->count != 0) {
-		l3->caches = calloc(l3->count, sizeof(*(l3->caches)));
-		if (l3->caches == NULL) {
+	if (*l3_count != 0) {
+		*l3_caches = calloc(*l3_count, sizeof(struct cpuinfo_cache));
+		if (*l3_caches == NULL) {
 			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
-				l3->count * sizeof(*(l3->caches)), l3->count);
+				*l3_count * sizeof(struct cpuinfo_cache), *l3_count);
 			return false;
 		}
 		uint32_t cache_index = 0;
@@ -850,7 +854,7 @@ bool detect_caches_using_perflevels(
 				uint32_t threads_per_l3 = threads_per_core * perflevels[pl].cpusperl3;
 				uint32_t cache_end = cache_index + l3_cache_count;
 				for (; cache_index<cache_end; ++cache_index) {
-					l3->caches[cache_index] = (struct cpuinfo_cache) {
+					(*l3_caches)[cache_index] = (struct cpuinfo_cache) {
 						.size            = perflevels[pl].l3cachesize,
 						.associativity   = l3_cache_associativity,
 						.sets            = perflevels[pl].l3cachesize / (l3_cache_associativity * cacheline_size),
@@ -880,10 +884,14 @@ void cpuinfo_arm_mach_init(void) {
 	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_package* packages = NULL;
 	struct cpuinfo_uarch_info* uarchs = NULL;
-	struct cache_array l1i = {0};
-	struct cache_array l1d = {0};
-	struct cache_array l2 = {0};
-	struct cache_array l3 = {0};
+	struct cpuinfo_cache *l1i_caches = NULL;
+	uint32_t l1i_count = 0;
+	struct cpuinfo_cache *l1d_caches = NULL;
+	uint32_t l1d_count = 0;
+	struct cpuinfo_cache *l2_caches = NULL;
+	uint32_t l2_count = 0;
+	struct cpuinfo_cache *l3_caches = NULL;
+	uint32_t l3_count = 0;
 
 	struct cpuinfo_mach_topology mach_topology = cpuinfo_mach_detect_topology();
 
@@ -1059,11 +1067,19 @@ void cpuinfo_arm_mach_init(void) {
 	 */
 	bool cachesDetected = false;
 	if (nperflevels > 0 && perflevels) {
-		cachesDetected = detect_caches_using_perflevels(mach_topology, perflevels, nperflevels, &l1i, &l1d, &l2, &l3);
+		cachesDetected = detect_caches_using_perflevels(mach_topology, perflevels, nperflevels,
+														&l1i_caches, &l1i_count,
+														&l1d_caches, &l1d_count,
+														&l2_caches, &l2_count,
+														&l3_caches, &l3_count);
 	}
 
 	if (!cachesDetected) {
-		cachesDetected = detect_caches_legacy(mach_topology, &l1i, &l1d, &l2, &l3);
+		cachesDetected = detect_caches_legacy(mach_topology,
+											  &l1i_caches, &l1i_count,
+											  &l1d_caches, &l1d_count,
+											  &l2_caches, &l2_count,
+											  &l3_caches, &l3_count);
 		if (!cachesDetected) {
 			goto cleanup;
 		}
@@ -1071,62 +1087,62 @@ void cpuinfo_arm_mach_init(void) {
 
 	/* Associate processors with caches */
 
-	if (l1i.caches && l1i.count > 0) {
-		for (uint32_t c=0; c<l1i.count; ++c) {
-			if (l1i.caches[c].processor_count < 1) {
+	if (l1i_caches && l1i_count > 0) {
+		for (uint32_t c=0; c<l1i_count; ++c) {
+			if (l1i_caches[c].processor_count < 1) {
 				cpuinfo_log_error("invalid L1I cache (processor_count < 1)");
 				goto cleanup;
 			}
 
-			uint32_t processor_start = l1i.caches[c].processor_start;
-			uint32_t processor_end = processor_start + l1i.caches[c].processor_count;
+			uint32_t processor_start = l1i_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l1i_caches[c].processor_count;
 			for (uint32_t p=processor_start; p<processor_end; ++p) {
-				processors[p].cache.l1i = &l1i.caches[c];
+				processors[p].cache.l1i = &l1i_caches[c];
 			}
 		}
 	}
 
-	if (l1d.caches && l1d.count > 0) {
-		for (uint32_t c=0; c<l1d.count; ++c) {
-			if (l1d.caches[c].processor_count < 1) {
+	if (l1d_caches && l1d_count > 0) {
+		for (uint32_t c=0; c<l1d_count; ++c) {
+			if (l1d_caches[c].processor_count < 1) {
 				cpuinfo_log_error("invalid L1D cache (processor_count < 1)");
 				goto cleanup;
 			}
 
-			uint32_t processor_start = l1d.caches[c].processor_start;
-			uint32_t processor_end = processor_start + l1d.caches[c].processor_count;
+			uint32_t processor_start = l1d_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l1d_caches[c].processor_count;
 			for (uint32_t p=processor_start; p<processor_end; ++p) {
-				processors[p].cache.l1d = &l1d.caches[c];
+				processors[p].cache.l1d = &l1d_caches[c];
 			}
 		}
 	}
 
-	if (l2.caches && l2.count > 0) {
-		for (uint32_t c=0; c<l2.count; ++c) {
-			if (l2.caches[c].processor_count < 1) {
+	if (l2_caches && l2_count > 0) {
+		for (uint32_t c=0; c<l2_count; ++c) {
+			if (l2_caches[c].processor_count < 1) {
 				cpuinfo_log_error("invalid L2 cache (processor_count < 1)");
 				goto cleanup;
 			}
 
-			uint32_t processor_start = l2.caches[c].processor_start;
-			uint32_t processor_end = processor_start + l2.caches[c].processor_count;
+			uint32_t processor_start = l2_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l2_caches[c].processor_count;
 			for (uint32_t p=processor_start; p<processor_end; ++p) {
-				processors[p].cache.l2 = &l2.caches[c];
+				processors[p].cache.l2 = &l2_caches[c];
 			}
 		}
 	}
 
-	if (l3.caches && l3.count > 0) {
-		for (uint32_t c=0; c<l3.count; ++c) {
-			if (l3.caches[c].processor_count < 1) {
+	if (l3_caches && l3_count > 0) {
+		for (uint32_t c=0; c<l3_count; ++c) {
+			if (l3_caches[c].processor_count < 1) {
 				cpuinfo_log_error("invalid L3 cache (processor_count < 1)");
 				goto cleanup;
 			}
 
-			uint32_t processor_start = l3.caches[c].processor_start;
-			uint32_t processor_end = processor_start + l3.caches[c].processor_count;
+			uint32_t processor_start = l3_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l3_caches[c].processor_count;
 			for (uint32_t p=processor_start; p<processor_end; ++p) {
-				processors[p].cache.l3 = &l3.caches[c];
+				processors[p].cache.l3 = &l3_caches[c];
 			}
 		}
 	}
@@ -1138,20 +1154,20 @@ void cpuinfo_arm_mach_init(void) {
 	cpuinfo_clusters = clusters;
 	cpuinfo_packages = packages;
 	cpuinfo_uarchs = uarchs;
-	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i.caches;
-	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d.caches;
-	cpuinfo_cache[cpuinfo_cache_level_2]  = l2.caches;
-	cpuinfo_cache[cpuinfo_cache_level_3]  = l3.caches;
+	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i_caches;
+	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d_caches;
+	cpuinfo_cache[cpuinfo_cache_level_2]  = l2_caches;
+	cpuinfo_cache[cpuinfo_cache_level_3]  = l3_caches;
 
 	cpuinfo_processors_count = mach_topology.threads;
 	cpuinfo_cores_count = mach_topology.cores;
 	cpuinfo_clusters_count = num_clusters;
 	cpuinfo_packages_count = mach_topology.packages;
 	cpuinfo_uarchs_count = num_clusters;
-	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i.count;
-	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d.count;
-	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2.count;
-	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3.count;
+	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
 
 	__sync_synchronize();
@@ -1163,7 +1179,7 @@ void cpuinfo_arm_mach_init(void) {
 	clusters = NULL;
 	packages = NULL;
 	uarchs = NULL;
-	l1i.caches = l1d.caches = l2.caches = l3.caches = NULL;
+	l1i_caches = l1d_caches = l2_caches = l3_caches = NULL;
 
 cleanup:
 	free(perflevels);
@@ -1172,8 +1188,8 @@ cleanup:
 	free(clusters);
 	free(packages);
 	free(uarchs);
-	free(l1i.caches);
-	free(l1d.caches);
-	free(l2.caches);
-	free(l3.caches);
+	free(l1i_caches);
+	free(l1d_caches);
+	free(l2_caches);
+	free(l3_caches);
 }
