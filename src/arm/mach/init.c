@@ -54,6 +54,49 @@ struct cpuinfo_arm_isa cpuinfo_isa = {
 #endif
 };
 
+/*
+ * iOS 15 and macOS Monterey 12 added sysctls to describe configuration information
+ * where not all cores are the same (number of cores, cache sizes).
+ * 
+ * Each perflevel sysctl has a prefix of `hw.perflevel??.` where ?? is the
+ * perflevel index, starting at zero.  The total number of perflevels are
+ * exposed via the `hw.nperflevels` sysctl.  Higher performance perflevels
+ * have lower indexes.
+ *
+ * sysctls:
+ * - hw.nperflevels     - number of different types of cores / cache configs (perflevels)
+ * - hw.perflevel?? 
+ *   - .physicalcpu     - number of enabled physical cores for perflevel ??
+ *   - .physicalcpu_max - number of physical cores for perflevel ??
+ *   - .logicalcpu      - number of enabled logical cores for perflevel ??
+ *   - .logicalcpu_max  - number of logical cores for perflevel ??
+ *   - .l1icachesize    - size in bytes of L1 instruction cache for cores in perflevel ??
+ *   - .l1dcachesize    - size in bytes of L1 data cache for cores in perflevel ??
+ *   - .l2cachesize     - size in bytes of L2 data cache for cores in perflevel ??
+ *   - .cpusperl2       - number of cores that share an L2 cache in perflevel ??
+ *   - .l3cachesize     - size in bytes of L3 data cache for cores in perflevel ??
+ *   - .cpusperl3       - number of cores that share an L3 cache in perflevel ??
+ *
+ * Technically, these perflevels could be in src/mach/api.h since they are supported
+ * across architectures (x86_64 and arm64).  x86_64 doesn't currently have multiple
+ * perflevels, which means there's not much benefit there.
+ */
+struct mach_perflevel {
+	uint32_t physicalcpu;
+	uint32_t physicalcpu_max;
+	uint32_t logicalcpu;
+	uint32_t logicalcpu_max;
+	uint32_t l1icachesize;
+	uint32_t l1dcachesize;
+	uint32_t l2cachesize;
+	uint32_t cpusperl2;
+	uint32_t l3cachesize;
+	uint32_t cpusperl3;
+
+	uint32_t core_start;		/* first core index this perflevel describes */
+	uint32_t processor_start;	/* first processor index this perflevel describes */
+};
+
 static uint32_t get_sys_info(int type_specifier, const char* name) {
 	size_t size = 0;
 	uint32_t result = 0;
@@ -252,55 +295,7 @@ static void decode_package_name(char* package_name) {
 	}
 }
 
-void cpuinfo_arm_mach_init(void) {
-	struct cpuinfo_processor* processors = NULL;
-	struct cpuinfo_core* cores = NULL;
-	struct cpuinfo_cluster* clusters = NULL;
-	struct cpuinfo_package* packages = NULL;
-	struct cpuinfo_uarch_info* uarchs = NULL;
-	struct cpuinfo_cache* l1i = NULL;
-	struct cpuinfo_cache* l1d = NULL;
-	struct cpuinfo_cache* l2 = NULL;
-	struct cpuinfo_cache* l3 = NULL;
-
-	struct cpuinfo_mach_topology mach_topology = cpuinfo_mach_detect_topology();
-	processors = calloc(mach_topology.threads, sizeof(struct cpuinfo_processor));
-	if (processors == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" logical processors",
-			mach_topology.threads * sizeof(struct cpuinfo_processor), mach_topology.threads);
-		goto cleanup;
-	}
-	cores = calloc(mach_topology.cores, sizeof(struct cpuinfo_core));
-	if (cores == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
-			mach_topology.cores * sizeof(struct cpuinfo_core), mach_topology.cores);
-		goto cleanup;
-	}
-	packages = calloc(mach_topology.packages, sizeof(struct cpuinfo_package));
-	if (packages == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" packages",
-			mach_topology.packages * sizeof(struct cpuinfo_package), mach_topology.packages);
-		goto cleanup;
-	}
-
-	const uint32_t threads_per_core = mach_topology.threads / mach_topology.cores;
-	const uint32_t threads_per_package = mach_topology.threads / mach_topology.packages;
-	const uint32_t cores_per_package = mach_topology.cores / mach_topology.packages;
-
-	for (uint32_t i = 0; i < mach_topology.packages; i++) {
-		packages[i] = (struct cpuinfo_package) {
-			.processor_start = i * threads_per_package,
-			.processor_count = threads_per_package,
-			.core_start = i * cores_per_package,
-			.core_count = cores_per_package,
-		};
-		decode_package_name(packages[i].name);
-	}
-
-
-	const uint32_t cpu_family = get_sys_info_by_name("hw.cpufamily");
-	const uint32_t cpu_type = get_sys_info_by_name("hw.cputype");
-	const uint32_t cpu_subtype = get_sys_info_by_name("hw.cpusubtype");
+static void detect_isa(uint32_t cpu_family, uint32_t cpu_type, uint32_t cpu_subtype) {
 	switch (cpu_type) {
 		case CPU_TYPE_ARM64:
 			cpuinfo_isa.aes = true;
@@ -418,6 +413,563 @@ void cpuinfo_arm_mach_init(void) {
 			cpuinfo_isa.fhm = true;
 		}
 	}
+}
+
+static char * alloc_sysctl_perflevel_string(uint32_t perflevel, const char * const perflevel_suffix) {
+	char * ret = NULL;
+	int err = asprintf(&ret, "hw.perflevel%u.%s", perflevel, perflevel_suffix);
+	if (err == -1 || ret == NULL) {
+		cpuinfo_log_error("failed to allocate memory for hw.perflevel* string");
+		return NULL;
+	}
+
+	return ret;
+}
+
+static struct mach_perflevel * read_perflevels(const uint32_t nperflevels) {
+	struct mach_perflevel * perflevels = NULL;
+
+	perflevels = calloc(nperflevels, sizeof (*perflevels));
+	if (!perflevels) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" perflevels",
+			nperflevels * sizeof(*perflevels), nperflevels);
+		return NULL;
+	}
+
+	/*
+	 * Each perflevel sysctl is of the form "hw.perflevel<int>.<name>"
+	 * where <int> is an integer starting at zero and incrementing for each level
+	 * and <name> is the name of the sysctl.  Since they change based on the
+	 * level, we need to build them dynamically.
+	 */
+	char * sysctl_physicalcpu = NULL;
+	char * sysctl_physicalcpu_max = NULL;
+	char * sysctl_logicalcpu = NULL;
+	char * sysctl_logicalcpu_max = NULL;
+	char * sysctl_l1icachesize = NULL;
+	char * sysctl_l1dcachesize = NULL;
+	char * sysctl_l2cachesize = NULL;
+	char * sysctl_cpusperl2 = NULL;
+	char * sysctl_l3cachesize = NULL;
+	char * sysctl_cpusperl3 = NULL;
+
+	uint32_t core_index = 0;
+	uint32_t processor_index = 0;
+
+	uint32_t i = 0;
+	for (; i<nperflevels; ++i) {
+		sysctl_physicalcpu = alloc_sysctl_perflevel_string(i, "physicalcpu");
+		if (!sysctl_physicalcpu) {
+			goto failure;
+		}
+		perflevels[i].physicalcpu = get_sys_info_by_name(sysctl_physicalcpu);
+		free(sysctl_physicalcpu);
+		sysctl_physicalcpu = NULL;
+
+		sysctl_physicalcpu_max = alloc_sysctl_perflevel_string(i, "physicalcpu_max");
+		if (!sysctl_physicalcpu_max) {
+			goto failure;
+		}
+		perflevels[i].physicalcpu_max = get_sys_info_by_name(sysctl_physicalcpu_max);
+		free(sysctl_physicalcpu_max);
+		sysctl_physicalcpu_max = NULL;
+
+		sysctl_logicalcpu_max = alloc_sysctl_perflevel_string(i, "logicalcpu_max");
+		if (!sysctl_logicalcpu_max) {
+			goto failure;
+		}
+		perflevels[i].logicalcpu_max = get_sys_info_by_name(sysctl_logicalcpu_max);
+		free(sysctl_logicalcpu_max);
+		sysctl_logicalcpu_max = NULL;
+
+		sysctl_l1icachesize = alloc_sysctl_perflevel_string(i, "l1icachesize");
+		if (!sysctl_l1icachesize) {
+			goto failure;
+		}
+		perflevels[i].l1icachesize = get_sys_info_by_name(sysctl_l1icachesize);
+		free(sysctl_l1icachesize);
+		sysctl_l1icachesize = NULL;
+
+		sysctl_l1dcachesize = alloc_sysctl_perflevel_string(i, "l1dcachesize");
+		if (!sysctl_l1dcachesize) {
+			goto failure;
+		}
+		perflevels[i].l1dcachesize = get_sys_info_by_name(sysctl_l1dcachesize);
+		free(sysctl_l1dcachesize);
+		sysctl_l1dcachesize = NULL;
+
+		sysctl_l2cachesize = alloc_sysctl_perflevel_string(i, "l2cachesize");
+		if (!sysctl_l2cachesize) {
+			goto failure;
+		}
+		perflevels[i].l2cachesize = get_sys_info_by_name(sysctl_l2cachesize);
+		free(sysctl_l2cachesize);
+		sysctl_l2cachesize = NULL;
+
+		sysctl_cpusperl2 = alloc_sysctl_perflevel_string(i, "cpusperl2");
+		if (!sysctl_cpusperl2) {
+			goto failure;
+		}
+		perflevels[i].cpusperl2 = get_sys_info_by_name(sysctl_cpusperl2);
+		free(sysctl_cpusperl2);
+		sysctl_cpusperl2 = NULL;
+
+		sysctl_l3cachesize = alloc_sysctl_perflevel_string(i, "l3cachesize");
+		if (!sysctl_l3cachesize) {
+			/* May not have L3 */
+		} else {
+			perflevels[i].l3cachesize = get_sys_info_by_name(sysctl_l3cachesize);
+			free(sysctl_l3cachesize);
+			sysctl_l3cachesize = NULL;
+		}
+
+		sysctl_cpusperl3 = alloc_sysctl_perflevel_string(i, "cpusperl3");
+		if (!sysctl_cpusperl3) {
+			/* May not have L3 */
+		} else{
+			perflevels[i].cpusperl3 = get_sys_info_by_name(sysctl_cpusperl3);
+			free(sysctl_cpusperl3);
+			sysctl_cpusperl3 = NULL;
+		}
+
+		perflevels[i].core_start = core_index;
+		core_index += perflevels[i].physicalcpu_max;
+		cpuinfo_log_debug("perflevel%"PRIu32".core_start: %"PRIu32, i, perflevels[i].core_start);
+
+		perflevels[i].processor_start = processor_index;
+		processor_index += perflevels[i].logicalcpu_max;
+		cpuinfo_log_debug("perflevel%"PRIu32".processor_start: %"PRIu32, i, perflevels[i].processor_start);
+	}
+
+	return perflevels;
+
+failure:
+	if(perflevels){
+		free(perflevels);
+	}
+
+	return NULL;
+}
+
+bool detect_caches_legacy(
+	const struct cpuinfo_mach_topology mach_topology,
+	struct cpuinfo_cache **l1i_caches, uint32_t *l1i_count,
+	struct cpuinfo_cache **l1d_caches, uint32_t *l1d_count,
+	struct cpuinfo_cache **l2_caches, uint32_t *l2_count,
+	struct cpuinfo_cache **l3_caches, uint32_t *l3_count
+)
+{
+	if (!l1i_caches || !l1i_count ||
+		!l1d_caches || !l1d_count ||
+		!l2_caches || !l2_count ||
+		!l3_caches || !l3_count)
+	{
+		cpuinfo_log_error("cannot detect caches. no place to store results.");
+		return false;
+	}
+
+	const uint32_t cacheline_size = get_sys_info(HW_CACHELINE, "HW_CACHELINE");
+	const uint32_t l1d_cache_size = get_sys_info(HW_L1DCACHESIZE, "HW_L1DCACHESIZE");
+	const uint32_t l1i_cache_size = get_sys_info(HW_L1ICACHESIZE, "HW_L1ICACHESIZE");
+	const uint32_t l2_cache_size = get_sys_info(HW_L2CACHESIZE, "HW_L2CACHESIZE");
+	const uint32_t l3_cache_size = get_sys_info(HW_L3CACHESIZE, "HW_L3CACHESIZE");
+	/*
+	 * Cache associativity, partitions, and flags values here are copied from
+	 * previous implementation.
+	 */
+	const uint32_t l1_cache_associativity = 4;
+	const uint32_t l2_cache_associativity = 8;
+	const uint32_t l3_cache_associativity = 16;
+	const uint32_t cache_partitions = 1;
+	const uint32_t cache_flags = 0;
+
+	uint32_t threads_per_l1 = 0;
+	if (l1i_cache_size != 0 || l1d_cache_size != 0) {
+		/* Assume L1 caches are private to each core */
+		threads_per_l1 = 1;
+		*l1i_count = mach_topology.threads / threads_per_l1;
+		*l1d_count = *l1i_count;
+		cpuinfo_log_debug("detected %"PRIu32" L1 caches", *l1i_count);
+	}
+
+	uint32_t threads_per_l2 = 0;
+	if (l2_cache_size != 0) {
+		/* Assume L2 cache is shared between all cores */
+		threads_per_l2 = mach_topology.cores;
+		*l2_count = 1;
+		cpuinfo_log_debug("detected %"PRIu32" L2 caches", *l2_count);
+	}
+
+	uint32_t threads_per_l3 = 0;
+	if (l3_cache_size != 0) {
+		/* Assume L3 cache is shared between all cores */
+		threads_per_l3 = mach_topology.cores;
+		*l3_count = 1;
+		cpuinfo_log_debug("detected %"PRIu32" L3 caches", *l3_count);
+	}
+
+	if (l1i_cache_size != 0) {
+		*l1i_caches = calloc(*l1i_count, sizeof(struct cpuinfo_cache));
+		if (*l1i_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
+				*l1i_count * sizeof(struct cpuinfo_cache), *l1i_count);
+			return false;
+		}
+		for (uint32_t c = 0; c < *l1i_count; c++) {
+			(*l1i_caches)[c] = (struct cpuinfo_cache) {
+				.size            = l1i_cache_size,
+				.associativity   = l1_cache_associativity,
+				.sets            = l1i_cache_size / (l1_cache_associativity * cacheline_size),
+				.partitions      = cache_partitions,
+				.line_size       = cacheline_size,
+				.flags           = cache_flags,
+				.processor_start = c * threads_per_l1,
+				.processor_count = threads_per_l1,
+			};
+		}
+	}
+
+	if (l1d_cache_size != 0) {
+		*l1d_caches = calloc(*l1d_count, sizeof(struct cpuinfo_cache));
+		if (*l1d_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
+				*l1d_count * sizeof(struct cpuinfo_cache), *l1d_count);
+			return false;
+		}
+		for (uint32_t c = 0; c < *l1d_count; c++) {
+			(*l1d_caches)[c] = (struct cpuinfo_cache) {
+				.size            = l1d_cache_size,
+				.associativity   = l1_cache_associativity,
+				.sets            = l1d_cache_size / (l1_cache_associativity * cacheline_size),
+				.partitions      = cache_partitions,
+				.line_size       = cacheline_size,
+				.flags           = cache_flags,
+				.processor_start = c * threads_per_l1,
+				.processor_count = threads_per_l1,
+			};
+		}
+	}
+
+	if (*l2_count != 0) {
+		*l2_caches = calloc(*l2_count, sizeof(struct cpuinfo_cache));
+		if (*l2_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
+				*l2_count * sizeof(struct cpuinfo_cache), *l2_count);
+			return false;
+		}
+		for (uint32_t c = 0; c < *l2_count; c++) {
+			(*l2_caches)[c] = (struct cpuinfo_cache) {
+				.size            = l2_cache_size,
+				.associativity   = l2_cache_associativity,
+				.sets            = l2_cache_size / (l2_cache_associativity * cacheline_size),
+				.partitions      = cache_partitions,
+				.line_size       = cacheline_size,
+				.flags           = cache_flags,
+				.processor_start = c * threads_per_l2,
+				.processor_count = threads_per_l2,
+			};
+		}
+	}
+
+	if (*l3_count != 0) {
+		*l3_caches = calloc(*l3_count, sizeof(struct cpuinfo_cache));
+		if (*l3_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
+												*l3_count * sizeof(struct cpuinfo_cache), *l3_count);
+			return false;
+		}
+		for (uint32_t c = 0; c < *l3_count; c++) {
+			(*l3_caches)[c] = (struct cpuinfo_cache) {
+				.size            = l3_cache_size,
+				.associativity   = l3_cache_associativity,
+				.sets            = l3_cache_size / (l3_cache_associativity * cacheline_size),
+				.partitions      = cache_partitions,
+				.line_size       = cacheline_size,
+				.flags           = cache_flags,
+				.processor_start = c * threads_per_l3,
+				.processor_count = threads_per_l3,
+			};
+		}
+	}
+
+	return true;
+}
+
+bool detect_caches_using_perflevels(
+	const struct cpuinfo_mach_topology mach_topology,
+	const struct mach_perflevel * const perflevels,
+	const uint32_t nperflevels,
+	struct cpuinfo_cache **l1i_caches, uint32_t *l1i_count,
+	struct cpuinfo_cache **l1d_caches, uint32_t *l1d_count,
+	struct cpuinfo_cache **l2_caches, uint32_t *l2_count,
+	struct cpuinfo_cache **l3_caches, uint32_t *l3_count
+)
+{
+	if (!l1i_caches || !l1i_count ||
+		!l1d_caches || !l1d_count ||
+		!l2_caches || !l2_count ||
+		!l3_caches || !l3_count)
+	{
+		cpuinfo_log_error("cannot detect caches. no place to store results.");
+		return false;
+	}
+
+	const uint32_t cacheline_size = get_sys_info(HW_CACHELINE, "HW_CACHELINE");
+	/*
+	 * Cache associativity, partitions, and flags values here are copied from
+	 * previous implementation.
+	 */
+	const uint32_t l1_cache_associativity = 4;
+	const uint32_t l2_cache_associativity = 8;
+	const uint32_t l3_cache_associativity = 16;
+	const uint32_t cache_partitions = 1;
+	const uint32_t cache_flags = 0;
+
+	*l1i_count = 0;
+	*l1d_count = 0;
+	*l2_count = 0;
+	*l3_count = 0;
+	for (uint32_t pl=0; pl<nperflevels; ++pl) {
+		if (perflevels[pl].l1icachesize != 0) {
+			/* One l1i cache per core */
+			*l1i_count += perflevels[pl].physicalcpu_max;
+		}
+
+		if (perflevels[pl].l1dcachesize != 0) {
+			/* One l1d cache per core */
+			*l1d_count += perflevels[pl].physicalcpu_max;
+		}
+
+		if (perflevels[pl].cpusperl2 != 0) {
+			*l2_count += perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl2;
+		}
+
+		if (perflevels[pl].cpusperl3 != 0) {
+			*l3_count += perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl3;
+		}
+	}
+
+	if (*l1i_count != 0) {
+		*l1i_caches = calloc(*l1i_count, sizeof(struct cpuinfo_cache));
+		if (*l1i_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
+				*l1i_count * sizeof(struct cpuinfo_cache), *l1i_count);
+			return false;
+		}
+		for (uint32_t pl=0; pl<nperflevels; ++pl) {
+			if (perflevels[pl].l1icachesize != 0) {
+				uint32_t threads_per_l1 = perflevels[pl].logicalcpu_max / perflevels[pl].physicalcpu_max;
+
+				/* One l1i cache per core */
+				uint32_t cache_start = perflevels[pl].core_start;
+				uint32_t cache_end = cache_start + perflevels[pl].physicalcpu_max;
+				for (uint32_t c=cache_start; c<cache_end; ++c) {
+					(*l1i_caches)[c] = (struct cpuinfo_cache) {
+						.size            = perflevels[pl].l1icachesize,
+						.associativity   = l1_cache_associativity,
+						.sets            = perflevels[pl].l1icachesize / (l1_cache_associativity * cacheline_size),
+						.partitions      = cache_partitions,
+						.line_size       = cacheline_size,
+						.flags           = cache_flags,
+						.processor_start = c * threads_per_l1,
+						.processor_count = threads_per_l1,
+					};
+				}
+			}
+		}
+	}
+
+	if (*l1d_count != 0) {
+		*l1d_caches = calloc(*l1d_count, sizeof(struct cpuinfo_cache));
+		if (*l1d_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
+				*l1d_count * sizeof(struct cpuinfo_cache), *l1d_count);
+			return false;
+		}
+		for (uint32_t pl=0; pl<nperflevels; ++pl) {
+			if (perflevels[pl].l1dcachesize != 0) {
+				uint32_t threads_per_l1 = perflevels[pl].logicalcpu_max / perflevels[pl].physicalcpu_max;
+
+				/* One l1d cache per core */
+				uint32_t cache_start = perflevels[pl].core_start;
+				uint32_t cache_end = cache_start + perflevels[pl].physicalcpu_max;
+				for (uint32_t c=cache_start; c<cache_end; ++c) {
+					(*l1d_caches)[c] = (struct cpuinfo_cache) {
+						.size            = perflevels[pl].l1dcachesize,
+						.associativity   = l1_cache_associativity,
+						.sets            = perflevels[pl].l1dcachesize / (l1_cache_associativity * cacheline_size),
+						.partitions      = cache_partitions,
+						.line_size       = cacheline_size,
+						.flags           = cache_flags,
+						.processor_start = c * threads_per_l1,
+						.processor_count = threads_per_l1,
+					};
+				}
+			}
+		}
+	}
+
+	if (*l2_count != 0) {
+		*l2_caches = calloc(*l2_count, sizeof(struct cpuinfo_cache));
+		if (*l2_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
+				*l2_count * sizeof(struct cpuinfo_cache), *l2_count);
+			return false;
+		}
+		uint32_t cache_index = 0;
+		for (uint32_t pl=0; pl<nperflevels; ++pl) {
+			if (perflevels[pl].l2cachesize != 0) {
+				uint32_t l2_cache_count = perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl2;
+				uint32_t threads_per_core = perflevels[pl].logicalcpu_max / perflevels[pl].physicalcpu_max;
+				uint32_t threads_per_l2 = threads_per_core * perflevels[pl].cpusperl2;
+				uint32_t cache_end = cache_index + l2_cache_count;
+				for (; cache_index<cache_end; ++cache_index) {
+					(*l2_caches)[cache_index] = (struct cpuinfo_cache) {
+						.size            = perflevels[pl].l2cachesize,
+						.associativity   = l2_cache_associativity,
+						.sets            = perflevels[pl].l2cachesize / (l2_cache_associativity * cacheline_size),
+						.partitions      = cache_partitions,
+						.line_size       = cacheline_size,
+						.flags           = cache_flags,
+						.processor_start = cache_index * threads_per_l2,
+						.processor_count = threads_per_l2,
+					};
+				}
+			}
+		}
+	}
+
+	if (*l3_count != 0) {
+		*l3_caches = calloc(*l3_count, sizeof(struct cpuinfo_cache));
+		if (*l3_caches == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
+				*l3_count * sizeof(struct cpuinfo_cache), *l3_count);
+			return false;
+		}
+		uint32_t cache_index = 0;
+		for (uint32_t pl=0; pl<nperflevels; ++pl) {
+			if (perflevels[pl].l3cachesize != 0) {
+				uint32_t l3_cache_count = perflevels[pl].physicalcpu_max / perflevels[pl].cpusperl3;
+				uint32_t threads_per_core = perflevels[pl].logicalcpu_max / perflevels[pl].physicalcpu_max;
+				uint32_t threads_per_l3 = threads_per_core * perflevels[pl].cpusperl3;
+				uint32_t cache_end = cache_index + l3_cache_count;
+				for (; cache_index<cache_end; ++cache_index) {
+					(*l3_caches)[cache_index] = (struct cpuinfo_cache) {
+						.size            = perflevels[pl].l3cachesize,
+						.associativity   = l3_cache_associativity,
+						.sets            = perflevels[pl].l3cachesize / (l3_cache_associativity * cacheline_size),
+						.partitions      = cache_partitions,
+						.line_size       = cacheline_size,
+						.flags           = cache_flags,
+						.processor_start = cache_index * threads_per_l3,
+						.processor_count = threads_per_l3,
+					};
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+void cpuinfo_arm_mach_init(void) {
+	const uint32_t cpu_family = get_sys_info_by_name("hw.cpufamily");
+	const uint32_t cpu_type = get_sys_info_by_name("hw.cputype");
+	const uint32_t cpu_subtype = get_sys_info_by_name("hw.cpusubtype");
+
+	detect_isa(cpu_family, cpu_type, cpu_subtype);
+
+	struct cpuinfo_processor* processors = NULL;
+	struct cpuinfo_core* cores = NULL;
+	struct cpuinfo_cluster* clusters = NULL;
+	struct cpuinfo_package* packages = NULL;
+	struct cpuinfo_uarch_info* uarchs = NULL;
+	struct cpuinfo_cache *l1i_caches = NULL;
+	uint32_t l1i_count = 0;
+	struct cpuinfo_cache *l1d_caches = NULL;
+	uint32_t l1d_count = 0;
+	struct cpuinfo_cache *l2_caches = NULL;
+	uint32_t l2_count = 0;
+	struct cpuinfo_cache *l3_caches = NULL;
+	uint32_t l3_count = 0;
+
+	struct cpuinfo_mach_topology mach_topology = cpuinfo_mach_detect_topology();
+
+	/* 
+	 * iOS 15 and macOS Monterey 12 added sysctls for specifying different performance
+	 * levels.  Probe `hw.nperflevels` to see if they're present.  If so,
+	 * read and validate them.
+	 */
+	struct mach_perflevel * perflevels = NULL;
+	const uint32_t nperflevels = get_sys_info_by_name("hw.nperflevels");
+	if (nperflevels > 1) {
+		perflevels = read_perflevels(nperflevels);
+
+		if (!perflevels) {
+			cpuinfo_log_error("failed to initialize perflevels");
+			goto cleanup;
+		}
+
+		/* Double-check topology counts */
+		uint32_t cores = 0;
+		uint32_t threads = 0;
+		for (uint32_t i=0; i<nperflevels; ++i) {
+			cores += perflevels[i].physicalcpu_max;
+			threads += perflevels[i].logicalcpu_max;
+		}
+
+		if (mach_topology.cores != cores) {
+			cpuinfo_log_error("mismatch topology core count (%"PRIu32" != %"PRIu32").",
+				mach_topology.cores, cores);
+			goto cleanup;
+		}
+
+		if (mach_topology.threads != threads) {
+			cpuinfo_log_error("mismatch topology thread count (%"PRIu32" != %"PRIu32").",
+				mach_topology.threads, threads);
+			goto cleanup;
+		}
+	}
+
+	/* Allocate working set of arrays that we'll populate */
+
+	processors = calloc(mach_topology.threads, sizeof(*processors));
+	if (processors == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" logical processors",
+			mach_topology.threads * sizeof(*processors), mach_topology.threads);
+		goto cleanup;
+	}
+	cores = calloc(mach_topology.cores, sizeof(*cores));
+	if (cores == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
+			mach_topology.cores * sizeof(*cores), mach_topology.cores);
+		goto cleanup;
+	}
+	packages = calloc(mach_topology.packages, sizeof(*packages));
+	if (packages == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" packages",
+			mach_topology.packages * sizeof(*packages), mach_topology.packages);
+		goto cleanup;
+	}
+
+	/* Populate packages, cores, clusters, and partially processors */
+
+	const uint32_t threads_per_core = mach_topology.threads / mach_topology.cores;
+	const uint32_t threads_per_package = mach_topology.threads / mach_topology.packages;
+	const uint32_t cores_per_package = mach_topology.cores / mach_topology.packages;
+
+	char package_name[CPUINFO_PACKAGE_NAME_MAX] = {0};
+	decode_package_name(package_name);
+
+	for (uint32_t i = 0; i < mach_topology.packages; i++) {
+		packages[i] = (struct cpuinfo_package) {
+			.processor_start = i * threads_per_package,
+			.processor_count = threads_per_package,
+			.core_start = i * cores_per_package,
+			.core_count = cores_per_package,
+		};
+		memmove(packages[i].name, package_name, CPUINFO_PACKAGE_NAME_MAX);
+	}
 
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
@@ -443,18 +995,30 @@ void cpuinfo_arm_mach_init(void) {
 		processors[i].package = &packages[package_id];
 	}
 
-	clusters = calloc(num_clusters, sizeof(struct cpuinfo_cluster));
+	/*
+	 * If we're running on a newer OS that supports perflevels, verify
+	 * number of perflevels == number of clusters.
+	 */
+	if (nperflevels > 0 && perflevels) {
+		if (nperflevels != num_clusters) {
+			cpuinfo_log_error("mismatch topology cluster count (%"PRIu32" != %"PRIu32").",
+				nperflevels, num_clusters);
+			goto cleanup;
+		}
+	}
+
+	clusters = calloc(num_clusters, sizeof(*clusters));
 	if (clusters == NULL) {
 		cpuinfo_log_error(
 			"failed to allocate %zu bytes for descriptions of %"PRIu32" clusters",
-			num_clusters * sizeof(struct cpuinfo_cluster), num_clusters);
+			num_clusters * sizeof(*clusters), num_clusters);
 		goto cleanup;
 	}
-	uarchs = calloc(num_clusters, sizeof(struct cpuinfo_uarch_info));
+	uarchs = calloc(num_clusters, sizeof(*uarchs));
 	if (uarchs == NULL) {
 		cpuinfo_log_error(
 			"failed to allocate %zu bytes for descriptions of %"PRIu32" uarchs",
-			num_clusters * sizeof(enum cpuinfo_uarch), num_clusters);
+			num_clusters * sizeof(*uarchs), num_clusters);
 		goto cleanup;
 	}
 	uint32_t cluster_idx = UINT32_MAX;
@@ -495,136 +1059,94 @@ void cpuinfo_arm_mach_init(void) {
 		packages[i].cluster_count = num_clusters;
 	}
 
-	const uint32_t cacheline_size = get_sys_info(HW_CACHELINE, "HW_CACHELINE");
-	const uint32_t l1d_cache_size = get_sys_info(HW_L1DCACHESIZE, "HW_L1DCACHESIZE");
-	const uint32_t l1i_cache_size = get_sys_info(HW_L1ICACHESIZE, "HW_L1ICACHESIZE");
-	const uint32_t l2_cache_size = get_sys_info(HW_L2CACHESIZE, "HW_L2CACHESIZE");
-	const uint32_t l3_cache_size = get_sys_info(HW_L3CACHESIZE, "HW_L3CACHESIZE");
-	const uint32_t l1_cache_associativity = 4;
-	const uint32_t l2_cache_associativity = 8;
-	const uint32_t l3_cache_associativity = 16;
-	const uint32_t cache_partitions = 1;
-	const uint32_t cache_flags = 0;
+	/* Detect and populate caches */
 
-	uint32_t threads_per_l1 = 0, l1_count = 0;
-	if (l1i_cache_size != 0 || l1d_cache_size != 0) {
-		/* Assume L1 caches are private to each core */
-		threads_per_l1 = 1;
-		l1_count = mach_topology.threads / threads_per_l1;
-		cpuinfo_log_debug("detected %"PRIu32" L1 caches", l1_count);
+	/*
+	 * Prefer perflevels to detect caches.  Fallback on error or if
+	 * perflevels are not available.
+	 */
+	bool cachesDetected = false;
+	if (nperflevels > 0 && perflevels) {
+		cachesDetected = detect_caches_using_perflevels(mach_topology, perflevels, nperflevels,
+														&l1i_caches, &l1i_count,
+														&l1d_caches, &l1d_count,
+														&l2_caches, &l2_count,
+														&l3_caches, &l3_count);
 	}
 
-	uint32_t threads_per_l2 = 0, l2_count = 0;
-	if (l2_cache_size != 0) {
-		/* Assume L2 cache is shared between all cores */
-		threads_per_l2 = mach_topology.cores;
-		l2_count = 1;
-		cpuinfo_log_debug("detected %"PRIu32" L2 caches", l2_count);
-	}
-
-	uint32_t threads_per_l3 = 0, l3_count = 0;
-	if (l3_cache_size != 0) {
-		/* Assume L3 cache is shared between all cores */
-		threads_per_l3 = mach_topology.cores;
-		l3_count = 1;
-		cpuinfo_log_debug("detected %"PRIu32" L3 caches", l3_count);
-	}
-
-	if (l1i_cache_size != 0) {
-		l1i = calloc(l1_count, sizeof(struct cpuinfo_cache));
-		if (l1i == NULL) {
-			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
-				l1_count * sizeof(struct cpuinfo_cache), l1_count);
+	if (!cachesDetected) {
+		cachesDetected = detect_caches_legacy(mach_topology,
+											  &l1i_caches, &l1i_count,
+											  &l1d_caches, &l1d_count,
+											  &l2_caches, &l2_count,
+											  &l3_caches, &l3_count);
+		if (!cachesDetected) {
 			goto cleanup;
 		}
-		for (uint32_t c = 0; c < l1_count; c++) {
-			l1i[c] = (struct cpuinfo_cache) {
-				.size            = l1i_cache_size,
-				.associativity   = l1_cache_associativity,
-				.sets            = l1i_cache_size / (l1_cache_associativity * cacheline_size),
-				.partitions      = cache_partitions,
-				.line_size       = cacheline_size,
-				.flags           = cache_flags,
-				.processor_start = c * threads_per_l1,
-				.processor_count = threads_per_l1,
-			};
-		}
-		for (uint32_t t = 0; t < mach_topology.threads; t++) {
-			processors[t].cache.l1i = &l1i[t / threads_per_l1];
+	}
+
+	/* Associate processors with caches */
+
+	if (l1i_caches && l1i_count > 0) {
+		for (uint32_t c=0; c<l1i_count; ++c) {
+			if (l1i_caches[c].processor_count < 1) {
+				cpuinfo_log_error("invalid L1I cache (processor_count < 1)");
+				goto cleanup;
+			}
+
+			uint32_t processor_start = l1i_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l1i_caches[c].processor_count;
+			for (uint32_t p=processor_start; p<processor_end; ++p) {
+				processors[p].cache.l1i = &l1i_caches[c];
+			}
 		}
 	}
 
-	if (l1d_cache_size != 0) {
-		l1d = calloc(l1_count, sizeof(struct cpuinfo_cache));
-		if (l1d == NULL) {
-			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
-				l1_count * sizeof(struct cpuinfo_cache), l1_count);
-			goto cleanup;
-		}
-		for (uint32_t c = 0; c < l1_count; c++) {
-			l1d[c] = (struct cpuinfo_cache) {
-				.size            = l1d_cache_size,
-				.associativity   = l1_cache_associativity,
-				.sets            = l1d_cache_size / (l1_cache_associativity * cacheline_size),
-				.partitions      = cache_partitions,
-				.line_size       = cacheline_size,
-				.flags           = cache_flags,
-				.processor_start = c * threads_per_l1,
-				.processor_count = threads_per_l1,
-			};
-		}
-		for (uint32_t t = 0; t < mach_topology.threads; t++) {
-			processors[t].cache.l1d = &l1d[t / threads_per_l1];
+	if (l1d_caches && l1d_count > 0) {
+		for (uint32_t c=0; c<l1d_count; ++c) {
+			if (l1d_caches[c].processor_count < 1) {
+				cpuinfo_log_error("invalid L1D cache (processor_count < 1)");
+				goto cleanup;
+			}
+
+			uint32_t processor_start = l1d_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l1d_caches[c].processor_count;
+			for (uint32_t p=processor_start; p<processor_end; ++p) {
+				processors[p].cache.l1d = &l1d_caches[c];
+			}
 		}
 	}
 
-	if (l2_count != 0) {
-		l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
-		if (l2 == NULL) {
-			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
-				l2_count * sizeof(struct cpuinfo_cache), l2_count);
-			goto cleanup;
-		}
-		for (uint32_t c = 0; c < l2_count; c++) {
-			l2[c] = (struct cpuinfo_cache) {
-				.size            = l2_cache_size,
-				.associativity   = l2_cache_associativity,
-				.sets            = l2_cache_size / (l2_cache_associativity * cacheline_size),
-				.partitions      = cache_partitions,
-				.line_size       = cacheline_size,
-				.flags           = cache_flags,
-				.processor_start = c * threads_per_l2,
-				.processor_count = threads_per_l2,
-			};
-		}
-		for (uint32_t t = 0; t < mach_topology.threads; t++) {
-			processors[t].cache.l2 = &l2[0];
+	if (l2_caches && l2_count > 0) {
+		for (uint32_t c=0; c<l2_count; ++c) {
+			if (l2_caches[c].processor_count < 1) {
+				cpuinfo_log_error("invalid L2 cache (processor_count < 1)");
+				goto cleanup;
+			}
+
+			uint32_t processor_start = l2_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l2_caches[c].processor_count;
+			for (uint32_t p=processor_start; p<processor_end; ++p) {
+				processors[p].cache.l2 = &l2_caches[c];
+			}
 		}
 	}
 
-	if (l3_count != 0) {
-		l3 = calloc(l3_count, sizeof(struct cpuinfo_cache));
-		if (l3 == NULL) {
-			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
-												l3_count * sizeof(struct cpuinfo_cache), l3_count);
-			goto cleanup;
-		}
-		for (uint32_t c = 0; c < l3_count; c++) {
-			l3[c] = (struct cpuinfo_cache) {
-				.size            = l3_cache_size,
-				.associativity   = l3_cache_associativity,
-				.sets            = l3_cache_size / (l3_cache_associativity * cacheline_size),
-				.partitions      = cache_partitions,
-				.line_size       = cacheline_size,
-				.flags           = cache_flags,
-				.processor_start = c * threads_per_l3,
-				.processor_count = threads_per_l3,
-			};
-		}
-		for (uint32_t t = 0; t < mach_topology.threads; t++) {
-			processors[t].cache.l3 = &l3[0];
+	if (l3_caches && l3_count > 0) {
+		for (uint32_t c=0; c<l3_count; ++c) {
+			if (l3_caches[c].processor_count < 1) {
+				cpuinfo_log_error("invalid L3 cache (processor_count < 1)");
+				goto cleanup;
+			}
+
+			uint32_t processor_start = l3_caches[c].processor_start;
+			uint32_t processor_end = processor_start + l3_caches[c].processor_count;
+			for (uint32_t p=processor_start; p<processor_end; ++p) {
+				processors[p].cache.l3 = &l3_caches[c];
+			}
 		}
 	}
+
 
 	/* Commit changes */
 	cpuinfo_processors = processors;
@@ -632,18 +1154,18 @@ void cpuinfo_arm_mach_init(void) {
 	cpuinfo_clusters = clusters;
 	cpuinfo_packages = packages;
 	cpuinfo_uarchs = uarchs;
-	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
-	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
-	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
-	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
+	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i_caches;
+	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d_caches;
+	cpuinfo_cache[cpuinfo_cache_level_2]  = l2_caches;
+	cpuinfo_cache[cpuinfo_cache_level_3]  = l3_caches;
 
 	cpuinfo_processors_count = mach_topology.threads;
 	cpuinfo_cores_count = mach_topology.cores;
 	cpuinfo_clusters_count = num_clusters;
 	cpuinfo_packages_count = mach_topology.packages;
 	cpuinfo_uarchs_count = num_clusters;
-	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1_count;
-	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
@@ -657,16 +1179,17 @@ void cpuinfo_arm_mach_init(void) {
 	clusters = NULL;
 	packages = NULL;
 	uarchs = NULL;
-	l1i = l1d = l2 = l3 = NULL;
+	l1i_caches = l1d_caches = l2_caches = l3_caches = NULL;
 
 cleanup:
+	free(perflevels);
 	free(processors);
 	free(cores);
 	free(clusters);
 	free(packages);
 	free(uarchs);
-	free(l1i);
-	free(l1d);
-	free(l2);
-	free(l3);
+	free(l1i_caches);
+	free(l1d_caches);
+	free(l2_caches);
+	free(l3_caches);
 }
