@@ -500,10 +500,14 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_lightning = 0x00700109,
 	/** Apple A13 processor (little cores). */
 	cpuinfo_uarch_thunder   = 0x0070010A,
-	/** Apple M1 processor (big cores). */
+	/** Apple A14 / M1 processor (big cores). */
 	cpuinfo_uarch_firestorm = 0x0070010B,
-	/** Apple M1 processor (little cores). */
+	/** Apple A14 / M1 processor (little cores). */
 	cpuinfo_uarch_icestorm  = 0x0070010C,
+	/** Apple A15 / M2 processor (big cores). */
+	cpuinfo_uarch_avalanche = 0x0070010D,
+	/** Apple A15 / M2 processor (little cores). */
+	cpuinfo_uarch_blizzard  = 0x0070010E,
 
 	/** Cavium ThunderX. */
 	cpuinfo_uarch_thunderx = 0x00800100,
