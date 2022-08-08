@@ -253,6 +253,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Firestorm";
 		case cpuinfo_uarch_icestorm:
 			return "Icestorm";
+		case cpuinfo_uarch_avalanche:
+			return "Avalanche";
+		case cpuinfo_uarch_blizzard:
+			return "Blizzard";
 		case cpuinfo_uarch_thunderx:
 			return "ThunderX";
 		case cpuinfo_uarch_thunderx2:
