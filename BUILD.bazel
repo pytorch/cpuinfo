@@ -168,8 +168,7 @@ cc_library(
         "src/arm/midr.h",
     ],
     deps = [
-        #"@clog",
-        "//deps/clog",
+        "@org_pytorch_cpuinfo//deps/clog",
     ],
 )
 
