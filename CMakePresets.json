@@ -1,0 +1,44 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "x64-uwp",
+            "displayName": "x64(uwp)/debug",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "binaryDir": "${sourceDir}/build",
+            "installDir": "${sourceDir}/install",
+            "cacheVariables": {
+                "CMAKE_SYSTEM_NAME": "WindowsStore",
+                "CMAKE_SYSTEM_VERSION": "10.0.19041.0",
+                "CMAKE_SYSTEM_PROCESSOR": "x86_64",
+                "VCPKG_TARGET_TRIPLET": "x64-uwp",
+                "CPUINFO_BUILD_UNIT_TESTS": false,
+                "CPUINFO_BUILD_MOCK_TESTS": false,
+                "CPUINFO_BUILD_BENCHMARKS": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "x64-uwp-dbg",
+            "configurePreset": "x64-uwp",
+            "configuration": "Debug"
+        },
+        {
+            "name": "x64-uwp-rel",
+            "configurePreset": "x64-uwp",
+            "configuration": "Release"
+        }
+    ]
+}
