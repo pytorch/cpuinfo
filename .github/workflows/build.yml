@@ -48,18 +48,26 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v2
-      - name: 'Configure and build(Debug)'
+      - name: 'x64-uwp(Debug)'
         uses: lukka/run-cmake@v10
         with:
-          cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
           configurePreset: 'x64-uwp'
           buildPreset: 'x64-uwp-dbg'
-      - name: 'Configure and build(Release)'
+      - name: 'x64-uwp(Release)'
         uses: lukka/run-cmake@v10
         with:
-          cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
           configurePreset: 'x64-uwp'
           buildPreset: 'x64-uwp-rel'
+      - name: 'arm64-uwp(Debug)'
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: 'arm64-uwp'
+          buildPreset: 'arm64-uwp-dbg'
+      - name: 'arm64-uwp(Release)'
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: 'arm64-uwp'
+          buildPreset: 'arm64-uwp-rel'
   cmake-android:
     strategy:
       matrix:
