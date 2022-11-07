@@ -8,8 +8,6 @@
 
 set -e
 
-mkdir -p build/local
-
 CMAKE_ARGS=()
 
 # CMake-level configuration
@@ -25,12 +23,28 @@ fi
 # Use-specified CMake arguments go last to allow overridding defaults
 CMAKE_ARGS+=($@)
 
-cd build/local && cmake ../.. \
-    "${CMAKE_ARGS[@]}"
-
 # Cross-platform parallel build
 if [ "$(uname)" == "Darwin" ]; then
+  # Build for arm64
+  mkdir -p build/arm64
+  CMAKE_ARGS+=("-DCMAKE_OSX_ARCHITECTURES=arm64")
+  cd build/arm64 && cmake ../.. \
+    "${CMAKE_ARGS[@]}"
   cmake --build . -- "-j$(sysctl -n hw.ncpu)"
+  cd ../..
+
+   # Build for x86_64
+  mkdir -p build/x86_64
+  CMAKE_ARGS+=("-DCMAKE_OSX_ARCHITECTURES=x86_64")
+  cd build/x86_64 && cmake ../.. \
+    "${CMAKE_ARGS[@]}"
+  cmake --build . -- "-j$(sysctl -n hw.ncpu)"
+  cd ../..
+
+  # Merge builds into macos_universal
+  mkdir -p build/macos_universal
+  lipo -create build/arm64/libcpuinfo.dylib build/x86_64/libcpuinfo.dylib -output build/macos_universal/libcpuinfo.dylib
+
 elif [ "$(uname)" == "Linux" ]; then
   cmake --build . -- "-j$(nproc)"
 else

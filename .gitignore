@@ -1,6 +1,9 @@
 # Ninja files
 build.ninja
 
+# idea build config
+cmake-build-debug
+
 # Build objects and artifacts
 deps/
 build/
