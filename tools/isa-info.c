@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
 		printf("\tAVX512VPOPCNTDQ: %s\n", cpuinfo_has_x86_avx512vpopcntdq() ? "yes" : "no");
 		printf("\tAVX512VNNI: %s\n", cpuinfo_has_x86_avx512vnni() ? "yes" : "no");
 		printf("\tAVX512BF16: %s\n", cpuinfo_has_x86_avx512bf16() ? "yes" : "no");
+		printf("\tAVX512FP16: %s\n", cpuinfo_has_x86_avx512fp16() ? "yes" : "no");
 		printf("\tAVX512VP2INTERSECT: %s\n", cpuinfo_has_x86_avx512vp2intersect() ? "yes" : "no");
 		printf("\tAVX512_4VNNIW: %s\n", cpuinfo_has_x86_avx512_4vnniw() ? "yes" : "no");
 		printf("\tAVX512_4FMAPS: %s\n", cpuinfo_has_x86_avx512_4fmaps() ? "yes" : "no");

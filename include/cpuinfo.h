@@ -740,6 +740,7 @@ void CPUINFO_ABI cpuinfo_deinitialize(void);
 		bool avx512vpopcntdq;
 		bool avx512vnni;
 		bool avx512bf16;
+		bool avx512fp16;
 		bool avx512vp2intersect;
 		bool avx512_4vnniw;
 		bool avx512_4fmaps;
@@ -1214,6 +1215,14 @@ static inline bool cpuinfo_has_x86_avx512vnni(void) {
 static inline bool cpuinfo_has_x86_avx512bf16(void) {
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		return cpuinfo_isa.avx512bf16;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avx512fp16(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avx512fp16;
 	#else
 		return false;
 	#endif
