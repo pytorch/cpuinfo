@@ -52,6 +52,7 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 			case UINT32_C(0x4100D050): /* Cortex-A55 */
 			case UINT32_C(0x4100D060): /* Cortex-A65 */
+			case UINT32_C(0x4100D0A0): /* Cortex-A75 */
 			case UINT32_C(0x4100D0B0): /* Cortex-A76 */
 			case UINT32_C(0x4100D0C0): /* Neoverse N1 */
 			case UINT32_C(0x4100D0D0): /* Cortex-A77 */
