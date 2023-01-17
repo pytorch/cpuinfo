@@ -19,8 +19,9 @@ C99OPTS = [
 # Source code common to all platforms.
 COMMON_SRCS = [
     "src/api.c",
-    "src/init.c",
     "src/cache.c",
+    "src/init.c",
+    "src/log.c",
 ]
 
 # Architecture-specific sources and headers.
@@ -139,6 +140,7 @@ cc_library(
     }) + [
         "-Iexternal/cpuinfo/include",
         "-Iexternal/cpuinfo/src",
+        "-DCPUINFO_LOG_LEVEL=2",
     ],
     includes = [
         "include",
@@ -166,9 +168,6 @@ cc_library(
         "src/arm/linux/cp.h",
         "src/arm/api.h",
         "src/arm/midr.h",
-    ],
-    deps = [
-        "@org_pytorch_cpuinfo//deps/clog",
     ],
 )
 
