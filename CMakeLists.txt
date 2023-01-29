@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.5 FATAL_ERROR)
 # ---[ Setup project
 PROJECT(
     cpuinfo
-    LANGUAGES C CXX
+    LANGUAGES C
     )
 
 # ---[ Options.
@@ -111,6 +111,12 @@ ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|
       "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
     SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
+  ENDIF()
+ENDIF()
+
+IF(CPUINFO_SUPPORTED_PLATFORM)
+  IF(CPUINFO_BUILD_MOCK_TESTS OR CPUINFO_BUILD_UNIT_TESTS OR CPUINFO_BUILD_BENCHMARKS)
+    ENABLE_LANGUAGE(CXX)
   ENDIF()
 ENDIF()
 
