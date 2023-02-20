@@ -64,4 +64,9 @@ void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties prop
 	const int ro_hardware_chipname_length =
 		cpuinfo_android_property_get("ro.hardware.chipname", properties->ro_hardware_chipname);
 	cpuinfo_log_debug("read ro.hardware.chipname = \"%.*s\"", ro_hardware_chipname_length, properties->ro_hardware_chipname);
+
+	// Added support for "ro.hardware" property.
+	const int ro_hardware_length =
+		cpuinfo_android_property_get("ro.hardware", properties->ro_hardware);
+	cpuinfo_log_debug("read ro.hardware = \"%.*s\"", ro_hardware_length, properties->ro_hardware);
 }

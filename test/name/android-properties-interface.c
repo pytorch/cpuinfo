@@ -105,7 +105,7 @@ void cpuinfo_arm_android_parse_ro_chipname(
 	const char chipname[CPUINFO_BUILD_PROP_VALUE_MAX], uint32_t cores, uint32_t max_cpu_freq_max,
 	char chipset_name[CPUINFO_ARM_CHIPSET_NAME_MAX])
 {
-	struct cpuinfo_arm_chipset chipset = cpuinfo_arm_android_decode_chipset_from_ro_chipname(chipname);
+	struct cpuinfo_arm_chipset chipset = cpuinfo_arm_android_decode_chipset_from_ro_chipname(chipname, cores);
 	if (chipset.series == cpuinfo_arm_chipset_series_unknown) {
 		chipset_name[0] = 0;
 	} else {
