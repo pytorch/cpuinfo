@@ -3150,7 +3150,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 	 */
 
 	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_chipname(
-		const char chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
+		const char chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX],uint32_t cores, uint32_t max_cpu_freq_max)
 	{
 		struct cpuinfo_arm_chipset chipset;
 		const size_t chipname_length = strnlen(chipname, CPUINFO_BUILD_PROP_VALUE_MAX);
@@ -3722,9 +3722,11 @@ void cpuinfo_arm_chipset_to_string(
 			[cpuinfo_android_chipset_property_ro_arch] =
 				cpuinfo_arm_android_decode_chipset_from_ro_arch(properties->ro_arch),
 			[cpuinfo_android_chipset_property_ro_chipname] =
-				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname),
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname, cores, max_cpu_freq_max),
 			[cpuinfo_android_chipset_property_ro_hardware_chipname] =
-				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_hardware_chipname),
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_hardware_chipname, cores, max_cpu_freq_max),
+			[cpuinfo_android_chipset_property_ro_hardware] =
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_hardware, cores, max_cpu_freq_max),
 		};
 		enum cpuinfo_arm_chipset_vendor vendor = cpuinfo_arm_chipset_vendor_unknown;
 		for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
