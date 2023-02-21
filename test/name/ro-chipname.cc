@@ -198,4 +198,8 @@ TEST(RO_CHIPNAME, allwinner_sunxi) {
 		parse_ro_chipname("sun50iw1", 4));
 	EXPECT_EQ("Allwinner A523",
 		parse_ro_chipname("sun55iw3p1", 8));
+	EXPECT_EQ("Allwinner A100",
+		parse_ro_chipname("sun50iw10p1", 4, 1464000));
+	EXPECT_EQ("Allwinner A133",
+		parse_ro_chipname("sun50iw10p1", 4, 1512000));
 }
