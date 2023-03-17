@@ -833,8 +833,18 @@ static bool connect_packages_cores_clusters_by_processors(
 
 		if (chip_info) {
 			size_t converted_chars = 0;
-			wcstombs_s(&converted_chars, package->name, CPUINFO_PACKAGE_NAME_MAX,
-			            chip_info->chip_name_string, _TRUNCATE);
+			if (!WideCharToMultiByte(
+					CP_UTF8,
+					WC_ERR_INVALID_CHARS,
+					chip_info->chip_name_string,
+					-1,
+					package->name,
+					CPUINFO_PACKAGE_NAME_MAX,
+					NULL,
+					NULL)) {
+				cpuinfo_log_error("cpu name character conversion error");
+				return false;
+			};
 		}
 
 		/* Set start indexes and counts per packages / clusters / cores - going backwards */

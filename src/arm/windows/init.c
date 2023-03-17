@@ -198,7 +198,7 @@ static bool get_system_info_from_registry(
 	enum cpuinfo_vendor* vendor)
 {
 	bool result = false;
-	char* textBuffer = NULL;
+	char* text_buffer = NULL;
 	LPCWSTR cpu0_subkey = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
 	LPCWSTR chip_name_value = L"ProcessorNameString";
 	LPCWSTR vendor_name_value = L"VendorIdentifier";
@@ -208,13 +208,13 @@ static bool get_system_info_from_registry(
 	HANDLE heap = GetProcessHeap();
 
 	/* 1. Read processor model name from registry and find in the hard-coded list. */
-	if (!read_registry(cpu0_subkey, chip_name_value, &textBuffer)) {
+	if (!read_registry(cpu0_subkey, chip_name_value, &text_buffer)) {
 		cpuinfo_log_error("Registry read error");
 		goto cleanup;
 	}
 	for (uint32_t i = 0; i < (uint32_t) woa_chip_name_last; i++) {
 		size_t compare_length = wcsnlen(woa_chips[i].chip_name_string, CPUINFO_PACKAGE_NAME_MAX);
-		int compare_result = wcsncmp(textBuffer, woa_chips[i].chip_name_string, compare_length);
+		int compare_result = wcsncmp(text_buffer, woa_chips[i].chip_name_string, compare_length);
 		if (compare_result == 0) {
 			*chip_info = woa_chips+i;
 			break;
@@ -222,19 +222,19 @@ static bool get_system_info_from_registry(
 	}
 	if (*chip_info == NULL) {
 		/* No match was found, so print a warning and assign the unknown case. */
-		cpuinfo_log_error("Unknown chip model name '%ls'.\nPlease add new Windows on Arm SoC/chip support to arm/windows/init.c!", textBuffer);
+		cpuinfo_log_error("Unknown chip model name '%ls'.\nPlease add new Windows on Arm SoC/chip support to arm/windows/init.c!", text_buffer);
 		goto cleanup;
 	}
 	cpuinfo_log_debug("detected chip model name: %s", (**chip_info).chip_name_string);
 
 	/* 2. Read vendor/manufacturer name from registry. */
-	if (!read_registry(cpu0_subkey, vendor_name_value, &textBuffer)) {
+	if (!read_registry(cpu0_subkey, vendor_name_value, &text_buffer)) {
 		cpuinfo_log_error("Registry read error");
 		goto cleanup;
 	}
 
 	for (uint32_t i = 0; i < (sizeof(vendors) / sizeof(struct vendor_info)); i++) {
-		if (wcsncmp(textBuffer, vendors[i].vendor_name,
+		if (wcsncmp(text_buffer, vendors[i].vendor_name,
 				wcslen(vendors[i].vendor_name)) == 0) {
 			*vendor = vendors[i].vendor;
 			result = true;
@@ -242,12 +242,12 @@ static bool get_system_info_from_registry(
 		}
 	}
 	if (*vendor == cpuinfo_vendor_unknown) {
-		cpuinfo_log_error("Unexpected vendor: %ls", textBuffer);
+		cpuinfo_log_error("Unexpected vendor: %ls", text_buffer);
 	}
 
 cleanup:
-	HeapFree(heap, 0, textBuffer);
-	textBuffer = NULL;
+	HeapFree(heap, 0, text_buffer);
+	text_buffer = NULL;
 	return result;
 }
 
