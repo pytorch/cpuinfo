@@ -832,8 +832,9 @@ static bool connect_packages_cores_clusters_by_processors(
 		processor->cluster = cluster;
 
 		if (chip_info) {
-			strncpy_s(package->name, CPUINFO_PACKAGE_NAME_MAX, chip_info->chip_name_string,
-				strnlen(chip_info->chip_name_string, CPUINFO_PACKAGE_NAME_MAX));
+			size_t converted_chars = 0;
+			wcstombs_s(&converted_chars, package->name, CPUINFO_PACKAGE_NAME_MAX,
+			            chip_info->chip_name_string, _TRUNCATE);
 		}
 
 		/* Set start indexes and counts per packages / clusters / cores - going backwards */
