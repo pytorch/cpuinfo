@@ -689,7 +689,7 @@ static bool parse_relation_cache_info(
 		current_cache->flags = CPUINFO_CACHE_UNIFIED;
 	}
 
-	for (uint32_t i = 0; i <= info->Cache.GroupCount; i++) {
+	for (uint32_t i = 0; i < info->Cache.GroupCount; i++) {
 	/* Zero GroupCount is valid, GroupMask still can store bits set. */
 		const uint32_t group_id = info->Cache.GroupMasks[i].Group;
 		/* Bitmask representing processors in this group belonging to this package */

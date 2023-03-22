@@ -30,6 +30,10 @@ static struct vendor_info vendors[] = {
 	{
 		"Qualcomm",
 		cpuinfo_vendor_qualcomm
+	},
+	{
+		"Ampere(R)",
+		cpuinfo_vendor_ampere
 	}
 };
 
@@ -62,6 +66,32 @@ static struct woa_chip_info woa_chips[] = {
 			{
 				cpuinfo_uarch_cortex_a76,
 				3150000000
+			}
+		}
+	},
+	/* Microsoft Windows Dev Kit 2023 */
+	{
+		"Snapdragon (TM) 8cx Gen 3 @ 3.0 GHz",
+		woa_chip_name_microsoft_sq_3,
+		{
+			{
+				cpuinfo_uarch_cortex_a78,
+				2420000000,
+			},
+			{
+				cpuinfo_uarch_cortex_x1,
+				3000000000
+			}
+		}
+	},
+	/* Ampere Altra */
+	{
+		"Ampere(R) Altra(R) Processor",
+		woa_chip_name_ampere_altra,
+		{
+			{
+				cpuinfo_uarch_neoverse_n1,
+				3000000000
 			}
 		}
 	}

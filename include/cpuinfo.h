@@ -188,6 +188,8 @@ enum cpuinfo_vendor {
 	 * Processors are variants of AMD cores.
 	 */
 	cpuinfo_vendor_hygon    = 16,
+	/** Ampere Computing LLC. Vendor of ARM64 processor microarchitectures. */
+	cpuinfo_vendor_ampere   = 17,
 
 	/* Active vendors of embedded CPUs */
 
