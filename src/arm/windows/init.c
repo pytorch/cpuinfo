@@ -37,6 +37,17 @@ static struct vendor_info vendors[] = {
 	}
 };
 
+static struct woa_chip_info woa_chip_unknown = {
+	"Unknown",
+	woa_chip_name_unknown,
+	{
+		{
+			cpuinfo_uarch_unknown,
+			0
+		}
+	}
+};
+
 /* Please add new SoC/chip info here! */
 static struct woa_chip_info woa_chips[] = {
 	/* Microsoft SQ1 Kryo 495 4 + 4 cores (3 GHz + 1.80 GHz) */
@@ -102,13 +113,17 @@ BOOL CALLBACK cpuinfo_arm_windows_init(
 {
 	struct woa_chip_info *chip_info = NULL;
 	enum cpuinfo_vendor vendor = cpuinfo_vendor_unknown;
-	bool result = false;
 	
 	set_cpuinfo_isa_fields();
-	result = get_system_info_from_registry(&chip_info, &vendor);	
-	result &= cpu_info_init_by_logical_sys_info(chip_info, vendor);
-	cpuinfo_is_initialized = result;
-	return ((result == true) ? TRUE : FALSE);
+
+	const bool system_result = get_system_info_from_registry(&chip_info, &vendor);
+	if (!system_result) {
+		chip_info = &woa_chip_unknown;
+	}
+
+	cpuinfo_is_initialized = cpu_info_init_by_logical_sys_info(chip_info, vendor);
+
+	return (system_result && cpuinfo_is_initialized ? TRUE : FALSE);
 }
 
 bool get_core_uarch_for_efficiency(
