@@ -55,12 +55,13 @@ MACRO(CPUINFO_TARGET_RUNTIME_LIBRARY target)
   ENDIF()
 ENDMACRO()
 
-SET(APPLE_SYSTEM CMAKE_SYSTEM_NAME MATCHES "^(Darwin|iOS|tvOS|watchOS)$")
-message(${APPLE_SYSTEM})
+-- [ Determine whether building for Apple's desktop or mobile OSes
+SET(IS_APPLE_OS CMAKE_SYSTEM_NAME MATCHES "^(Darwin|iOS|tvOS|watchOS)$")
+
 
 # -- [ Determine target processor
 SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_SYSTEM_PROCESSOR}")
-IF(APPLE_SYSTEM)
+IF(IS_APPLE_OS AND CMAKE_OSX_ARCHITECTURES MATCHES "^(x86_64|arm64.*)$")
   SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_OSX_ARCHITECTURES}")
 ELSEIF(CMAKE_GENERATOR MATCHES "^Visual Studio " AND CMAKE_GENERATOR_PLATFORM)
   IF(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32")
@@ -99,7 +100,7 @@ IF(NOT CMAKE_SYSTEM_NAME)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
   SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
 ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android)$")
-  IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT APPLE_SYSTEM)
+  IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT IS_APPLE_OS)
     MESSAGE(WARNING
       "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
@@ -157,7 +158,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       LIST(APPEND CPUINFO_SRCS
         src/x86/linux/init.c
         src/x86/linux/cpuinfo.c)
-    ELSEIF(APPLE_SYSTEM)
+    ELSEIF(IS_APPLE_OS)
       LIST(APPEND CPUINFO_SRCS src/x86/mach/init.c)
     ELSEIF(CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS)$")
       LIST(APPEND CPUINFO_SRCS src/x86/windows/init.c)
@@ -186,7 +187,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64)$")
         LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch64-isa.c)
       ENDIF()
-    ELSEIF(APPLE_SYSTEM AND CPUINFO_TARGET_PROCESSOR MATCHES "arm64.*")
+    ELSEIF(IS_APPLE_OS AND CPUINFO_TARGET_PROCESSOR MATCHES "arm64.*")
       LIST(APPEND CPUINFO_SRCS src/arm/mach/init.c)
     ENDIF()
     IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -206,7 +207,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       src/linux/multiline.c
       src/linux/cpulist.c
       src/linux/processors.c)
-  ELSEIF(APPLE_SYSTEM)
+  ELSEIF(IS_APPLE_OS)
     LIST(APPEND CPUINFO_SRCS src/mach/topology.c)
   ENDIF()
 
