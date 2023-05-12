@@ -55,9 +55,16 @@ MACRO(CPUINFO_TARGET_RUNTIME_LIBRARY target)
   ENDIF()
 ENDMACRO()
 
+# -- [ Determine whether building for Apple's desktop or mobile OSes
+IF(CMAKE_SYSTEM_NAME MATCHES "^(Darwin|iOS|tvOS|watchOS)$")
+  SET(IS_APPLE_OS TRUE)
+ELSE()
+  SET(IS_APPLE_OS FALSE)
+ENDIF()
+
 # -- [ Determine target processor
 SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_SYSTEM_PROCESSOR}")
-IF(IOS OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_OSX_ARCHITECTURES MATCHES "^(x86_64|arm64)$"))
+IF(IS_APPLE_OS AND CMAKE_OSX_ARCHITECTURES MATCHES "^(x86_64|arm64.*)$")
   SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_OSX_ARCHITECTURES}")
 ELSEIF(CMAKE_GENERATOR MATCHES "^Visual Studio " AND CMAKE_GENERATOR_PLATFORM)
   IF(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32")
@@ -66,7 +73,7 @@ ELSEIF(CMAKE_GENERATOR MATCHES "^Visual Studio " AND CMAKE_GENERATOR_PLATFORM)
     SET(CPUINFO_TARGET_PROCESSOR "x86_64")
   ELSEIF(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
     SET(CPUINFO_TARGET_PROCESSOR "arm64")
-  ELSEIF(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64EC")
+  ELSEIF(CMAKE_GENERATOR_PLATFORM MATCHES "^(ARM64EC|arm64ec|ARM64E|arm64e)")
     SET(CPUINFO_TARGET_PROCESSOR "arm64")
   ELSE()
     MESSAGE(FATAL_ERROR "Unsupported Visual Studio architecture \"${CMAKE_GENERATOR_PLATFORM}\"")
@@ -82,12 +89,13 @@ IF(NOT CMAKE_SYSTEM_PROCESSOR)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
     SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
   ENDIF()
-ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64|ARM64)$")
+ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64.*|ARM64.*)$")
   MESSAGE(WARNING
     "Target processor architecture \"${CPUINFO_TARGET_PROCESSOR}\" is not supported in cpuinfo. "
     "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
   SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
 ENDIF()
+
 
 IF(NOT CMAKE_SYSTEM_NAME)
     MESSAGE(WARNING
@@ -95,7 +103,7 @@ IF(NOT CMAKE_SYSTEM_NAME)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
   SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
 ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android)$")
-  IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
+  IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT IS_APPLE_OS)
     MESSAGE(WARNING
       "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
@@ -153,7 +161,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       LIST(APPEND CPUINFO_SRCS
         src/x86/linux/init.c
         src/x86/linux/cpuinfo.c)
-    ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    ELSEIF(IS_APPLE_OS)
       LIST(APPEND CPUINFO_SRCS src/x86/mach/init.c)
     ELSEIF(CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS)$")
       LIST(APPEND CPUINFO_SRCS src/x86/windows/init.c)
@@ -162,7 +170,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
     LIST(APPEND CPUINFO_SRCS
       src/arm/windows/init-by-logical-sys-info.c
       src/arm/windows/init.c)
-  ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(armv[5-8].*|aarch64|arm64)$" OR IOS_ARCH MATCHES "^(armv7.*|arm64.*)$")
+  ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(armv[5-8].*|aarch64|arm64.*)$" OR IOS_ARCH MATCHES "^(armv7.*|arm64.*)$")
     LIST(APPEND CPUINFO_SRCS
       src/arm/uarch.c
       src/arm/cache.c)
@@ -182,7 +190,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64)$")
         LIST(APPEND CPUINFO_SRCS src/arm/linux/aarch64-isa.c)
       ENDIF()
-    ELSEIF(IOS OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CPUINFO_TARGET_PROCESSOR STREQUAL "arm64"))
+    ELSEIF(IS_APPLE_OS AND CPUINFO_TARGET_PROCESSOR MATCHES "arm64.*")
       LIST(APPEND CPUINFO_SRCS src/arm/mach/init.c)
     ENDIF()
     IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -202,7 +210,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       src/linux/multiline.c
       src/linux/cpulist.c
       src/linux/processors.c)
-  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+  ELSEIF(IS_APPLE_OS)
     LIST(APPEND CPUINFO_SRCS src/mach/topology.c)
   ENDIF()
 
