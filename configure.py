@@ -57,8 +57,13 @@ def main(args):
                         "arm/android/properties.c",
                     ]
         if build.target.is_riscv:
+            sources += [
+                "riscv/cache.c",
+            ]
             if build.target.is_linux:
                 sources += [
+                    "riscv/linux/cpuinfo.c",
+                    "riscv/linux/hwcap.c",
                     "riscv/linux/init.c",
                     "riscv/linux/riscv-isa.c",
                 ]

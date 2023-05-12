@@ -88,7 +88,7 @@ inline static bool is_whitespace(char c) {
 	static const uint32_t default_max_processors_count = CPU_SETSIZE;
 #endif
 
-static bool uint32_parser(const char* text_start, const char* text_end, void* context) {
+static bool uint32_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	if (text_start == text_end) {
 		cpuinfo_log_error("failed to parse file %s: file is empty", KERNEL_MAX_FILENAME);
 		return false;
@@ -98,13 +98,13 @@ static bool uint32_parser(const char* text_start, const char* text_end, void* co
 	const char* parsed_end = parse_number(text_start, text_end, &kernel_max);
 	if (parsed_end == text_start) {
 		cpuinfo_log_error("failed to parse file %s: \"%.*s\" is not an unsigned number",
-			KERNEL_MAX_FILENAME, (int) (text_end - text_start), text_start);
+			filename, (int) (text_end - text_start), text_start);
 		return false;
 	} else {
 		for (const char* char_ptr = parsed_end; char_ptr != text_end; char_ptr++) {
 			if (!is_whitespace(*char_ptr)) {
 				cpuinfo_log_warning("non-whitespace characters \"%.*s\" following number in file %s are ignored",
-					(int) (text_end - char_ptr), char_ptr, KERNEL_MAX_FILENAME);
+					(int) (text_end - char_ptr), char_ptr, filename);
 				break;
 			}
 		}
@@ -255,7 +255,7 @@ static bool max_processor_number_parser(uint32_t processor_list_start, uint32_t 
 uint32_t cpuinfo_linux_get_max_possible_processor(uint32_t max_processors_count) {
 	uint32_t max_possible_processor = 0;
 	if (!cpuinfo_linux_parse_cpulist(POSSIBLE_CPULIST_FILENAME, max_processor_number_parser, &max_possible_processor)) {
-		#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 			cpuinfo_log_error("failed to parse the list of possible processors in %s", POSSIBLE_CPULIST_FILENAME);
 		#else
 			cpuinfo_log_warning("failed to parse the list of possible processors in %s", POSSIBLE_CPULIST_FILENAME);
@@ -274,7 +274,7 @@ uint32_t cpuinfo_linux_get_max_possible_processor(uint32_t max_processors_count)
 uint32_t cpuinfo_linux_get_max_present_processor(uint32_t max_processors_count) {
 	uint32_t max_present_processor = 0;
 	if (!cpuinfo_linux_parse_cpulist(PRESENT_CPULIST_FILENAME, max_processor_number_parser, &max_present_processor)) {
-		#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+		#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 			cpuinfo_log_error("failed to parse the list of present processors in %s", PRESENT_CPULIST_FILENAME);
 		#else
 			cpuinfo_log_warning("failed to parse the list of present processors in %s", PRESENT_CPULIST_FILENAME);

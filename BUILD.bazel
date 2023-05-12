@@ -45,6 +45,7 @@ ARM_SRCS = [
 
 RISCV_SRCS = [
     "src/riscv/uarch.c",
+    "src/riscv/cache.c",
 ]
 
 # Platform-specific sources and headers
@@ -86,9 +87,11 @@ LINUX_ARM32_SRCS = LINUX_ARM_SRCS + ["src/arm/linux/aarch32-isa.c"]
 LINUX_ARM64_SRCS = LINUX_ARM_SRCS + ["src/arm/linux/aarch64-isa.c"]
 
 LINUX_RISCV_SRCS = [
+    "src/riscv/linux/cpuinfo.c",
+    "src/riscv/linux/hwcap.c",
     "src/riscv/linux/init.c",
-    "src/riscv/linux/riscv-isa.c",
     "src/riscv/linux/riscv-hw.c",
+    "src/riscv/linux/riscv-isa.c",
 ]
 
 ANDROID_ARM_SRCS = [

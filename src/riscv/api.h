@@ -4,6 +4,7 @@
 
 #include <cpuinfo.h>
 #include <cpuinfo/common.h>
+#include <cpuinfo/internal-api.h>
 
 /* RISC-V Vendor IDs. */
 enum cpuinfo_riscv_chipset_vendor {
@@ -40,3 +41,12 @@ CPUINFO_INTERNAL void cpuinfo_riscv_decode_vendor_uarch(
 		uint32_t imp_id,
 		enum cpuinfo_vendor vendor[restrict static 1],
 		enum cpuinfo_uarch uarch[restrict static 1]);
+
+CPUINFO_INTERNAL void cpuinfo_riscv_decode_cache(
+        enum cpuinfo_uarch uarch,
+        struct cpuinfo_cache l1i[restrict static 1],
+        struct cpuinfo_cache l1d[restrict static 1],
+        struct cpuinfo_cache l2[restrict static 1]);
+
+CPUINFO_INTERNAL uint32_t cpuinfo_riscv_compute_max_cache_size(
+        const struct cpuinfo_processor processor[restrict static 1]);

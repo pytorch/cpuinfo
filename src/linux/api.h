@@ -26,7 +26,7 @@
 
 typedef bool (*cpuinfo_cpulist_callback)(uint32_t, uint32_t, void*);
 CPUINFO_INTERNAL bool cpuinfo_linux_parse_cpulist(const char* filename, cpuinfo_cpulist_callback callback, void* context);
-typedef bool (*cpuinfo_smallfile_callback)(const char*, const char*, void*);
+typedef bool (*cpuinfo_smallfile_callback)(const char*, const char*, const char*, void*);
 CPUINFO_INTERNAL bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cpuinfo_smallfile_callback, void* context);
 typedef bool (*cpuinfo_line_callback)(const char*, const char*, void*, uint64_t);
 CPUINFO_INTERNAL bool cpuinfo_linux_parse_multiline_file(const char* filename, size_t buffer_size, cpuinfo_line_callback, void* context);
