@@ -56,7 +56,11 @@ MACRO(CPUINFO_TARGET_RUNTIME_LIBRARY target)
 ENDMACRO()
 
 # -- [ Determine whether building for Apple's desktop or mobile OSes
-SET(IS_APPLE_OS CMAKE_SYSTEM_NAME MATCHES "^(Darwin|iOS|tvOS|watchOS)$")
+IF(CMAKE_SYSTEM_NAME MATCHES "^(Darwin|iOS|tvOS|watchOS)$")
+  SET(IS_APPLE_OS TRUE)
+ELSE()
+  SET(IS_APPLE_OS FALSE)
+ENDIF()
 
 # -- [ Determine target processor
 SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_SYSTEM_PROCESSOR}")
