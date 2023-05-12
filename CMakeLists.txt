@@ -58,7 +58,6 @@ ENDMACRO()
 # -- [ Determine whether building for Apple's desktop or mobile OSes
 SET(IS_APPLE_OS CMAKE_SYSTEM_NAME MATCHES "^(Darwin|iOS|tvOS|watchOS)$")
 
-
 # -- [ Determine target processor
 SET(CPUINFO_TARGET_PROCESSOR "${CMAKE_SYSTEM_PROCESSOR}")
 IF(IS_APPLE_OS AND CMAKE_OSX_ARCHITECTURES MATCHES "^(x86_64|arm64.*)$")
