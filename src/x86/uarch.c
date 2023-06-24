@@ -225,6 +225,12 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x50: // Cezanne
 							return cpuinfo_uarch_zen3;
 					}
+					if ((model_info->model >= 0x10 && model_info->model <= 0x1F) || // Stones
+						(model_info->model >= 0x60 && model_info->model <= 0x6F) || // Raphael
+						(model_info->model >= 0x70 && model_info->model <= 0x77) || // Phoenix, Hawkpoint1
+						(model_info->model >= 0x78 && model_info->model <= 0x7F) || // Phoenix 2, Hawkpoint2
+						(model_info->model >= 0xA0 && model_info->model <= 0xAF))   // Stones-Dense
+							return cpuinfo_uarch_zen4;
 					break;
 			}
 			break;
