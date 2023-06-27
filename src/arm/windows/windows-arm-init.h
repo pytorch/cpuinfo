@@ -20,7 +20,7 @@ struct core_info_by_chip_name {
  * but can be read from registry.
  */
 struct woa_chip_info {
-	char* chip_name_string;
+	wchar_t* chip_name_string;
 	enum woa_chip_name chip_name;
 	struct core_info_by_chip_name uarchs[woa_chip_name_last];
 };

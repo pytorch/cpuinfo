@@ -21,24 +21,24 @@ static bool get_system_info_from_registry(
 	enum cpuinfo_vendor* vendor);
 
 struct vendor_info {
-	char vendor_name[VENDOR_NAME_MAX];
+	wchar_t vendor_name[VENDOR_NAME_MAX];
 	enum cpuinfo_vendor vendor;
 };
 
 /* Please add new vendor here! */
 static struct vendor_info vendors[] = {
 	{
-		"Qualcomm",
+		L"Qualcomm",
 		cpuinfo_vendor_qualcomm
 	},
 	{
-		"Ampere(R)",
+		L"Ampere(R)",
 		cpuinfo_vendor_ampere
 	}
 };
 
 static struct woa_chip_info woa_chip_unknown = {
-	"Unknown",
+	L"Unknown",
 	woa_chip_name_unknown,
 	{
 		{
@@ -52,7 +52,7 @@ static struct woa_chip_info woa_chip_unknown = {
 static struct woa_chip_info woa_chips[] = {
 	/* Microsoft SQ1 Kryo 495 4 + 4 cores (3 GHz + 1.80 GHz) */
 	{
-		"Microsoft SQ1",
+		L"Microsoft SQ1",
 		woa_chip_name_microsoft_sq_1,
 		{
 			{
@@ -67,7 +67,7 @@ static struct woa_chip_info woa_chips[] = {
 	},
 	/* Microsoft SQ2 Kryo 495 4 + 4 cores (3.15 GHz + 2.42 GHz) */
 	{
-		"Microsoft SQ2",
+		L"Microsoft SQ2",
 		woa_chip_name_microsoft_sq_2,
 		{
 			{
@@ -82,7 +82,7 @@ static struct woa_chip_info woa_chips[] = {
 	},
 	/* Microsoft Windows Dev Kit 2023 */
 	{
-		"Snapdragon (TM) 8cx Gen 3 @ 3.0 GHz",
+		L"Snapdragon (TM) 8cx Gen 3 @ 3.0 GHz",
 		woa_chip_name_microsoft_sq_3,
 		{
 			{
@@ -97,7 +97,7 @@ static struct woa_chip_info woa_chips[] = {
 	},
 	/* Ampere Altra */
 	{
-		"Ampere(R) Altra(R) Processor",
+		L"Ampere(R) Altra(R) Processor",
 		woa_chip_name_ampere_altra,
 		{
 			{
@@ -146,46 +146,46 @@ bool get_core_uarch_for_efficiency(
 /* Static helper functions */
 
 static bool read_registry(
-	LPCTSTR subkey,
-	LPCTSTR value,
-	char** textBuffer)
+	LPCWSTR subkey,
+	LPCWSTR value,
+	char** text_buffer)
 {
-	DWORD keyType = 0;
-	DWORD dataSize = 0;
+	DWORD key_type = 0;
+	DWORD data_size = 0;
 	const DWORD flags = RRF_RT_REG_SZ; /* Only read strings (REG_SZ) */
 	LSTATUS result = 0;
 	HANDLE heap = GetProcessHeap();
 
-	result = RegGetValue(
-		HKEY_LOCAL_MACHINE, 
+	result = RegGetValueW(
+		HKEY_LOCAL_MACHINE,
 		subkey,
 		value,
 		flags,
-		&keyType,
+		&key_type,
 		NULL, /* Request buffer size */
-		&dataSize);
-	if (result != 0 || dataSize == 0) {
+		&data_size);
+	if (result != 0 || data_size == 0) {
 		cpuinfo_log_error("Registry entry size read error");
 		return false;
 	}
 
-	if (*textBuffer) {
-		HeapFree(heap, 0, *textBuffer);
+	if (*text_buffer) {
+		HeapFree(heap, 0, *text_buffer);
 	}
-	*textBuffer = HeapAlloc(heap, HEAP_ZERO_MEMORY, dataSize);
-	if (*textBuffer == NULL) {
+	*text_buffer = HeapAlloc(heap, HEAP_ZERO_MEMORY, data_size * sizeof(wchar_t));
+	if (*text_buffer == NULL) {
 		cpuinfo_log_error("Registry textbuffer allocation error");
 		return false;
 	}
 
-	result = RegGetValue(
+	result = RegGetValueW(
 		HKEY_LOCAL_MACHINE,
 		subkey,
 		value,
 		flags,
 		NULL,
-		*textBuffer, /* Write string in this destination buffer */
-		&dataSize);
+		*text_buffer, /* Write string in this destination buffer */
+		&data_size);
 	if (result != 0) {
 		cpuinfo_log_error("Registry read error");
 		return false;
@@ -198,56 +198,56 @@ static bool get_system_info_from_registry(
 	enum cpuinfo_vendor* vendor)
 {
 	bool result = false;
-	char* textBuffer = NULL;
-	LPCTSTR cpu0_subkey =
-		(LPCTSTR)"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
-	LPCTSTR chip_name_value = (LPCTSTR)"ProcessorNameString";
-	LPCTSTR vendor_name_value = (LPCTSTR)"VendorIdentifier";
+	char* text_buffer = NULL;
+	LPCWSTR cpu0_subkey = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
+	LPCWSTR chip_name_value = L"ProcessorNameString";
+	LPCWSTR vendor_name_value = L"VendorIdentifier";
 
 	*chip_info = NULL;
 	*vendor = cpuinfo_vendor_unknown;
 	HANDLE heap = GetProcessHeap();
 
 	/* 1. Read processor model name from registry and find in the hard-coded list. */
-	if (!read_registry(cpu0_subkey, chip_name_value, &textBuffer)) {
+	if (!read_registry(cpu0_subkey, chip_name_value, &text_buffer)) {
 		cpuinfo_log_error("Registry read error");
 		goto cleanup;
 	}
 	for (uint32_t i = 0; i < (uint32_t) woa_chip_name_last; i++) {
-		size_t compare_length = strnlen(woa_chips[i].chip_name_string, CPUINFO_PACKAGE_NAME_MAX);
-		int compare_result = strncmp(textBuffer, woa_chips[i].chip_name_string, compare_length);
+		size_t compare_length = wcsnlen(woa_chips[i].chip_name_string, CPUINFO_PACKAGE_NAME_MAX);
+		int compare_result = wcsncmp(text_buffer, woa_chips[i].chip_name_string, compare_length);
 		if (compare_result == 0) {
 			*chip_info = woa_chips+i;
 			break;
 		}
 	}
 	if (*chip_info == NULL) {
-		cpuinfo_log_error("Unknown chip model name.\n Please add new Windows on Arm SoC/chip support!");
+		/* No match was found, so print a warning and assign the unknown case. */
+		cpuinfo_log_error("Unknown chip model name '%ls'.\nPlease add new Windows on Arm SoC/chip support to arm/windows/init.c!", text_buffer);
 		goto cleanup;
 	}
 	cpuinfo_log_debug("detected chip model name: %s", (**chip_info).chip_name_string);
 
 	/* 2. Read vendor/manufacturer name from registry. */
-	if (!read_registry(cpu0_subkey, vendor_name_value, &textBuffer)) {
+	if (!read_registry(cpu0_subkey, vendor_name_value, &text_buffer)) {
 		cpuinfo_log_error("Registry read error");
 		goto cleanup;
 	}
 
 	for (uint32_t i = 0; i < (sizeof(vendors) / sizeof(struct vendor_info)); i++) {
-		if (strncmp(textBuffer, vendors[i].vendor_name,
-				strlen(vendors[i].vendor_name)) == 0) {
+		if (wcsncmp(text_buffer, vendors[i].vendor_name,
+				wcslen(vendors[i].vendor_name)) == 0) {
 			*vendor = vendors[i].vendor;
 			result = true;
 			break;
 		}
 	}
 	if (*vendor == cpuinfo_vendor_unknown) {
-		cpuinfo_log_error("Unexpected vendor: %s", textBuffer);
+		cpuinfo_log_error("Unexpected vendor: %ls", text_buffer);
 	}
 
 cleanup:
-	HeapFree(heap, 0, textBuffer);
-	textBuffer = NULL;
+	HeapFree(heap, 0, text_buffer);
+	text_buffer = NULL;
 	return result;
 }
 
