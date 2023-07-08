@@ -14,6 +14,8 @@ ELSE()
   OPTION(CLOG_LOG_TO_STDIO "Log errors, warnings, and information to stdout/stderr" ON)
 ENDIF()
 OPTION(CLOG_BUILD_TESTS "Build clog tests" ON)
+OPTION(USE_SYSTEM_LIBS "Use system libraries instead of downloading and building them" OFF)
+OPTION(USE_SYSTEM_GOOGLETEST "Use system Google Test library instead of downloading and building it" ${USE_SYSTEM_LIBS})
 
 # ---[ CMake options
 IF(CLOG_BUILD_TESTS)
@@ -39,7 +41,9 @@ SET(CONFU_DEPENDENCIES_BINARY_DIR ${CMAKE_BINARY_DIR}/deps
   CACHE PATH "Confu-style dependencies binary directory")
 
 IF(CLOG_BUILD_TESTS)
-  IF(NOT DEFINED GOOGLETEST_SOURCE_DIR)
+  IF(USE_SYSTEM_GOOGLETEST)
+    FIND_PACKAGE(GTest REQUIRED)
+  ELSEIF(NOT DEFINED GOOGLETEST_SOURCE_DIR)
     MESSAGE(STATUS "Downloading Google Test to ${CONFU_DEPENDENCIES_SOURCE_DIR}/googletest (define GOOGLETEST_SOURCE_DIR to avoid it)")
     CONFIGURE_FILE(cmake/DownloadGoogleTest.cmake "${CONFU_DEPENDENCIES_BINARY_DIR}/googletest-download/CMakeLists.txt")
     EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
@@ -78,7 +82,7 @@ INSTALL(TARGETS clog
 # ---[ clog tests
 IF(CLOG_BUILD_TESTS)
   # ---[ Build google test
-  IF(NOT TARGET gtest)
+  IF(NOT TARGET gtest AND NOT USE_SYSTEM_GOOGLETEST)
     IF(MSVC AND NOT CLOG_RUNTIME_TYPE STREQUAL "static")
       SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     ENDIF()
