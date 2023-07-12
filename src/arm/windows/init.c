@@ -11,37 +11,19 @@
 
 /* Efficiency class = 0 means little core, while 1 means big core for now */
 #define MAX_WOA_VALID_EFFICIENCY_CLASSES		2
-#define VENDOR_NAME_MAX		CPUINFO_PACKAGE_NAME_MAX
 
 struct cpuinfo_arm_isa cpuinfo_isa;
 
 static void set_cpuinfo_isa_fields(void);
 static bool get_system_info_from_registry(
-	struct woa_chip_info** chip_info,
-	enum cpuinfo_vendor* vendor);
-
-struct vendor_info {
-	wchar_t vendor_name[VENDOR_NAME_MAX];
-	enum cpuinfo_vendor vendor;
-};
-
-/* Please add new vendor here! */
-static struct vendor_info vendors[] = {
-	{
-		L"Qualcomm",
-		cpuinfo_vendor_qualcomm
-	},
-	{
-		L"Ampere(R)",
-		cpuinfo_vendor_ampere
-	}
-};
+	struct woa_chip_info** chip_info);
 
 static struct woa_chip_info woa_chip_unknown = {
 	L"Unknown",
 	woa_chip_name_unknown,
 	{
 		{
+			cpuinfo_vendor_unknown,
 			cpuinfo_uarch_unknown,
 			0
 		}
@@ -56,10 +38,12 @@ static struct woa_chip_info woa_chips[] = {
 		woa_chip_name_microsoft_sq_1,
 		{
 			{
+				cpuinfo_vendor_arm,
 				cpuinfo_uarch_cortex_a55,
 				1800000000,
 			},
 			{
+				cpuinfo_vendor_arm,
 				cpuinfo_uarch_cortex_a76,
 				3000000000,
 			}
@@ -71,10 +55,12 @@ static struct woa_chip_info woa_chips[] = {
 		woa_chip_name_microsoft_sq_2,
 		{
 			{
+				cpuinfo_vendor_arm,
 				cpuinfo_uarch_cortex_a55,
 				2420000000,
 			},
 			{
+				cpuinfo_vendor_arm,
 				cpuinfo_uarch_cortex_a76,
 				3150000000
 			}
@@ -86,10 +72,12 @@ static struct woa_chip_info woa_chips[] = {
 		woa_chip_name_microsoft_sq_3,
 		{
 			{
+				cpuinfo_vendor_arm,
 				cpuinfo_uarch_cortex_a78,
 				2420000000,
 			},
 			{
+				cpuinfo_vendor_arm,
 				cpuinfo_uarch_cortex_x1,
 				3000000000
 			}
@@ -101,6 +89,7 @@ static struct woa_chip_info woa_chips[] = {
 		woa_chip_name_ampere_altra,
 		{
 			{
+				cpuinfo_vendor_arm,
 				cpuinfo_uarch_neoverse_n1,
 				3000000000
 			}
@@ -116,12 +105,12 @@ BOOL CALLBACK cpuinfo_arm_windows_init(
 	
 	set_cpuinfo_isa_fields();
 
-	const bool system_result = get_system_info_from_registry(&chip_info, &vendor);
+	const bool system_result = get_system_info_from_registry(&chip_info);
 	if (!system_result) {
 		chip_info = &woa_chip_unknown;
 	}
 
-	cpuinfo_is_initialized = cpu_info_init_by_logical_sys_info(chip_info, vendor);
+	cpuinfo_is_initialized = cpu_info_init_by_logical_sys_info(chip_info, chip_info->uarchs[0].vendor);
 
 	return (system_result && cpuinfo_is_initialized ? TRUE : FALSE);
 }
@@ -194,20 +183,17 @@ static bool read_registry(
 }
 
 static bool get_system_info_from_registry(
-	struct woa_chip_info** chip_info,
-	enum cpuinfo_vendor* vendor)
+	struct woa_chip_info** chip_info)
 {
 	bool result = false;
 	char* text_buffer = NULL;
 	LPCWSTR cpu0_subkey = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
 	LPCWSTR chip_name_value = L"ProcessorNameString";
-	LPCWSTR vendor_name_value = L"VendorIdentifier";
 
 	*chip_info = NULL;
-	*vendor = cpuinfo_vendor_unknown;
 	HANDLE heap = GetProcessHeap();
 
-	/* 1. Read processor model name from registry and find in the hard-coded list. */
+	/* Read processor model name from registry and find in the hard-coded list. */
 	if (!read_registry(cpu0_subkey, chip_name_value, &text_buffer)) {
 		cpuinfo_log_error("Registry read error");
 		goto cleanup;
@@ -226,24 +212,6 @@ static bool get_system_info_from_registry(
 		goto cleanup;
 	}
 	cpuinfo_log_debug("detected chip model name: %s", (**chip_info).chip_name_string);
-
-	/* 2. Read vendor/manufacturer name from registry. */
-	if (!read_registry(cpu0_subkey, vendor_name_value, &text_buffer)) {
-		cpuinfo_log_error("Registry read error");
-		goto cleanup;
-	}
-
-	for (uint32_t i = 0; i < (sizeof(vendors) / sizeof(struct vendor_info)); i++) {
-		if (wcsncmp(text_buffer, vendors[i].vendor_name,
-				wcslen(vendors[i].vendor_name)) == 0) {
-			*vendor = vendors[i].vendor;
-			result = true;
-			break;
-		}
-	}
-	if (*vendor == cpuinfo_vendor_unknown) {
-		cpuinfo_log_error("Unexpected vendor: %ls", text_buffer);
-	}
 
 cleanup:
 	HeapFree(heap, 0, text_buffer);

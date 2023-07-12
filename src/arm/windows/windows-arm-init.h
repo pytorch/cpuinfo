@@ -12,6 +12,7 @@ enum woa_chip_name {
 
 /* Topology information hard-coded by SoC/chip name */
 struct core_info_by_chip_name {
+	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
 	uint64_t frequency; /* Hz */
 };
