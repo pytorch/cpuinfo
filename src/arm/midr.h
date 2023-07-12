@@ -175,7 +175,8 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x53000040): /* Exynos M5 */
 		case UINT32_C(0x4100D440): /* Cortex-X1 */
 		case UINT32_C(0x4100D480): /* Cortex-X2 */
-			/* These cores are in big role w.r.t Cortex-A75/-A76/-A77/-A78/-A710 */
+		case UINT32_C(0x4100D4E0): /* Cortex-X3 */
+			/* These cores are in big role w.r.t Cortex-A75/-A76/-A77/-A78/-A710/-A715 */
 			return 6;
 		case UINT32_C(0x4100D080): /* Cortex-A72 */
 		case UINT32_C(0x4100D090): /* Cortex-A73 */
@@ -185,6 +186,7 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100D0E0): /* Cortex-A76AE */
 		case UINT32_C(0x4100D410): /* Cortex-A78 */
 		case UINT32_C(0x4100D470): /* Cortex-A710 */
+		case UINT32_C(0x4100D4D0): /* Cortex-A715 */
 		case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
 		case UINT32_C(0x4E000030): /* Denver 2 */
 		case UINT32_C(0x51002050): /* Kryo Gold */
