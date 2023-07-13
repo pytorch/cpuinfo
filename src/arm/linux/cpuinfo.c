@@ -904,6 +904,7 @@ bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 	uint32_t max_processors_count,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors_count])
 {
+	hardware[0] = '\0';
 	struct proc_cpuinfo_parser_state state = {
 		.hardware = hardware,
 		.revision = revision,
