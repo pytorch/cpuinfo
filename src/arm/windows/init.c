@@ -68,7 +68,7 @@ static struct woa_chip_info woa_chips[] = {
 	},
 	/* Microsoft Windows Dev Kit 2023 */
 	{
-		L"Snapdragon (TM) 8cx Gen 3 @ 3.0 GHz",
+		L"Snapdragon Compute Platform",
 		woa_chip_name_microsoft_sq_3,
 		{
 			{
