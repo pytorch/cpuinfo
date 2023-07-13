@@ -112,7 +112,7 @@ BOOL CALLBACK cpuinfo_arm_windows_init(
 
 	cpuinfo_is_initialized = cpu_info_init_by_logical_sys_info(chip_info, chip_info->uarchs[0].vendor);
 
-	return (system_result && cpuinfo_is_initialized ? TRUE : FALSE);
+	return true;
 }
 
 bool get_core_uarch_for_efficiency(
