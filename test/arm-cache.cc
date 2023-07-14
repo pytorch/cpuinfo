@@ -1665,49 +1665,51 @@ TEST(ROCKCHIP, rk3368) {
 	EXPECT_EQ(0, little_l3.size);
 }
 
-TEST(BROADCOM, bcm2835) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_broadcom,
-		.series = cpuinfo_arm_chipset_series_broadcom_bcm,
-		.model = 2835,
-	};
+#if CPUINFO_ARCH_ARM
+	TEST(BROADCOM, bcm2835) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_broadcom,
+			.series = cpuinfo_arm_chipset_series_broadcom_bcm,
+			.model = 2835,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_arm11, 4, UINT32_C(0x410FB767),
-		&chipset, 0, 4,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_arm11, 4, UINT32_C(0x410FB767),
+			&chipset, 0, 4,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(16 * 1024, l1i.size);
-	EXPECT_EQ(16 * 1024, l1d.size);
-	EXPECT_EQ(0, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(16 * 1024, l1i.size);
+		EXPECT_EQ(16 * 1024, l1d.size);
+		EXPECT_EQ(0, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
 
-TEST(BROADCOM, bcm2836) {
-	const struct cpuinfo_arm_chipset chipset = {
-		.vendor = cpuinfo_arm_chipset_vendor_broadcom,
-		.series = cpuinfo_arm_chipset_series_broadcom_bcm,
-		.model = 2836,
-	};
+	TEST(BROADCOM, bcm2836) {
+		const struct cpuinfo_arm_chipset chipset = {
+			.vendor = cpuinfo_arm_chipset_vendor_broadcom,
+			.series = cpuinfo_arm_chipset_series_broadcom_bcm,
+			.model = 2836,
+		};
 
-	struct cpuinfo_cache l1i = { 0 };
-	struct cpuinfo_cache l1d = { 0 };
-	struct cpuinfo_cache l2 = { 0 };
-	struct cpuinfo_cache l3 = { 0 };
-	cpuinfo_arm_decode_cache(
-		cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
-		&chipset, 0, 4,
-		&l1i, &l1d, &l2, &l3);
+		struct cpuinfo_cache l1i = { 0 };
+		struct cpuinfo_cache l1d = { 0 };
+		struct cpuinfo_cache l2 = { 0 };
+		struct cpuinfo_cache l3 = { 0 };
+		cpuinfo_arm_decode_cache(
+			cpuinfo_uarch_cortex_a7, 4, UINT32_C(0x410FC075),
+			&chipset, 0, 4,
+			&l1i, &l1d, &l2, &l3);
 
-	EXPECT_EQ(32 * 1024, l1i.size);
-	EXPECT_EQ(32 * 1024, l1d.size);
-	EXPECT_EQ(512 * 1024, l2.size);
-	EXPECT_EQ(0, l3.size);
-}
+		EXPECT_EQ(32 * 1024, l1i.size);
+		EXPECT_EQ(32 * 1024, l1d.size);
+		EXPECT_EQ(512 * 1024, l2.size);
+		EXPECT_EQ(0, l3.size);
+	}
+#endif /* CPUINFO_ARCH_ARM */
 
 TEST(BROADCOM, bcm2837) {
 	const struct cpuinfo_arm_chipset chipset = {
