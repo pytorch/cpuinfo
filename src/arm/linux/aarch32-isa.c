@@ -33,6 +33,13 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	struct cpuinfo_arm_isa isa[restrict static 1])
 {
+	if (architecture_version < 8) {
+		const uint32_t armv8_features2_mask = CPUINFO_ARM_LINUX_FEATURE2_AES | CPUINFO_ARM_LINUX_FEATURE2_PMULL |
+			CPUINFO_ARM_LINUX_FEATURE2_SHA1 | CPUINFO_ARM_LINUX_FEATURE2_SHA2 | CPUINFO_ARM_LINUX_FEATURE2_CRC32;
+		if ((features2 & armv8_features2_mask) != 0 && architecture_version < 8) {
+			architecture_version = 8;
+		}
+	}
 	if (architecture_version >= 8) {
 		/*
 		 * ARMv7 code running on ARMv8: IDIV, VFP, NEON are always supported,
