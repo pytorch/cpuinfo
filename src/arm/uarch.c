@@ -119,6 +119,12 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*uarch = cpuinfo_uarch_neoverse_e1;
 					break;
 #endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
+				case 0xD4D: /* Cortex-A715 */
+					*uarch = cpuinfo_uarch_cortex_a715;
+					break;
+				case 0xD4E: /* Cortex-X3 */
+					*uarch = cpuinfo_uarch_cortex_x3;
+					break;
 				default:
 					switch (midr_get_part(midr) >> 8) {
 #if CPUINFO_ARCH_ARM

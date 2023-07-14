@@ -193,10 +193,14 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Cortex-A510";
 		case cpuinfo_uarch_cortex_a710:
 			return "Cortex-A710";
+		case cpuinfo_uarch_cortex_a715:
+			return "Cortex-A715";
 		case cpuinfo_uarch_cortex_x1:
 			return "Cortex-X1";
 		case cpuinfo_uarch_cortex_x2:
 			return "Cortex-X2";
+		case cpuinfo_uarch_cortex_x3:
+			return "Cortex-X3";
 		case cpuinfo_uarch_neoverse_n1:
 			return "Neoverse-N1";
 		case cpuinfo_uarch_neoverse_v1:
