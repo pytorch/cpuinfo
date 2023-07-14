@@ -15,7 +15,7 @@
 struct cpuinfo_arm_isa cpuinfo_isa;
 
 static void set_cpuinfo_isa_fields(void);
-static bool get_system_info_from_registry(
+static void get_system_info_from_registry(
 	struct woa_chip_info** chip_info);
 
 static struct woa_chip_info woa_chip_unknown = {
@@ -105,8 +105,8 @@ BOOL CALLBACK cpuinfo_arm_windows_init(
 	
 	set_cpuinfo_isa_fields();
 
-	const bool system_result = get_system_info_from_registry(&chip_info);
-	if (!system_result) {
+	get_system_info_from_registry(&chip_info);
+	if (chip_info == NULL) {
 		chip_info = &woa_chip_unknown;
 	}
 
@@ -182,10 +182,9 @@ static bool read_registry(
 	return true;
 }
 
-static bool get_system_info_from_registry(
+static void get_system_info_from_registry(
 	struct woa_chip_info** chip_info)
 {
-	bool result = false;
 	char* text_buffer = NULL;
 	LPCWSTR cpu0_subkey = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
 	LPCWSTR chip_name_value = L"ProcessorNameString";
@@ -216,7 +215,6 @@ static bool get_system_info_from_registry(
 cleanup:
 	HeapFree(heap, 0, text_buffer);
 	text_buffer = NULL;
-	return result;
 }
 
 static void set_cpuinfo_isa_fields(void)
