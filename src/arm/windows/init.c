@@ -9,9 +9,6 @@
 
 #include "windows-arm-init.h"
 
-/* Efficiency class = 0 means little core, while 1 means big core for now */
-#define MAX_WOA_VALID_EFFICIENCY_CLASSES		2
-
 struct cpuinfo_arm_isa cpuinfo_isa;
 
 static void set_cpuinfo_isa_fields(void);

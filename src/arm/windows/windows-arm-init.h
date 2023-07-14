@@ -1,5 +1,8 @@
 #pragma once
 
+/* Efficiency class = 0 means little core, while 1 means big core for now. */
+#define MAX_WOA_VALID_EFFICIENCY_CLASSES                2
+
 /* List of known and supported Windows on Arm SoCs/chips. */
 enum woa_chip_name {
 	woa_chip_name_microsoft_sq_1 = 0,
@@ -23,7 +26,7 @@ struct core_info_by_chip_name {
 struct woa_chip_info {
 	wchar_t* chip_name_string;
 	enum woa_chip_name chip_name;
-	struct core_info_by_chip_name uarchs[woa_chip_name_last];
+	struct core_info_by_chip_name uarchs[MAX_WOA_VALID_EFFICIENCY_CLASSES];
 };
 
 bool get_core_uarch_for_efficiency(
