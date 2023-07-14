@@ -80,22 +80,18 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD0B:
 					*uarch = cpuinfo_uarch_cortex_a76;
 					break;
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 				case 0xD0C:
 					*uarch = cpuinfo_uarch_neoverse_n1;
 					break;
-#endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
 				case 0xD0D:
 					*uarch = cpuinfo_uarch_cortex_a77;
 					break;
 				case 0xD0E: /* Cortex-A76AE */
 					*uarch = cpuinfo_uarch_cortex_a76;
 					break;
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
 				case 0xD40:
 					*uarch = cpuinfo_uarch_neoverse_v1;
 					break;
-#endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
 				case 0xD41: /* Cortex-A78 */
 					*uarch = cpuinfo_uarch_cortex_a78;
 					break;
@@ -108,23 +104,25 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD47: /* Cortex-A710 */
 					*uarch = cpuinfo_uarch_cortex_a710;
 					break;
+#if CPUINFO_ARCH_ARM64
 				case 0xD48: /* Cortex-X2 */
 					*uarch = cpuinfo_uarch_cortex_x2;
 					break;
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+#endif /* CPUINFO_ARCH_ARM64 */
 				case 0xD49:
 					*uarch = cpuinfo_uarch_neoverse_n2;
 					break;
+#if CPUINFO_ARCH_ARM64
 				case 0xD4A:
 					*uarch = cpuinfo_uarch_neoverse_e1;
 					break;
-#endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
 				case 0xD4D: /* Cortex-A715 */
 					*uarch = cpuinfo_uarch_cortex_a715;
 					break;
 				case 0xD4E: /* Cortex-X3 */
 					*uarch = cpuinfo_uarch_cortex_x3;
 					break;
+#endif /* CPUINFO_ARCH_ARM64 */
 				default:
 					switch (midr_get_part(midr) >> 8) {
 #if CPUINFO_ARCH_ARM
@@ -152,18 +150,18 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x100:
 					*uarch = cpuinfo_uarch_brahma_b53;
 					break;
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+#if CPUINFO_ARCH_ARM64
 				case 0x516:
 					/* Broadcom Vulkan was sold to Cavium before it reached the market, so we identify it as Cavium ThunderX2 */
 					*vendor = cpuinfo_vendor_cavium;
 					*uarch = cpuinfo_uarch_thunderx2;
 					break;
-#endif
+#endif /* CPUINFO_ARCH_ARM64 */
 				default:
 					cpuinfo_log_warning("unknown Broadcom CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+#if CPUINFO_ARCH_ARM64
 		case 'C':
 			*vendor = cpuinfo_vendor_cavium;
 			switch (midr_get_part(midr)) {
@@ -180,15 +178,15 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Cavium CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
-#endif
+#endif /* CPUINFO_ARCH_ARM64 */
 		case 'H':
 			*vendor = cpuinfo_vendor_huawei;
 			switch (midr_get_part(midr)) {
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+#if CPUINFO_ARCH_ARM64
 				case 0xD01: /* Kunpeng 920 series */
 					*uarch = cpuinfo_uarch_taishan_v110;
 					break;
-#endif
+#endif /* CPUINFO_ARCH_ARM64 */
 				case 0xD40: /* Kirin 980 Big/Medium cores -> Cortex-A76 */
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a76;
@@ -227,7 +225,6 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Nvidia CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
-#if !defined(__ANDROID__)
 		case 'P':
 			*vendor = cpuinfo_vendor_apm;
 			switch (midr_get_part(midr)) {
@@ -238,7 +235,6 @@ void cpuinfo_arm_decode_vendor_uarch(
 					cpuinfo_log_warning("unknown Applied Micro CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
 			break;
-#endif
 		case 'Q':
 			*vendor = cpuinfo_vendor_qualcomm;
 			switch (midr_get_part(midr)) {
@@ -305,14 +301,14 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*vendor = cpuinfo_vendor_arm;
 					*uarch = cpuinfo_uarch_cortex_a55;
 					break;
-#if CPUINFO_ARCH_ARM64 && !defined(__ANDROID__)
+#if CPUINFO_ARCH_ARM64
 				case 0xC00:
 					*uarch = cpuinfo_uarch_falkor;
 					break;
 				case 0xC01:
 					*uarch = cpuinfo_uarch_saphira;
 					break;
-#endif /* CPUINFO_ARCH_ARM64 && !defined(__ANDROID__) */
+#endif /* CPUINFO_ARCH_ARM64 */
 				default:
 					cpuinfo_log_warning("unknown Qualcomm CPU part 0x%03"PRIx32" ignored", midr_get_part(midr));
 			}
