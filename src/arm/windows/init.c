@@ -134,7 +134,7 @@ bool get_core_uarch_for_efficiency(
 static bool read_registry(
 	LPCWSTR subkey,
 	LPCWSTR value,
-	char** text_buffer)
+	wchar_t** text_buffer)
 {
 	DWORD key_type = 0;
 	DWORD data_size = 0;
@@ -158,7 +158,7 @@ static bool read_registry(
 	if (*text_buffer) {
 		HeapFree(heap, 0, *text_buffer);
 	}
-	*text_buffer = HeapAlloc(heap, HEAP_ZERO_MEMORY, data_size * sizeof(wchar_t));
+	*text_buffer = HeapAlloc(heap, HEAP_ZERO_MEMORY, data_size);
 	if (*text_buffer == NULL) {
 		cpuinfo_log_error("Registry textbuffer allocation error");
 		return false;
@@ -182,7 +182,7 @@ static bool read_registry(
 static void get_system_info_from_registry(
 	struct woa_chip_info** chip_info)
 {
-	char* text_buffer = NULL;
+	wchar_t* text_buffer = NULL;
 	LPCWSTR cpu0_subkey = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
 	LPCWSTR chip_name_value = L"ProcessorNameString";
 
