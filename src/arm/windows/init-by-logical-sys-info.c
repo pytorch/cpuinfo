@@ -283,16 +283,21 @@ bool cpu_info_init_by_logical_sys_info(
 		goto clean_up;
 	}
 	prev_uarch = cpuinfo_uarch_unknown;
-	for (uint32_t i = 0, uarch_counter = 0; i < nr_of_cores; i++) {
+	for (uint32_t i = 0, uarch_index = 0; i < nr_of_cores; i++) {
 		if (prev_uarch != cores[i].uarch) {
+			if (i != 0) {
+				uarch_index++;
+			}
+			if (uarch_index >= nr_of_uarchs) {
+				cpuinfo_log_error("more uarchs detected than reported");
+			}
 			prev_uarch = cores[i].uarch;
-			uarchs[uarch_counter].uarch = cores[i].uarch;
-			uarchs[uarch_counter].core_count = 1;
-			uarchs[uarch_counter].processor_count = cores[i].processor_count;
-			uarch_counter++;
+			uarchs[uarch_index].uarch = cores[i].uarch;
+			uarchs[uarch_index].core_count = 1;
+			uarchs[uarch_index].processor_count = cores[i].processor_count;
 		} else if (prev_uarch != cpuinfo_uarch_unknown) {
-			uarchs[uarch_counter].core_count++;
-			uarchs[uarch_counter].processor_count += cores[i].processor_count;
+			uarchs[uarch_index].core_count++;
+			uarchs[uarch_index].processor_count += cores[i].processor_count;
 		}
 	}
 
