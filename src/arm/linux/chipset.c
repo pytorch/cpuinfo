@@ -3854,7 +3854,7 @@ void cpuinfo_arm_chipset_to_string(
 	 */
 	void cpuinfo_arm_fixup_raspberry_pi_chipset(
 		struct cpuinfo_arm_chipset chipset[restrict static 1],
-		const char revision[restrict static CPUINFO_HARDWARE_VALUE_MAX])
+		const char revision[restrict static CPUINFO_REVISION_VALUE_MAX])
 	{
 		const size_t revision_length = strnlen(revision, CPUINFO_REVISION_VALUE_MAX);
 
