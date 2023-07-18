@@ -104,11 +104,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD47: /* Cortex-A710 */
 					*uarch = cpuinfo_uarch_cortex_a710;
 					break;
-#if CPUINFO_ARCH_ARM64
 				case 0xD48: /* Cortex-X2 */
 					*uarch = cpuinfo_uarch_cortex_x2;
 					break;
-#endif /* CPUINFO_ARCH_ARM64 */
 				case 0xD49:
 					*uarch = cpuinfo_uarch_neoverse_n2;
 					break;
@@ -116,13 +114,13 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD4A:
 					*uarch = cpuinfo_uarch_neoverse_e1;
 					break;
+#endif /* CPUINFO_ARCH_ARM64 */
 				case 0xD4D: /* Cortex-A715 */
 					*uarch = cpuinfo_uarch_cortex_a715;
 					break;
 				case 0xD4E: /* Cortex-X3 */
 					*uarch = cpuinfo_uarch_cortex_x3;
 					break;
-#endif /* CPUINFO_ARCH_ARM64 */
 				default:
 					switch (midr_get_part(midr) >> 8) {
 #if CPUINFO_ARCH_ARM
