@@ -7,7 +7,8 @@ enum woa_chip_name {
 	woa_chip_name_microsoft_sq_3 = 2,
 	woa_chip_name_ampere_altra = 3,
 	woa_chip_name_unknown = 4,
-	woa_chip_name_last = woa_chip_name_unknown
+	woa_chip_name_apple_silicon = 5,
+	woa_chip_name_last = woa_chip_name_apple_silicon
 };
 
 /* Topology information hard-coded by SoC/chip name */

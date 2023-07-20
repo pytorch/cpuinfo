@@ -94,6 +94,23 @@ static struct woa_chip_info woa_chips[] = {
 				3000000000
 			}
 		}
+	},
+	/* Apple Silicon */
+	{
+		L"Apple Silicon",
+		woa_chip_name_apple_silicon,
+		{
+			{
+				cpuinfo_vendor_apple,
+				cpuinfo_uarch_firestorm,
+				3228000000
+			},
+			{
+				cpuinfo_vendor_apple,
+				cpuinfo_uarch_icestorm,
+				2064000000
+			}
+		}
 	}
 };
 
