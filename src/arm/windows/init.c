@@ -221,46 +221,32 @@ cleanup:
 
 static void set_cpuinfo_isa_fields(void)
 {
-	bool armv8 = IsProcessorFeaturePresent(PF_ARM_V8_INSTRUCTIONS_AVAILABLE);
-	bool crypto = IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE);
-	bool load_store_atomic = IsProcessorFeaturePresent(PF_ARM_64BIT_LOADSTORE_ATOMIC);
-	bool float_multiply_accumulate = IsProcessorFeaturePresent(PF_ARM_FMAC_INSTRUCTIONS_AVAILABLE);
-	bool crc32 = IsProcessorFeaturePresent(PF_ARM_V8_CRC32_INSTRUCTIONS_AVAILABLE);
-	bool float_emulated = IsProcessorFeaturePresent(PF_FLOATING_POINT_EMULATED);
+	cpuinfo_isa.atomics = IsProcessorFeaturePresent(PF_ARM_V81_ATOMIC_INSTRUCTIONS_AVAILABLE) != 0;
 
-	/* Read all Arm related Windows features for debug purposes, even if we can't
-	 * pair Arm ISA feature to that now.
-	 */
-#if CPUINFO_LOG_DEBUG_PARSERS
-	bool divide = IsProcessorFeaturePresent(PF_ARM_DIVIDE_INSTRUCTION_AVAILABLE);
-	bool ext_cache = IsProcessorFeaturePresent(PF_ARM_EXTERNAL_CACHE_AVAILABLE);
-	bool vfp_registers = IsProcessorFeaturePresent(PF_ARM_VFP_32_REGISTERS_AVAILABLE);
-	bool arm_v81 = IsProcessorFeaturePresent(PF_ARM_V81_ATOMIC_INSTRUCTIONS_AVAILABLE);
+	const bool dotprod = IsProcessorFeaturePresent(PF_ARM_V82_DP_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.dot = dotprod;
 
-	cpuinfo_log_debug("divide present: %d", divide);
-	cpuinfo_log_debug("ext_cache present: %d", ext_cache);
-	cpuinfo_log_debug("vfp_registers present: %d", vfp_registers);
-	cpuinfo_log_debug("arm_v81 present: %d", arm_v81);
-#endif
+	SYSTEM_INFO system_info;
+	GetSystemInfo(&system_info);
+	switch (system_info.wProcessorLevel) {
+		case 0x803:  // Kryo 385 Silver (Snapdragon 850)
+			cpuinfo_isa.fp16arith = dotprod;
+			cpuinfo_isa.rdm = dotprod;
+			break;
+		default:
+			// Assume that Dot Product support implies FP16 arithmetics and RDM support.
+			// ARM manuals don't guarantee that, but it holds in practice.
+			cpuinfo_isa.fp16arith = dotprod;
+			cpuinfo_isa.rdm = dotprod;
+			break;
+	}
 
-	cpuinfo_log_debug("armv8 present: %d", armv8);
-	cpuinfo_log_debug("crypto present: %d", crypto);
-	cpuinfo_log_debug("load_store_atomic present: %d", load_store_atomic);
-	cpuinfo_log_debug("float_multiply_accumulate present: %d", float_multiply_accumulate);
-	cpuinfo_log_debug("crc32 present: %d", crc32);
-	cpuinfo_log_debug("float_emulated: %d", float_emulated);
-
-#if CPUINFO_ARCH_ARM
-	cpuinfo_isa.armv8 = armv8;
-#endif
-#if CPUINFO_ARCH_ARM64
-	cpuinfo_isa.atomics = load_store_atomic;
-#endif
-	cpuinfo_isa.crc32 = crc32;
 	/* Windows API reports all or nothing for cryptographic instructions. */
+	const bool crypto = IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.aes = crypto;
 	cpuinfo_isa.sha1 = crypto;
 	cpuinfo_isa.sha2 = crypto;
 	cpuinfo_isa.pmull = crypto;
-	cpuinfo_isa.fp16arith = !float_emulated && float_multiply_accumulate;
+
+	cpuinfo_isa.crc32 = IsProcessorFeaturePresent(PF_ARM_V8_CRC32_INSTRUCTIONS_AVAILABLE) != 0;
 }
