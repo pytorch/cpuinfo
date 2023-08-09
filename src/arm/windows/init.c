@@ -102,13 +102,13 @@ static struct woa_chip_info woa_chips[] = {
 		{
 			{
 				cpuinfo_vendor_apple,
-				cpuinfo_uarch_firestorm,
-				3228000000
+				cpuinfo_uarch_icestorm,
+				2064000000
 			},
 			{
 				cpuinfo_vendor_apple,
-				cpuinfo_uarch_icestorm,
-				2064000000
+				cpuinfo_uarch_firestorm,
+				3228000000
 			}
 		}
 	}
@@ -220,6 +220,7 @@ static bool get_system_info_from_registry(
 		int compare_result = wcsncmp(text_buffer, woa_chips[i].chip_name_string, compare_length);
 		if (compare_result == 0) {
 			*chip_info = woa_chips+i;
+			result = true;
 			break;
 		}
 	}
