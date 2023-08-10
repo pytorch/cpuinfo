@@ -59,6 +59,10 @@ MACH_SRCS = [
     "src/mach/topology.c",
 ]
 
+FREEBSD_SRCS = [
+    "src/freebsd/topology.c",
+]
+
 EMSCRIPTEN_SRCS = [
     "src/emscripten/init.c",
 ]
@@ -97,6 +101,10 @@ MACH_ARM_SRCS = [
     "src/arm/mach/init.c",
 ]
 
+FREEBSD_X86_SRCS = [
+    "src/x86/freebsd/init.c",
+]
+
 EMSCRIPTEN_SRCS = [
     "src/emscripten/init.c",
 ]
@@ -116,6 +124,7 @@ cc_library(
         ":macos_x86_64": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
         ":macos_x86_64_legacy": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
         ":macos_arm64": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
+        ":freebsd_x86_64": COMMON_SRCS + X86_SRCS + FREEBSD_SRCS + FREEBSD_X86_SRCS,
         ":windows_x86_64": COMMON_SRCS + X86_SRCS + WINDOWS_X86_SRCS,
         ":android_armv7": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM32_SRCS + ANDROID_ARM_SRCS,
         ":android_arm64": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM64_SRCS + ANDROID_ARM_SRCS,
@@ -156,6 +165,7 @@ cc_library(
     # Headers must be in textual_hdrs to allow us to set the standard to C99
     textual_hdrs = [
         "include/cpuinfo.h",
+        "src/freebsd/api.h",
         "src/linux/api.h",
         "src/mach/api.h",
         "src/cpuinfo/common.h",
@@ -421,5 +431,12 @@ config_setting(
     name = "emscripten_asmjs",
     values = {
         "cpu": "asmjs",
+    },
+)
+
+config_setting(
+    name = "freebsd_x86_64",
+    values = {
+        "cpu": "freebsd",
     },
 )
