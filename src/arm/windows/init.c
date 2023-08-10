@@ -12,8 +12,7 @@
 struct cpuinfo_arm_isa cpuinfo_isa;
 
 static void set_cpuinfo_isa_fields(void);
-static void get_system_info_from_registry(
-	struct woa_chip_info** chip_info);
+static struct woa_chip_info* get_system_info_from_registry(void);
 
 static struct woa_chip_info woa_chip_unknown = {
 	L"Unknown",
@@ -102,7 +101,7 @@ BOOL CALLBACK cpuinfo_arm_windows_init(
 	
 	set_cpuinfo_isa_fields();
 
-	get_system_info_from_registry(&chip_info);
+	chip_info = get_system_info_from_registry();
 	if (chip_info == NULL) {
 		chip_info = &woa_chip_unknown;
 	}
@@ -131,14 +130,14 @@ bool get_core_uarch_for_efficiency(
 
 /* Static helper functions */
 
-static bool read_registry(
+static wchar_t* read_registry(
 	LPCWSTR subkey,
-	LPCWSTR value,
-	wchar_t** text_buffer)
+	LPCWSTR value)
 {
 	DWORD key_type = 0;
 	DWORD data_size = 0;
 	const DWORD flags = RRF_RT_REG_SZ; /* Only read strings (REG_SZ) */
+	wchar_t *text_buffer = NULL;
 	LSTATUS result = 0;
 	HANDLE heap = GetProcessHeap();
 
@@ -152,16 +151,13 @@ static bool read_registry(
 		&data_size);
 	if (result != 0 || data_size == 0) {
 		cpuinfo_log_error("Registry entry size read error");
-		return false;
+		return NULL;
 	}
 
-	if (*text_buffer) {
-		HeapFree(heap, 0, *text_buffer);
-	}
-	*text_buffer = HeapAlloc(heap, HEAP_ZERO_MEMORY, data_size);
-	if (*text_buffer == NULL) {
+	text_buffer = HeapAlloc(heap, HEAP_ZERO_MEMORY, data_size);
+	if (text_buffer == NULL) {
 		cpuinfo_log_error("Registry textbuffer allocation error");
-		return false;
+		return NULL;
 	}
 
 	result = RegGetValueW(
@@ -170,48 +166,48 @@ static bool read_registry(
 		value,
 		flags,
 		NULL,
-		*text_buffer, /* Write string in this destination buffer */
+		text_buffer, /* Write string in this destination buffer */
 		&data_size);
 	if (result != 0) {
 		cpuinfo_log_error("Registry read error");
-		return false;
+		HeapFree(heap, 0, text_buffer);
+		return NULL;
 	}
-	return true;
+	return text_buffer;
 }
 
-static void get_system_info_from_registry(
-	struct woa_chip_info** chip_info)
+static struct woa_chip_info* get_system_info_from_registry(void)
 {
 	wchar_t* text_buffer = NULL;
 	LPCWSTR cpu0_subkey = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
 	LPCWSTR chip_name_value = L"ProcessorNameString";
+	struct woa_chip_info* chip_info = NULL;
 
-	*chip_info = NULL;
 	HANDLE heap = GetProcessHeap();
 
 	/* Read processor model name from registry and find in the hard-coded list. */
-	if (!read_registry(cpu0_subkey, chip_name_value, &text_buffer)) {
+	text_buffer = read_registry(cpu0_subkey, chip_name_value);
+	if (text_buffer == NULL) {
 		cpuinfo_log_error("Registry read error");
-		goto cleanup;
+		return NULL;
 	}
 	for (uint32_t i = 0; i < (uint32_t) woa_chip_name_last; i++) {
 		size_t compare_length = wcsnlen(woa_chips[i].chip_name_string, CPUINFO_PACKAGE_NAME_MAX);
 		int compare_result = wcsncmp(text_buffer, woa_chips[i].chip_name_string, compare_length);
 		if (compare_result == 0) {
-			*chip_info = woa_chips+i;
+			chip_info = woa_chips+i;
 			break;
 		}
 	}
-	if (*chip_info == NULL) {
+	if (chip_info == NULL) {
 		/* No match was found, so print a warning and assign the unknown case. */
 		cpuinfo_log_error("Unknown chip model name '%ls'.\nPlease add new Windows on Arm SoC/chip support to arm/windows/init.c!", text_buffer);
-		goto cleanup;
+	} else {
+		cpuinfo_log_debug("detected chip model name: %s", chip_info->chip_name_string);
 	}
-	cpuinfo_log_debug("detected chip model name: %s", (**chip_info).chip_name_string);
 
-cleanup:
 	HeapFree(heap, 0, text_buffer);
-	text_buffer = NULL;
+	return chip_info;
 }
 
 static void set_cpuinfo_isa_fields(void)
