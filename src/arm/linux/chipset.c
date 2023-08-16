@@ -42,8 +42,7 @@ static inline uint16_t load_u16le(const void* ptr) {
 }
 
 static inline uint32_t load_u24le(const void* ptr) {
-	const uint8_t* byte_ptr = (const uint8_t*) ptr;
-	return ((uint32_t) byte_ptr[2] << 16) | (uint32_t) load_u16le(byte_ptr + 1);
+	return ((uint32_t) ((const uint8_t*) ptr)[2] << 16) | (uint32_t) load_u16le(ptr);
 }
 
 static inline uint32_t load_u32le(const void* ptr) {
