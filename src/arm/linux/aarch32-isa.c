@@ -64,7 +64,6 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * NEON FP16 compute extension and VQRDMLAH/VQRDMLSH instructions are not indicated in /proc/cpuinfo.
 		 * Use a MIDR-based heuristic to whitelist processors known to support it:
 		 * - Processors with Cortex-A55 cores
-		 * - Processors with Cortex-A65 cores
 		 * - Processors with Cortex-A75 cores
 		 * - Processors with Cortex-A76 cores
 		 * - Processors with Cortex-A77 cores
@@ -87,7 +86,6 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		} else {
 			switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 				case UINT32_C(0x4100D050): /* Cortex-A55 */
-				case UINT32_C(0x4100D060): /* Cortex-A65 */
 				case UINT32_C(0x4100D0A0): /* Cortex-A75 */
 				case UINT32_C(0x4100D0B0): /* Cortex-A76 */
 				case UINT32_C(0x4100D0C0): /* Neoverse N1 */
@@ -118,7 +116,6 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		/*
 		 * NEON VDOT instructions are not indicated in /proc/cpuinfo.
 		 * Use a MIDR-based heuristic to whitelist processors known to support it:
-		 * - Processors with Cortex-A65 cores
 		 * - Processors with Cortex-A76 cores
 		 * - Processors with Cortex-A77 cores
 		 * - Processors with Cortex-A78 cores
@@ -135,7 +132,6 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Neoverse V1 cores
 		 */
 		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
-			case UINT32_C(0x4100D060): /* Cortex-A65 */
 			case UINT32_C(0x4100D0B0): /* Cortex-A76 */
 			case UINT32_C(0x4100D0C0): /* Neoverse N1 */
 			case UINT32_C(0x4100D0D0): /* Cortex-A77 */
