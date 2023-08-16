@@ -923,7 +923,6 @@ static bool match_t(
 	return true;
 }
 
-
 /**
  * Tries to match /lc\d{4}[a-z]?$/ signature for Leadcore LC chipsets.
  * If match successful, extracts model information into \p chipset argument.
