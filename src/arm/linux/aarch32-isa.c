@@ -131,33 +131,39 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Neoverse N2 cores
 		 * - Neoverse V1 cores
 		 */
-		switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
-			case UINT32_C(0x4100D0B0): /* Cortex-A76 */
-			case UINT32_C(0x4100D0C0): /* Neoverse N1 */
-			case UINT32_C(0x4100D0D0): /* Cortex-A77 */
-			case UINT32_C(0x4100D0E0): /* Cortex-A76AE */
-			case UINT32_C(0x4100D400): /* Neoverse V1 */
-			case UINT32_C(0x4100D410): /* Cortex-A78 */
-			case UINT32_C(0x4100D440): /* Cortex-X1 */
-			case UINT32_C(0x4100D460): /* Cortex-A510 */
-			case UINT32_C(0x4100D470): /* Cortex-A710 */
-			case UINT32_C(0x4100D480): /* Cortex-X2 */
-			case UINT32_C(0x4100D490): /* Neoverse N2 */
-			case UINT32_C(0x4100D4D0): /* Cortex-A715 */
-			case UINT32_C(0x4100D4E0): /* Cortex-X3 */
-			case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
-			case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
-			case UINT32_C(0x51008050): /* Kryo 485 Silver (Cortex-A55) */
-			case UINT32_C(0x53000030): /* Exynos M4 */
-			case UINT32_C(0x53000040): /* Exynos M5 */
-				isa->dot = true;
-				break;
-			case UINT32_C(0x4100D050): /* Cortex A55: revision 1 or later only */
-				isa->dot = !!(midr_get_variant(midr) >= 1);
-				break;
-			case UINT32_C(0x4100D0A0): /* Cortex A75: revision 2 or later only */
-				isa->dot = !!(midr_get_variant(midr) >= 2);
-				break;
+		if (chipset->series == cpuinfo_arm_chipset_series_spreadtrum_sc && chipset->model == 9863) {
+			cpuinfo_log_warning("VDOT instructions disabled: cause occasional SIGILL on Spreadtrum SC9863A");
+		} else if (chipset->series == cpuinfo_arm_chipset_series_unisoc_t && chipset->model == 310) {
+			cpuinfo_log_warning("VDOT instructions disabled: cause occasional SIGILL on Unisoc T310");
+		} else {
+			switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
+				case UINT32_C(0x4100D0B0): /* Cortex-A76 */
+				case UINT32_C(0x4100D0C0): /* Neoverse N1 */
+				case UINT32_C(0x4100D0D0): /* Cortex-A77 */
+				case UINT32_C(0x4100D0E0): /* Cortex-A76AE */
+				case UINT32_C(0x4100D400): /* Neoverse V1 */
+				case UINT32_C(0x4100D410): /* Cortex-A78 */
+				case UINT32_C(0x4100D440): /* Cortex-X1 */
+				case UINT32_C(0x4100D460): /* Cortex-A510 */
+				case UINT32_C(0x4100D470): /* Cortex-A710 */
+				case UINT32_C(0x4100D480): /* Cortex-X2 */
+				case UINT32_C(0x4100D490): /* Neoverse N2 */
+				case UINT32_C(0x4100D4D0): /* Cortex-A715 */
+				case UINT32_C(0x4100D4E0): /* Cortex-X3 */
+				case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
+				case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
+				case UINT32_C(0x51008050): /* Kryo 485 Silver (Cortex-A55) */
+				case UINT32_C(0x53000030): /* Exynos M4 */
+				case UINT32_C(0x53000040): /* Exynos M5 */
+					isa->dot = true;
+					break;
+				case UINT32_C(0x4100D050): /* Cortex A55: revision 1 or later only */
+					isa->dot = !!(midr_get_variant(midr) >= 1);
+					break;
+				case UINT32_C(0x4100D0A0): /* Cortex A75: revision 2 or later only */
+					isa->dot = !!(midr_get_variant(midr) >= 2);
+					break;
+			}
 		}
 	} else {
 		/* ARMv7 or lower: use feature flags to detect optional features */
