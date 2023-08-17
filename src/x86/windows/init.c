@@ -17,6 +17,10 @@
 #endif
 
 
+static inline uint32_t max(uint32_t a, uint32_t b) {
+	return a > b ? a : b;
+}
+
 static inline uint32_t bit_mask(uint32_t bits) {
 	return (UINT32_C(1) << bits) - UINT32_C(1);
 }
