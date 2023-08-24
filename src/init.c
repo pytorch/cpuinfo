@@ -42,6 +42,12 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	#else
 		cpuinfo_log_error("operating system is not supported in cpuinfo");
 	#endif
+#elif CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	#if defined(__linux__)
+		pthread_once(&init_guard, &cpuinfo_riscv_linux_init);
+	#else
+		cpuinfo_log_error("operating system is not supported in cpuinfo");
+	#endif
 #elif CPUINFO_ARCH_ASMJS || CPUINFO_ARCH_WASM || CPUINFO_ARCH_WASMSIMD
 	#if defined(__EMSCRIPTEN_PTHREADS__)
 		pthread_once(&init_guard, &cpuinfo_emscripten_init);

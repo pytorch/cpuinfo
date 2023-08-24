@@ -43,6 +43,10 @@ ARM_SRCS = [
     "src/arm/uarch.c",
 ]
 
+RISCV_SRCS = [
+    "src/riscv/uarch.c",
+]
+
 # Platform-specific sources and headers
 LINUX_SRCS = [
     "src/linux/cpulist.c",
@@ -81,6 +85,12 @@ LINUX_ARM32_SRCS = LINUX_ARM_SRCS + ["src/arm/linux/aarch32-isa.c"]
 
 LINUX_ARM64_SRCS = LINUX_ARM_SRCS + ["src/arm/linux/aarch64-isa.c"]
 
+LINUX_RISCV_SRCS = [
+    "src/riscv/linux/init.c",
+    "src/riscv/linux/riscv-isa.c",
+    "src/riscv/linux/riscv-hw.c",
+]
+
 ANDROID_ARM_SRCS = [
     "src/arm/android/properties.c",
 ]
@@ -111,7 +121,8 @@ cc_library(
         ":linux_armeabi": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM32_SRCS,
         ":linux_aarch64": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM64_SRCS,
         ":linux_mips64": COMMON_SRCS + LINUX_SRCS,
-        ":linux_riscv64": COMMON_SRCS + LINUX_SRCS,
+        ":linux_riscv32": COMMON_SRCS + RISCV_SRCS + LINUX_SRCS + LINUX_RISCV_SRCS,
+        ":linux_riscv64": COMMON_SRCS + RISCV_SRCS + LINUX_SRCS + LINUX_RISCV_SRCS,
         ":linux_s390x": COMMON_SRCS + LINUX_SRCS,
         ":macos_x86_64": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
         ":macos_x86_64_legacy": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
@@ -121,6 +132,7 @@ cc_library(
         ":android_arm64": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM64_SRCS + ANDROID_ARM_SRCS,
         ":android_x86": COMMON_SRCS + X86_SRCS + LINUX_SRCS + LINUX_X86_SRCS,
         ":android_x86_64": COMMON_SRCS + X86_SRCS + LINUX_SRCS + LINUX_X86_SRCS,
+        ":android_riscv64": COMMON_SRCS + RISCV_SRCS + LINUX_SRCS + LINUX_RISCV_SRCS,
         ":ios_x86_64": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
         ":ios_x86": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
         ":ios_armv7": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
@@ -170,6 +182,8 @@ cc_library(
         "src/arm/linux/cp.h",
         "src/arm/api.h",
         "src/arm/midr.h",
+        "src/riscv/api.h",
+        "src/riscv/linux/api.h",
     ],
 )
 
@@ -229,6 +243,11 @@ config_setting(
 config_setting(
     name = "linux_mips64",
     values = {"cpu": "mips64"},
+)
+
+config_setting(
+    name = "linux_riscv32",
+    values = {"cpu": "riscv32"},
 )
 
 config_setting(
