@@ -1241,35 +1241,29 @@ void cpuinfo_arm_decode_cache(
 		case cpuinfo_uarch_neoverse_n1:
 		case cpuinfo_uarch_neoverse_v1:
 		case cpuinfo_uarch_neoverse_n2:
+		case cpuinfo_uarch_neoverse_v2:
 		{
-                        /*
-                         * ARM Neoverse-n1 Core Technical Reference Manual
-                         * A6.1. About the L1 memory system
-			 *   The L1 memory system consists of separate instruction and data caches. Both have a fixed size of 64KB.
-                         *
-                         * A6.1.1 L1 instruction-side memory system
-                         *   The L1 instruction memory system has the following key features:
-                         *    - Virtually Indexed, Physically Tagged (VIPT), which behaves as a Physically Indexed,
-                         *      Physically Tagged (PIPT) 4-way set-associative L1 data cache.
-                         *    - Fixed cache line length of 64 bytes.
-                         *
-                         * A6.1.2 L1 data-side memory system
-                         *   The L1 data memory system has the following features:
-                         *    - Virtually Indexed, Physically Tagged (VIPT), which behaves as a Physically Indexed,
-                         *      Physically Tagged (PIPT) 4-way set-associative L1 data cache.
-                         *    - Fixed cache line length of 64 bytes.
-                         *    - Pseudo-LRU cache replacement policy.
-                         *
-                         * A7.1 About the L2 memory system
-                         *   The L2 memory subsystem consist of:
-			 *    - An 8-way set associative L2 cache with a configurable size of 256KB, 512KB, or 1024KB. Cache lines
-			 *      have a fixed length of 64 bytes.
-                         *    - Strictly inclusive with L1 data cache.
-			 *    - When configured with instruction cache hardware coherency, strictly inclusive with L1 instruction cache.
-			 *    - When configured without instruction cache hardware coherency, weakly inclusive with L1 instruction cache.
-                         */
-
-			const uint32_t min_l2_size_KB= 256;
+			/*
+				* The specifications here below are taken from the
+				* Arm Core Technical Reference Manuals for
+                                *  - Neoverse N1: https://developer.arm.com/documentation/100616/0401/?lang=en
+                                *  - Neoverse N2: https://developer.arm.com/documentation/102099/0003/?lang=en
+                                *  - Neoverse V1: https://developer.arm.com/documentation/101427/0102/?lang=en
+                                *  - Neoverse V2: https://developer.arm.com/documentation/102375/0002/?lang=en
+				*
+                                * All four Arm architectures have L1 memory system with instruction and data caches,
+                                * both of fixed size of 64KB. The instruction side memory system is 4-way set associative
+                                * with a cache line length of 64 bytes. The data cache is also 4-way set associative with
+                                * a cache line length of 64 bytes.
+				*
+                                * The L2 memory system differs across the four Architectures in the minimum
+                                * length of the L2 cache. Namely:
+                                *  - Arm Neoverse N1/N2/V1 have a L2 cache of configurable size of 256KB, 512KB, or 1024KB
+                                *  - Arm Neoverse V2 has a L2 cache of configurable size of 1MB or 2MB
+                                * For all four architectures, the L2 cache is 8-way set associative
+                                * For all other information, please refer to the technical manuals linked above
+			*/
+			const uint32_t min_l2_size_KB = uarch == cpuinfo_uarch_neoverse_v2 ? 1024 : 256;
 			const uint32_t min_l3_size_KB = 0;
 
 			*l1i = (struct cpuinfo_cache) {
@@ -1715,6 +1709,7 @@ uint32_t cpuinfo_arm_compute_max_cache_size(const struct cpuinfo_processor* proc
 		case cpuinfo_uarch_neoverse_n1:
 		case cpuinfo_uarch_neoverse_v1:
 		case cpuinfo_uarch_neoverse_n2:
+		case cpuinfo_uarch_neoverse_v2:
 		case cpuinfo_uarch_cortex_a75:
 		case cpuinfo_uarch_cortex_a76:
 		case cpuinfo_uarch_exynos_m4:
