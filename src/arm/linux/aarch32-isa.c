@@ -79,6 +79,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Neoverse N1 cores
 		 * - Neoverse N2 cores
 		 * - Neoverse V1 cores
+		 * - Neoverse V2 cores
 		 */
 		if (chipset->series == cpuinfo_arm_chipset_series_samsung_exynos && chipset->model == 9810) {
 			/* Only little cores of Exynos 9810 support FP16 & RDM */
@@ -100,6 +101,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D490): /* Neoverse N2 */
 				case UINT32_C(0x4100D4D0): /* Cortex-A715 */
 				case UINT32_C(0x4100D4E0): /* Cortex-X3 */
+				case UINT32_C(0x4100D4F0): /* Neoverse V2 */
 				case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
 				case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
 				case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
@@ -130,6 +132,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Neoverse N1 cores
 		 * - Neoverse N2 cores
 		 * - Neoverse V1 cores
+		 * - Neoverse V2 cores
 		 */
 		if (chipset->series == cpuinfo_arm_chipset_series_spreadtrum_sc && chipset->model == 9863) {
 			cpuinfo_log_warning("VDOT instructions disabled: cause occasional SIGILL on Spreadtrum SC9863A");
@@ -150,6 +153,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D490): /* Neoverse N2 */
 				case UINT32_C(0x4100D4D0): /* Cortex-A715 */
 				case UINT32_C(0x4100D4E0): /* Cortex-X3 */
+				case UINT32_C(0x4100D4F0): /* Neoverse V2 */
 				case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
 				case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
 				case UINT32_C(0x51008050): /* Kryo 485 Silver (Cortex-A55) */

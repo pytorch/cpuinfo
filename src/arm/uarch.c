@@ -89,7 +89,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD0E: /* Cortex-A76AE */
 					*uarch = cpuinfo_uarch_cortex_a76;
 					break;
-				case 0xD40:
+				case 0xD40: /* Neoverse V1 */
 					*uarch = cpuinfo_uarch_neoverse_v1;
 					break;
 				case 0xD41: /* Cortex-A78 */
@@ -107,7 +107,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD48: /* Cortex-X2 */
 					*uarch = cpuinfo_uarch_cortex_x2;
 					break;
-				case 0xD49:
+				case 0xD49: /* Neoverse N2 */
 					*uarch = cpuinfo_uarch_neoverse_n2;
 					break;
 #if CPUINFO_ARCH_ARM64
@@ -120,6 +120,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 					break;
 				case 0xD4E: /* Cortex-X3 */
 					*uarch = cpuinfo_uarch_cortex_x3;
+					break;
+				case 0xD4F: /* Neoverse V2 */
+					*uarch = cpuinfo_uarch_neoverse_v2;
 					break;
 				default:
 					switch (midr_get_part(midr) >> 8) {
