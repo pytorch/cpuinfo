@@ -72,6 +72,7 @@ int main(int argc, char** argv) {
 		printf("\tAVX512VP2INTERSECT: %s\n", cpuinfo_has_x86_avx512vp2intersect() ? "yes" : "no");
 		printf("\tAVX512_4VNNIW: %s\n", cpuinfo_has_x86_avx512_4vnniw() ? "yes" : "no");
 		printf("\tAVX512_4FMAPS: %s\n", cpuinfo_has_x86_avx512_4fmaps() ? "yes" : "no");
+                printf("\tAVXVNNI: %s\n", cpuinfo_has_x86_avxvnni() ? "yes" : "no");
 
 
 	printf("Multi-threading extensions:\n");
