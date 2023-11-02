@@ -85,6 +85,12 @@ ANDROID_ARM_SRCS = [
     "src/arm/android/properties.c",
 ]
 
+WINDOWS_ARM_SRCS = [
+    "src/arm/windows/init-by-logical-sys-info.c",
+    "src/arm/windows/init.c",
+    "src/arm/windows/windows-arm-init.h",
+]
+
 WINDOWS_X86_SRCS = [
     "src/x86/windows/init.c",
 ]
@@ -116,6 +122,7 @@ cc_library(
         ":macos_x86_64": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
         ":macos_x86_64_legacy": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
         ":macos_arm64": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
+        ":windows_arm64": COMMON_SRCS + ARM_SRCS + WINDOWS_ARM_SRCS,
         ":windows_x86_64": COMMON_SRCS + X86_SRCS + WINDOWS_X86_SRCS,
         ":android_armv7": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM32_SRCS + ANDROID_ARM_SRCS,
         ":android_arm64": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM64_SRCS + ANDROID_ARM_SRCS,
@@ -136,6 +143,7 @@ cc_library(
         ":emscripten_wasm": COMMON_SRCS + EMSCRIPTEN_SRCS,
     }),
     copts = select({
+        ":windows_arm64": [],
         ":windows_x86_64": [],
         "//conditions:default": C99OPTS,
     }) + [
@@ -255,6 +263,11 @@ config_setting(
         "apple_platform_type": "macos",
         "cpu": "darwin_x86_64",
     },
+)
+
+config_setting(
+    name = "windows_arm64",
+    values = {"cpu": "arm64_windows"},
 )
 
 config_setting(
