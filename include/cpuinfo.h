@@ -729,6 +729,7 @@ void CPUINFO_ABI cpuinfo_deinitialize(void);
 		bool sse4a;
 		bool misaligned_sse;
 		bool avx;
+		bool avxvnni;
 		bool fma3;
 		bool fma4;
 		bool xop;
@@ -1071,6 +1072,14 @@ static inline bool cpuinfo_has_x86_misaligned_sse(void) {
 static inline bool cpuinfo_has_x86_avx(void) {
 	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 		return cpuinfo_isa.avx;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_avxvnni(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.avxvnni;
 	#else
 		return false;
 	#endif
