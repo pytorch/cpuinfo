@@ -46,6 +46,14 @@
 	#endif
 #endif
 
+#if defined(__riscv)
+	#if (__riscv_xlen == 32)
+		#define CPUINFO_ARCH_RISCV32 1
+	#elif (__riscv_xlen == 64)
+		#define CPUINFO_ARCH_RISCV64 1
+	#endif
+#endif
+
 /* Define other architecture-specific macros as 0 */
 
 #ifndef CPUINFO_ARCH_X86
@@ -78,6 +86,14 @@
 
 #ifndef CPUINFO_ARCH_WASMSIMD
 	#define CPUINFO_ARCH_WASMSIMD 0
+#endif
+
+#ifndef CPUINFO_ARCH_RISCV32
+	#define CPUINFO_ARCH_RISCV32 0
+#endif
+
+#ifndef CPUINFO_ARCH_RISCV64
+	#define CPUINFO_ARCH_RISCV64 0
 #endif
 
 #if CPUINFO_ARCH_X86 && defined(_MSC_VER)
@@ -188,6 +204,8 @@ enum cpuinfo_vendor {
 	 * Processors are variants of AMD cores.
 	 */
 	cpuinfo_vendor_hygon    = 16,
+	/** SiFive, Inc. Vendor of RISC-V processor microarchitectures. */
+	cpuinfo_vendor_sifive   = 17,
 
 	/* Active vendors of embedded CPUs */
 
@@ -1872,6 +1890,109 @@ static inline bool cpuinfo_has_arm_sve_bf16(void) {
 static inline bool cpuinfo_has_arm_sve2(void) {
 	#if CPUINFO_ARCH_ARM64
 		return cpuinfo_isa.sve2;
+	#else
+		return false;
+	#endif
+}
+
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	/* This structure is not a part of stable API. Use cpuinfo_has_riscv_* functions instead. */
+	struct cpuinfo_riscv_isa {
+		/**
+		 * Keep fields in line with the canonical order as defined by
+		 * Section 27.11 Subset Naming Convention.
+		 */
+		/* RV32I/64I/128I Base ISA. */
+		bool i;
+		#if CPUINFO_ARCH_RISCV32
+			/* RV32E Base ISA. */
+			bool e;
+		#endif
+		/* Integer Multiply/Divide Extension. */
+		bool m;
+		/* Atomic Extension. */
+		bool a;
+		/* Single-Precision Floating-Point Extension. */
+		bool f;
+		/* Double-Precision Floating-Point Extension. */
+		bool d;
+		/* Compressed Extension. */
+		bool c;
+		/* Vector Extension. */
+		bool v;
+	};
+
+	extern struct cpuinfo_riscv_isa cpuinfo_isa;
+#endif
+
+static inline bool cpuinfo_has_riscv_i(void) {
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		return cpuinfo_isa.i;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_riscv_e(void) {
+	#if CPUINFO_ARCH_RISCV32
+		return cpuinfo_isa.e;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_riscv_m(void) {
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		return cpuinfo_isa.m;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_riscv_a(void) {
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		return cpuinfo_isa.a;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_riscv_f(void) {
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		return cpuinfo_isa.f;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_riscv_d(void) {
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		return cpuinfo_isa.d;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_riscv_g(void) {
+	// The 'G' extension is simply shorthand for 'IMAFD'.
+	return cpuinfo_has_riscv_i()
+		&& cpuinfo_has_riscv_m()
+		&& cpuinfo_has_riscv_a()
+		&& cpuinfo_has_riscv_f()
+		&& cpuinfo_has_riscv_d();
+}
+
+static inline bool cpuinfo_has_riscv_c(void) {
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		return cpuinfo_isa.c;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_riscv_v(void) {
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		return cpuinfo_isa.v;
 	#else
 		return false;
 	#endif

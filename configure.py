@@ -56,6 +56,12 @@ def main(args):
                     sources += [
                         "arm/android/properties.c",
                     ]
+        if build.target.is_riscv:
+            if build.target.is_linux:
+                sources += [
+                    "riscv/linux/init.c",
+                    "riscv/linux/riscv-isa.c",
+                ]
 
         if build.target.is_macos:
             sources += ["mach/topology.c"]
