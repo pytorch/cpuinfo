@@ -199,9 +199,13 @@ void cpuinfo_arm_linux_init(void) {
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		arm_linux_processors[i].system_processor_id = i;
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
-			valid_processors += 1;
-
-			if (!(arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR)) {
+			if (arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_PROCESSOR) {
+				/*
+				 * Processor is in possible and present lists, and also reported in /proc/cpuinfo.
+				 * This processor is availble for compute.
+				 */
+				valid_processors += 1;
+			} else {
 				/*
 				 * Processor is in possible and present lists, but not reported in /proc/cpuinfo.
 				 * This is fairly common: high-index processors can be not reported if they are offline.
