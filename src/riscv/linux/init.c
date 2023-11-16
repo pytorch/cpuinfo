@@ -244,7 +244,7 @@ void cpuinfo_riscv_linux_init(void) {
 	 * processors. It is not a count of the number of processors on the
 	 * system.
 	 */
-	const size_t max_processor_id = 1 +
+	const uint32_t max_processor_id = 1 +
 		cpuinfo_linux_get_max_present_processor(
 				cpuinfo_linux_get_max_processors_count());
 	if (max_processor_id == 0) {
@@ -260,7 +260,7 @@ void cpuinfo_riscv_linux_init(void) {
 	riscv_linux_processors = calloc(max_processor_id,
 					sizeof(struct cpuinfo_riscv_linux_processor));
 	if (riscv_linux_processors == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for %zu processors.",
+		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" processors.",
 			max_processor_id * sizeof(struct cpuinfo_riscv_linux_processor),
 			max_processor_id);
 		goto cleanup;
@@ -479,7 +479,7 @@ void cpuinfo_riscv_linux_init(void) {
 	linux_cpu_to_processor_map = calloc(max_processor_id,
 					    sizeof(struct cpuinfo_processor*));
 	if (linux_cpu_to_processor_map == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for %zu processor map.",
+		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" processor map.",
 				  max_processor_id * sizeof(struct cpuinfo_processor*),
 				  max_processor_id);
 		goto cleanup;
@@ -488,7 +488,7 @@ void cpuinfo_riscv_linux_init(void) {
 	linux_cpu_to_core_map = calloc(max_processor_id,
 				       sizeof(struct cpuinfo_core*));
 	if (linux_cpu_to_core_map == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for %zu core map.",
+		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" core map.",
 				  max_processor_id * sizeof(struct cpuinfo_core*),
 				  max_processor_id);
 		goto cleanup;
@@ -497,7 +497,7 @@ void cpuinfo_riscv_linux_init(void) {
 	linux_cpu_to_uarch_index_map = calloc(max_processor_id,
 					      sizeof(struct cpuinfo_uarch_info*));
 	if (linux_cpu_to_uarch_index_map == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for %zu uarch map.",
+		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" uarch map.",
 				  max_processor_id * sizeof(struct cpuinfo_uarch_info*),
 				  max_processor_id);
 		goto cleanup;
