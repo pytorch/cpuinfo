@@ -384,6 +384,13 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_COMPILE_DEFINITIONS(cpuinfo_mock PRIVATE _GNU_SOURCE=1)
   ENDIF()
 
+  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(riscv(32|64))$")
+    ADD_EXECUTABLE(starfive-visionfive-v2-test test/mock/starfive-visionfive-v2.cc)
+    TARGET_INCLUDE_DIRECTORIES(starfive-visionfive-v2-test BEFORE PRIVATE test/mock)
+    TARGET_LINK_LIBRARIES(starfive-visionfive-v2-test PRIVATE cpuinfo_mock gtest)
+    ADD_TEST(NAME starfive-visionfive-v2-test COMMAND starfive-visionfive-v2-test)
+  ENDIF()
+
   IF(CMAKE_SYSTEM_NAME STREQUAL "Android" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv5te|armv7-a)$")
     ADD_EXECUTABLE(atm7029b-tablet-test test/mock/atm7029b-tablet.cc)
     TARGET_INCLUDE_DIRECTORIES(atm7029b-tablet-test BEFORE PRIVATE test/mock)

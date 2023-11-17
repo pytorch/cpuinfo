@@ -58,11 +58,21 @@ struct cpuinfo_mock_property {
 	int CPUINFO_ABI cpuinfo_mock_close(int fd);
 	ssize_t CPUINFO_ABI cpuinfo_mock_read(int fd, void* buffer, size_t capacity);
 
-	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+	#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 \
+		|| CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 		void CPUINFO_ABI cpuinfo_set_hwcap(uint32_t hwcap);
 	#endif
 	#if CPUINFO_ARCH_ARM
 		void CPUINFO_ABI cpuinfo_set_hwcap2(uint32_t hwcap2);
+	#endif
+	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+		#include <sys/hwprobe.h>
+		typedef int (*cpuinfo_mock_riscv_hwprobe)(struct riscv_hwprobe* pairs,
+							  size_t pair_count,
+							  size_t cpu_count,
+							  unsigned long *cpus,
+							  unsigned int flags);
+		void CPUINFO_ABI cpuinfo_set_riscv_hwprobe(cpuinfo_mock_riscv_hwprobe riscv_hwprobe);
 	#endif
 #endif
 
