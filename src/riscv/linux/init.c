@@ -330,6 +330,14 @@ void cpuinfo_riscv_linux_init(void) {
 		}
 	}
 
+	/* Populate processors data from /proc/cpuinfo */
+	if (!cpuinfo_riscv_linux_parse_proc_cpuinfo(
+			riscv_linux_processors_count,
+			riscv_linux_processors)) {
+		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
+		return;
+	}
+
 	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;

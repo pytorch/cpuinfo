@@ -1,9 +1,14 @@
-#include <sys/hwprobe.h>
 #include <sched.h>
-
 #include <cpuinfo/log.h>
+
 #include <riscv/api.h>
 #include <riscv/linux/api.h>
+
+#include <linux/version.h>
+
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6,4,0)
+
+#include <sys/hwprobe.h>
 
 void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 		uint32_t processor,
@@ -70,3 +75,13 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 cleanup:
 	CPU_FREE(cpu_set);
 }
+
+#else
+
+void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
+		uint32_t processor,
+		enum cpuinfo_vendor vendor[restrict static 1],
+		enum cpuinfo_uarch uarch[restrict static 1]) {}
+
+#endif
+
