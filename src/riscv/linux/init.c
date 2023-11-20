@@ -326,7 +326,7 @@ void cpuinfo_riscv_linux_init(void) {
 		if (bitmask_all(riscv_linux_processors[processor].flags, valid_processor_mask)) {
 			riscv_linux_processors[processor].processor.linux_id = processor;
 			riscv_linux_processors[processor].flags |= CPUINFO_LINUX_FLAG_VALID;
-			cpuinfo_log_debug("parsed processor %"PRIu32, processor);
+			cpuinfo_log_debug("parsed processor %zu", processor);
 		}
 	}
 
@@ -553,12 +553,27 @@ void cpuinfo_riscv_linux_init(void) {
 		goto cleanup;
 	}
 
+	l1i = calloc(valid_processors_count, sizeof(struct cpuinfo_cache));
+	if (l1i == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %zu L1I caches",
+						  valid_processors_count * sizeof(struct cpuinfo_cache), valid_processors_count);
+		goto cleanup;
+	}
+
+	l1d = calloc(valid_processors_count, sizeof(struct cpuinfo_cache));
+	if (l1d == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %zu L1D caches",
+						  valid_processors_count * sizeof(struct cpuinfo_cache), valid_processors_count);
+		goto cleanup;
+	}
+
 	/* Transfer contents of processor list to ABI structures. */
 	size_t valid_processors_index = 0;
 	size_t valid_cores_index = 0;
 	size_t valid_clusters_index = 0;
 	size_t valid_packages_index = 0;
 	size_t valid_uarchs_index = 0;
+	size_t l2_count = 0;
 	last_uarch = cpuinfo_uarch_unknown;
 	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
@@ -612,10 +627,26 @@ void cpuinfo_riscv_linux_init(void) {
 			       sizeof(struct cpuinfo_package));
 		}
 
+		/* Populate cache information structures in l1i, l1d */
+		struct cpuinfo_cache temp_l2 = { 0 };
+		cpuinfo_riscv_decode_cache(
+				riscv_linux_processors[processor].core.uarch,
+				&l1i[processor], &l1d[processor], &temp_l2);
+		l1i[processor].processor_start = l1d[processor].processor_start = processor;
+		l1i[processor].processor_count = l1d[processor].processor_count = 1;
+		if (temp_l2.size != 0) {
+			/* Assume L2 is shared by cores in the same cluster */
+			if (riscv_linux_processors[processor].package_leader_id == linux_id) {
+				l2_count += 1;
+			}
+		}
+
 		/* Commit pointers on the final structures. */
 		processors[valid_processors_index - 1].core = &cores[valid_cores_index - 1];
 		processors[valid_processors_index - 1].cluster = &clusters[valid_clusters_index - 1];
 		processors[valid_processors_index - 1].package = &packages[valid_packages_index - 1];
+		processors[valid_processors_index - 1].cache.l1i = l1i + processor;
+		processors[valid_processors_index - 1].cache.l1d = l1d + processor;
 
 		cores[valid_cores_index - 1].cluster = &clusters[valid_clusters_index - 1];
 		cores[valid_cores_index - 1].package = &packages[valid_packages_index - 1];
@@ -627,9 +658,18 @@ void cpuinfo_riscv_linux_init(void) {
 		linux_cpu_to_uarch_index_map[linux_id] = valid_uarchs_index - 1;
 	}
 
+	if (l2_count != 0) {
+		l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
+		if (l2 == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %zu L2 caches",
+							  l2_count * sizeof(struct cpuinfo_cache), l2_count);
+			goto cleanup;
+		}
+	}
+
+	/* Populate cache information structures in l2 */
     uint32_t l2_index = UINT32_MAX;
     for (uint32_t processor = 0; processor < valid_processors_count; processor++) {
-
         struct cpuinfo_cache dummy_l1i, dummy_l1d, temp_l2 = { 0 };
         cpuinfo_riscv_decode_cache(
                 riscv_linux_processors[processor].core.uarch,

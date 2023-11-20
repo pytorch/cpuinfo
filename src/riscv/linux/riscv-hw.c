@@ -21,10 +21,6 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	};
 	const size_t pairs_count = sizeof(pairs) / sizeof(struct riscv_hwprobe);
 
-	/* In case of failure, report unknown. */
-	*vendor = cpuinfo_vendor_unknown;
-	*uarch = cpuinfo_uarch_unknown;
-
 	/* Create a CPU set with this processor flagged. */
 	const size_t cpu_count = processor + 1;
 	cpu_set_t* cpu_set = CPU_ALLOC(cpu_count);
@@ -81,7 +77,9 @@ cleanup:
 void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 		uint32_t processor,
 		enum cpuinfo_vendor vendor[restrict static 1],
-		enum cpuinfo_uarch uarch[restrict static 1]) {}
+		enum cpuinfo_uarch uarch[restrict static 1]) {
+	/* Do nothing */
+}
 
 #endif
 
