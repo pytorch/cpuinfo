@@ -300,6 +300,15 @@ config_setting(
 )
 
 config_setting(
+    name = "android_riscv64",
+    values = {
+        "crosstool_top": "//external:android/crosstool",
+        "cpu": "riscv64",
+    },
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
     name = "android_x86",
     values = {
         "crosstool_top": "//external:android/crosstool",
