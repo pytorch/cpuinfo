@@ -78,14 +78,6 @@
 	#define CPUINFO_ARCH_PPC64 0
 #endif
 
-#ifndef CPUINFO_ARCH_RISCV32
-    #define CPUINFO_ARCH_RISCV32 0
-#endif
-
-#ifndef CPUINFO_ARCH_RISCV64
-    #define CPUINFO_ARCH_RISCV64 0
-#endif
-
 #ifndef CPUINFO_ARCH_ASMJS
 	#define CPUINFO_ARCH_ASMJS 0
 #endif

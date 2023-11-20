@@ -181,11 +181,11 @@ int main(int argc, char** argv) {
 
 #if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 	printf("Instruction sets:\n");
-		#if CPUINFO_ARCH_RISCV32
-			printf("\tBase Integer Instruction Set - 32-bit: %s\n", cpuinfo_has_riscv_i() ? "yes" : "no");
-		#elif CPUINFO_ARCH_RISCV64
-			printf("\tBase Integer Instruction Set - 64-bit: %s\n", cpuinfo_has_riscv_i() ? "yes" : "no");
-		#endif
+#if CPUINFO_ARCH_RISCV32
+		printf("\tBase Integer Instruction Set - 32-bit: %s\n", cpuinfo_has_riscv_i() ? "yes" : "no");
+#else
+		printf("\tBase Integer Instruction Set - 64-bit: %s\n", cpuinfo_has_riscv_i() ? "yes" : "no");
+#endif
 		printf("\tInteger Multiplication and Division: %s\n", cpuinfo_has_riscv_m() ? "yes" : "no");
 		printf("\tAtomic instructions: %s\n", cpuinfo_has_riscv_a() ? "yes" : "no");
 		printf("\tSingle-Precision Floating-Point: %s\n", cpuinfo_has_riscv_f() ? "yes" : "no");

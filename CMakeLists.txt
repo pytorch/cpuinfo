@@ -210,7 +210,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       LIST(APPEND CPUINFO_SRCS
         src/arm/android/properties.c)
     ENDIF()
-  ELSEIF (CPUINFO_TARGET_PROCESSOR MATCHES "^(riscv(32|64)?)$")
+  ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(riscv(32|64))$")
     LIST(APPEND CPUINFO_SRCS
       src/riscv/cache.c
       src/riscv/uarch.c)
@@ -221,7 +221,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
         src/riscv/linux/init.c
         src/riscv/linux/riscv-hw.c
         src/riscv/linux/riscv-isa.c)
-    ENDIF ()
+    ENDIF()
   ENDIF()
 
   IF(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
