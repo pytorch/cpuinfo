@@ -425,7 +425,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/modalias",
 		.size = 426,
-		.content = "x86cpu:vendor:0000:family:0006:model:0037:feature:,0000,0001,0002,0003,0004,0005,0006,0007,0008,0009,000B,000C,000D,000E,000F,0010,0011,0013,0015,0016,0017,0018,0019,001A,001B,001C,001D,001F,0034,003B,003D,0066,0068,006B,006C,006D,0072,0076,0078,007C,007E,0080,0081,0082,0083,0084,0085,0087,0088,0089,008D,008E,008F,0093,0094,0096,0097,0098,0099,009E,00C0,00C8,00E0,00E1,00E3,00E7,0100,0101,0102,0103,0104,0121,0127,0129,012D\n",
+		.content =
+			"x86cpu:vendor:0000:family:0006:model:0037:feature:,0000,0001,0002,0003,0004,0005,0006,0007,0008,0009,000B,000C,000D,000E,000F,0010,0011,0013,0015,0016,0017,0018,0019,001A,001B,001C,001D,001F,0034,003B,003D,0066,0068,006B,006C,006D,0072,0076,0078,007C,007E,0080,0081,0082,0083,0084,0085,0087,0088,0089,008D,008E,008F,0093,0094,0096,0097,0098,0099,009E,00C0,00C8,00E0,00E1,00E3,00E7,0100,0101,0102,0103,0104,0121,0127,0129,012D\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
@@ -495,18 +496,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 125,
-		.content =
-			"1862000 12139\n"
-			"1729000 47\n"
-			"1596000 50\n"
-			"1463000 331\n"
-			"1330000 29\n"
-			"1197000 71\n"
-			"1064000 50\n"
-			"931000 74\n"
-			"798000 101\n"
-			"665000 386\n"
-			"532000 6409\n",
+		.content = "1862000 12139\n"
+			   "1729000 47\n"
+			   "1596000 50\n"
+			   "1463000 331\n"
+			   "1330000 29\n"
+			   "1197000 71\n"
+			   "1064000 50\n"
+			   "931000 74\n"
+			   "798000 101\n"
+			   "665000 386\n"
+			   "532000 6409\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -739,18 +739,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 125,
-		.content =
-			"1862000 12167\n"
-			"1729000 47\n"
-			"1596000 50\n"
-			"1463000 331\n"
-			"1330000 29\n"
-			"1197000 71\n"
-			"1064000 50\n"
-			"931000 74\n"
-			"798000 101\n"
-			"665000 388\n"
-			"532000 6701\n",
+		.content = "1862000 12167\n"
+			   "1729000 47\n"
+			   "1596000 50\n"
+			   "1463000 331\n"
+			   "1330000 29\n"
+			   "1197000 71\n"
+			   "1064000 50\n"
+			   "931000 74\n"
+			   "798000 101\n"
+			   "665000 388\n"
+			   "532000 6701\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -983,18 +982,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 125,
-		.content =
-			"1862000 12194\n"
-			"1729000 47\n"
-			"1596000 50\n"
-			"1463000 331\n"
-			"1330000 29\n"
-			"1197000 71\n"
-			"1064000 50\n"
-			"931000 75\n"
-			"798000 101\n"
-			"665000 400\n"
-			"532000 6969\n",
+		.content = "1862000 12194\n"
+			   "1729000 47\n"
+			   "1596000 50\n"
+			   "1463000 331\n"
+			   "1330000 29\n"
+			   "1197000 71\n"
+			   "1064000 50\n"
+			   "931000 75\n"
+			   "798000 101\n"
+			   "665000 400\n"
+			   "532000 6969\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -1227,18 +1225,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 125,
-		.content =
-			"1862000 12209\n"
-			"1729000 47\n"
-			"1596000 50\n"
-			"1463000 331\n"
-			"1330000 29\n"
-			"1197000 71\n"
-			"1064000 50\n"
-			"931000 75\n"
-			"798000 101\n"
-			"665000 414\n"
-			"532000 7250\n",
+		.content = "1862000 12209\n"
+			   "1729000 47\n"
+			   "1596000 50\n"
+			   "1463000 331\n"
+			   "1330000 29\n"
+			   "1197000 71\n"
+			   "1064000 50\n"
+			   "931000 75\n"
+			   "798000 101\n"
+			   "665000 414\n"
+			   "532000 7250\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -1413,7 +1410,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 3,
 		.content = "16\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -2498,6 +2495,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wpa_supplicant.pid",
 		.value = "593",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

@@ -2,27 +2,26 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 428,
-		.content =
-			"Processor\t: ARMv7 Processor rev 3 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"Hardware\t: Qualcomm MSM 8610 (Flattened Device Tree)\n"
-			"Revision\t: 82b0\n"
-			"Serial\t\t: 9433a00212000000\n"
-			"Device\t\t: condor\n"
-			"Radio\t\t: 1\n"
-			"MSM Hardware\t: MSM8210 CS\n",
+		.content = "Processor\t: ARMv7 Processor rev 3 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "Hardware\t: Qualcomm MSM 8610 (Flattened Device Tree)\n"
+			   "Revision\t: 82b0\n"
+			   "Serial\t\t: 9433a00212000000\n"
+			   "Device\t\t: condor\n"
+			   "Radio\t\t: 1\n"
+			   "MSM Hardware\t: MSM8210 CS\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -397,13 +396,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 69,
-		.content =
-			"300000 226957\n"
-			"384000 42\n"
-			"600000 89\n"
-			"787200 17\n"
-			"998400 3281\n"
-			"1190400 4758\n",
+		.content = "300000 226957\n"
+			   "384000 42\n"
+			   "600000 89\n"
+			   "787200 17\n"
+			   "998400 3281\n"
+			   "1190400 4758\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -440,7 +438,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "1\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -1841,6 +1839,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

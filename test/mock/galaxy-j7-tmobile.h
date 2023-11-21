@@ -217,20 +217,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 613,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
-			"400000\t\t113\t\t113\t\t113\t\t113\t\t121\t\t121\t\t121\t\t121\t\t\n"
-			"500000\t\t38\t\t38\t\t38\t\t38\t\t72\t\t72\t\t72\t\t72\t\t\n"
-			"600000\t\t16\t\t16\t\t16\t\t16\t\t60\t\t60\t\t60\t\t60\t\t\n"
-			"700000\t\t14\t\t14\t\t14\t\t14\t\t61\t\t61\t\t61\t\t61\t\t\n"
-			"800000\t\t14\t\t14\t\t14\t\t14\t\t22\t\t22\t\t22\t\t22\t\t\n"
-			"900000\t\t466\t\t466\t\t466\t\t466\t\t661\t\t661\t\t661\t\t661\t\t\n"
-			"1000000\t\t91\t\t91\t\t91\t\t91\t\t52\t\t52\t\t52\t\t52\t\t\n"
-			"1100000\t\t118\t\t118\t\t118\t\t118\t\t104\t\t104\t\t104\t\t104\t\t\n"
-			"1200000\t\t241\t\t241\t\t241\t\t241\t\t189\t\t189\t\t189\t\t189\t\t\n"
-			"1300000\t\t126\t\t126\t\t126\t\t126\t\t97\t\t97\t\t97\t\t97\t\t\n"
-			"1400000\t\t237\t\t237\t\t237\t\t237\t\t161\t\t161\t\t161\t\t161\t\t\n"
-			"1500000\t\t4492\t\t4492\t\t4492\t\t4492\t\t4012\t\t4012\t\t4012\t\t4012\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
+			   "400000\t\t113\t\t113\t\t113\t\t113\t\t121\t\t121\t\t121\t\t121\t\t\n"
+			   "500000\t\t38\t\t38\t\t38\t\t38\t\t72\t\t72\t\t72\t\t72\t\t\n"
+			   "600000\t\t16\t\t16\t\t16\t\t16\t\t60\t\t60\t\t60\t\t60\t\t\n"
+			   "700000\t\t14\t\t14\t\t14\t\t14\t\t61\t\t61\t\t61\t\t61\t\t\n"
+			   "800000\t\t14\t\t14\t\t14\t\t14\t\t22\t\t22\t\t22\t\t22\t\t\n"
+			   "900000\t\t466\t\t466\t\t466\t\t466\t\t661\t\t661\t\t661\t\t661\t\t\n"
+			   "1000000\t\t91\t\t91\t\t91\t\t91\t\t52\t\t52\t\t52\t\t52\t\t\n"
+			   "1100000\t\t118\t\t118\t\t118\t\t118\t\t104\t\t104\t\t104\t\t104\t\t\n"
+			   "1200000\t\t241\t\t241\t\t241\t\t241\t\t189\t\t189\t\t189\t\t189\t\t\n"
+			   "1300000\t\t126\t\t126\t\t126\t\t126\t\t97\t\t97\t\t97\t\t97\t\t\n"
+			   "1400000\t\t237\t\t237\t\t237\t\t237\t\t161\t\t161\t\t161\t\t161\t\t\n"
+			   "1500000\t\t4492\t\t4492\t\t4492\t\t4492\t\t4012\t\t4012\t\t4012\t\t4012\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
@@ -270,11 +269,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/clusterhotplug/time_in_state",
 		.size = 27,
-		.content =
-			"H0 57447\n"
-			"H1 3553\n"
-			"H2 0\n"
-			"H3 0\n",
+		.content = "H0 57447\n"
+			   "H1 3553\n"
+			   "H2 0\n"
+			   "H3 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/clusterhotplug/up_freq",
@@ -319,7 +317,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
+		.content =
+			"1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
@@ -349,19 +348,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 134,
-		.content =
-			"1500000 4540\n"
-			"1400000 237\n"
-			"1300000 129\n"
-			"1200000 250\n"
-			"1100000 118\n"
-			"1000000 93\n"
-			"900000 476\n"
-			"800000 15\n"
-			"700000 17\n"
-			"600000 17\n"
-			"500000 38\n"
-			"400000 113\n",
+		.content = "1500000 4540\n"
+			   "1400000 237\n"
+			   "1300000 129\n"
+			   "1200000 250\n"
+			   "1100000 118\n"
+			   "1000000 93\n"
+			   "900000 476\n"
+			   "800000 15\n"
+			   "700000 17\n"
+			   "600000 17\n"
+			   "500000 38\n"
+			   "400000 113\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -426,7 +424,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
+		.content =
+			"1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
@@ -456,19 +455,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 134,
-		.content =
-			"1500000 4664\n"
-			"1400000 239\n"
-			"1300000 131\n"
-			"1200000 256\n"
-			"1100000 121\n"
-			"1000000 99\n"
-			"900000 547\n"
-			"800000 15\n"
-			"700000 17\n"
-			"600000 27\n"
-			"500000 41\n"
-			"400000 124\n",
+		.content = "1500000 4664\n"
+			   "1400000 239\n"
+			   "1300000 131\n"
+			   "1200000 256\n"
+			   "1100000 121\n"
+			   "1000000 99\n"
+			   "900000 547\n"
+			   "800000 15\n"
+			   "700000 17\n"
+			   "600000 27\n"
+			   "500000 41\n"
+			   "400000 124\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -533,7 +531,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
+		.content =
+			"1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_governors",
@@ -563,19 +562,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 134,
-		.content =
-			"1500000 4836\n"
-			"1400000 244\n"
-			"1300000 150\n"
-			"1200000 283\n"
-			"1100000 132\n"
-			"1000000 99\n"
-			"900000 553\n"
-			"800000 15\n"
-			"700000 17\n"
-			"600000 27\n"
-			"500000 41\n"
-			"400000 124\n",
+		.content = "1500000 4836\n"
+			   "1400000 244\n"
+			   "1300000 150\n"
+			   "1200000 283\n"
+			   "1100000 132\n"
+			   "1000000 99\n"
+			   "900000 553\n"
+			   "800000 15\n"
+			   "700000 17\n"
+			   "600000 27\n"
+			   "500000 41\n"
+			   "400000 124\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -640,7 +638,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
+		.content =
+			"1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
@@ -670,19 +669,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 135,
-		.content =
-			"1500000 5159\n"
-			"1400000 262\n"
-			"1300000 183\n"
-			"1200000 358\n"
-			"1100000 166\n"
-			"1000000 122\n"
-			"900000 802\n"
-			"800000 25\n"
-			"700000 20\n"
-			"600000 37\n"
-			"500000 56\n"
-			"400000 245\n",
+		.content = "1500000 5159\n"
+			   "1400000 262\n"
+			   "1300000 183\n"
+			   "1200000 358\n"
+			   "1100000 166\n"
+			   "1000000 122\n"
+			   "900000 802\n"
+			   "800000 25\n"
+			   "700000 20\n"
+			   "600000 37\n"
+			   "500000 56\n"
+			   "400000 245\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -737,19 +735,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
 		.size = 134,
-		.content =
-			"1500000 4361\n"
-			"1400000 170\n"
-			"1300000 105\n"
-			"1200000 220\n"
-			"1100000 118\n"
-			"1000000 76\n"
-			"900000 823\n"
-			"800000 30\n"
-			"700000 70\n"
-			"600000 74\n"
-			"500000 94\n"
-			"400000 345\n",
+		.content = "1500000 4361\n"
+			   "1400000 170\n"
+			   "1300000 105\n"
+			   "1200000 220\n"
+			   "1100000 118\n"
+			   "1000000 76\n"
+			   "900000 823\n"
+			   "800000 30\n"
+			   "700000 70\n"
+			   "600000 74\n"
+			   "500000 94\n"
+			   "400000 345\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
@@ -814,7 +811,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
+		.content =
+			"1500000 1400000 1300000 1200000 1100000 1000000 900000 800000 700000 600000 500000 400000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_governors",
@@ -849,19 +847,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
 		.size = 135,
-		.content =
-			"1500000 4374\n"
-			"1400000 178\n"
-			"1300000 105\n"
-			"1200000 232\n"
-			"1100000 126\n"
-			"1000000 86\n"
-			"900000 962\n"
-			"800000 37\n"
-			"700000 73\n"
-			"600000 78\n"
-			"500000 106\n"
-			"400000 373\n",
+		.content = "1500000 4374\n"
+			   "1400000 178\n"
+			   "1300000 105\n"
+			   "1200000 232\n"
+			   "1100000 126\n"
+			   "1000000 86\n"
+			   "900000 962\n"
+			   "800000 37\n"
+			   "700000 73\n"
+			   "600000 78\n"
+			   "500000 106\n"
+			   "400000 373\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
@@ -898,7 +895,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 3,
 		.content = "80\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -2667,6 +2664,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.wfd.status",
 		.value = "disconnected",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <unistd.h>
-#include <fcntl.h>
 #include <errno.h>
-
+#include <fcntl.h>
+#include <unistd.h>
 
 #define BUFFER_SIZE 4096
 char buffer[BUFFER_SIZE];
@@ -26,14 +25,17 @@ int main(int argc, char** argv) {
 	do {
 		bytes_read = read(file, buffer, BUFFER_SIZE);
 		if (bytes_read < 0) {
-			fprintf(stderr, "Error: failed to read file %s at position %zu: %s\n",
-				CPUINFO_PATH, position, strerror(errno));
+			fprintf(stderr,
+				"Error: failed to read file %s at position %zu: %s\n",
+				CPUINFO_PATH,
+				position,
+				strerror(errno));
 			exit(EXIT_FAILURE);
 		}
 
-		position += (size_t) bytes_read;
+		position += (size_t)bytes_read;
 		if (bytes_read > 0) {
-			fwrite(buffer, 1, (size_t) bytes_read, stdout);
+			fwrite(buffer, 1, (size_t)bytes_read, stdout);
 		}
 	} while (bytes_read != 0);
 

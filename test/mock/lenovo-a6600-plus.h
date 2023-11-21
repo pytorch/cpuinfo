@@ -363,25 +363,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 215,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\t\n"
-			"221000\t\t31\t\t31\t\t31\t\t31\t\t\n"
-			"364000\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"494000\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"637000\t\t4\t\t4\t\t4\t\t4\t\t\n"
-			"793000\t\t13\t\t13\t\t13\t\t13\t\t\n"
-			"858000\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"923000\t\t8\t\t8\t\t8\t\t8\t\t\n"
-			"988000\t\t605\t\t605\t\t605\t\t605\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\t\n"
+			   "221000\t\t31\t\t31\t\t31\t\t31\t\t\n"
+			   "364000\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			   "494000\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			   "637000\t\t4\t\t4\t\t4\t\t4\t\t\n"
+			   "793000\t\t13\t\t13\t\t13\t\t13\t\t\n"
+			   "858000\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			   "923000\t\t8\t\t8\t\t8\t\t8\t\t\n"
+			   "988000\t\t605\t\t605\t\t605\t\t605\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/current_in_state",
 		.size = 312,
-		.content =
-			"CPU0:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n"
-			"CPU1:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n"
-			"CPU2:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n"
-			"CPU3:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n",
+		.content = "CPU0:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n"
+			   "CPU1:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n"
+			   "CPU2:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n"
+			   "CPU3:988000=0 923000=0 858000=0 793000=0 637000=0 494000=0 364000=0 221000=0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
@@ -401,11 +399,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cputopo/glbinfo",
 		.size = 58,
-		.content =
-			"big/little arch: no\n"
-			"nr_cups: 4\n"
-			"nr_clusters: 1\n"
-			"cluster0: f\n",
+		.content = "big/little arch: no\n"
+			   "nr_cups: 4\n"
+			   "nr_clusters: 1\n"
+			   "cluster0: f\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cputopo/is_big_little",
@@ -480,15 +477,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 76,
-		.content =
-			"988000 732\n"
-			"923000 8\n"
-			"858000 0\n"
-			"793000 13\n"
-			"637000 4\n"
-			"494000 0\n"
-			"364000 0\n"
-			"221000 31\n",
+		.content = "988000 732\n"
+			   "923000 8\n"
+			   "858000 0\n"
+			   "793000 13\n"
+			   "637000 4\n"
+			   "494000 0\n"
+			   "364000 0\n"
+			   "221000 31\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -598,15 +594,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 77,
-		.content =
-			"988000 1000\n"
-			"923000 8\n"
-			"858000 0\n"
-			"793000 13\n"
-			"637000 4\n"
-			"494000 0\n"
-			"364000 0\n"
-			"221000 31\n",
+		.content = "988000 1000\n"
+			   "923000 8\n"
+			   "858000 0\n"
+			   "793000 13\n"
+			   "637000 4\n"
+			   "494000 0\n"
+			   "364000 0\n"
+			   "221000 31\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -716,15 +711,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 77,
-		.content =
-			"988000 1248\n"
-			"923000 8\n"
-			"858000 0\n"
-			"793000 13\n"
-			"637000 4\n"
-			"494000 0\n"
-			"364000 0\n"
-			"221000 31\n",
+		.content = "988000 1248\n"
+			   "923000 8\n"
+			   "858000 0\n"
+			   "793000 13\n"
+			   "637000 4\n"
+			   "494000 0\n"
+			   "364000 0\n"
+			   "221000 31\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -776,7 +770,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 3,
 		.content = "04\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -2373,6 +2367,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wifi.tethering.interface",
 		.value = "ap0",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

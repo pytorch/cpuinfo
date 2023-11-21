@@ -1,14 +1,12 @@
+#include <dlfcn.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <dlfcn.h>
 
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
 
-
-#define COUNT_OF(x) (sizeof(x) / sizeof(0[x]))
-
+#define COUNT_OF(x) (sizeof(x) / sizeof(0 [x]))
 
 struct egl_enum_item {
 	EGLint id;
@@ -64,7 +62,7 @@ struct egl_enum_item egl_enum_color_buffer[] = {
 };
 
 #ifndef EGL_OPENGL_ES3_BIT
-	#define EGL_OPENGL_ES3_BIT 0x40
+#define EGL_OPENGL_ES3_BIT 0x40
 #endif
 
 struct egl_enum_item egl_enum_conformant[] = {
@@ -253,19 +251,19 @@ struct egl_config_attribute egl_config_attributes[] = {
 	{
 		.id = EGL_SURFACE_TYPE,
 		.name = "EGL_SURFACE_TYPE",
-		.cardinality = -(int32_t) COUNT_OF(egl_enum_surface_type),
+		.cardinality = -(int32_t)COUNT_OF(egl_enum_surface_type),
 		.values = egl_enum_surface_type,
 	},
 	{
 		.id = EGL_RENDERABLE_TYPE,
 		.name = "EGL_RENDERABLE_TYPE",
-		.cardinality = -(int32_t) COUNT_OF(egl_enum_renderable_type),
+		.cardinality = -(int32_t)COUNT_OF(egl_enum_renderable_type),
 		.values = egl_enum_renderable_type,
 	},
 	{
 		.id = EGL_CONFORMANT,
 		.name = "EGL_CONFORMANT",
-		.cardinality = -(int32_t) COUNT_OF(egl_enum_conformant),
+		.cardinality = -(int32_t)COUNT_OF(egl_enum_conformant),
 		.values = egl_enum_conformant,
 	},
 	{
@@ -306,7 +304,7 @@ void report_gles_attributes(void) {
 		fprintf(stderr, "failed to initialize EGL display connection\n");
 		goto cleanup;
 	}
-	printf("initialized display connection with EGL %d.%d\n", (int) egl_major, (int) egl_minor);
+	printf("initialized display connection with EGL %d.%d\n", (int)egl_major, (int)egl_minor);
 
 	EGLint configs_count = 0;
 	egl_status = eglGetConfigs(display, NULL, 0, &configs_count);
@@ -315,10 +313,12 @@ void report_gles_attributes(void) {
 		goto cleanup;
 	}
 
-	configs = (EGLConfig*) malloc(configs_count * sizeof(EGLConfig));
+	configs = (EGLConfig*)malloc(configs_count * sizeof(EGLConfig));
 	if (configs == NULL) {
-		fprintf(stderr, "failed to allocate %zu bytes for %d frame buffer configurations\n",
-			configs_count * sizeof(EGLConfig), configs_count);
+		fprintf(stderr,
+			"failed to allocate %zu bytes for %d frame buffer configurations\n",
+			configs_count * sizeof(EGLConfig),
+			configs_count);
 		goto cleanup;
 	}
 
@@ -330,18 +330,20 @@ void report_gles_attributes(void) {
 
 	printf("EGL framebuffer configurations:\n");
 	for (EGLint i = 0; i < configs_count; i++) {
-		printf("\tConfiguration #%d:\n", (int) i);
+		printf("\tConfiguration #%d:\n", (int)i);
 		for (size_t n = 0; n < COUNT_OF(egl_config_attributes); n++) {
 			EGLint value = 0;
 			egl_status = eglGetConfigAttrib(display, configs[i], egl_config_attributes[n].id, &value);
 			if (egl_config_attributes[n].cardinality == 0) {
-				printf("\t\t%s: %d\n", egl_config_attributes[n].name, (int) value);
+				printf("\t\t%s: %d\n", egl_config_attributes[n].name, (int)value);
 			} else if (egl_config_attributes[n].cardinality > 0) {
 				/* Enumeration */
 				bool known_value = false;
-				for (size_t k = 0; k < (size_t) egl_config_attributes[n].cardinality; k++) {
+				for (size_t k = 0; k < (size_t)egl_config_attributes[n].cardinality; k++) {
 					if (egl_config_attributes[n].values[k].id == value) {
-						printf("\t\t%s: %s\n", egl_config_attributes[n].name, egl_config_attributes[n].values[k].name);
+						printf("\t\t%s: %s\n",
+						       egl_config_attributes[n].name,
+						       egl_config_attributes[n].values[k].name);
 						known_value = true;
 						break;
 					}
@@ -355,18 +357,19 @@ void report_gles_attributes(void) {
 				if (value == 0) {
 					printf("none\n");
 				} else {
-					for (size_t k = 0; k < (size_t) -egl_config_attributes[n].cardinality; k++) {
+					for (size_t k = 0; k < (size_t)-egl_config_attributes[n].cardinality; k++) {
 						if (egl_config_attributes[n].values[k].id & value) {
 							value &= ~egl_config_attributes[n].values[k].id;
 							if (value != 0) {
-								printf("%s | ", egl_config_attributes[n].values[k].name);
+								printf("%s | ",
+								       egl_config_attributes[n].values[k].name);
 							} else {
 								printf("%s\n", egl_config_attributes[n].values[k].name);
 							}
 						}
 					}
 					if (value != 0) {
-						printf("0x%08X\n", (int) value);
+						printf("0x%08X\n", (int)value);
 					}
 				}
 			}
@@ -374,10 +377,14 @@ void report_gles_attributes(void) {
 	}
 
 	EGLint const config_attributes[] = {
-		EGL_BIND_TO_TEXTURE_RGBA, EGL_TRUE,
-		EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-		EGL_CONFORMANT, EGL_OPENGL_ES2_BIT,
-		EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
+		EGL_BIND_TO_TEXTURE_RGBA,
+		EGL_TRUE,
+		EGL_RENDERABLE_TYPE,
+		EGL_OPENGL_ES2_BIT,
+		EGL_CONFORMANT,
+		EGL_OPENGL_ES2_BIT,
+		EGL_SURFACE_TYPE,
+		EGL_PBUFFER_BIT,
 		EGL_NONE,
 	};
 	EGLConfig config = NULL;
@@ -389,10 +396,14 @@ void report_gles_attributes(void) {
 	}
 
 	EGLint const surface_attributes[] = {
-		EGL_HEIGHT, 1,
-		EGL_WIDTH, 1,
-		EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGBA,
-		EGL_TEXTURE_TARGET, EGL_TEXTURE_2D,
+		EGL_HEIGHT,
+		1,
+		EGL_WIDTH,
+		1,
+		EGL_TEXTURE_FORMAT,
+		EGL_TEXTURE_RGBA,
+		EGL_TEXTURE_TARGET,
+		EGL_TEXTURE_2D,
 		EGL_NONE,
 	};
 	surface = eglCreatePbufferSurface(display, config, surface_attributes);
@@ -402,7 +413,8 @@ void report_gles_attributes(void) {
 	}
 
 	EGLint const context_attributes[] = {
-		EGL_CONTEXT_CLIENT_VERSION, 2,
+		EGL_CONTEXT_CLIENT_VERSION,
+		2,
 		EGL_NONE,
 	};
 	context = eglCreateContext(display, config, EGL_NO_CONTEXT, context_attributes);

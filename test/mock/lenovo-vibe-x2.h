@@ -2,20 +2,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 314,
-		.content =
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"Hardware\t: MT6595\n"
-			"Revision\t: 0000\n"
-			"Serial\t\t: 0000000000000000\n",
+		.content = "Processor\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 5\n"
+			   "\n"
+			   "Hardware\t: MT6595\n"
+			   "Revision\t: 0000\n"
+			   "Serial\t\t: 0000000000000000\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -252,11 +251,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cputopo/glbinfo",
 		.size = 72,
-		.content =
-			"big/little arch: yes\n"
-			"big/little cpumask:f0/0f\n"
-			"nr_cups: 8\n"
-			"nr_clusters: 2\n",
+		.content = "big/little arch: yes\n"
+			   "big/little cpumask:f0/0f\n"
+			   "nr_cups: 8\n"
+			   "nr_clusters: 2\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cputopo/is_big_little",
@@ -336,15 +334,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 87,
-		.content =
-			"1690000 1493\n"
-			"1495000 0\n"
-			"1365000 8\n"
-			"1248000 4\n"
-			"1144000 20654\n"
-			"1001000 12\n"
-			"806000 33\n"
-			"403000 0\n",
+		.content = "1690000 1493\n"
+			   "1495000 0\n"
+			   "1365000 8\n"
+			   "1248000 4\n"
+			   "1144000 20654\n"
+			   "1001000 12\n"
+			   "806000 33\n"
+			   "403000 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -396,7 +393,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 3,
 		.content = "01\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -1853,6 +1850,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.wfd.security.image",
 		.value = "1",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

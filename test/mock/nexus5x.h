@@ -3,56 +3,55 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 1030,
-		.content =
-			"processor\t: 0\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"processor\t: 1\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"processor\t: 2\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"processor\t: 3\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"processor\t: 4\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x1\n"
-			"CPU part\t: 0xd07\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"processor\t: 5\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x1\n"
-			"CPU part\t: 0xd07\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"Hardware\t: Qualcomm Technologies, Inc MSM8992\n",
+		.content = "processor\t: 0\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "processor\t: 4\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x1\n"
+			   "CPU part\t: 0xd07\n"
+			   "CPU revision\t: 2\n"
+			   "\n"
+			   "processor\t: 5\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x1\n"
+			   "CPU part\t: 0xd07\n"
+			   "CPU revision\t: 2\n"
+			   "\n"
+			   "Hardware\t: Qualcomm Technologies, Inc MSM8992\n",
 	},
 #elif CPUINFO_ARCH_ARM
 	{
@@ -334,16 +333,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 95,
-		.content =
-			"384000 192\n"
-			"460800 44\n"
-			"600000 18\n"
-			"672000 5\n"
-			"787200 95\n"
-			"864000 42\n"
-			"960000 103\n"
-			"1248000 21\n"
-			"1440000 4796\n",
+		.content = "384000 192\n"
+			   "460800 44\n"
+			   "600000 18\n"
+			   "672000 5\n"
+			   "787200 95\n"
+			   "864000 42\n"
+			   "960000 103\n"
+			   "1248000 21\n"
+			   "1440000 4796\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -443,16 +441,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 95,
-		.content =
-			"384000 283\n"
-			"460800 51\n"
-			"600000 25\n"
-			"672000 5\n"
-			"787200 99\n"
-			"864000 42\n"
-			"960000 127\n"
-			"1248000 23\n"
-			"1440000 4899\n",
+		.content = "384000 283\n"
+			   "460800 51\n"
+			   "600000 25\n"
+			   "672000 5\n"
+			   "787200 99\n"
+			   "864000 42\n"
+			   "960000 127\n"
+			   "1248000 23\n"
+			   "1440000 4899\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -552,16 +549,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 95,
-		.content =
-			"384000 492\n"
-			"460800 59\n"
-			"600000 34\n"
-			"672000 5\n"
-			"787200 99\n"
-			"864000 42\n"
-			"960000 142\n"
-			"1248000 32\n"
-			"1440000 4899\n",
+		.content = "384000 492\n"
+			   "460800 59\n"
+			   "600000 34\n"
+			   "672000 5\n"
+			   "787200 99\n"
+			   "864000 42\n"
+			   "960000 142\n"
+			   "1248000 32\n"
+			   "1440000 4899\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -661,16 +657,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 95,
-		.content =
-			"384000 703\n"
-			"460800 76\n"
-			"600000 36\n"
-			"672000 5\n"
-			"787200 99\n"
-			"864000 42\n"
-			"960000 157\n"
-			"1248000 40\n"
-			"1440000 4922\n",
+		.content = "384000 703\n"
+			   "460800 76\n"
+			   "600000 36\n"
+			   "672000 5\n"
+			   "787200 99\n"
+			   "864000 42\n"
+			   "960000 157\n"
+			   "1248000 40\n"
+			   "1440000 4922\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -717,7 +712,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 9,
 		.content = "msm_idle\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -1989,6 +1984,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wifi.supplicant_scan_interval",
 		.value = "15",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

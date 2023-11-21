@@ -2,51 +2,50 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 1141,
-		.content =
-			"processor\t: 0\n"
-			"model name\t: ARMv7 Processor rev 0 (v7l)\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"processor\t: 1\n"
-			"model name\t: ARMv7 Processor rev 0 (v7l)\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"processor\t: 2\n"
-			"model name\t: ARMv7 Processor rev 0 (v7l)\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"processor\t: 3\n"
-			"model name\t: ARMv7 Processor rev 0 (v7l)\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"Hardware\t: Qualcomm Technologies, Inc MSM8916\n"
-			"Revision\t: 0009\n"
-			"Serial\t\t: 0000000000000000\n"
-			"Processor\t: ARMv7 Processor rev 0 (v7l)\n",
+		.content = "processor\t: 0\n"
+			   "model name\t: ARMv7 Processor rev 0 (v7l)\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "model name\t: ARMv7 Processor rev 0 (v7l)\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "model name\t: ARMv7 Processor rev 0 (v7l)\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "model name\t: ARMv7 Processor rev 0 (v7l)\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "Hardware\t: Qualcomm Technologies, Inc MSM8916\n"
+			   "Revision\t: 0009\n"
+			   "Serial\t\t: 0000000000000000\n"
+			   "Processor\t: ARMv7 Processor rev 0 (v7l)\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -481,15 +480,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 84,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 141\n"
-			"998400 290\n"
-			"1094400 74\n"
-			"1152000 82\n"
-			"1209600 4075\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 141\n"
+			   "998400 290\n"
+			   "1094400 74\n"
+			   "1152000 82\n"
+			   "1209600 4075\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -579,15 +577,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 84,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 347\n"
-			"998400 295\n"
-			"1094400 74\n"
-			"1152000 95\n"
-			"1209600 4085\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 347\n"
+			   "998400 295\n"
+			   "1094400 74\n"
+			   "1152000 95\n"
+			   "1209600 4085\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -677,15 +674,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 84,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 568\n"
-			"998400 306\n"
-			"1094400 74\n"
-			"1152000 95\n"
-			"1209600 4085\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 568\n"
+			   "998400 306\n"
+			   "1094400 74\n"
+			   "1152000 95\n"
+			   "1209600 4085\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -775,15 +771,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 84,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 805\n"
-			"998400 306\n"
-			"1094400 74\n"
-			"1152000 95\n"
-			"1209600 4085\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 805\n"
+			   "998400 306\n"
+			   "1094400 74\n"
+			   "1152000 95\n"
+			   "1209600 4085\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -820,7 +815,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "8\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -2897,6 +2892,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.monitor.status",
 		.value = "attach",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

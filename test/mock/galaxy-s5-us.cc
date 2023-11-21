@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <cpuinfo.h>
 #include <cpuinfo-mock.h>
-
+#include <cpuinfo.h>
 
 TEST(PROCESSORS, count) {
 	ASSERT_EQ(4, cpuinfo_get_processors_count());
@@ -208,8 +207,10 @@ TEST(PACKAGES, count) {
 
 TEST(PACKAGES, name) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
-		ASSERT_EQ("Qualcomm MSM8974PRO-AC",
-			std::string(cpuinfo_get_package(i)->name,
+		ASSERT_EQ(
+			"Qualcomm MSM8974PRO-AC",
+			std::string(
+				cpuinfo_get_package(i)->name,
 				strnlen(cpuinfo_get_package(i)->name, CPUINFO_PACKAGE_NAME_MAX)));
 	}
 }
@@ -400,8 +401,10 @@ TEST(L1I, associativity) {
 
 TEST(L1I, sets) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l1i_cache(i)->size,
-			cpuinfo_get_l1i_cache(i)->sets * cpuinfo_get_l1i_cache(i)->line_size * cpuinfo_get_l1i_cache(i)->partitions * cpuinfo_get_l1i_cache(i)->associativity);
+		ASSERT_EQ(
+			cpuinfo_get_l1i_cache(i)->size,
+			cpuinfo_get_l1i_cache(i)->sets * cpuinfo_get_l1i_cache(i)->line_size *
+				cpuinfo_get_l1i_cache(i)->partitions * cpuinfo_get_l1i_cache(i)->associativity);
 	}
 }
 
@@ -452,8 +455,10 @@ TEST(L1D, associativity) {
 
 TEST(L1D, sets) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l1d_cache(i)->size,
-			cpuinfo_get_l1d_cache(i)->sets * cpuinfo_get_l1d_cache(i)->line_size * cpuinfo_get_l1d_cache(i)->partitions * cpuinfo_get_l1d_cache(i)->associativity);
+		ASSERT_EQ(
+			cpuinfo_get_l1d_cache(i)->size,
+			cpuinfo_get_l1d_cache(i)->sets * cpuinfo_get_l1d_cache(i)->line_size *
+				cpuinfo_get_l1d_cache(i)->partitions * cpuinfo_get_l1d_cache(i)->associativity);
 	}
 }
 
@@ -492,9 +497,7 @@ TEST(L2, non_null) {
 
 TEST(L2, size) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		switch (i) {
-			ASSERT_EQ(2 * 1024 * 1024, cpuinfo_get_l2_cache(i)->size);
-		}
+		switch (i) { ASSERT_EQ(2 * 1024 * 1024, cpuinfo_get_l2_cache(i)->size); }
 	}
 }
 
@@ -506,8 +509,10 @@ TEST(L2, associativity) {
 
 TEST(L2, sets) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l2_cache(i)->size,
-			cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->line_size * cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->associativity);
+		ASSERT_EQ(
+			cpuinfo_get_l2_cache(i)->size,
+			cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->line_size *
+				cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->associativity);
 	}
 }
 

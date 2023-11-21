@@ -2,33 +2,32 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 492,
-		.content =
-			"Processor\t: ARMv7 Processor rev 3 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"Hardware\t: Qualcomm MSM 8226 (Flattened Device Tree)\n"
-			"Revision\t: 82d0\n"
-			"Serial\t\t: 1063b20615000000\n"
-			"Device\t\t: peregrine\n"
-			"Radio\t\t: 1\n"
-			"MSM Hardware\t: MSM8926\n",
+		.content = "Processor\t: ARMv7 Processor rev 3 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "Hardware\t: Qualcomm MSM 8226 (Flattened Device Tree)\n"
+			   "Revision\t: 82d0\n"
+			   "Serial\t\t: 1063b20615000000\n"
+			   "Device\t\t: peregrine\n"
+			   "Radio\t\t: 1\n"
+			   "MSM Hardware\t: MSM8926\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -378,14 +377,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 80,
-		.content =
-			"300000 7753\n"
-			"384000 91\n"
-			"600000 160\n"
-			"787200 21\n"
-			"998400 3794\n"
-			"1094400 480\n"
-			"1190400 6702\n",
+		.content = "300000 7753\n"
+			   "384000 91\n"
+			   "600000 160\n"
+			   "787200 21\n"
+			   "998400 3794\n"
+			   "1094400 480\n"
+			   "1190400 6702\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -422,7 +420,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "0\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -1798,6 +1796,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

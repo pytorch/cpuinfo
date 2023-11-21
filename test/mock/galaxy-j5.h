@@ -414,15 +414,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 184,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\t\n"
-			"200000\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"400000\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"533333\t\t0\t\t0\t\t0\t\t0\t\t\n"
-			"800000\t\t6\t\t0\t\t0\t\t0\t\t\n"
-			"998400\t\t1\t\t0\t\t0\t\t0\t\t\n"
-			"1094400\t\t13\t\t0\t\t0\t\t0\t\t\n"
-			"1190400\t\t3342\t\t0\t\t0\t\t0\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\t\n"
+			   "200000\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			   "400000\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			   "533333\t\t0\t\t0\t\t0\t\t0\t\t\n"
+			   "800000\t\t6\t\t0\t\t0\t\t0\t\t\n"
+			   "998400\t\t1\t\t0\t\t0\t\t0\t\t\n"
+			   "1094400\t\t13\t\t0\t\t0\t\t0\t\t\n"
+			   "1190400\t\t3342\t\t0\t\t0\t\t0\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/current_in_state",
@@ -502,14 +501,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 69,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 6\n"
-			"998400 3\n"
-			"1094400 23\n"
-			"1190400 3421\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 6\n"
+			   "998400 3\n"
+			   "1094400 23\n"
+			   "1190400 3421\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -609,14 +607,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 71,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 18\n"
-			"998400 20\n"
-			"1094400 26\n"
-			"1190400 3555\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 18\n"
+			   "998400 20\n"
+			   "1094400 26\n"
+			   "1190400 3555\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -716,14 +713,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 72,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 112\n"
-			"998400 37\n"
-			"1094400 32\n"
-			"1190400 3596\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 112\n"
+			   "998400 37\n"
+			   "1094400 32\n"
+			   "1190400 3596\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -823,14 +819,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 72,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 190\n"
-			"998400 84\n"
-			"1094400 38\n"
-			"1190400 3621\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 190\n"
+			   "998400 84\n"
+			   "1094400 38\n"
+			   "1190400 3621\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -867,7 +862,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "3\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -2979,6 +2974,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.p2p.chkintent",
 		.value = "8",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

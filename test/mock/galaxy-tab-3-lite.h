@@ -2,21 +2,20 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 349,
-		.content =
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"processor\t: 0\n"
-			"model name\t: ARMv7 Processor rev 5 (v7l)\n"
-			"BogoMIPS\t: 1538.01\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"Hardware\t: sc8830\n"
-			"Revision\t: 0004\n"
-			"Serial\t\t: 3100818054f13400\n",
+		.content = "Processor\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "processor\t: 0\n"
+			   "model name\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "BogoMIPS\t: 1538.01\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 5\n"
+			   "\n"
+			   "Hardware\t: sc8830\n"
+			   "Revision\t: 0004\n"
+			   "Serial\t\t: 3100818054f13400\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -281,11 +280,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 51,
-		.content =
-			"1300000 7925\n"
-			"1200000 1060\n"
-			"1000000 207\n"
-			"768000 21236\n",
+		.content = "1300000 7925\n"
+			   "1200000 1060\n"
+			   "1000000 207\n"
+			   "768000 21236\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -322,7 +320,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "1\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -1599,6 +1597,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "zram.disksize",
 		.value = "300",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

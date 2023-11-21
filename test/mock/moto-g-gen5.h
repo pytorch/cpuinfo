@@ -598,71 +598,67 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/soc0/image_crm_version",
 		.size = 5,
-		.content =
-			"REL\n"
-			"\n",
+		.content = "REL\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/image_variant",
 		.size = 13,
-		.content =
-			"cedric-user\n"
-			"\n",
+		.content = "cedric-user\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/image_version",
 		.size = 20,
-		.content =
-			"10:NPP25.137-15:13\n"
-			"\n",
+		.content = "10:NPP25.137-15:13\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/images",
 		.size = 570,
-		.content =
-			"0:\n"
-			"\tCRM:\t\t00:BOOT.BF.3.3-00193\n"
-			"\tVariant:\tFAASANAZA\n"
-			"\tVersion:\tshws28\n"
-			"\n"
-			"1:\n"
-			"\tCRM:\t\t01:TZ.BF.4.0.5-00030\n"
-			"\tVariant:\t\n"
-			"\tVersion:\tCRM\n"
-			"\n"
-			"3:\n"
-			"\tCRM:\t\t03:RPM.BF.2.2-00209\n"
-			"\tVariant:\tAAAAANAAR\n"
-			"\tVersion:\tshws28\n"
-			"\n"
-			"10:\n"
-			"\tCRM:\t\t10:NPP25.137-15:13\n"
-			"\n"
-			"\tVariant:\tcedric-user\n"
-			"\n"
-			"\tVersion:\tREL\n"
-			"\n"
-			"\n"
-			"11:\n"
-			"\tCRM:\t\t11:MPSS.JO.2.0.C1-00122\n"
-			"\tVariant:\t8937.genns.prodQ\n"
-			"\tVersion:\tilclbld116/hudsonmd/3106b73\n"
-			"\n"
-			"12:\n"
-			"\tCRM:\t\t12:ADSP.8953.2.8.2-00042\n"
-			"\tVariant:\tAAAAAAAAQ\n"
-			"\tVersion:\tCRM\n"
-			"\n"
-			"13:\n"
-			"\tCRM:\t\t13:CNSS.PR.4.0-80391\n"
-			"\tVariant:\tSCAQJAZM\n"
-			"\tVersion:\tCRM\n"
-			"\n"
-			"14:\n"
-			"\tCRM:\t\t14:VIDEO.VE_ULT.3.1-00025\n"
-			"\tVariant:\tPROD\n"
-			"\tVersion:\t:CRM\n"
-			"\n",
+		.content = "0:\n"
+			   "\tCRM:\t\t00:BOOT.BF.3.3-00193\n"
+			   "\tVariant:\tFAASANAZA\n"
+			   "\tVersion:\tshws28\n"
+			   "\n"
+			   "1:\n"
+			   "\tCRM:\t\t01:TZ.BF.4.0.5-00030\n"
+			   "\tVariant:\t\n"
+			   "\tVersion:\tCRM\n"
+			   "\n"
+			   "3:\n"
+			   "\tCRM:\t\t03:RPM.BF.2.2-00209\n"
+			   "\tVariant:\tAAAAANAAR\n"
+			   "\tVersion:\tshws28\n"
+			   "\n"
+			   "10:\n"
+			   "\tCRM:\t\t10:NPP25.137-15:13\n"
+			   "\n"
+			   "\tVariant:\tcedric-user\n"
+			   "\n"
+			   "\tVersion:\tREL\n"
+			   "\n"
+			   "\n"
+			   "11:\n"
+			   "\tCRM:\t\t11:MPSS.JO.2.0.C1-00122\n"
+			   "\tVariant:\t8937.genns.prodQ\n"
+			   "\tVersion:\tilclbld116/hudsonmd/3106b73\n"
+			   "\n"
+			   "12:\n"
+			   "\tCRM:\t\t12:ADSP.8953.2.8.2-00042\n"
+			   "\tVariant:\tAAAAAAAAQ\n"
+			   "\tVersion:\tCRM\n"
+			   "\n"
+			   "13:\n"
+			   "\tCRM:\t\t13:CNSS.PR.4.0-80391\n"
+			   "\tVariant:\tSCAQJAZM\n"
+			   "\tVersion:\tCRM\n"
+			   "\n"
+			   "14:\n"
+			   "\tCRM:\t\t14:VIDEO.VE_ULT.3.1-00025\n"
+			   "\tVariant:\tPROD\n"
+			   "\tVersion:\t:CRM\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/machine",
@@ -757,17 +753,16 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 513,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
-			"768000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t41124\t\t41124\t\t41124\t\t41124\t\t\n"
-			"902400\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t220\t\t220\t\t220\t\t220\t\t\n"
-			"960000\t\t41797\t\t41797\t\t41797\t\t41797\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
-			"998400\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t32\t\t32\t\t32\t\t32\t\t\n"
-			"1094400\t\t452\t\t452\t\t452\t\t452\t\t5481\t\t5481\t\t5481\t\t5481\t\t\n"
-			"1209600\t\t70\t\t70\t\t70\t\t70\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
-			"1248000\t\t860\t\t860\t\t860\t\t860\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
-			"1344000\t\t24\t\t24\t\t24\t\t24\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
-			"1401000\t\t3653\t\t3653\t\t3653\t\t3653\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
+			   "768000\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t41124\t\t41124\t\t41124\t\t41124\t\t\n"
+			   "902400\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t220\t\t220\t\t220\t\t220\t\t\n"
+			   "960000\t\t41797\t\t41797\t\t41797\t\t41797\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			   "998400\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t32\t\t32\t\t32\t\t32\t\t\n"
+			   "1094400\t\t452\t\t452\t\t452\t\t452\t\t5481\t\t5481\t\t5481\t\t5481\t\t\n"
+			   "1209600\t\t70\t\t70\t\t70\t\t70\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			   "1248000\t\t860\t\t860\t\t860\t\t860\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			   "1344000\t\t24\t\t24\t\t24\t\t24\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n"
+			   "1401000\t\t3653\t\t3653\t\t3653\t\t3653\t\tN/A\t\tN/A\t\tN/A\t\tN/A\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/current_in_state",
@@ -842,13 +837,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 72,
-		.content =
-			"960000 41917\n"
-			"1094400 452\n"
-			"1209600 70\n"
-			"1248000 860\n"
-			"1344000 24\n"
-			"1401000 3653\n",
+		.content = "960000 41917\n"
+			   "1094400 452\n"
+			   "1209600 70\n"
+			   "1248000 860\n"
+			   "1344000 24\n"
+			   "1401000 3653\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -943,13 +937,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 72,
-		.content =
-			"960000 42135\n"
-			"1094400 452\n"
-			"1209600 70\n"
-			"1248000 860\n"
-			"1344000 24\n"
-			"1401000 3653\n",
+		.content = "960000 42135\n"
+			   "1094400 452\n"
+			   "1209600 70\n"
+			   "1248000 860\n"
+			   "1344000 24\n"
+			   "1401000 3653\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -1044,13 +1037,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 72,
-		.content =
-			"960000 42339\n"
-			"1094400 452\n"
-			"1209600 70\n"
-			"1248000 860\n"
-			"1344000 24\n"
-			"1401000 3653\n",
+		.content = "960000 42339\n"
+			   "1094400 452\n"
+			   "1209600 70\n"
+			   "1248000 860\n"
+			   "1344000 24\n"
+			   "1401000 3653\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -1145,13 +1137,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 72,
-		.content =
-			"960000 42558\n"
-			"1094400 452\n"
-			"1209600 70\n"
-			"1248000 860\n"
-			"1344000 24\n"
-			"1401000 3653\n",
+		.content = "960000 42558\n"
+			   "1094400 452\n"
+			   "1209600 70\n"
+			   "1248000 860\n"
+			   "1344000 24\n"
+			   "1401000 3653\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -1256,11 +1247,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
 		.size = 47,
-		.content =
-			"768000 42073\n"
-			"902400 224\n"
-			"998400 32\n"
-			"1094400 5491\n",
+		.content = "768000 42073\n"
+			   "902400 224\n"
+			   "998400 32\n"
+			   "1094400 5491\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
@@ -1365,11 +1355,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
 		.size = 47,
-		.content =
-			"768000 42293\n"
-			"902400 224\n"
-			"998400 32\n"
-			"1094400 5491\n",
+		.content = "768000 42293\n"
+			   "902400 224\n"
+			   "998400 32\n"
+			   "1094400 5491\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
@@ -1474,11 +1463,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
 		.size = 47,
-		.content =
-			"768000 42511\n"
-			"902400 224\n"
-			"998400 32\n"
-			"1094400 5491\n",
+		.content = "768000 42511\n"
+			   "902400 224\n"
+			   "998400 32\n"
+			   "1094400 5491\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
@@ -1583,11 +1571,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
 		.size = 47,
-		.content =
-			"768000 42736\n"
-			"902400 224\n"
-			"998400 32\n"
-			"1094400 5491\n",
+		.content = "768000 42736\n"
+			   "902400 224\n"
+			   "998400 32\n"
+			   "1094400 5491\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
@@ -1624,7 +1611,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "7\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -3844,6 +3831,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

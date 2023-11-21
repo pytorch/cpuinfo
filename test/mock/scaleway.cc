@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <cpuinfo.h>
 #include <cpuinfo-mock.h>
-
+#include <cpuinfo.h>
 
 TEST(PROCESSORS, count) {
 	ASSERT_EQ(2, cpuinfo_processors_count);

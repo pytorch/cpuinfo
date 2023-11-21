@@ -2,19 +2,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 280,
-		.content =
-			"Processor\t: ARMv7 Processor rev 2 (v7l)\n"
-			"BogoMIPS\t: 994.65\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x2\n"
-			"CPU part\t: 0xc08\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"Hardware\t: herring\n"
-			"Revision\t: 0022\n"
-			"Serial\t\t: 363581cc0b5f00ec\n",
+		.content = "Processor\t: ARMv7 Processor rev 2 (v7l)\n"
+			   "BogoMIPS\t: 994.65\n"
+			   "Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x2\n"
+			   "CPU part\t: 0xc08\n"
+			   "CPU revision\t: 2\n"
+			   "\n"
+			   "Hardware\t: herring\n"
+			   "Revision\t: 0022\n"
+			   "Serial\t\t: 363581cc0b5f00ec\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -186,19 +185,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 56,
-		.content =
-			"1000000 2511\n"
-			"800000 211\n"
-			"400000 223\n"
-			"200000 233\n"
-			"100000 28\n",
+		.content = "1000000 2511\n"
+			   "800000 211\n"
+			   "400000 223\n"
+			   "200000 233\n"
+			   "100000 28\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
 		.size = 3,
 		.content = "88\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -819,6 +817,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wifi.supplicant_scan_interval",
 		.value = "15",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

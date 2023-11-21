@@ -2,19 +2,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 263,
-		.content =
-			"Processor\t: ARMv7 Processor rev 1 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 1022.18\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"\n"
-			"Hardware\t: gs702c\n"
-			"Revision\t: 0000\n"
-			"Serial\t\t: 0000000000000000\n",
+		.content = "Processor\t: ARMv7 Processor rev 1 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 1022.18\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "\n"
+			   "Hardware\t: gs702c\n"
+			   "Revision\t: 0000\n"
+			   "Serial\t\t: 0000000000000000\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -267,14 +266,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 77,
-		.content =
-			"288000 147856\n"
-			"732000 843\n"
-			"948000 0\n"
-			"1020000 0\n"
-			"1104000 7945\n"
-			"1260000 0\n"
-			"1320000 0\n",
+		.content = "288000 147856\n"
+			   "732000 843\n"
+			   "948000 0\n"
+			   "1020000 0\n"
+			   "1104000 7945\n"
+			   "1260000 0\n"
+			   "1320000 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -311,7 +309,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "0\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -1271,6 +1269,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

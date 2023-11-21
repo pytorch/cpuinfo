@@ -3,24 +3,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 336,
-		.content =
-			"Processor\t: AArch64 Processor rev 3 (aarch64)\n"
-			"processor\t: 0\n"
-			"processor\t: 1\n"
-			"processor\t: 2\n"
-			"processor\t: 3\n"
-			"processor\t: 4\n"
-			"processor\t: 5\n"
-			"processor\t: 6\n"
-			"processor\t: 7\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: AArch64\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"Hardware\t: hi6210sft\n",
+		.content = "Processor\t: AArch64 Processor rev 3 (aarch64)\n"
+			   "processor\t: 0\n"
+			   "processor\t: 1\n"
+			   "processor\t: 2\n"
+			   "processor\t: 3\n"
+			   "processor\t: 4\n"
+			   "processor\t: 5\n"
+			   "processor\t: 6\n"
+			   "processor\t: 7\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: AArch64\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "Hardware\t: hi6210sft\n",
 	},
 #elif CPUINFO_ARCH_ARM
 	{
@@ -370,13 +369,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 201,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
-			"208000\t\t561\t\t561\t\t561\t\t561\t\t\n"
-			"432000\t\t148\t\t148\t\t148\t\t148\t\t\n"
-			"729000\t\t86\t\t86\t\t86\t\t86\t\t\n"
-			"960000\t\t179\t\t179\t\t179\t\t179\t\t\n"
-			"1200000\t\t6037\t\t6037\t\t6037\t\t6037\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
+			   "208000\t\t561\t\t561\t\t561\t\t561\t\t\n"
+			   "432000\t\t148\t\t148\t\t148\t\t148\t\t\n"
+			   "729000\t\t86\t\t86\t\t86\t\t86\t\t\n"
+			   "960000\t\t179\t\t179\t\t179\t\t179\t\t\n"
+			   "1200000\t\t6037\t\t6037\t\t6037\t\t6037\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
@@ -451,12 +449,11 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 56,
-		.content =
-			"208000 705\n"
-			"432000 152\n"
-			"729000 86\n"
-			"960000 179\n"
-			"1200000 6037\n",
+		.content = "208000 705\n"
+			   "432000 152\n"
+			   "729000 86\n"
+			   "960000 179\n"
+			   "1200000 6037\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -556,12 +553,11 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 56,
-		.content =
-			"208000 940\n"
-			"432000 164\n"
-			"729000 86\n"
-			"960000 189\n"
-			"1200000 6051\n",
+		.content = "208000 940\n"
+			   "432000 164\n"
+			   "729000 86\n"
+			   "960000 189\n"
+			   "1200000 6051\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -661,12 +657,11 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 57,
-		.content =
-			"208000 1197\n"
-			"432000 172\n"
-			"729000 86\n"
-			"960000 189\n"
-			"1200000 6051\n",
+		.content = "208000 1197\n"
+			   "432000 172\n"
+			   "729000 86\n"
+			   "960000 189\n"
+			   "1200000 6051\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -766,12 +761,11 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 57,
-		.content =
-			"208000 1384\n"
-			"432000 181\n"
-			"729000 87\n"
-			"960000 202\n"
-			"1200000 6079\n",
+		.content = "208000 1384\n"
+			   "432000 181\n"
+			   "729000 87\n"
+			   "960000 202\n"
+			   "1200000 6079\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -928,7 +922,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "7\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -3012,6 +3006,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <cpuinfo.h>
 #include <cpuinfo-mock.h>
-
+#include <cpuinfo.h>
 
 TEST(PROCESSORS, count) {
 	ASSERT_EQ(1, cpuinfo_get_processors_count());
@@ -208,8 +207,10 @@ TEST(PACKAGES, count) {
 
 TEST(PACKAGES, name) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
-		ASSERT_EQ("Samsung Exynos 3110",
-			std::string(cpuinfo_get_package(i)->name,
+		ASSERT_EQ(
+			"Samsung Exynos 3110",
+			std::string(
+				cpuinfo_get_package(i)->name,
 				strnlen(cpuinfo_get_package(i)->name, CPUINFO_PACKAGE_NAME_MAX)));
 	}
 }
@@ -502,8 +503,10 @@ TEST(L2, associativity) {
 
 TEST(L2, sets) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l2_cache(i)->size,
-			cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->line_size * cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->associativity);
+		ASSERT_EQ(
+			cpuinfo_get_l2_cache(i)->size,
+			cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->line_size *
+				cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->associativity);
 	}
 }
 
