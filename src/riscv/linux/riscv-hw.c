@@ -21,9 +21,16 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	*uarch = cpuinfo_uarch_unknown;
 
 	/* Create a CPU set with this processor flagged. */
-	const size_t cpu_set_size = processor + 1;
-	cpu_set_t* cpu_set = CPU_ALLOC(cpu_set_size);
-	CPU_SET(processor, cpu_set);
+	const size_t cpu_count = processor + 1;
+	cpu_set_t* cpu_set = CPU_ALLOC(cpu_count);
+	if (cpu_set == NULL) {
+		cpuinfo_log_warning("failed to allocate space for cpu_set");
+		return;
+	}
+
+	const size_t cpu_set_size = CPU_ALLOC_SIZE(cpu_count);
+	CPU_ZERO_S(cpu_set_size, cpu_set);
+	CPU_SET_S(processor, cpu_set_size, cpu_set);
 
 	/* Request all available information from hwprobe. */
 	int ret = __riscv_hwprobe(pairs, pairs_count,
@@ -31,7 +38,7 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
                                   0 /* flags */);
 	if (ret < 0) {
 		cpuinfo_log_warning("failed to get hwprobe information, err: %d", ret);
-		return;
+		goto cleanup;
 	}
 
 	/**
@@ -59,4 +66,7 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	}
 	cpuinfo_riscv_decode_vendor_uarch(vendor_id, arch_id, imp_id,
 					  vendor, uarch);
+
+cleanup:
+	CPU_FREE(cpu_set);
 }
