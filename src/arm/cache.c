@@ -1570,6 +1570,11 @@ void cpuinfo_arm_decode_cache(
 					.associativity = 8,
 					.line_size = 64
 				};
+				*l3 = (struct cpuinfo_cache) {
+					.size = cluster_cores * 256 * 1024,
+					.associativity = 16,
+					.line_size = 64
+				};
 			} else {
 				*l1i = (struct cpuinfo_cache) {
 					.size = 16 * 1024,
