@@ -99,7 +99,7 @@ static bool parse_line(
 	}
 	/* Skip line if no ':' separator was found. */
 	if (separator == line_end) {
-		cpuinfo_log_info(
+		cpuinfo_log_debug(
 			"Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
 			(int)(line_end - line_start),
 			line_start);
@@ -115,7 +115,7 @@ static bool parse_line(
 	}
 	/* Skip line if key contains nothing but spaces. */
 	if (key_end == line_start) {
-		cpuinfo_log_info(
+		cpuinfo_log_debug(
 			"Line %.*s in /proc/cpuinfo is ignored: key contains only spaces",
 			(int)(line_end - line_start),
 			line_start);
@@ -131,7 +131,7 @@ static bool parse_line(
 	}
 	/* Value part contains nothing but spaces. Skip line. */
 	if (value_start == line_end) {
-		cpuinfo_log_info(
+		cpuinfo_log_debug(
 			"Line %.*s in /proc/cpuinfo is ignored: value contains only spaces",
 			(int)(line_end - line_start),
 			line_start);
@@ -177,7 +177,7 @@ static bool parse_line(
 				} else if (new_processor_index > processor_index + 1) {
 					/* Strange, but common: skipped
 					 * processor $(processor_index + 1) */
-					cpuinfo_log_info(
+					cpuinfo_log_warning(
 						"unexpectedly high processor number %" PRIu32
 						" following processor %" PRIu32 " in /proc/cpuinfo",
 						new_processor_index,
