@@ -8,7 +8,7 @@
 /* RISC-V Vendor IDs. */
 enum cpuinfo_riscv_chipset_vendor {
 	cpuinfo_riscv_chipset_vendor_unknown = 0,
-	cpuinfo_riscv_chipset_sifive = 0x489,
+	cpuinfo_riscv_chipset_vendor_sifive = 0x489,
 	cpuinfo_riscv_chipset_vendor_max,
 };
 
