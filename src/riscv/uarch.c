@@ -11,7 +11,7 @@ void cpuinfo_riscv_decode_vendor_uarch(
 	enum cpuinfo_uarch uarch[restrict static 1]) {
 	/* The vendor ID is sufficient to determine the cpuinfo_vendor. */
 	switch(vendor_id) {
-		case cpuinfo_riscv_chipset_sifive:
+		case cpuinfo_riscv_chipset_vendor_sifive:
 			*vendor = cpuinfo_vendor_sifive;
 			break;
 		default:
