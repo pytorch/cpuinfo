@@ -447,7 +447,7 @@ void cpuinfo_riscv_linux_init(void) {
 	enum cpuinfo_uarch last_uarch = cpuinfo_uarch_unknown;
 	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
-			continue;
+			break;
 		}
 
 		/**
@@ -627,15 +627,16 @@ void cpuinfo_riscv_linux_init(void) {
 
 		/* Populate cache information structures in l1i, l1d */
 		struct cpuinfo_cache temp_l2 = { 0 };
-		cpuinfo_riscv_decode_cache(
+		if (cpuinfo_riscv_decode_cache(
 				riscv_linux_processors[processor].core.uarch,
-				&l1i[processor], &l1d[processor], &temp_l2);
-		l1i[processor].processor_start = l1d[processor].processor_start = processor;
-		l1i[processor].processor_count = l1d[processor].processor_count = 1;
-		if (temp_l2.size != 0) {
-			/* Assume L2 is shared by cores in the same cluster */
-			if (riscv_linux_processors[processor].package_leader_id == linux_id) {
-				l2_count += 1;
+				&l1i[processor], &l1d[processor], &temp_l2)) {
+			l1i[processor].processor_start = l1d[processor].processor_start = processor;
+			l1i[processor].processor_count = l1d[processor].processor_count = 1;
+			if (temp_l2.size != 0) {
+				/* Assume L2 is shared by cores in the same cluster */
+				if (riscv_linux_processors[processor].cluster_leader_id == linux_id) {
+					l2_count += 1;
+				}
 			}
 		}
 
@@ -669,25 +670,27 @@ void cpuinfo_riscv_linux_init(void) {
 	uint32_t l2_index = UINT32_MAX;
 	for (uint32_t processor = 0; processor < valid_processors_count; processor++) {
 		struct cpuinfo_cache dummy_l1i, dummy_l1d, temp_l2 = { 0 };
-		cpuinfo_riscv_decode_cache(
+		if (cpuinfo_riscv_decode_cache(
 				riscv_linux_processors[processor].core.uarch,
-				&dummy_l1i, &dummy_l1d, &temp_l2);
+				&dummy_l1i, &dummy_l1d, &temp_l2)) {
 
-		if (temp_l2.size != 0) {
-			if (riscv_linux_processors[processor].package_leader_id == riscv_linux_processors[processor].processor.linux_id) {
-				l2_index += 1;
-				l2[l2_index] = (struct cpuinfo_cache) {
-						.size            = temp_l2.size,
-						.associativity   = temp_l2.associativity,
-						.sets            = temp_l2.sets,
-						.partitions      = temp_l2.partitions,
-						.line_size       = temp_l2.line_size,
-						.flags           = temp_l2.flags,
-						.processor_start = processor,
-						.processor_count = riscv_linux_processors[processor].package.processor_count,
-				};
+			if (temp_l2.size != 0) {
+				if (riscv_linux_processors[processor].cluster_leader_id ==
+					riscv_linux_processors[processor].processor.linux_id) {
+					l2_index += 1;
+					l2[l2_index] = (struct cpuinfo_cache) {
+							.size            = temp_l2.size,
+							.associativity   = temp_l2.associativity,
+							.sets            = temp_l2.sets,
+							.partitions      = temp_l2.partitions,
+							.line_size       = temp_l2.line_size,
+							.flags           = temp_l2.flags,
+							.processor_start = processor,
+							.processor_count = riscv_linux_processors[processor].package.processor_count,
+					};
+				}
+				processors[processor].cache.l2 = l2 + l2_index;
 			}
-			processors[processor].cache.l2 = l2 + l2_index;
 		}
 	}
 

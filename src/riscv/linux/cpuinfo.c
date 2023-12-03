@@ -21,7 +21,7 @@ static uint32_t parse_processor_number(
 
 	if (processor_length == 0) {
 		cpuinfo_log_warning("Processor number in /proc/cpuinfo is ignored: string is empty");
-		return 0;
+		return -1;
 	}
 
 	uint32_t processor_number = 0;
@@ -45,7 +45,7 @@ static void parse_isa(
 		struct cpuinfo_riscv_linux_processor processor[restrict static 1])
 {
 	const size_t isa_length = (size_t) (isa_end - isa_start);
-	if (!(memcmp(isa_start, "rv32", 4) == 0 || memcmp(isa_start, "rv64", 4) == 0)) {
+	if (isa_length < 4 || !(memcmp(isa_start, "rv32", 4) == 0 || memcmp(isa_start, "rv64", 4) == 0)) {
 		cpuinfo_log_error("Invalid isa format in /proc/cpuinfo: %.*s. It should start with either `rv32` or `rv64`",
 						  (int) (isa_length), isa_start);
 		return;
@@ -178,8 +178,8 @@ static bool parse_line(
 	}
 	/* Skip line if no ':' separator was found. */
 	if (separator == line_end) {
-		cpuinfo_log_info("Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
-						 (int) (line_end - line_start), line_start);
+		cpuinfo_log_warning("Line %.*s in /proc/cpuinfo is ignored: key/value separator ':' not found",
+							(int) (line_end - line_start), line_start);
 		return true;
 	}
 
@@ -238,13 +238,6 @@ static bool parse_line(
 				goto unknown;
 			}
 			break;
-		case 4:
-			if (memcmp(line_start, "hart", key_length) == 0) {
-				// Do nothing
-			} else {
-				goto unknown;
-			}
-			break;
 		case 5:
 			if (memcmp(line_start, "uarch", key_length) == 0) {
 				parse_uarch(value_start, value_end, processor);
@@ -255,7 +248,10 @@ static bool parse_line(
 		case 9:
 			if (memcmp(line_start, "processor", key_length) == 0) {
 				const uint32_t new_processor_index = parse_processor_number(value_start, value_end);
-				if (new_processor_index < processor_index) {
+				if (new_processor_index < 0) {
+					/* Strange: empty string */
+					break;
+				} else if (new_processor_index < processor_index) {
 					/* Strange: decreasing processor number */
 					cpuinfo_log_warning(
 						"unexpectedly low processor number %"PRIu32" following processor %"PRIu32" in /proc/cpuinfo",
@@ -280,6 +276,8 @@ static bool parse_line(
 			}
 			break;
 		default:
+			// Do nothing
+			break;
 		unknown:
 			cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int) key_length, line_start);
 	}

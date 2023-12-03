@@ -86,13 +86,24 @@ CPUINFO_INTERNAL void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	enum cpuinfo_vendor vendor[restrict static 1],
 	enum cpuinfo_uarch uarch[restrict static 1]);
 
-CPUINFO_INTERNAL void cpuinfo_riscv_linux_count_cluster_processors(
-	uint32_t max_processors,
-	struct cpuinfo_riscv_linux_processor processors[restrict static max_processors]);
+/**
+ * Reads the value of hwcap from the `getauxval` function, or
+ * mocks a fake value for testing purposes
+ *
+ * @param[hwcap] - The hwcap flags to be populated
+ */
 
 CPUINFO_INTERNAL void cpuinfo_riscv_linux_hwcap_from_getauxval(
 	uint32_t hwcap[restrict static 1]);
 
+/**
+ * Parses the output of the `/proc/cpuinfo` command to extract
+ * info about the RISC-V processors.
+ *
+ * @param[max_processors_count] - The maximum number of processors.
+ * @param processors - Reference to the processor list to populate.
+ * @return false if any error occurred, true otherwise.
+ */
 CPUINFO_INTERNAL bool cpuinfo_riscv_linux_parse_proc_cpuinfo(
 	uint32_t max_processors_count,
 	struct cpuinfo_riscv_linux_processor processors[restrict static max_processors_count]);
