@@ -88,7 +88,7 @@ inline static bool is_whitespace(char c) {
 	static const uint32_t default_max_processors_count = CPU_SETSIZE;
 #endif
 
-static bool uint32_parser(const char* text_start, const char* text_end, void* context) {
+static bool uint32_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	if (text_start == text_end) {
 		cpuinfo_log_error("failed to parse file %s: file is empty", KERNEL_MAX_FILENAME);
 		return false;
@@ -98,13 +98,13 @@ static bool uint32_parser(const char* text_start, const char* text_end, void* co
 	const char* parsed_end = parse_number(text_start, text_end, &kernel_max);
 	if (parsed_end == text_start) {
 		cpuinfo_log_error("failed to parse file %s: \"%.*s\" is not an unsigned number",
-			KERNEL_MAX_FILENAME, (int) (text_end - text_start), text_start);
+			filename, (int) (text_end - text_start), text_start);
 		return false;
 	} else {
 		for (const char* char_ptr = parsed_end; char_ptr != text_end; char_ptr++) {
 			if (!is_whitespace(*char_ptr)) {
 				cpuinfo_log_warning("non-whitespace characters \"%.*s\" following number in file %s are ignored",
-					(int) (text_end - char_ptr), char_ptr, KERNEL_MAX_FILENAME);
+					(int) (text_end - char_ptr), char_ptr, filename);
 				break;
 			}
 		}
