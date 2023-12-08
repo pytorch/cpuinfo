@@ -55,7 +55,7 @@ bool cpuinfo_linux_parse_small_file(const char* filename, size_t buffer_size, cp
 		}
 	} while (bytes_read != 0);
 
-	status = callback(buffer, &buffer[buffer_position], context);
+	status = callback(filename, buffer, &buffer[buffer_position], context);
 
 cleanup:
 	if (file != -1) {
