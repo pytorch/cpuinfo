@@ -1,8 +1,13 @@
+#include <inttypes.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 #include <linux/api.h>
+#include <riscv/api.h>
 #include <riscv/linux/api.h>
 
 /* ISA structure to hold supported extensions. */
@@ -13,13 +18,36 @@ static inline bool bitmask_all(uint32_t flags, uint32_t mask) {
   return (flags & mask) == mask;
 }
 
+static inline uint32_t min(uint32_t a, uint32_t b) {
+	return a < b ? a : b;
+}
+
+static inline int cmp(uint32_t a, uint32_t b) {
+	return (a > b) - (a < b);
+}
+
 static int compare_riscv_linux_processors(const void* a, const void* b) {
-	/**
-	 * For our purposes, it is only relevant that the list is sorted by
-	 * micro-architecture, so the nature of ordering is irrelevant.
-	 */
-	return ((const struct cpuinfo_riscv_linux_processor*)a)->core.uarch
-			- ((const struct cpuinfo_riscv_linux_processor*)b)->core.uarch;
+	const struct cpuinfo_riscv_linux_processor* processor_a = (const struct cpuinfo_riscv_linux_processor*) a;
+	const struct cpuinfo_riscv_linux_processor* processor_b = (const struct cpuinfo_riscv_linux_processor*) b;
+
+	/* Move usable processors towards the start of the array */
+	const bool usable_a = bitmask_all(processor_a->flags, CPUINFO_LINUX_FLAG_VALID);
+	const bool usable_b = bitmask_all(processor_b->flags, CPUINFO_LINUX_FLAG_VALID);
+	if (usable_a != usable_b) {
+		return (int) usable_b - (int) usable_a;
+	}
+
+	/* Compare based on micro-architecture (i.e. uarch 0 < uarch 1) */
+	const uint32_t uarch_a = processor_a->core.uarch;
+	const uint32_t uarch_b = processor_b->core.uarch;
+	if (uarch_a != uarch_b) {
+		return uarch_b - uarch_a;
+	}
+
+	/* Compare based on system processor id (i.e. processor 0 < processor 1) */
+	const uint32_t id_a = processor_a->processor.linux_id;
+	const uint32_t id_b = processor_b->processor.linux_id;
+	return cmp(id_a, id_b);
 }
 
 /**
@@ -38,9 +66,9 @@ static int compare_riscv_linux_processors(const void* a, const void* b) {
  * E.g. processors[0].core_leader_id = 0.
  */
 static bool core_cpus_parser(uint32_t processor,
-			     uint32_t core_cpus_start,
-			     uint32_t core_cpus_end,
-			     struct cpuinfo_riscv_linux_processor* processors) {
+				 uint32_t core_cpus_start,
+				 uint32_t core_cpus_end,
+				 struct cpuinfo_riscv_linux_processor* processors) {
 	uint32_t processor_start = UINT32_MAX;
 	uint32_t processor_count = 0;
 
@@ -71,7 +99,7 @@ static bool core_cpus_parser(uint32_t processor,
 	 * e.g. core_cpu_list=1,10-12
 	 */
 	if (!bitmask_all(processors[processor].flags, CPUINFO_LINUX_FLAG_CORE_CLUSTER)
-	    || processors[processor].core.processor_start > processor_start) {
+		|| processors[processor].core.processor_start > processor_start) {
 		processors[processor].core.processor_start = processor_start;
 		processors[processor].core_leader_id = processor_start;
 	}
@@ -134,7 +162,7 @@ static bool cluster_cpus_parser(uint32_t processor,
 	 * e.g. cluster_cpus_list=1,10-12
 	 */
 	if (!bitmask_all(processors[processor].flags, CPUINFO_LINUX_FLAG_CLUSTER_CLUSTER)
-	    || processors[processor].cluster.processor_start > processor_start) {
+		|| processors[processor].cluster.processor_start > processor_start) {
 		processors[processor].cluster.processor_start = processor_start;
 		processors[processor].cluster.core_start = processor_start;
 		processors[processor].cluster.cluster_id = processor_start;
@@ -161,9 +189,9 @@ static bool cluster_cpus_parser(uint32_t processor,
  * E.g. processors[0].package_leader_id = 0.
  */
 static bool package_cpus_parser(uint32_t processor,
-			     uint32_t package_cpus_start,
-			     uint32_t package_cpus_end,
-			     struct cpuinfo_riscv_linux_processor* processors) {
+				 uint32_t package_cpus_start,
+				 uint32_t package_cpus_end,
+				 struct cpuinfo_riscv_linux_processor* processors) {
 	uint32_t processor_start = UINT32_MAX;
 	uint32_t processor_count = 0;
 	uint32_t cluster_count = 0;
@@ -206,7 +234,7 @@ static bool package_cpus_parser(uint32_t processor,
 	 * e.g. package_cpus_list=1,10-12
 	 */
 	if (!bitmask_all(processors[processor].flags, CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER)
-	    || processors[processor].package.processor_start > processor_start) {
+		|| processors[processor].package.processor_start > processor_start) {
 		processors[processor].package.processor_start = processor_start;
 		processors[processor].package.cluster_start = processor_start;
 		processors[processor].package.core_start = processor_start;
@@ -227,75 +255,95 @@ void cpuinfo_riscv_linux_init(void) {
 	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_core* cores = NULL;
 	struct cpuinfo_uarch_info* uarchs = NULL;
+	struct cpuinfo_cache* l1i = NULL;
+	struct cpuinfo_cache* l1d = NULL;
+	struct cpuinfo_cache* l2 = NULL;
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
 	uint32_t* linux_cpu_to_uarch_index_map = NULL;
 
-	/**
-	 * The interesting set of processors are the number of 'present'
-	 * processors on the system. There may be more 'possible' processors, but
-	 * processor information cannot be gathered on non-present processors.
-	 *
-	 * Note: For SoCs, it is largely the case that all processors are known
-	 * at boot and no processors are hotplugged at runtime, so the
-	 * 'present' and 'possible' list is often the same.
-	 *
-	 * Note: This computes the maximum processor ID of the 'present'
-	 * processors. It is not a count of the number of processors on the
-	 * system.
-	 */
-	const uint32_t max_processor_id = 1 +
-		cpuinfo_linux_get_max_present_processor(
-				cpuinfo_linux_get_max_processors_count());
-	if (max_processor_id == 0) {
-		cpuinfo_log_error("failed to discover any processors");
+	const uint32_t max_processors_count = cpuinfo_linux_get_max_processors_count();
+	cpuinfo_log_debug("system maximum processors count: %"PRIu32, max_processors_count);
+
+	const uint32_t max_possible_processors_count = 1 +
+												   cpuinfo_linux_get_max_possible_processor(max_processors_count);
+	cpuinfo_log_debug("maximum possible processors count: %"PRIu32, max_possible_processors_count);
+	const uint32_t max_present_processors_count = 1 +
+												  cpuinfo_linux_get_max_present_processor(max_processors_count);
+	cpuinfo_log_debug("maximum present processors count: %"PRIu32, max_present_processors_count);
+
+	uint32_t valid_processor_mask = 0;
+	uint32_t riscv_linux_processors_count = max_processors_count;
+	if (max_present_processors_count != 0) {
+		riscv_linux_processors_count = min(riscv_linux_processors_count, max_present_processors_count);
+		valid_processor_mask |= CPUINFO_LINUX_FLAG_PRESENT;
+	}
+	if (max_possible_processors_count != 0) {
+		riscv_linux_processors_count = min(riscv_linux_processors_count, max_possible_processors_count);
+		valid_processor_mask |= CPUINFO_LINUX_FLAG_POSSIBLE;
+	}
+	if ((max_present_processors_count | max_possible_processors_count) == 0) {
+		cpuinfo_log_error("failed to parse both lists of possible and present processors");
 		return;
 	}
 
-	/**
-	 * Allocate space to store all processor information. This array is
-	 * sized to the max processor ID as opposed to the number of 'present'
-	 * processors, to leverage pointer math in the common utility functions.
-	 */
-	riscv_linux_processors = calloc(max_processor_id,
-					sizeof(struct cpuinfo_riscv_linux_processor));
+	riscv_linux_processors = calloc(riscv_linux_processors_count, sizeof(struct cpuinfo_riscv_linux_processor));
 	if (riscv_linux_processors == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" processors.",
-			max_processor_id * sizeof(struct cpuinfo_riscv_linux_processor),
-			max_processor_id);
+		cpuinfo_log_error(
+				"failed to allocate %zu bytes for descriptions of %"PRIu32" RISC-V logical processors",
+				riscv_linux_processors_count * sizeof(struct cpuinfo_riscv_linux_processor),
+				riscv_linux_processors_count);
 		goto cleanup;
-        }
+	}
 
 	/**
 	 * Attempt to detect all processors and apply the corresponding flag to
 	 * each processor struct that we find.
 	 */
-	if (!cpuinfo_linux_detect_present_processors(max_processor_id,
-						     &riscv_linux_processors->flags,
-						     sizeof(struct cpuinfo_riscv_linux_processor),
-						     CPUINFO_LINUX_FLAG_PRESENT | CPUINFO_LINUX_FLAG_VALID)) {
-		cpuinfo_log_error("failed to detect present processors");
-		goto cleanup;
+	if (max_possible_processors_count) {
+		if (!cpuinfo_linux_detect_possible_processors(
+				riscv_linux_processors_count, &riscv_linux_processors->flags,
+				sizeof(struct cpuinfo_riscv_linux_processor),
+				valid_processor_mask)) {
+			cpuinfo_log_error("failed to detect possible processors");
+			goto cleanup;
+		}
 	}
 
-        /* Populate processor information. */
-        for (size_t processor = 0; processor < max_processor_id; processor++) {
-		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
-			continue;
-                }
-                /* TODO: Determine if an 'smt_id' is available. */
-                riscv_linux_processors[processor].processor.linux_id = processor;
-        }
+	if (max_present_processors_count) {
+		if (!cpuinfo_linux_detect_present_processors(
+				riscv_linux_processors_count, &riscv_linux_processors->flags,
+				sizeof(struct cpuinfo_riscv_linux_processor),
+				valid_processor_mask)) {
+			cpuinfo_log_error("failed to detect present processors");
+			goto cleanup;
+		}
+	}
 
-	/* Populate core information. */
-	for (size_t processor = 0; processor < max_processor_id; processor++) {
+	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
+		if (bitmask_all(riscv_linux_processors[processor].flags, valid_processor_mask)) {
+			riscv_linux_processors[processor].processor.linux_id = processor;
+			riscv_linux_processors[processor].flags |= CPUINFO_LINUX_FLAG_VALID;
+			cpuinfo_log_debug("parsed processor %zu", processor);
+		}
+	}
+
+	/* Populate processors data from /proc/cpuinfo */
+	if (!cpuinfo_riscv_linux_parse_proc_cpuinfo(
+			riscv_linux_processors_count,
+			riscv_linux_processors)) {
+		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
+		return;
+	}
+
+	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;
 		}
 
 		/* Populate processor start and count information. */
 		if (!cpuinfo_linux_detect_core_cpus(
-				max_processor_id,
+				riscv_linux_processors_count,
 				processor,
 				(cpuinfo_siblings_callback) core_cpus_parser,
 				riscv_linux_processors)) {
@@ -329,12 +377,12 @@ void cpuinfo_riscv_linux_init(void) {
 	}
 
 	/* Populate cluster information. */
-	for (size_t processor = 0; processor < max_processor_id; processor++) {
+	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;
 		}
 		if (!cpuinfo_linux_detect_cluster_cpus(
-				max_processor_id,
+				riscv_linux_processors_count,
 				processor,
 				(cpuinfo_siblings_callback) cluster_cpus_parser,
 				riscv_linux_processors)) {
@@ -356,12 +404,12 @@ void cpuinfo_riscv_linux_init(void) {
 	}
 
 	/* Populate package information. */
-	for (size_t processor = 0; processor < max_processor_id; processor++) {
+	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;
 		}
 		if (!cpuinfo_linux_detect_package_cpus(
-				max_processor_id,
+				riscv_linux_processors_count,
 				processor,
 				(cpuinfo_siblings_callback) package_cpus_parser,
 				riscv_linux_processors)) {
@@ -383,9 +431,9 @@ void cpuinfo_riscv_linux_init(void) {
 	 * list matches it's Linux ID, which this sorting operation breaks.
 	 */
 	qsort(riscv_linux_processors,
-	      max_processor_id,
-	      sizeof(struct cpuinfo_riscv_linux_processor),
-	      compare_riscv_linux_processors);
+		  riscv_linux_processors_count,
+		  sizeof(struct cpuinfo_riscv_linux_processor),
+		  compare_riscv_linux_processors);
 
 	/**
 	 * Determine the number of *valid* detected processors, cores,
@@ -397,9 +445,9 @@ void cpuinfo_riscv_linux_init(void) {
 	size_t valid_packages_count = 0;
 	size_t valid_uarchs_count = 0;
 	enum cpuinfo_uarch last_uarch = cpuinfo_uarch_unknown;
-	for (size_t processor = 0; processor < max_processor_id; processor++) {
+	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
-			continue;
+			break;
 		}
 
 		/**
@@ -433,7 +481,7 @@ void cpuinfo_riscv_linux_init(void) {
 
 	/* Allocate and populate final public ABI structures. */
 	processors = calloc(valid_processors_count,
-			    sizeof(struct cpuinfo_processor));
+				sizeof(struct cpuinfo_processor));
 	if (processors == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %zu processors.",
 			valid_processors_count * sizeof(struct cpuinfo_processor),
@@ -442,7 +490,7 @@ void cpuinfo_riscv_linux_init(void) {
 	}
 
 	cores = calloc(valid_cores_count,
-			    sizeof(struct cpuinfo_core));
+				sizeof(struct cpuinfo_core));
 	if (cores == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %zu cores.",
 			valid_cores_count * sizeof(struct cpuinfo_core),
@@ -451,7 +499,7 @@ void cpuinfo_riscv_linux_init(void) {
 	}
 
 	clusters = calloc(valid_clusters_count,
-			    sizeof(struct cpuinfo_cluster));
+				sizeof(struct cpuinfo_cluster));
 	if (clusters == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %zu clusters.",
 			valid_clusters_count * sizeof(struct cpuinfo_cluster),
@@ -460,7 +508,7 @@ void cpuinfo_riscv_linux_init(void) {
 	}
 
 	packages = calloc(valid_packages_count,
-			    sizeof(struct cpuinfo_package));
+				sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %zu packages.",
 			valid_packages_count * sizeof(struct cpuinfo_package),
@@ -476,30 +524,44 @@ void cpuinfo_riscv_linux_init(void) {
 		goto cleanup;
 	}
 
-	linux_cpu_to_processor_map = calloc(max_processor_id,
-					    sizeof(struct cpuinfo_processor*));
+	linux_cpu_to_processor_map = calloc(riscv_linux_processors_count,
+						sizeof(struct cpuinfo_processor*));
 	if (linux_cpu_to_processor_map == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" processor map.",
-				  max_processor_id * sizeof(struct cpuinfo_processor*),
-				  max_processor_id);
+						  riscv_linux_processors_count * sizeof(struct cpuinfo_processor*),
+						  riscv_linux_processors_count);
 		goto cleanup;
 	}
 
-	linux_cpu_to_core_map = calloc(max_processor_id,
-				       sizeof(struct cpuinfo_core*));
+	linux_cpu_to_core_map = calloc(riscv_linux_processors_count,
+					   sizeof(struct cpuinfo_core*));
 	if (linux_cpu_to_core_map == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" core map.",
-				  max_processor_id * sizeof(struct cpuinfo_core*),
-				  max_processor_id);
+						  riscv_linux_processors_count * sizeof(struct cpuinfo_core*),
+						  riscv_linux_processors_count);
 		goto cleanup;
 	}
 
-	linux_cpu_to_uarch_index_map = calloc(max_processor_id,
-					      sizeof(struct cpuinfo_uarch_info*));
+	linux_cpu_to_uarch_index_map = calloc(riscv_linux_processors_count,
+						  sizeof(struct cpuinfo_uarch_info*));
 	if (linux_cpu_to_uarch_index_map == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" uarch map.",
-				  max_processor_id * sizeof(struct cpuinfo_uarch_info*),
-				  max_processor_id);
+						  riscv_linux_processors_count * sizeof(struct cpuinfo_uarch_info*),
+						  riscv_linux_processors_count);
+		goto cleanup;
+	}
+
+	l1i = calloc(valid_processors_count, sizeof(struct cpuinfo_cache));
+	if (l1i == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %zu L1I caches",
+						  valid_processors_count * sizeof(struct cpuinfo_cache), valid_processors_count);
+		goto cleanup;
+	}
+
+	l1d = calloc(valid_processors_count, sizeof(struct cpuinfo_cache));
+	if (l1d == NULL) {
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %zu L1D caches",
+						  valid_processors_count * sizeof(struct cpuinfo_cache), valid_processors_count);
 		goto cleanup;
 	}
 
@@ -509,8 +571,9 @@ void cpuinfo_riscv_linux_init(void) {
 	size_t valid_clusters_index = 0;
 	size_t valid_packages_index = 0;
 	size_t valid_uarchs_index = 0;
+	size_t l2_count = 0;
 	last_uarch = cpuinfo_uarch_unknown;
-	for (size_t processor = 0; processor < max_processor_id; processor++) {
+	for (size_t processor = 0; processor < riscv_linux_processors_count; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;
 		}
@@ -525,7 +588,7 @@ void cpuinfo_riscv_linux_init(void) {
 
 		/* Create uarch entry if this uarch has not been seen before. */
 		if (last_uarch != riscv_linux_processors[processor].core.uarch
-		    || valid_uarchs_index == 0) {
+			|| valid_uarchs_index == 0) {
 			uarchs[valid_uarchs_index++].uarch =
 					riscv_linux_processors[processor].core.uarch;
 			last_uarch = riscv_linux_processors[processor].core.uarch;
@@ -533,7 +596,7 @@ void cpuinfo_riscv_linux_init(void) {
 
 		/* Copy cpuinfo_processor information. */
 		memcpy(&processors[valid_processors_index++],
-		       &riscv_linux_processors[processor].processor,
+			   &riscv_linux_processors[processor].processor,
 			sizeof(struct cpuinfo_processor));
 
 		/* Update uarch processor count. */
@@ -542,8 +605,8 @@ void cpuinfo_riscv_linux_init(void) {
 		/* Copy cpuinfo_core information, if this is the leader. */
 		if (riscv_linux_processors[processor].core_leader_id == linux_id) {
 			memcpy(&cores[valid_cores_index++],
-			       &riscv_linux_processors[processor].core,
-			       sizeof(struct cpuinfo_core));
+				   &riscv_linux_processors[processor].core,
+				   sizeof(struct cpuinfo_core));
 			/* Update uarch core count. */
 			uarchs[valid_uarchs_index - 1].core_count++;
 		}
@@ -551,21 +614,38 @@ void cpuinfo_riscv_linux_init(void) {
 		/* Copy cpuinfo_cluster information, if this is the leader. */
 		if (riscv_linux_processors[processor].cluster_leader_id == linux_id) {
 			memcpy(&clusters[valid_clusters_index++],
-			       &riscv_linux_processors[processor].cluster,
-			       sizeof(struct cpuinfo_cluster));
+				   &riscv_linux_processors[processor].cluster,
+				   sizeof(struct cpuinfo_cluster));
 		}
 
 		/* Copy cpuinfo_package information, if this is the leader. */
 		if (riscv_linux_processors[processor].package_leader_id == linux_id) {
 			memcpy(&packages[valid_packages_index++],
-			       &riscv_linux_processors[processor].package,
-			       sizeof(struct cpuinfo_package));
+				   &riscv_linux_processors[processor].package,
+				   sizeof(struct cpuinfo_package));
+		}
+
+		/* Populate cache information structures in l1i, l1d */
+		struct cpuinfo_cache temp_l2 = { 0 };
+		if (cpuinfo_riscv_decode_cache(
+				riscv_linux_processors[processor].core.uarch,
+				&l1i[processor], &l1d[processor], &temp_l2)) {
+			l1i[processor].processor_start = l1d[processor].processor_start = processor;
+			l1i[processor].processor_count = l1d[processor].processor_count = 1;
+			if (temp_l2.size != 0) {
+				/* Assume L2 is shared by cores in the same cluster */
+				if (riscv_linux_processors[processor].cluster_leader_id == linux_id) {
+					l2_count += 1;
+				}
+			}
 		}
 
 		/* Commit pointers on the final structures. */
 		processors[valid_processors_index - 1].core = &cores[valid_cores_index - 1];
 		processors[valid_processors_index - 1].cluster = &clusters[valid_clusters_index - 1];
 		processors[valid_processors_index - 1].package = &packages[valid_packages_index - 1];
+		processors[valid_processors_index - 1].cache.l1i = l1i + processor;
+		processors[valid_processors_index - 1].cache.l1d = l1d + processor;
 
 		cores[valid_cores_index - 1].cluster = &clusters[valid_clusters_index - 1];
 		cores[valid_cores_index - 1].package = &packages[valid_packages_index - 1];
@@ -575,6 +655,43 @@ void cpuinfo_riscv_linux_init(void) {
 		linux_cpu_to_processor_map[linux_id] = &processors[valid_processors_index - 1];
 		linux_cpu_to_core_map[linux_id] = &cores[valid_cores_index - 1];
 		linux_cpu_to_uarch_index_map[linux_id] = valid_uarchs_index - 1;
+	}
+
+	if (l2_count != 0) {
+		l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
+		if (l2 == NULL) {
+			cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %zu L2 caches",
+							  l2_count * sizeof(struct cpuinfo_cache), l2_count);
+			goto cleanup;
+		}
+	}
+
+	/* Populate cache information structures in l2 */
+	uint32_t l2_index = UINT32_MAX;
+	for (uint32_t processor = 0; processor < valid_processors_count; processor++) {
+		struct cpuinfo_cache dummy_l1i, dummy_l1d, temp_l2 = { 0 };
+		if (cpuinfo_riscv_decode_cache(
+				riscv_linux_processors[processor].core.uarch,
+				&dummy_l1i, &dummy_l1d, &temp_l2)) {
+
+			if (temp_l2.size != 0) {
+				if (riscv_linux_processors[processor].cluster_leader_id ==
+					riscv_linux_processors[processor].processor.linux_id) {
+					l2_index += 1;
+					l2[l2_index] = (struct cpuinfo_cache) {
+							.size            = temp_l2.size,
+							.associativity   = temp_l2.associativity,
+							.sets            = temp_l2.sets,
+							.partitions      = temp_l2.partitions,
+							.line_size       = temp_l2.line_size,
+							.flags           = temp_l2.flags,
+							.processor_start = processor,
+							.processor_count = riscv_linux_processors[processor].package.processor_count,
+					};
+				}
+				processors[processor].cache.l2 = l2 + l2_index;
+			}
+		}
 	}
 
 	/* Commit */
@@ -588,8 +705,15 @@ void cpuinfo_riscv_linux_init(void) {
 	cpuinfo_packages_count = valid_packages_count;
 	cpuinfo_uarchs = uarchs;
 	cpuinfo_uarchs_count = valid_uarchs_count;
+	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
+	cpuinfo_cache_count[cpuinfo_cache_level_1i] = valid_processors_count;
+	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
+	cpuinfo_cache_count[cpuinfo_cache_level_1d] = valid_processors_count;
+	cpuinfo_cache[cpuinfo_cache_level_2] = l2;
+	cpuinfo_cache_count[cpuinfo_cache_level_2] = l2_count;
+	cpuinfo_max_cache_size = cpuinfo_riscv_compute_max_cache_size(&processors[0]);
 
-	cpuinfo_linux_cpu_max = max_processor_id;
+	cpuinfo_linux_cpu_max = riscv_linux_processors_count;
 	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
 	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
 	cpuinfo_linux_cpu_to_uarch_index_map = linux_cpu_to_uarch_index_map;
@@ -604,6 +728,7 @@ void cpuinfo_riscv_linux_init(void) {
 	clusters = NULL;
 	packages = NULL;
 	uarchs = NULL;
+	l1i = l1d = l2 = NULL;
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
 	linux_cpu_to_uarch_index_map = NULL;
@@ -614,6 +739,9 @@ cleanup:
 	free(clusters);
 	free(packages);
 	free(uarchs);
+	free(l1i);
+	free(l1d);
+	free(l2);
 	free(linux_cpu_to_processor_map);
 	free(linux_cpu_to_core_map);
 	free(linux_cpu_to_uarch_index_map);

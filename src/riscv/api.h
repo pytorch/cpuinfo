@@ -4,6 +4,7 @@
 
 #include <cpuinfo.h>
 #include <cpuinfo/common.h>
+#include <cpuinfo/internal-api.h>
 
 /* RISC-V Vendor IDs. */
 enum cpuinfo_riscv_chipset_vendor {
@@ -40,3 +41,30 @@ CPUINFO_INTERNAL void cpuinfo_riscv_decode_vendor_uarch(
 		uint32_t imp_id,
 		enum cpuinfo_vendor vendor[restrict static 1],
 		enum cpuinfo_uarch uarch[restrict static 1]);
+
+/**
+ * Decodes the cache hierarchy based on the provided inpu parameters,
+ * regardless of underlying operating system.
+ *
+ * @param[uarch]: The processor micro-architecture code.
+ * @param[l1i] - Reference to the l1i cpuinfo_cache to populate.
+ * @param[l1d]: - Reference to the l1d cpuinfo_cache to populate.
+ * @param[l2]: - Reference to the l2 cpuinfo_cache to populate.
+ * @return false if any error occurred, true otherwise
+ */
+
+CPUINFO_INTERNAL bool cpuinfo_riscv_decode_cache(
+        enum cpuinfo_uarch uarch,
+        struct cpuinfo_cache l1i[restrict static 1],
+        struct cpuinfo_cache l1d[restrict static 1],
+        struct cpuinfo_cache l2[restrict static 1]);
+
+/**
+ * Extracts the maximum cache size from a RISC-V processor, independently
+ * of underlying operating system.
+ *
+ * @param[processor]: The RISC-V processor.
+ * @preturn: The maximum cache size.
+ */
+CPUINFO_INTERNAL uint32_t cpuinfo_riscv_compute_max_cache_size(
+        const struct cpuinfo_processor processor[restrict static 1]);

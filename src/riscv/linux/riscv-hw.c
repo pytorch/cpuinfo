@@ -1,9 +1,14 @@
-#include <sys/hwprobe.h>
 #include <sched.h>
-
 #include <cpuinfo/log.h>
+
 #include <riscv/api.h>
 #include <riscv/linux/api.h>
+
+#include <linux/version.h>
+
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6,4,0)
+
+#include <sys/hwprobe.h>
 
 void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 		uint32_t processor,
@@ -15,10 +20,6 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 		{ .key = RISCV_HWPROBE_KEY_MIMPID, },
 	};
 	const size_t pairs_count = sizeof(pairs) / sizeof(struct riscv_hwprobe);
-
-	/* In case of failure, report unknown. */
-	*vendor = cpuinfo_vendor_unknown;
-	*uarch = cpuinfo_uarch_unknown;
 
 	/* Create a CPU set with this processor flagged. */
 	const size_t cpu_count = processor + 1;
@@ -70,3 +71,15 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 cleanup:
 	CPU_FREE(cpu_set);
 }
+
+#else
+
+void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
+		uint32_t processor,
+		enum cpuinfo_vendor vendor[restrict static 1],
+		enum cpuinfo_uarch uarch[restrict static 1]) {
+	/* Do nothing */
+}
+
+#endif
+

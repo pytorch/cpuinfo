@@ -51,6 +51,8 @@
 		#define CPUINFO_ARCH_RISCV32 1
 	#elif (__riscv_xlen == 64)
 		#define CPUINFO_ARCH_RISCV64 1
+	#else
+		#error "Unexpected __riscv_xlen"
 	#endif
 #endif
 
@@ -556,6 +558,9 @@ enum cpuinfo_uarch {
 
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
+
+	/** SiFive U74-MC Standard Core. */
+	cpuinfo_uarch_u74_mc = 0x00D00100,
 };
 
 struct cpuinfo_processor {
@@ -1904,10 +1909,6 @@ static inline bool cpuinfo_has_arm_sve2(void) {
 		 */
 		/* RV32I/64I/128I Base ISA. */
 		bool i;
-		#if CPUINFO_ARCH_RISCV32
-			/* RV32E Base ISA. */
-			bool e;
-		#endif
 		/* Integer Multiply/Divide Extension. */
 		bool m;
 		/* Atomic Extension. */
@@ -1928,14 +1929,6 @@ static inline bool cpuinfo_has_arm_sve2(void) {
 static inline bool cpuinfo_has_riscv_i(void) {
 	#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 		return cpuinfo_isa.i;
-	#else
-		return false;
-	#endif
-}
-
-static inline bool cpuinfo_has_riscv_e(void) {
-	#if CPUINFO_ARCH_RISCV32
-		return cpuinfo_isa.e;
 	#else
 		return false;
 	#endif
