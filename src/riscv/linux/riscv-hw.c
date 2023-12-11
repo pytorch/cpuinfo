@@ -5,6 +5,17 @@
 #include <riscv/api.h>
 #include <riscv/linux/api.h>
 
+#if CPUINFO_MOCK
+#include <cpuinfo-mock.h>
+#endif  // CPUINFO_MOCK
+
+#if CPUINFO_MOCK
+static cpuinfo_mock_riscv_hwprobe g_riscv_hwprobe;
+void cpuinfo_set_riscv_hwprobe(cpuinfo_mock_riscv_hwprobe riscv_hwprobe) {
+  g_riscv_hwprobe = riscv_hwprobe;
+}
+#endif  // CPUINFO_MOCK
+
 void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 		uint32_t processor,
 		enum cpuinfo_vendor vendor[restrict static 1],
@@ -33,9 +44,13 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	CPU_SET_S(processor, cpu_set_size, cpu_set);
 
 	/* Request all available information from hwprobe. */
-	int ret = __riscv_hwprobe(pairs, pairs_count,
-                                  cpu_set_size, (unsigned long*)cpu_set,
-                                  0 /* flags */);
+#if CPUINFO_MOCK
+	int ret = g_riscv_hwprobe(pairs, pairs_count, cpu_set_size,
+				  (unsigned long*)cpu_set, 0 /* flags */);
+#else
+	int ret = __riscv_hwprobe(pairs, pairs_count, cpu_set_size,
+				  (unsigned long*)cpu_set, 0 /* flags */);
+#endif
 	if (ret < 0) {
 		cpuinfo_log_warning("failed to get hwprobe information, err: %d", ret);
 		goto cleanup;
