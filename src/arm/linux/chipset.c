@@ -1338,8 +1338,166 @@ static const struct sunxi_map_entry sunxi_map_entries[] = {
 	},
 };
 
+
+struct sunxiwx_map_entry {
+	uint8_t sunxi;
+	uint8_t w;
+	uint8_t p;
+	uint8_t cores;
+	uint16_t model;
+	char suffix;
+};
+
+// TODO add other Allwinner series. 
+static const struct sunxiwx_map_entry sunxiwx_map_entries[] = {
+#if CPUINFO_ARCH_ARM
+	{
+		/* ("sun4iw1p1", 1) -> "A10" */
+		.sunxi = 4,
+		.w = 1,
+		.p = 1,
+		.cores = 1,
+		.model = 10,
+	},
+	{
+		/* ("sun4iw2p1", 1) -> "A13" */
+		.sunxi = 4,
+		.w = 2,
+		.p = 1,
+		.cores = 1,
+		.model = 13,
+	},
+	{
+		/* ("sun4iw2p3", 1) -> "A10s" */
+		.sunxi = 4,
+		.w = 2,
+		.p = 3,
+		.cores = 1,
+		.model = 10,
+		.suffix = 's',
+	},
+	{
+		/* ("sun8iw1p1", 4) -> "A31" */
+		.sunxi = 8,
+		.w = 1,
+		.p = 1,
+		.cores = 4,
+		.model = 31,
+	},
+	{
+		/* ("sun8iw1p2", 4) -> "A31s" */
+		.sunxi = 8,
+		.w = 1,
+		.p = 2,
+		.cores = 4,
+		.model = 31,
+		.suffix = 's',
+	},
+	{
+		/* ("sun8iw2p1", 2) -> "A20" */
+		.sunxi = 8,
+		.w = 2,
+		.p = 1,
+		.cores = 2,
+		.model = 20,
+	},
+	{
+		/* ("sun8iw3p1", 2) -> "A23" */
+		.sunxi = 8,
+		.w = 3,
+		.p = 1,
+		.cores = 2,
+		.model = 23,
+	},
+	{
+		/* ("sun8iw5p1", 4) -> "A33,R16" */
+		.sunxi = 8,
+		.w = 5,
+		.p = 1,
+		.cores = 4,
+		.model = 33,
+	},
+	{
+		/* ("sun8iw6p1", 8) -> "A83T, H8, H80, V66, R58" */
+		.sunxi = 8,
+		.w = 6,
+		.p = 1,
+		.cores = 8,
+		.model = 83,
+		.suffix = 'T',
+	},
+	{
+		/* ("sun8iw11p1", 4) -> "R40, V40, T3, A40i, A20e?" */
+		.sunxi = 8,
+		.w = 11,
+		.p = 1,
+		.cores = 4,
+		.model = 40,
+		.suffix = 'i',
+	},
+	{
+		/* ("sun8iw15p1", 4) -> "A50, MR133, R311" */
+		.sunxi = 8,
+		.w = 15,
+		.p = 1,
+		.cores = 4,
+		.model = 50,
+	},
+	{
+		/* ("sun9iw1p1", 8) -> "A80" */
+		.sunxi = 9,
+		.w = 1,
+		.p = 1,
+		.cores = 8,
+		.model = 80,
+	},
+	{
+		/* ("sun9iw1p2", 8) -> "A80T" */
+		.sunxi = 9,
+		.w = 1,
+		.p = 2,
+		.cores = 8,
+		.model = 80,
+		.suffix = 'T',
+	},
+	
+#endif /* CPUINFO_ARCH_ARM */
+	{
+		/* ("sun50iw1p1", 4) -> "A64, H64, R18" */
+		.sunxi = 50,
+		.w = 1,
+		.p = 1,
+		.cores = 4,
+		.model = 64,
+	},
+	{
+		/* ("sun50iw3p1", 4) -> "A63" */
+		.sunxi = 50,
+		.w = 3,
+		.p = 1,
+		.cores = 4,
+		.model = 63,
+	},
+	{
+		/* ("sun50iw10p1", 4) -> "A100, A133, A53, T509" */
+		.sunxi = 50,
+		.w = 10,
+		.p = 1,
+		.cores = 4,
+		.model = 100,
+	},
+	{
+		/* ("sun55iw3p1", 8) -> "A523" */
+		.sunxi = 55,
+		.w = 3,
+		.p = 1,
+		.cores = 8,
+		.model = 523,
+	},
+};
+
 /**
- * Tries to match /proc/cpuinfo Hardware string to Allwinner /sun\d+i/ signature.
+ * Tries to match /proc/cpuinfo Hardware string to Allwinner /sun\d+i/ signature and /sun\d+i+w\d+p\d/ signature.
  * If the string matches signature, the function decodes Allwinner chipset from the number in the signature and the
  * number of cores, and stores it in \p chipset argument.
  *
@@ -1351,7 +1509,7 @@ static const struct sunxi_map_entry sunxi_map_entries[] = {
  * @returns true if signature matched (even if exact model can't be decoded), false otherwise.
  */
 static bool match_and_parse_sunxi(
-	const char* start, const char* end, uint32_t cores,
+	const char* start, const char* end, uint32_t cores, uint32_t max_cpu_freq_max,
 	struct cpuinfo_arm_chipset chipset[restrict static 1])
 {
 	/* Expect at least 5 symbols: "sun" (3 symbols) + platform id (1-2 digits) + "i" (1 symbol) */
@@ -1400,17 +1558,104 @@ static bool match_and_parse_sunxi(
 	/* Compare sunXi platform id and number of cores to tabulated values to decode chipset name */
 	uint32_t model = 0;
 	char suffix = 0;
-	for (size_t i = 0; i < CPUINFO_COUNT_OF(sunxi_map_entries); i++) {
-		if (sunxi_platform == sunxi_map_entries[i].sunxi && cores == sunxi_map_entries[i].cores) {
-			model = sunxi_map_entries[i].model;
-			suffix = sunxi_map_entries[i].suffix;
-			break;
+
+	pos++;
+
+	if (pos == end || end - pos <= 2) {
+		// sunxi signature
+		for (size_t i = 0; i < CPUINFO_COUNT_OF(sunxi_map_entries); i++) {
+			if (sunxi_platform == sunxi_map_entries[i].sunxi && cores == sunxi_map_entries[i].cores) {
+				model = sunxi_map_entries[i].model;
+				suffix = sunxi_map_entries[i].suffix;
+				break;
+			}
+		}
+	} else {
+		// sunxiwx signature
+		/* Validate the 'w' letter */
+		if (*pos != 'w') {
+			return false;
+		}
+
+		/* Expect at least 4 symbols: "w" (1 symbols) + w id (1-2 digits) + "p" (1 symbol) + rev id (1 digit) */
+		if (pos + 4 > end) {
+			return false;
+		}
+
+		pos++;
+
+		/* Check and parse the w id */
+		uint32_t w = 0;
+		{
+			const uint32_t digit = (uint32_t) (uint8_t) (*pos) - '0';
+			if (digit >= 10) {
+				/* Not really a digit */
+				return false;
+			}
+			w = digit;
+		}
+
+		pos++;
+		/* Parse optional second digit of the w id */
+		{
+			const uint32_t digit = (uint32_t) (uint8_t) (*pos) - '0';
+			if (digit < 10) {
+				w = w * 10 + digit;
+				if (++pos == end) {
+					/* Expected one more 'p' letter */
+					return false;
+				}
+			}
+		}
+
+		/* Validate the 'p' letter */
+		if (*pos != 'p') {
+			return false;
+		}
+		if (++pos == end) {
+			/* Expected one more digit */
+			return false;
+		}
+
+		/* Check and parse the p id */
+		uint32_t p = 0;
+		{
+			const uint32_t digit = (uint32_t) (uint8_t) (*pos) - '0';
+			if (digit >= 10) {
+				/* Not really a digit */
+				return false;
+			}
+			p = digit;
+		}
+
+
+		for (size_t i = 0; i < CPUINFO_COUNT_OF(sunxiwx_map_entries); i++) {
+			if (sunxi_platform == sunxiwx_map_entries[i].sunxi 
+				&& cores == sunxiwx_map_entries[i].cores
+				&& w == sunxiwx_map_entries[i].w
+				&& p == sunxiwx_map_entries[i].p) {
+					
+				model = sunxiwx_map_entries[i].model;
+				suffix = sunxiwx_map_entries[i].suffix;
+				break;
+			}
 		}
 	}
 
 	if (model == 0) {
 		cpuinfo_log_info("unrecognized %"PRIu32"-core Allwinner sun%"PRIu32" platform", cores, sunxi_platform);
 	}
+
+	if (model == 100) {
+		/* Allwinner A100 and A133 use the same code name sun50iw10p1, but they runs in differrence max_cpu_freq_max.
+		* A100: 1464000 KHz
+		* A133: 1512000 KHz	 
+		*/
+		if (max_cpu_freq_max >= 1512000) {
+			model = 133;
+		}
+	}
+
 	/* Create chipset name from decoded data */
 	*chipset = (struct cpuinfo_arm_chipset) {
 		.vendor = cpuinfo_arm_chipset_vendor_allwinner,
@@ -2424,7 +2669,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 		#endif
 
 		/* Match /sun\d+i/ signature and map to Allwinner chipset name */
-		if (match_and_parse_sunxi(hardware, hardware_end, cores, &chipset)) {
+		if (match_and_parse_sunxi(hardware, hardware_end, cores, max_cpu_freq_max, &chipset)) {
 			cpuinfo_log_debug(
 				"matched sunxi (Allwinner Ax) signature in /proc/cpuinfo Hardware string \"%.*s\"",
 				(int) hardware_length, hardware);
@@ -3128,7 +3373,7 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 	 */
 
 	struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_chipname(
-		const char chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX])
+		const char chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX], uint32_t cores, uint32_t max_cpu_freq_max)
 	{
 		struct cpuinfo_arm_chipset chipset;
 		const size_t chipname_length = strnlen(chipname, CPUINFO_BUILD_PROP_VALUE_MAX);
@@ -3178,6 +3423,14 @@ struct cpuinfo_arm_chipset cpuinfo_arm_linux_decode_chipset_from_proc_cpuinfo_ha
 		if (match_sc(chipname, chipname_end, &chipset)) {
 			cpuinfo_log_debug(
 				"matched Spreadtrum SC signature in ro.chipname string \"%.*s\"",
+				(int) chipname_length, chipname);
+			return chipset;
+		}
+
+		/* Match /sun\d+i/ signature and map to Allwinner chipset name */
+		if (match_and_parse_sunxi(chipname, chipname_end, cores, max_cpu_freq_max, &chipset)) {
+			cpuinfo_log_debug(
+				"matched sunxi (Allwinner Ax) signature in ro.chipname string \"%.*s\"",
 				(int) chipname_length, chipname);
 			return chipset;
 		}
@@ -3657,6 +3910,32 @@ void cpuinfo_arm_chipset_to_string(
 		return *ro_board_platform_chipset;
 	}
 
+	static inline struct cpuinfo_arm_chipset disambiguate_allwinner_chipset(
+		const struct cpuinfo_arm_chipset proc_cpuinfo_hardware_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_product_board_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_board_platform_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_chipname_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_hardware_chipname_chipset[restrict static 1],
+		const struct cpuinfo_arm_chipset ro_hardware_chipset[restrict static 1])
+	{
+		if (ro_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_hardware_chipset;
+		}
+		if (ro_hardware_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_hardware_chipname_chipset;
+		}
+		if (ro_chipname_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_chipname_chipset;
+		}
+		if (proc_cpuinfo_hardware_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *proc_cpuinfo_hardware_chipset;
+		}
+		if (ro_product_board_chipset->series != cpuinfo_arm_chipset_series_unknown) {
+			return *ro_product_board_chipset;
+		}
+		return *ro_board_platform_chipset;
+	}
+
 	/*
 	 * Decodes chipset name from Android system properties:
 	 * - /proc/cpuinfo Hardware string
@@ -3702,9 +3981,11 @@ void cpuinfo_arm_chipset_to_string(
 			[cpuinfo_android_chipset_property_ro_arch] =
 				cpuinfo_arm_android_decode_chipset_from_ro_arch(properties->ro_arch),
 			[cpuinfo_android_chipset_property_ro_chipname] =
-				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname),
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_chipname, cores, max_cpu_freq_max),
 			[cpuinfo_android_chipset_property_ro_hardware_chipname] =
-				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_hardware_chipname),
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_hardware_chipname, cores, max_cpu_freq_max),
+			[cpuinfo_android_chipset_property_ro_hardware] =
+				cpuinfo_arm_android_decode_chipset_from_ro_chipname(properties->ro_hardware, cores, max_cpu_freq_max),
 		};
 		enum cpuinfo_arm_chipset_vendor vendor = cpuinfo_arm_chipset_vendor_unknown;
 		for (size_t i = 0; i < cpuinfo_android_chipset_property_max; i++) {
@@ -3807,6 +4088,14 @@ void cpuinfo_arm_chipset_to_string(
 								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
 								&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
 								&chipsets[cpuinfo_android_chipset_property_ro_chipname]);
+						case cpuinfo_arm_chipset_vendor_allwinner:
+							return disambiguate_allwinner_chipset(
+								&chipsets[cpuinfo_android_chipset_property_proc_cpuinfo_hardware],
+								&chipsets[cpuinfo_android_chipset_property_ro_product_board],
+								&chipsets[cpuinfo_android_chipset_property_ro_board_platform],
+								&chipsets[cpuinfo_android_chipset_property_ro_chipname],
+								&chipsets[cpuinfo_android_chipset_property_ro_hardware_chipname],
+								&chipsets[cpuinfo_android_chipset_property_ro_hardware]);
 						default:
 							cpuinfo_log_error(
 								"chipset detection failed: "

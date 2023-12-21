@@ -230,12 +230,40 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
+	/* Detect min/max frequency and package ID */
+	/* This should run before decode_chipset to get max_frequency */
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			const uint32_t max_frequency = cpuinfo_linux_get_processor_max_frequency(i);
+			if (max_frequency != 0) {
+				arm_linux_processors[i].max_frequency = max_frequency;
+				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_MAX_FREQUENCY;
+			}
+
+			const uint32_t min_frequency = cpuinfo_linux_get_processor_min_frequency(i);
+			if (min_frequency != 0) {
+				arm_linux_processors[i].min_frequency = min_frequency;
+				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_MIN_FREQUENCY;
+			}
+
+			if (cpuinfo_linux_get_processor_package_id(i, &arm_linux_processors[i].package_id)) {
+				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_ID;
+			}
+		}
+	}
+	uint32_t max_frequency = 0;
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			max_frequency = max_frequency > arm_linux_processors[i].max_frequency ? max_frequency :  arm_linux_processors[i].max_frequency;
+		}
+	}
+
 #if defined(__ANDROID__)
 	const struct cpuinfo_arm_chipset chipset =
-		cpuinfo_arm_android_decode_chipset(&android_properties, valid_processors, 0);
+		cpuinfo_arm_android_decode_chipset(&android_properties, valid_processors, max_frequency);
 #else
 	const struct cpuinfo_arm_chipset chipset =
-		cpuinfo_arm_linux_decode_chipset(proc_cpuinfo_hardware, proc_cpuinfo_revision, valid_processors, 0);
+		cpuinfo_arm_linux_decode_chipset(proc_cpuinfo_hardware, proc_cpuinfo_revision, valid_processors, max_frequency);
 #endif
 
 	#if CPUINFO_ARCH_ARM
@@ -288,26 +316,7 @@ void cpuinfo_arm_linux_init(void) {
 			isa_features, isa_features2, last_midr, &chipset, &cpuinfo_isa);
 	#endif
 
-	/* Detect min/max frequency and package ID */
-	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
-		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
-			const uint32_t max_frequency = cpuinfo_linux_get_processor_max_frequency(i);
-			if (max_frequency != 0) {
-				arm_linux_processors[i].max_frequency = max_frequency;
-				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_MAX_FREQUENCY;
-			}
-
-			const uint32_t min_frequency = cpuinfo_linux_get_processor_min_frequency(i);
-			if (min_frequency != 0) {
-				arm_linux_processors[i].min_frequency = min_frequency;
-				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_MIN_FREQUENCY;
-			}
-
-			if (cpuinfo_linux_get_processor_package_id(i, &arm_linux_processors[i].package_id)) {
-				arm_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_PACKAGE_ID;
-			}
-		}
-	}
+	
 
 	/* Initialize topology group IDs */
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {

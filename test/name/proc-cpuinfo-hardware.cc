@@ -618,6 +618,10 @@ TEST(PROC_CPUINFO_HARDWARE, allwinner_sunxi) {
 		parse_proc_cpuinfo_hardware("sun50iw1p1", 4));
 	EXPECT_EQ("Allwinner A64",
 		parse_proc_cpuinfo_hardware("sun50iw2", 4));
+	EXPECT_EQ("Allwinner A100",
+		parse_proc_cpuinfo_hardware("sun50iw10p1", 4));
+	EXPECT_EQ("Allwinner A523",
+		parse_proc_cpuinfo_hardware("sun55iw3p1", 8));
 #if CPUINFO_ARCH_ARM
 	EXPECT_EQ("Allwinner A80",
 		parse_proc_cpuinfo_hardware("sun9i", 8));

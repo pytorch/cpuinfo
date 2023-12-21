@@ -47,7 +47,7 @@ CMAKE_ARGS+=("-DANDROID_CPP_FEATURES=exceptions")
 # Use-specified CMake arguments go last to allow overridding defaults
 CMAKE_ARGS+=($@)
 
-cd build/android/arm64-v8a && cmake ../../.. \
+cd build/android/arm64-v8a && cmake ../../../../ \
     "${CMAKE_ARGS[@]}"
 
 # Cross-platform parallel build

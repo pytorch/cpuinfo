@@ -191,3 +191,15 @@ TEST(RO_CHIPNAME, spreadtrum) {
 	EXPECT_EQ("Spreadtrum SC9830I",
 		parse_ro_chipname("SC9830I"));
 }
+
+
+TEST(RO_CHIPNAME, allwinner_sunxi) {
+	EXPECT_EQ("Allwinner A64",
+		parse_ro_chipname("sun50iw1", 4));
+	EXPECT_EQ("Allwinner A523",
+		parse_ro_chipname("sun55iw3p1", 8));
+	EXPECT_EQ("Allwinner A100",
+		parse_ro_chipname("sun50iw10p1", 4, 1464000));
+	EXPECT_EQ("Allwinner A133",
+		parse_ro_chipname("sun50iw10p1", 4, 1512000));
+}
