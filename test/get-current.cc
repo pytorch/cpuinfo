@@ -2,7 +2,6 @@
 
 #include <cpuinfo.h>
 
-
 TEST(CURRENT_PROCESSOR, within_bounds) {
 	ASSERT_TRUE(cpuinfo_initialize());
 

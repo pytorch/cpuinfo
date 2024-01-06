@@ -2,42 +2,41 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 551,
-		.content =
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 12.80\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 12.80\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 12.80\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 12.80\n"
-			"\n"
-			"processor\t: 4\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 5\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 6\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 7\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0 & 0x3\n"
-			"CPU part\t: 0xc07 & 0xc0f\n"
-			"CPU revision\t: 5 & 3\n"
-			"\n"
-			"Hardware\t: Kirin920\n"
-			"Revision\t: 0000\n"
-			"Serial\t\t: 0000000000000000\n",
+		.content = "Processor\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 12.80\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 12.80\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "BogoMIPS\t: 12.80\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "BogoMIPS\t: 12.80\n"
+			   "\n"
+			   "processor\t: 4\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 5\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 6\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 7\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0 & 0x3\n"
+			   "CPU part\t: 0xc07 & 0xc0f\n"
+			   "CPU revision\t: 5 & 3\n"
+			   "\n"
+			   "Hardware\t: Kirin920\n"
+			   "Revision\t: 0000\n"
+			   "Serial\t\t: 0000000000000000\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -387,13 +386,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 74,
-		.content =
-			"403200 33253\n"
-			"604800 313\n"
-			"806400 307\n"
-			"1017600 386\n"
-			"1209600 12625\n"
-			"1305600 1894\n",
+		.content = "403200 33253\n"
+			   "604800 313\n"
+			   "806400 307\n"
+			   "1017600 386\n"
+			   "1209600 12625\n"
+			   "1305600 1894\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -498,13 +496,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 74,
-		.content =
-			"403200 33498\n"
-			"604800 315\n"
-			"806400 307\n"
-			"1017600 386\n"
-			"1209600 12635\n"
-			"1305600 1894\n",
+		.content = "403200 33498\n"
+			   "604800 315\n"
+			   "806400 307\n"
+			   "1017600 386\n"
+			   "1209600 12635\n"
+			   "1305600 1894\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -609,13 +606,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 74,
-		.content =
-			"403200 33727\n"
-			"604800 315\n"
-			"806400 307\n"
-			"1017600 386\n"
-			"1209600 12645\n"
-			"1305600 1894\n",
+		.content = "403200 33727\n"
+			   "604800 315\n"
+			   "806400 307\n"
+			   "1017600 386\n"
+			   "1209600 12645\n"
+			   "1305600 1894\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -720,13 +716,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 74,
-		.content =
-			"403200 33974\n"
-			"604800 315\n"
-			"806400 307\n"
-			"1017600 386\n"
-			"1209600 12645\n"
-			"1305600 1894\n",
+		.content = "403200 33974\n"
+			   "604800 315\n"
+			   "806400 307\n"
+			   "1017600 386\n"
+			   "1209600 12645\n"
+			   "1305600 1894\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -831,13 +826,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
 		.size = 67,
-		.content =
-			"806400 47983\n"
-			"1017600 3\n"
-			"1209600 13\n"
-			"1382400 8\n"
-			"1497600 7\n"
-			"1708800 1760\n",
+		.content = "806400 47983\n"
+			   "1017600 3\n"
+			   "1209600 13\n"
+			   "1382400 8\n"
+			   "1497600 7\n"
+			   "1708800 1760\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
@@ -942,13 +936,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
 		.size = 67,
-		.content =
-			"806400 48237\n"
-			"1017600 3\n"
-			"1209600 13\n"
-			"1382400 8\n"
-			"1497600 7\n"
-			"1708800 1760\n",
+		.content = "806400 48237\n"
+			   "1017600 3\n"
+			   "1209600 13\n"
+			   "1382400 8\n"
+			   "1497600 7\n"
+			   "1708800 1760\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
@@ -1053,13 +1046,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
 		.size = 67,
-		.content =
-			"806400 48504\n"
-			"1017600 3\n"
-			"1209600 13\n"
-			"1382400 8\n"
-			"1497600 7\n"
-			"1708800 1760\n",
+		.content = "806400 48504\n"
+			   "1017600 3\n"
+			   "1209600 13\n"
+			   "1382400 8\n"
+			   "1497600 7\n"
+			   "1708800 1760\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
@@ -1164,13 +1156,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
 		.size = 67,
-		.content =
-			"806400 48759\n"
-			"1017600 3\n"
-			"1209600 13\n"
-			"1382400 8\n"
-			"1497600 7\n"
-			"1708800 1760\n",
+		.content = "806400 48759\n"
+			   "1017600 3\n"
+			   "1209600 13\n"
+			   "1382400 8\n"
+			   "1497600 7\n"
+			   "1708800 1760\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
@@ -1207,7 +1198,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "7\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -2971,6 +2962,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

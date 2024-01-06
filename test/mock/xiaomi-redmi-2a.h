@@ -2,54 +2,53 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 1225,
-		.content =
-			"processor\t: 0\n"
-			"model name\t: ARMv7 Processor rev 5 (v7l)\n"
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"BogoMIPS\t: 2609.15\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"processor\t: 1\n"
-			"model name\t: ARMv7 Processor rev 5 (v7l)\n"
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"BogoMIPS\t: 2609.15\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"processor\t: 2\n"
-			"model name\t: ARMv7 Processor rev 5 (v7l)\n"
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"BogoMIPS\t: 2609.15\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"processor\t: 3\n"
-			"model name\t: ARMv7 Processor rev 5 (v7l)\n"
-			"Processor\t: ARMv7 Processor rev 5 (v7l)\n"
-			"BogoMIPS\t: 2609.15\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 5\n"
-			"\n"
-			"Hardware\t: Leadcore Innopower\n"
-			"Revision\t: 0000\n"
-			"Serial\t\t: 0000000000000000\n",
+		.content = "processor\t: 0\n"
+			   "model name\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "Processor\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "BogoMIPS\t: 2609.15\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 5\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "model name\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "Processor\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "BogoMIPS\t: 2609.15\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 5\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "model name\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "Processor\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "BogoMIPS\t: 2609.15\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 5\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "model name\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "Processor\t: ARMv7 Processor rev 5 (v7l)\n"
+			   "BogoMIPS\t: 2609.15\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 5\n"
+			   "\n"
+			   "Hardware\t: Leadcore Innopower\n"
+			   "Revision\t: 0000\n"
+			   "Serial\t\t: 0000000000000000\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -280,18 +279,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 114,
-		.content =
-			"1495000 450\n"
-			"1401563 20\n"
-			"1308125 12\n"
-			"1214688 0\n"
-			"1121250 9\n"
-			"1027813 2\n"
-			"934375 18\n"
-			"840938 33\n"
-			"747500 213\n"
-			"654063 14\n"
-			"624000 0\n",
+		.content = "1495000 450\n"
+			   "1401563 20\n"
+			   "1308125 12\n"
+			   "1214688 0\n"
+			   "1121250 9\n"
+			   "1027813 2\n"
+			   "934375 18\n"
+			   "840938 33\n"
+			   "747500 213\n"
+			   "654063 14\n"
+			   "624000 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -409,18 +407,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 116,
-		.content =
-			"1495000 595\n"
-			"1401563 24\n"
-			"1308125 12\n"
-			"1214688 4\n"
-			"1121250 17\n"
-			"1027813 10\n"
-			"934375 30\n"
-			"840938 49\n"
-			"747500 233\n"
-			"654063 14\n"
-			"624000 0\n",
+		.content = "1495000 595\n"
+			   "1401563 24\n"
+			   "1308125 12\n"
+			   "1214688 4\n"
+			   "1121250 17\n"
+			   "1027813 10\n"
+			   "934375 30\n"
+			   "840938 49\n"
+			   "747500 233\n"
+			   "654063 14\n"
+			   "624000 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -538,18 +535,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 116,
-		.content =
-			"1495000 763\n"
-			"1401563 24\n"
-			"1308125 28\n"
-			"1214688 4\n"
-			"1121250 29\n"
-			"1027813 10\n"
-			"934375 30\n"
-			"840938 49\n"
-			"747500 258\n"
-			"654063 18\n"
-			"624000 0\n",
+		.content = "1495000 763\n"
+			   "1401563 24\n"
+			   "1308125 28\n"
+			   "1214688 4\n"
+			   "1121250 29\n"
+			   "1027813 10\n"
+			   "934375 30\n"
+			   "840938 49\n"
+			   "747500 258\n"
+			   "654063 18\n"
+			   "624000 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -667,20 +663,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 116,
-		.content =
-			"1495000 956\n"
-			"1401563 24\n"
-			"1308125 40\n"
-			"1214688 4\n"
-			"1121250 49\n"
-			"1027813 10\n"
-			"934375 30\n"
-			"840938 49\n"
-			"747500 264\n"
-			"654063 18\n"
-			"624000 0\n",
+		.content = "1495000 956\n"
+			   "1401563 24\n"
+			   "1308125 40\n"
+			   "1214688 4\n"
+			   "1121250 49\n"
+			   "1027813 10\n"
+			   "934375 30\n"
+			   "840938 49\n"
+			   "747500 264\n"
+			   "654063 18\n"
+			   "624000 0\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -1593,6 +1588,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wifi.interface",
 		.value = "wlan0",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

@@ -3,20 +3,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 279,
-		.content =
-			"Processor\t: AArch64 Processor rev 0 (aarch64)\n"
-			"processor\t: 0\n"
-			"processor\t: 1\n"
-			"processor\t: 2\n"
-			"processor\t: 3\n"
-			"Features\t: fp asimd evtstrm crc32 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"Hardware\t: Qualcomm Technologies, Inc MSM8916\n",
+		.content = "Processor\t: AArch64 Processor rev 0 (aarch64)\n"
+			   "processor\t: 0\n"
+			   "processor\t: 1\n"
+			   "processor\t: 2\n"
+			   "processor\t: 3\n"
+			   "Features\t: fp asimd evtstrm crc32 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "Hardware\t: Qualcomm Technologies, Inc MSM8916\n",
 	},
 #elif CPUINFO_ARCH_ARM
 	{
@@ -427,7 +426,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/devfreq/available_governors",
 		.size = 89,
-		.content = "bw_vbif gpubw_mon msm-adreno-tz cpufreq userspace powersave performance simple_ondemand\r\n",
+		.content =
+			"bw_vbif gpubw_mon msm-adreno-tz cpufreq userspace powersave performance simple_ondemand\r\n",
 	},
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/devfreq/cur_freq",
@@ -462,13 +462,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/devfreq/trans_stat",
 		.size = 232,
-		.content =
-			"   From  :   To\r\n"
-			"         :400000000310000000200000000   time(ms)\r\n"
-			"*400000000:       0      49       0     43170\r\n"
-			" 310000000:      49       0      11    584160\r\n"
-			" 200000000:       1      10       0      6310\r\n"
-			"Total transition : 120\r\n",
+		.content = "   From  :   To\r\n"
+			   "         :400000000310000000200000000   time(ms)\r\n"
+			   "*400000000:       0      49       0     43170\r\n"
+			   " 310000000:      49       0      11    584160\r\n"
+			   " 200000000:       1      10       0      6310\r\n"
+			   "Total transition : 120\r\n",
 	},
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/ft_fast_hang_detect",
@@ -583,23 +582,20 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/soc0/image_crm_version",
 		.size = 5,
-		.content =
-			"REL\n"
-			"\n",
+		.content = "REL\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/image_variant",
 		.size = 12,
-		.content =
-			"A37fw-user\n"
-			"\n",
+		.content = "A37fw-user\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/image_version",
 		.size = 22,
-		.content =
-			"10:LMY47V:1456818039\n"
-			"\n",
+		.content = "10:LMY47V:1456818039\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/machine",
@@ -759,15 +755,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 89,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 53148\n"
-			"998400 2868\n"
-			"1094400 127\n"
-			"1152000 240\n"
-			"1209600 7183\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 53148\n"
+			   "998400 2868\n"
+			   "1094400 127\n"
+			   "1152000 240\n"
+			   "1209600 7183\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -862,15 +857,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 89,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 53373\n"
-			"998400 2868\n"
-			"1094400 127\n"
-			"1152000 240\n"
-			"1209600 7183\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 53373\n"
+			   "998400 2868\n"
+			   "1094400 127\n"
+			   "1152000 240\n"
+			   "1209600 7183\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -965,15 +959,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 89,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 53580\n"
-			"998400 2876\n"
-			"1094400 127\n"
-			"1152000 240\n"
-			"1209600 7183\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 53580\n"
+			   "998400 2876\n"
+			   "1094400 127\n"
+			   "1152000 240\n"
+			   "1209600 7183\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -1068,15 +1061,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 89,
-		.content =
-			"200000 0\n"
-			"400000 0\n"
-			"533333 0\n"
-			"800000 53818\n"
-			"998400 2876\n"
-			"1094400 127\n"
-			"1152000 240\n"
-			"1209600 7183\n",
+		.content = "200000 0\n"
+			   "400000 0\n"
+			   "533333 0\n"
+			   "800000 53818\n"
+			   "998400 2876\n"
+			   "1094400 127\n"
+			   "1152000 240\n"
+			   "1209600 7183\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -1113,7 +1105,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "3\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -2865,6 +2857,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

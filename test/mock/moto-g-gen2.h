@@ -2,33 +2,32 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 466,
-		.content =
-			"Processor\t: ARMv7 Processor rev 3 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 38.40\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc07\n"
-			"CPU revision\t: 3\n"
-			"\n"
-			"Hardware\t: Qualcomm MSM8226\n"
-			"Revision\t: 8400\n"
-			"Serial\t\t: d1c59d080f000000\n"
-			"Device\t\t: titan\n"
-			"Radio\t\t: 5\n"
-			"MSM Hardware\t: MSM8226 CS\n",
+		.content = "Processor\t: ARMv7 Processor rev 3 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc07\n"
+			   "CPU revision\t: 3\n"
+			   "\n"
+			   "Hardware\t: Qualcomm MSM8226\n"
+			   "Revision\t: 8400\n"
+			   "Serial\t\t: d1c59d080f000000\n"
+			   "Device\t\t: titan\n"
+			   "Radio\t\t: 5\n"
+			   "MSM Hardware\t: MSM8226 CS\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -426,14 +425,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 68,
-		.content =
-			"300000 0\n"
-			"384000 0\n"
-			"600000 0\n"
-			"787200 0\n"
-			"998400 0\n"
-			"1094400 0\n"
-			"1190400 2628\n",
+		.content = "300000 0\n"
+			   "384000 0\n"
+			   "600000 0\n"
+			   "787200 0\n"
+			   "998400 0\n"
+			   "1094400 0\n"
+			   "1190400 2628\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -523,14 +521,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 68,
-		.content =
-			"300000 0\n"
-			"384000 0\n"
-			"600000 0\n"
-			"787200 0\n"
-			"998400 0\n"
-			"1094400 0\n"
-			"1190400 2897\n",
+		.content = "300000 0\n"
+			   "384000 0\n"
+			   "600000 0\n"
+			   "787200 0\n"
+			   "998400 0\n"
+			   "1094400 0\n"
+			   "1190400 2897\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -630,14 +627,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 68,
-		.content =
-			"300000 0\n"
-			"384000 0\n"
-			"600000 0\n"
-			"787200 0\n"
-			"998400 0\n"
-			"1094400 6\n"
-			"1190400 3170\n",
+		.content = "300000 0\n"
+			   "384000 0\n"
+			   "600000 0\n"
+			   "787200 0\n"
+			   "998400 0\n"
+			   "1094400 6\n"
+			   "1190400 3170\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -697,14 +693,13 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 69,
-		.content =
-			"300000 0\n"
-			"384000 0\n"
-			"600000 0\n"
-			"787200 0\n"
-			"998400 2\n"
-			"1094400 15\n"
-			"1190400 3428\n",
+		.content = "300000 0\n"
+			   "384000 0\n"
+			   "600000 0\n"
+			   "787200 0\n"
+			   "998400 2\n"
+			   "1094400 15\n"
+			   "1190400 3428\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -726,7 +721,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 4,
 		.content = "0-3\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -2246,6 +2241,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

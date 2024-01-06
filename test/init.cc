@@ -2,7 +2,6 @@
 
 #include <cpuinfo.h>
 
-
 TEST(PROCESSORS_COUNT, non_zero) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	EXPECT_NE(0, cpuinfo_get_processors_count());
@@ -782,8 +781,7 @@ TEST(L1I_CACHE, valid_size) {
 		const cpuinfo_cache* cache = cpuinfo_get_l1i_cache(i);
 		ASSERT_TRUE(cache);
 
-		EXPECT_EQ(cache->size,
-			cache->associativity * cache->sets * cache->partitions * cache->line_size);
+		EXPECT_EQ(cache->size, cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 	cpuinfo_deinitialize();
 }
@@ -947,8 +945,7 @@ TEST(L1D_CACHE, valid_size) {
 		const cpuinfo_cache* cache = cpuinfo_get_l1d_cache(i);
 		ASSERT_TRUE(cache);
 
-		EXPECT_EQ(cache->size,
-			cache->associativity * cache->sets * cache->partitions * cache->line_size);
+		EXPECT_EQ(cache->size, cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 	cpuinfo_deinitialize();
 }
@@ -1114,8 +1111,7 @@ TEST(L2_CACHE, valid_size) {
 		const cpuinfo_cache* cache = cpuinfo_get_l2_cache(i);
 		ASSERT_TRUE(cache);
 
-		EXPECT_EQ(cache->size,
-			cache->associativity * cache->sets * cache->partitions * cache->line_size);
+		EXPECT_EQ(cache->size, cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 	cpuinfo_deinitialize();
 }
@@ -1262,8 +1258,7 @@ TEST(L3_CACHE, valid_size) {
 		const cpuinfo_cache* cache = cpuinfo_get_l3_cache(i);
 		ASSERT_TRUE(cache);
 
-		EXPECT_EQ(cache->size,
-			cache->associativity * cache->sets * cache->partitions * cache->line_size);
+		EXPECT_EQ(cache->size, cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 	cpuinfo_deinitialize();
 }
@@ -1410,8 +1405,7 @@ TEST(L4_CACHE, valid_size) {
 		const cpuinfo_cache* cache = cpuinfo_get_l4_cache(i);
 		ASSERT_TRUE(cache);
 
-		EXPECT_EQ(cache->size,
-			cache->associativity * cache->sets * cache->partitions * cache->line_size);
+		EXPECT_EQ(cache->size, cache->associativity * cache->sets * cache->partitions * cache->line_size);
 	}
 	cpuinfo_deinitialize();
 }

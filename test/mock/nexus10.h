@@ -2,24 +2,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 340,
-		.content =
-			"Processor\t: ARMv7 Processor rev 4 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 997.78\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 997.78\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc0f\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"Hardware\t: Manta\n"
-			"Revision\t: 0008\n"
-			"Serial\t\t: 4733303344323352\n",
+		.content = "Processor\t: ARMv7 Processor rev 4 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 997.78\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 997.78\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc0f\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "Hardware\t: Manta\n"
+			   "Revision\t: 0008\n"
+			   "Serial\t\t: 4733303344323352\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -153,24 +152,23 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 309,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\t\n"
-			"200000\t\t219\t\t219\t\t\n"
-			"300000\t\t17\t\t17\t\t\n"
-			"400000\t\t10\t\t10\t\t\n"
-			"500000\t\t17\t\t17\t\t\n"
-			"600000\t\t10\t\t10\t\t\n"
-			"700000\t\t0\t\t0\t\t\n"
-			"800000\t\t1\t\t1\t\t\n"
-			"900000\t\t19\t\t19\t\t\n"
-			"1000000\t\t519\t\t519\t\t\n"
-			"1100000\t\t33\t\t33\t\t\n"
-			"1200000\t\t50\t\t50\t\t\n"
-			"1300000\t\t54\t\t54\t\t\n"
-			"1400000\t\t232\t\t232\t\t\n"
-			"1500000\t\t219\t\t219\t\t\n"
-			"1600000\t\t131\t\t131\t\t\n"
-			"1700000\t\t1211\t\t1211\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\t\n"
+			   "200000\t\t219\t\t219\t\t\n"
+			   "300000\t\t17\t\t17\t\t\n"
+			   "400000\t\t10\t\t10\t\t\n"
+			   "500000\t\t17\t\t17\t\t\n"
+			   "600000\t\t10\t\t10\t\t\n"
+			   "700000\t\t0\t\t0\t\t\n"
+			   "800000\t\t1\t\t1\t\t\n"
+			   "900000\t\t19\t\t19\t\t\n"
+			   "1000000\t\t519\t\t519\t\t\n"
+			   "1100000\t\t33\t\t33\t\t\n"
+			   "1200000\t\t50\t\t50\t\t\n"
+			   "1300000\t\t54\t\t54\t\t\n"
+			   "1400000\t\t232\t\t232\t\t\n"
+			   "1500000\t\t219\t\t219\t\t\n"
+			   "1600000\t\t131\t\t131\t\t\n"
+			   "1700000\t\t1211\t\t1211\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
@@ -235,23 +233,22 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 173,
-		.content =
-			"1700000 1211\n"
-			"1600000 145\n"
-			"1500000 265\n"
-			"1400000 249\n"
-			"1300000 57\n"
-			"1200000 50\n"
-			"1100000 33\n"
-			"1000000 524\n"
-			"900000 19\n"
-			"800000 1\n"
-			"700000 0\n"
-			"600000 10\n"
-			"500000 17\n"
-			"400000 10\n"
-			"300000 17\n"
-			"200000 219\n",
+		.content = "1700000 1211\n"
+			   "1600000 145\n"
+			   "1500000 265\n"
+			   "1400000 249\n"
+			   "1300000 57\n"
+			   "1200000 50\n"
+			   "1100000 33\n"
+			   "1000000 524\n"
+			   "900000 19\n"
+			   "800000 1\n"
+			   "700000 0\n"
+			   "600000 10\n"
+			   "500000 17\n"
+			   "400000 10\n"
+			   "300000 17\n"
+			   "200000 219\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -341,23 +338,22 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 173,
-		.content =
-			"1700000 1211\n"
-			"1600000 151\n"
-			"1500000 302\n"
-			"1400000 264\n"
-			"1300000 61\n"
-			"1200000 54\n"
-			"1100000 33\n"
-			"1000000 585\n"
-			"900000 19\n"
-			"800000 1\n"
-			"700000 2\n"
-			"600000 10\n"
-			"500000 23\n"
-			"400000 10\n"
-			"300000 33\n"
-			"200000 338\n",
+		.content = "1700000 1211\n"
+			   "1600000 151\n"
+			   "1500000 302\n"
+			   "1400000 264\n"
+			   "1300000 61\n"
+			   "1200000 54\n"
+			   "1100000 33\n"
+			   "1000000 585\n"
+			   "900000 19\n"
+			   "800000 1\n"
+			   "700000 2\n"
+			   "600000 10\n"
+			   "500000 23\n"
+			   "400000 10\n"
+			   "300000 33\n"
+			   "200000 338\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -394,7 +390,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "1\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -1130,6 +1126,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

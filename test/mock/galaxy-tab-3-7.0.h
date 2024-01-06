@@ -2,21 +2,20 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 298,
-		.content =
-			"Processor\t: ARMv7 Processor rev 0 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 313.53\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x3\n"
-			"CPU part\t: 0xc09\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"Hardware\t: PXA988\n"
-			"Revision\t: 0007\n"
-			"Serial\t\t: 4102dcf646581100\n",
+		.content = "Processor\t: ARMv7 Processor rev 0 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 313.53\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x3\n"
+			   "CPU part\t: 0xc09\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "Hardware\t: PXA988\n"
+			   "Revision\t: 0007\n"
+			   "Serial\t\t: 4102dcf646581100\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -212,11 +211,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 51,
-		.content =
-			"312000 11572\n"
-			"624000 789\n"
-			"1066000 1053\n"
-			"1205000 10056\n",
+		.content = "312000 11572\n"
+			   "624000 789\n"
+			   "1066000 1053\n"
+			   "1205000 10056\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -226,13 +224,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
 		.size = 277,
-		.content =
-			"   From  :    To\n"
-			"         :    312000    624000   1066000   1205000 \n"
-			"   312000:         0         0        23       105 \n"
-			"   624000:        60         0         7        50 \n"
-			"  1066000:        36        55         0       135 \n"
-			"  1205000:        33        62       196         0 \n",
+		.content = "   From  :    To\n"
+			   "         :    312000    624000   1066000   1205000 \n"
+			   "   312000:         0         0        23       105 \n"
+			   "   624000:        60         0         7        50 \n"
+			   "  1066000:        36        55         0       135 \n"
+			   "  1205000:        33        62       196         0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
@@ -264,7 +261,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "1\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -1097,6 +1094,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.wfd.status",
 		.value = "disconnected",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

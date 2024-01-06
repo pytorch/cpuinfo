@@ -2,7 +2,6 @@
 
 #include <cpuinfo.h>
 
-
 static void cpuinfo_get_current_processor(benchmark::State& state) {
 	cpuinfo_initialize();
 	while (state.KeepRunning()) {

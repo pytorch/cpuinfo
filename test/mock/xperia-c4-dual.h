@@ -3,18 +3,17 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 243,
-		.content =
-			"Processor\t: AArch64 Processor rev 2 (aarch64)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: AArch64\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"Hardware\t: MT6752\n",
+		.content = "Processor\t: AArch64 Processor rev 2 (aarch64)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 26.00\n"
+			   "Features\t: fp asimd aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: AArch64\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 2\n"
+			   "\n"
+			   "Hardware\t: MT6752\n",
 	},
 #elif CPUINFO_ARCH_ARM
 	{
@@ -363,16 +362,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 172,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
-			"468000\t\t2351\t\t\n"
-			"702000\t\t538\t\t\n"
-			"936000\t\t104\t\t\n"
-			"1170000\t\t9954\t\t\n"
-			"1287000\t\t47\t\t\n"
-			"1417000\t\t24\t\t\n"
-			"1560000\t\t48\t\t\n"
-			"1690000\t\t4478\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\tcpu4\t\tcpu5\t\tcpu6\t\tcpu7\t\t\n"
+			   "468000\t\t2351\t\t\n"
+			   "702000\t\t538\t\t\n"
+			   "936000\t\t104\t\t\n"
+			   "1170000\t\t9954\t\t\n"
+			   "1287000\t\t47\t\t\n"
+			   "1417000\t\t24\t\t\n"
+			   "1560000\t\t48\t\t\n"
+			   "1690000\t\t4478\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cputopo/big_cpumask",
@@ -382,11 +380,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cputopo/glbinfo",
 		.size = 70,
-		.content =
-			"big/little arch: no\n"
-			"big/little cpumask:0/ff\n"
-			"nr_cups: 8\n"
-			"nr_clusters: 2\n",
+		.content = "big/little arch: no\n"
+			   "big/little cpumask:0/ff\n"
+			   "nr_cups: 8\n"
+			   "nr_clusters: 2\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cputopo/is_big_little",
@@ -466,15 +463,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 93,
-		.content =
-			"1690000 4496\n"
-			"1560000 48\n"
-			"1417000 24\n"
-			"1287000 47\n"
-			"1170000 9954\n"
-			"936000 104\n"
-			"702000 538\n"
-			"468000 2479\n",
+		.content = "1690000 4496\n"
+			   "1560000 48\n"
+			   "1417000 24\n"
+			   "1287000 47\n"
+			   "1170000 9954\n"
+			   "936000 104\n"
+			   "702000 538\n"
+			   "468000 2479\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -526,7 +522,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "0\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -2350,6 +2346,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.wfd.security.image",
 		.value = "1",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

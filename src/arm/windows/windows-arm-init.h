@@ -1,7 +1,7 @@
 #pragma once
 
 /* Efficiency class = 0 means little core, while 1 means big core for now. */
-#define MAX_WOA_VALID_EFFICIENCY_CLASSES                2
+#define MAX_WOA_VALID_EFFICIENCY_CLASSES 2
 
 /* List of known and supported Windows on Arm SoCs/chips. */
 enum woa_chip_name {
@@ -30,9 +30,9 @@ struct woa_chip_info {
 };
 
 bool get_core_uarch_for_efficiency(
-	enum woa_chip_name chip, BYTE EfficiencyClass,
-	enum cpuinfo_uarch* uarch, uint64_t* frequency);
+	enum woa_chip_name chip,
+	BYTE EfficiencyClass,
+	enum cpuinfo_uarch* uarch,
+	uint64_t* frequency);
 
-bool cpu_info_init_by_logical_sys_info(
-	const struct woa_chip_info *chip_info,
-	enum cpuinfo_vendor vendor);
+bool cpu_info_init_by_logical_sys_info(const struct woa_chip_info* chip_info, enum cpuinfo_vendor vendor);

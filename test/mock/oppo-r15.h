@@ -1,1428 +1,1437 @@
-struct cpuinfo_mock_file filesystem[] = {
+struct
+	cpuinfo_mock_file
+		filesystem
+			[] =
+				{
 #if CPUINFO_ARCH_ARM64
-	{
-		.path = "/proc/cpuinfo",
-		.size = 1515,
-		.content =
-			"Processor\t: AArch64 Processor rev 4 (aarch64)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 4\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"processor\t: 5\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"processor\t: 6\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"processor\t: 7\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"Hardware\t: MT6771V/C\n",
-	},
+					{
+						.path = "/proc/cpuinfo",
+						.size = 1515,
+						.content = "Processor\t: AArch64 Processor rev 4 (aarch64)\n"
+							   "processor\t: 0\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd03\n"
+							   "CPU revision\t: 4\n"
+							   "\n"
+							   "processor\t: 1\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd03\n"
+							   "CPU revision\t: 4\n"
+							   "\n"
+							   "processor\t: 2\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd03\n"
+							   "CPU revision\t: 4\n"
+							   "\n"
+							   "processor\t: 3\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd03\n"
+							   "CPU revision\t: 4\n"
+							   "\n"
+							   "processor\t: 4\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd09\n"
+							   "CPU revision\t: 2\n"
+							   "\n"
+							   "processor\t: 5\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd09\n"
+							   "CPU revision\t: 2\n"
+							   "\n"
+							   "processor\t: 6\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd09\n"
+							   "CPU revision\t: 2\n"
+							   "\n"
+							   "processor\t: 7\n"
+							   "BogoMIPS\t: 26.00\n"
+							   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+							   "CPU implementer\t: 0x41\n"
+							   "CPU architecture: 8\n"
+							   "CPU variant\t: 0x0\n"
+							   "CPU part\t: 0xd09\n"
+							   "CPU revision\t: 2\n"
+							   "\n"
+							   "Hardware\t: MT6771V/C\n",
+					},
 #elif CPUINFO_ARCH_ARM
-	{
-		.path = "/proc/cpuinfo",
-		.size = 2306,
-		.content =
-			"Processor\t: AArch64 Processor rev 4 (aarch64)\n"
-			"processor\t: 0\n"
-			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 1\n"
-			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 2\n"
-			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 3\n"
-			"model name\t: ARMv8 Processor rev 4 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 4\n"
-			"model name\t: ARMv8 Processor rev 2 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"processor\t: 5\n"
-			"model name\t: ARMv8 Processor rev 2 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"processor\t: 6\n"
-			"model name\t: ARMv8 Processor rev 2 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"processor\t: 7\n"
-			"model name\t: ARMv8 Processor rev 2 (v8l)\n"
-			"BogoMIPS\t: 26.00\n"
-			"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd09\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"Hardware\t: MT6771V/C",
-	},
+					{
+						.path = "/proc/cpuinfo",
+						.size = 2306,
+						.content =
+							"Processor\t: AArch64 Processor rev 4 (aarch64)\n"
+							"processor\t: 0\n"
+							"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd03\n"
+							"CPU revision\t: 4\n"
+							"\n"
+							"processor\t: 1\n"
+							"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd03\n"
+							"CPU revision\t: 4\n"
+							"\n"
+							"processor\t: 2\n"
+							"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd03\n"
+							"CPU revision\t: 4\n"
+							"\n"
+							"processor\t: 3\n"
+							"model name\t: ARMv8 Processor rev 4 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd03\n"
+							"CPU revision\t: 4\n"
+							"\n"
+							"processor\t: 4\n"
+							"model name\t: ARMv8 Processor rev 2 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd09\n"
+							"CPU revision\t: 2\n"
+							"\n"
+							"processor\t: 5\n"
+							"model name\t: ARMv8 Processor rev 2 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd09\n"
+							"CPU revision\t: 2\n"
+							"\n"
+							"processor\t: 6\n"
+							"model name\t: ARMv8 Processor rev 2 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd09\n"
+							"CPU revision\t: 2\n"
+							"\n"
+							"processor\t: 7\n"
+							"model name\t: ARMv8 Processor rev 2 (v8l)\n"
+							"BogoMIPS\t: 26.00\n"
+							"Features\t: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt lpae evtstrm aes pmull sha1 sha2 crc32\n"
+							"CPU implementer\t: 0x41\n"
+							"CPU architecture: 8\n"
+							"CPU variant\t: 0x0\n"
+							"CPU part\t: 0xd09\n"
+							"CPU revision\t: 2\n"
+							"\n"
+							"Hardware\t: MT6771V/C",
+					},
 #endif
-	{
-		.path = "/sys/devices/system/cpu/isolated",
-		.size = 1,
-		.content = "\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/kernel_max",
-		.size = 2,
-		.content = "7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/modalias",
-		.size = 66,
-		.content = "cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/offline",
-		.size = 1,
-		.content = "\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/online",
-		.size = 4,
-		.content = "0-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/possible",
-		.size = 4,
-		.content = "0-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/present",
-		.size = 4,
-		.content = "0-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/sched_isolated",
-		.size = 4,
-		.content = "4-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
-		.size = 9,
-		.content = "mtk_menu\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cputopo/cpus_per_cluster",
-		.size = 25,
-		.content =
-			"cluster0: f\n"
-			"cluster1: f0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cputopo/glbinfo",
-		.size = 72,
-		.content =
-			"big/little arch: yes\n"
-			"nr_cups: 8\n"
-			"nr_clusters: 2\n"
-			"cluster0: f\n"
-			"cluster1: f0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cputopo/is_big_little",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cputopo/is_multi_cluster",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cputopo/nr_clusters",
-		.size = 2,
-		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
-		.size = 187,
-		.content =
-			"1989000 5369\n"
-			"1924000 29\n"
-			"1846000 185\n"
-			"1781000 15\n"
-			"1716000 15\n"
-			"1677000 122\n"
-			"1625000 456\n"
-			"1586000 64\n"
-			"1508000 41\n"
-			"1417000 66\n"
-			"1326000 218\n"
-			"1248000 125\n"
-			"1131000 216\n"
-			"1014000 203\n"
-			"910000 235\n"
-			"793000 92671\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "648\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
-			"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
-			"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
-			"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
-			"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
-			"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
-			"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
-			"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
-			"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
-			"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
-			"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
-			"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
-			"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
-			"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
-			"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
-			"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
-		.size = 3,
-		.content = "0f\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
-		.size = 3,
-		.content = "01\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
-		.size = 187,
-		.content =
-			"1989000 5369\n"
-			"1924000 29\n"
-			"1846000 185\n"
-			"1781000 15\n"
-			"1716000 15\n"
-			"1677000 122\n"
-			"1625000 456\n"
-			"1586000 64\n"
-			"1508000 41\n"
-			"1417000 66\n"
-			"1326000 218\n"
-			"1248000 125\n"
-			"1131000 216\n"
-			"1014000 203\n"
-			"910000 235\n"
-			"793000 92870\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "648\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
-			"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
-			"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
-			"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
-			"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
-			"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
-			"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
-			"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
-			"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
-			"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
-			"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
-			"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
-			"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
-			"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
-			"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
-			"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
-		.size = 3,
-		.content = "0f\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
-		.size = 3,
-		.content = "02\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings_list",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
-		.size = 187,
-		.content =
-			"1989000 5369\n"
-			"1924000 29\n"
-			"1846000 185\n"
-			"1781000 15\n"
-			"1716000 15\n"
-			"1677000 122\n"
-			"1625000 456\n"
-			"1586000 64\n"
-			"1508000 41\n"
-			"1417000 66\n"
-			"1326000 218\n"
-			"1248000 125\n"
-			"1131000 216\n"
-			"1014000 203\n"
-			"910000 235\n"
-			"793000 93070\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "648\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
-			"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
-			"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
-			"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
-			"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
-			"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
-			"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
-			"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
-			"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
-			"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
-			"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
-			"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
-			"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
-			"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
-			"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
-			"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
-		.size = 2,
-		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings",
-		.size = 3,
-		.content = "0f\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings",
-		.size = 3,
-		.content = "04\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
-		.size = 2,
-		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
-		.size = 8,
-		.content = "0 1 2 3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
-		.size = 187,
-		.content =
-			"1989000 5369\n"
-			"1924000 29\n"
-			"1846000 185\n"
-			"1781000 15\n"
-			"1716000 15\n"
-			"1677000 122\n"
-			"1625000 456\n"
-			"1586000 64\n"
-			"1508000 41\n"
-			"1417000 66\n"
-			"1326000 218\n"
-			"1248000 125\n"
-			"1131000 216\n"
-			"1014000 203\n"
-			"910000 235\n"
-			"793000 93274\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "648\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
-			"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
-			"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
-			"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
-			"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
-			"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
-			"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
-			"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
-			"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
-			"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
-			"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
-			"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
-			"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
-			"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
-			"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
-			"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
-		.size = 2,
-		.content = "3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings",
-		.size = 3,
-		.content = "0f\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
-		.size = 4,
-		.content = "0-3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings",
-		.size = 3,
-		.content = "08\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings_list",
-		.size = 2,
-		.content = "3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
-		.size = 178,
-		.content =
-			"1989000 5860\n"
-			"1924000 14\n"
-			"1846000 100\n"
-			"1781000 2\n"
-			"1716000 2\n"
-			"1677000 0\n"
-			"1625000 12\n"
-			"1586000 10\n"
-			"1508000 0\n"
-			"1417000 12\n"
-			"1326000 4\n"
-			"1248000 51\n"
-			"1131000 240\n"
-			"1014000 138\n"
-			"910000 180\n"
-			"793000 94210\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "162\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
-			"  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
-			"  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
-			"  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
-			"  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
-			"  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
-			"  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
-			"  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
-			"  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
-			"  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
-			"   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
-			"   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings",
-		.size = 3,
-		.content = "f0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings_list",
-		.size = 4,
-		.content = "4-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings",
-		.size = 3,
-		.content = "10\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings_list",
-		.size = 2,
-		.content = "4\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
-		.size = 178,
-		.content =
-			"1989000 5860\n"
-			"1924000 14\n"
-			"1846000 100\n"
-			"1781000 2\n"
-			"1716000 2\n"
-			"1677000 0\n"
-			"1625000 12\n"
-			"1586000 10\n"
-			"1508000 0\n"
-			"1417000 12\n"
-			"1326000 4\n"
-			"1248000 51\n"
-			"1131000 240\n"
-			"1014000 138\n"
-			"910000 180\n"
-			"793000 94410\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "162\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
-			"  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
-			"  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
-			"  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
-			"  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
-			"  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
-			"  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
-			"  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
-			"  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
-			"  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
-			"   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
-			"   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings",
-		.size = 3,
-		.content = "f0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings_list",
-		.size = 4,
-		.content = "4-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings",
-		.size = 3,
-		.content = "20\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings_list",
-		.size = 2,
-		.content = "5\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_max_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
-		.size = 178,
-		.content =
-			"1989000 5860\n"
-			"1924000 14\n"
-			"1846000 100\n"
-			"1781000 2\n"
-			"1716000 2\n"
-			"1677000 0\n"
-			"1625000 12\n"
-			"1586000 10\n"
-			"1508000 0\n"
-			"1417000 12\n"
-			"1326000 4\n"
-			"1248000 51\n"
-			"1131000 240\n"
-			"1014000 138\n"
-			"910000 180\n"
-			"793000 94609\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "162\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
-			"  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
-			"  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
-			"  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
-			"  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
-			"  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
-			"  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
-			"  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
-			"  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
-			"  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
-			"   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
-			"   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
-		.size = 2,
-		.content = "2\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings",
-		.size = 3,
-		.content = "f0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings_list",
-		.size = 4,
-		.content = "4-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings",
-		.size = 3,
-		.content = "40\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings_list",
-		.size = 2,
-		.content = "6\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpuidle/driver/name",
-		.size = 26,
-		.content = "mt67xx_acao_cpuidle_set_1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/affected_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_max_freq",
-		.size = 8,
-		.content = "1989000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_transition_latency",
-		.size = 5,
-		.content = "1000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/related_cpus",
-		.size = 8,
-		.content = "4 5 6 7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_frequencies",
-		.size = 127,
-		.content = "1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_governors",
-		.size = 64,
-		.content = "ondemand userspace powersave interactive performance schedplus \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_driver",
-		.size = 11,
-		.content = "mt-cpufreq\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_max_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq",
-		.size = 7,
-		.content = "793000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/sched/down_throttle_nsec",
-		.size = 8,
-		.content = "4000000\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/sched/up_throttle_nsec",
-		.size = 2,
-		.content = "0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
-		.size = 178,
-		.content =
-			"1989000 5860\n"
-			"1924000 14\n"
-			"1846000 100\n"
-			"1781000 2\n"
-			"1716000 2\n"
-			"1677000 0\n"
-			"1625000 12\n"
-			"1586000 10\n"
-			"1508000 0\n"
-			"1417000 12\n"
-			"1326000 4\n"
-			"1248000 51\n"
-			"1131000 240\n"
-			"1014000 138\n"
-			"910000 180\n"
-			"793000 94810\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
-		.size = 4,
-		.content = "162\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/trans_table",
-		.size = 2941,
-		.content =
-			"   From  :    To\n"
-			"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
-			"  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
-			"  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
-			"  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
-			"  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
-			"  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
-			"  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
-			"  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
-			"  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
-			"  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
-			"  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
-			"  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
-			"  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
-			"   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
-			"   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
-		.size = 2,
-		.content = "3\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings",
-		.size = 3,
-		.content = "f0\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings_list",
-		.size = 4,
-		.content = "4-7\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/physical_package_id",
-		.size = 2,
-		.content = "1\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings",
-		.size = 3,
-		.content = "80\n",
-	},
-	{
-		.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings_list",
-		.size = 2,
-		.content = "7\n",
-	},
-	{ NULL },
+					{
+						.path = "/sys/devices/system/cpu/isolated",
+						.size = 1,
+						.content = "\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/kernel_max",
+						.size = 2,
+						.content = "7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/modalias",
+						.size = 66,
+						.content =
+							"cpu:type:aarch64:feature:,0000,0001,0002,0003,0004,0005,0006,0007\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/offline",
+						.size = 1,
+						.content = "\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/online",
+						.size = 4,
+						.content = "0-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/possible",
+						.size = 4,
+						.content = "0-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/present",
+						.size = 4,
+						.content = "0-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/sched_isolated",
+						.size = 4,
+						.content = "4-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpuidle/current_driver",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpuidle/current_governor_ro",
+						.size = 9,
+						.content = "mtk_menu\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cputopo/cpus_per_cluster",
+						.size = 25,
+						.content = "cluster0: f\n"
+							   "cluster1: f0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cputopo/glbinfo",
+						.size = 72,
+						.content = "big/little arch: yes\n"
+							   "nr_cups: 8\n"
+							   "nr_clusters: 2\n"
+							   "cluster0: f\n"
+							   "cluster1: f0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cputopo/is_big_little",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cputopo/is_multi_cluster",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cputopo/nr_clusters",
+						.size = 2,
+						.content = "2\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/related_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
+						.size = 187,
+						.content = "1989000 5369\n"
+							   "1924000 29\n"
+							   "1846000 185\n"
+							   "1781000 15\n"
+							   "1716000 15\n"
+							   "1677000 122\n"
+							   "1625000 456\n"
+							   "1586000 64\n"
+							   "1508000 41\n"
+							   "1417000 66\n"
+							   "1326000 218\n"
+							   "1248000 125\n"
+							   "1131000 216\n"
+							   "1014000 203\n"
+							   "910000 235\n"
+							   "793000 92671\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "648\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content =
+							"   From  :    To\n"
+							"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
+							"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
+							"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
+							"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
+							"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
+							"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
+							"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
+							"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
+							"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
+							"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
+							"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
+							"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
+							"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
+							"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
+							"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
+							"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/topology/core_id",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings",
+						.size = 3,
+						.content = "0f\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/topology/core_siblings_list",
+						.size = 4,
+						.content = "0-3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings",
+						.size = 3,
+						.content = "01\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu0/topology/thread_siblings_list",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/related_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
+						.size = 187,
+						.content = "1989000 5369\n"
+							   "1924000 29\n"
+							   "1846000 185\n"
+							   "1781000 15\n"
+							   "1716000 15\n"
+							   "1677000 122\n"
+							   "1625000 456\n"
+							   "1586000 64\n"
+							   "1508000 41\n"
+							   "1417000 66\n"
+							   "1326000 218\n"
+							   "1248000 125\n"
+							   "1131000 216\n"
+							   "1014000 203\n"
+							   "910000 235\n"
+							   "793000 92870\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "648\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content =
+							"   From  :    To\n"
+							"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
+							"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
+							"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
+							"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
+							"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
+							"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
+							"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
+							"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
+							"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
+							"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
+							"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
+							"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
+							"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
+							"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
+							"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
+							"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/topology/core_id",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings",
+						.size = 3,
+						.content = "0f\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/topology/core_siblings_list",
+						.size = 4,
+						.content = "0-3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/topology/physical_package_id",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings",
+						.size = 3,
+						.content = "02\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu1/topology/thread_siblings_list",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/related_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
+						.size = 187,
+						.content = "1989000 5369\n"
+							   "1924000 29\n"
+							   "1846000 185\n"
+							   "1781000 15\n"
+							   "1716000 15\n"
+							   "1677000 122\n"
+							   "1625000 456\n"
+							   "1586000 64\n"
+							   "1508000 41\n"
+							   "1417000 66\n"
+							   "1326000 218\n"
+							   "1248000 125\n"
+							   "1131000 216\n"
+							   "1014000 203\n"
+							   "910000 235\n"
+							   "793000 93070\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "648\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content =
+							"   From  :    To\n"
+							"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
+							"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
+							"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
+							"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
+							"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
+							"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
+							"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
+							"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
+							"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
+							"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
+							"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
+							"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
+							"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
+							"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
+							"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
+							"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/topology/core_id",
+						.size = 2,
+						.content = "2\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings",
+						.size = 3,
+						.content = "0f\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/topology/core_siblings_list",
+						.size = 4,
+						.content = "0-3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/topology/physical_package_id",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings",
+						.size = 3,
+						.content = "04\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu2/topology/thread_siblings_list",
+						.size = 2,
+						.content = "2\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/related_cpus",
+						.size = 8,
+						.content = "0 1 2 3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
+						.size = 187,
+						.content = "1989000 5369\n"
+							   "1924000 29\n"
+							   "1846000 185\n"
+							   "1781000 15\n"
+							   "1716000 15\n"
+							   "1677000 122\n"
+							   "1625000 456\n"
+							   "1586000 64\n"
+							   "1508000 41\n"
+							   "1417000 66\n"
+							   "1326000 218\n"
+							   "1248000 125\n"
+							   "1131000 216\n"
+							   "1014000 203\n"
+							   "910000 235\n"
+							   "793000 93274\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "648\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content =
+							"   From  :    To\n"
+							"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							"  1989000:         0         0         6         0         0         8         2         3         0         0         4         2         0         0         3        10 \n"
+							"  1924000:         2         0         0         0         0         1         0         1         0         0         0         0         0         0         0         3 \n"
+							"  1846000:         5         1         0         0         1         1         1         1         4         1         5         1         0         0         0         0 \n"
+							"  1781000:         0         0         0         0         1         1         1         0         0         1         1         0         1         1         0         0 \n"
+							"  1716000:         2         0         0         0         0         0         1         2         1         0         1         0         0         0         0         0 \n"
+							"  1677000:         5         1         2         1         2         0         0         0         0         0         1         0         0         0         1         1 \n"
+							"  1625000:         1         0         2         0         0         0         0         3         2         4         2         0         2         1         1         6 \n"
+							"  1586000:         2         1         0         3         0         1         4         0         3         2         1         2         3         0         1         6 \n"
+							"  1508000:         0         0         1         0         1         1         5         4         0         2         2         1         1         2         0         0 \n"
+							"  1417000:         1         0         0         1         2         0         4         6         2         0         5         1         2         2         1         4 \n"
+							"  1326000:         3         0         2         0         0         0         3         1         5         6         0        12         5         7         3         5 \n"
+							"  1248000:         2         0         0         0         0         0         0         2         0         7        10         0        20         4         5         4 \n"
+							"  1131000:         0         0         0         1         0         1         0         2         2         4        13        17         0        18         9         9 \n"
+							"  1014000:         1         0         0         0         0         0         0         0         1         0         4         7        26         0        24        14 \n"
+							"   910000:         0         0         0         0         0         0         0         0         0         1         1         6        13        31         0        39 \n"
+							"   793000:        14         4         8         1         0         0         3         4         0         3         2         5         2        11        43         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/topology/core_id",
+						.size = 2,
+						.content = "3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings",
+						.size = 3,
+						.content = "0f\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/topology/core_siblings_list",
+						.size = 4,
+						.content = "0-3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/topology/physical_package_id",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings",
+						.size = 3,
+						.content = "08\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu3/topology/thread_siblings_list",
+						.size = 2,
+						.content = "3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/related_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
+						.size = 178,
+						.content = "1989000 5860\n"
+							   "1924000 14\n"
+							   "1846000 100\n"
+							   "1781000 2\n"
+							   "1716000 2\n"
+							   "1677000 0\n"
+							   "1625000 12\n"
+							   "1586000 10\n"
+							   "1508000 0\n"
+							   "1417000 12\n"
+							   "1326000 4\n"
+							   "1248000 51\n"
+							   "1131000 240\n"
+							   "1014000 138\n"
+							   "910000 180\n"
+							   "793000 94210\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "162\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content =
+							"   From  :    To\n"
+							"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							"  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
+							"  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
+							"  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
+							"  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							"  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							"  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							"  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
+							"  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
+							"  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							"  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
+							"  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
+							"  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
+							"  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
+							"  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
+							"   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
+							"   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/topology/core_id",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings",
+						.size = 3,
+						.content = "f0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/topology/core_siblings_list",
+						.size = 4,
+						.content = "4-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/topology/physical_package_id",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings",
+						.size = 3,
+						.content = "10\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu4/topology/thread_siblings_list",
+						.size = 2,
+						.content = "4\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/related_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
+						.size = 178,
+						.content = "1989000 5860\n"
+							   "1924000 14\n"
+							   "1846000 100\n"
+							   "1781000 2\n"
+							   "1716000 2\n"
+							   "1677000 0\n"
+							   "1625000 12\n"
+							   "1586000 10\n"
+							   "1508000 0\n"
+							   "1417000 12\n"
+							   "1326000 4\n"
+							   "1248000 51\n"
+							   "1131000 240\n"
+							   "1014000 138\n"
+							   "910000 180\n"
+							   "793000 94410\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "162\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content = "   From  :    To\n"
+							   "         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							   "  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
+							   "  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
+							   "  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
+							   "  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							   "  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							   "  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							   "  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
+							   "  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
+							   "  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							   "  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
+							   "  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
+							   "  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
+							   "  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
+							   "  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
+							   "   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
+							   "   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/topology/core_id",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings",
+						.size = 3,
+						.content = "f0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/topology/core_siblings_list",
+						.size = 4,
+						.content = "4-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/topology/physical_package_id",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings",
+						.size = 3,
+						.content = "20\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu5/topology/thread_siblings_list",
+						.size = 2,
+						.content = "5\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/related_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_max_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
+						.size = 178,
+						.content = "1989000 5860\n"
+							   "1924000 14\n"
+							   "1846000 100\n"
+							   "1781000 2\n"
+							   "1716000 2\n"
+							   "1677000 0\n"
+							   "1625000 12\n"
+							   "1586000 10\n"
+							   "1508000 0\n"
+							   "1417000 12\n"
+							   "1326000 4\n"
+							   "1248000 51\n"
+							   "1131000 240\n"
+							   "1014000 138\n"
+							   "910000 180\n"
+							   "793000 94609\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "162\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content =
+							"   From  :    To\n"
+							"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							"  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
+							"  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
+							"  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
+							"  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							"  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							"  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							"  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
+							"  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
+							"  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							"  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
+							"  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
+							"  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
+							"  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
+							"  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
+							"   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
+							"   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/topology/core_id",
+						.size = 2,
+						.content = "2\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings",
+						.size = 3,
+						.content = "f0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/topology/core_siblings_list",
+						.size = 4,
+						.content = "4-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/topology/physical_package_id",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings",
+						.size = 3,
+						.content = "40\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu6/topology/thread_siblings_list",
+						.size = 2,
+						.content = "6\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpuidle/driver/name",
+						.size = 26,
+						.content = "mt67xx_acao_cpuidle_set_1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/affected_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_max_freq",
+						.size = 8,
+						.content = "1989000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/cpuinfo_transition_latency",
+						.size = 5,
+						.content = "1000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/related_cpus",
+						.size = 8,
+						.content = "4 5 6 7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_frequencies",
+						.size = 127,
+						.content =
+							"1989000 1924000 1846000 1781000 1716000 1677000 1625000 1586000 1508000 1417000 1326000 1248000 1131000 1014000 910000 793000 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_governors",
+						.size = 64,
+						.content =
+							"ondemand userspace powersave interactive performance schedplus \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_driver",
+						.size = 11,
+						.content = "mt-cpufreq\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_max_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq",
+						.size = 7,
+						.content = "793000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/sched/down_throttle_nsec",
+						.size = 8,
+						.content = "4000000\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/sched/up_throttle_nsec",
+						.size = 2,
+						.content = "0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
+						.size = 178,
+						.content = "1989000 5860\n"
+							   "1924000 14\n"
+							   "1846000 100\n"
+							   "1781000 2\n"
+							   "1716000 2\n"
+							   "1677000 0\n"
+							   "1625000 12\n"
+							   "1586000 10\n"
+							   "1508000 0\n"
+							   "1417000 12\n"
+							   "1326000 4\n"
+							   "1248000 51\n"
+							   "1131000 240\n"
+							   "1014000 138\n"
+							   "910000 180\n"
+							   "793000 94810\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
+						.size = 4,
+						.content = "162\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/trans_table",
+						.size = 2941,
+						.content =
+							"   From  :    To\n"
+							"         :   1989000   1924000   1846000   1781000   1716000   1677000   1625000   1586000   1508000   1417000   1326000   1248000   1131000   1014000    910000    793000 \n"
+							"  1989000:         0         4         5         1         0         0         1         1         0         3         1         0         1         0         2        14 \n"
+							"  1924000:         4         0         0         0         1         0         0         0         0         0         0         0         0         0         0         1 \n"
+							"  1846000:         9         0         0         0         0         0         0         0         0         0         0         0         0         2         4         1 \n"
+							"  1781000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							"  1716000:         0         0         0         0         0         0         1         0         0         0         0         0         0         0         0         0 \n"
+							"  1677000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							"  1625000:         2         0         0         0         0         0         0         1         0         0         0         1         0         1         0         0 \n"
+							"  1586000:         2         1         0         0         0         0         1         0         0         0         0         0         0         0         0         1 \n"
+							"  1508000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0 \n"
+							"  1417000:         2         0         0         0         0         0         0         1         0         0         0         1         0         0         0         0 \n"
+							"  1326000:         0         0         0         0         0         0         0         0         0         0         0         1         1         0         0         0 \n"
+							"  1248000:         1         1         0         0         0         0         0         1         0         1         1         0         3         0         0         2 \n"
+							"  1131000:         3         0         0         0         0         0         0         0         0         0         0         3         0         2         0         8 \n"
+							"  1014000:         2         0         2         0         0         0         0         0         0         0         0         0         5         0         1         2 \n"
+							"   910000:         5         0         1         0         0         0         0         0         0         0         0         1         0         2         0         7 \n"
+							"   793000:         3         0         8         0         0         0         1         1         0         0         0         2         6         5         9         0 \n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/topology/core_id",
+						.size = 2,
+						.content = "3\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings",
+						.size = 3,
+						.content = "f0\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/topology/core_siblings_list",
+						.size = 4,
+						.content = "4-7\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/topology/physical_package_id",
+						.size = 2,
+						.content = "1\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings",
+						.size = 3,
+						.content = "80\n",
+					},
+					{
+						.path = "/sys/devices/system/cpu/cpu7/topology/thread_siblings_list",
+						.size = 2,
+						.content = "7\n",
+					},
+					{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -5486,6 +5495,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wifi.tethering.interface",
 		.value = "ap0",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

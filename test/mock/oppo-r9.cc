@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <cpuinfo.h>
 #include <cpuinfo-mock.h>
-
+#include <cpuinfo.h>
 
 TEST(PROCESSORS, count) {
 	ASSERT_EQ(8, cpuinfo_get_processors_count());
@@ -294,8 +293,10 @@ TEST(PACKAGES, count) {
 
 TEST(PACKAGES, name) {
 	for (uint32_t i = 0; i < cpuinfo_get_packages_count(); i++) {
-		ASSERT_EQ("MediaTek MT6755",
-			std::string(cpuinfo_get_package(i)->name,
+		ASSERT_EQ(
+			"MediaTek MT6755",
+			std::string(
+				cpuinfo_get_package(i)->name,
 				strnlen(cpuinfo_get_package(i)->name, CPUINFO_PACKAGE_NAME_MAX)));
 	}
 }
@@ -337,59 +338,59 @@ TEST(PACKAGES, cluster_count) {
 }
 
 TEST(ISA, thumb) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_TRUE(cpuinfo_has_arm_thumb());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_FALSE(cpuinfo_has_arm_thumb());
-	#endif
+#if CPUINFO_ARCH_ARM
+	ASSERT_TRUE(cpuinfo_has_arm_thumb());
+#elif CPUINFO_ARCH_ARM64
+	ASSERT_FALSE(cpuinfo_has_arm_thumb());
+#endif
 }
 
 TEST(ISA, thumb2) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_TRUE(cpuinfo_has_arm_thumb2());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_FALSE(cpuinfo_has_arm_thumb2());
-	#endif
+#if CPUINFO_ARCH_ARM
+	ASSERT_TRUE(cpuinfo_has_arm_thumb2());
+#elif CPUINFO_ARCH_ARM64
+	ASSERT_FALSE(cpuinfo_has_arm_thumb2());
+#endif
 }
 
 TEST(ISA, armv5e) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_TRUE(cpuinfo_has_arm_v5e());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_FALSE(cpuinfo_has_arm_v5e());
-	#endif
+#if CPUINFO_ARCH_ARM
+	ASSERT_TRUE(cpuinfo_has_arm_v5e());
+#elif CPUINFO_ARCH_ARM64
+	ASSERT_FALSE(cpuinfo_has_arm_v5e());
+#endif
 }
 
 TEST(ISA, armv6) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_TRUE(cpuinfo_has_arm_v6());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_FALSE(cpuinfo_has_arm_v6());
-	#endif
+#if CPUINFO_ARCH_ARM
+	ASSERT_TRUE(cpuinfo_has_arm_v6());
+#elif CPUINFO_ARCH_ARM64
+	ASSERT_FALSE(cpuinfo_has_arm_v6());
+#endif
 }
 
 TEST(ISA, armv6k) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_TRUE(cpuinfo_has_arm_v6k());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_FALSE(cpuinfo_has_arm_v6k());
-	#endif
+#if CPUINFO_ARCH_ARM
+	ASSERT_TRUE(cpuinfo_has_arm_v6k());
+#elif CPUINFO_ARCH_ARM64
+	ASSERT_FALSE(cpuinfo_has_arm_v6k());
+#endif
 }
 
 TEST(ISA, armv7) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_TRUE(cpuinfo_has_arm_v7());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_FALSE(cpuinfo_has_arm_v7());
-	#endif
+#if CPUINFO_ARCH_ARM
+	ASSERT_TRUE(cpuinfo_has_arm_v7());
+#elif CPUINFO_ARCH_ARM64
+	ASSERT_FALSE(cpuinfo_has_arm_v7());
+#endif
 }
 
 TEST(ISA, armv7mp) {
-	#if CPUINFO_ARCH_ARM
-		ASSERT_TRUE(cpuinfo_has_arm_v7mp());
-	#elif CPUINFO_ARCH_ARM64
-		ASSERT_FALSE(cpuinfo_has_arm_v7mp());
-	#endif
+#if CPUINFO_ARCH_ARM
+	ASSERT_TRUE(cpuinfo_has_arm_v7mp());
+#elif CPUINFO_ARCH_ARM64
+	ASSERT_FALSE(cpuinfo_has_arm_v7mp());
+#endif
 }
 
 TEST(ISA, idiv) {
@@ -473,43 +474,43 @@ TEST(ISA, fcma) {
 }
 
 TEST(ISA, aes) {
-	#if CPUINFO_ARCH_ARM64
-		ASSERT_TRUE(cpuinfo_has_arm_aes());
-	#elif CPUINFO_ARCH_ARM
-		ASSERT_FALSE(cpuinfo_has_arm_aes());
-	#endif
+#if CPUINFO_ARCH_ARM64
+	ASSERT_TRUE(cpuinfo_has_arm_aes());
+#elif CPUINFO_ARCH_ARM
+	ASSERT_FALSE(cpuinfo_has_arm_aes());
+#endif
 }
 
 TEST(ISA, sha1) {
-	#if CPUINFO_ARCH_ARM64
-		ASSERT_TRUE(cpuinfo_has_arm_sha1());
-	#elif CPUINFO_ARCH_ARM
-		ASSERT_FALSE(cpuinfo_has_arm_sha1());
-	#endif
+#if CPUINFO_ARCH_ARM64
+	ASSERT_TRUE(cpuinfo_has_arm_sha1());
+#elif CPUINFO_ARCH_ARM
+	ASSERT_FALSE(cpuinfo_has_arm_sha1());
+#endif
 }
 
 TEST(ISA, sha2) {
-	#if CPUINFO_ARCH_ARM64
-		ASSERT_TRUE(cpuinfo_has_arm_sha2());
-	#elif CPUINFO_ARCH_ARM
-		ASSERT_FALSE(cpuinfo_has_arm_sha2());
-	#endif
+#if CPUINFO_ARCH_ARM64
+	ASSERT_TRUE(cpuinfo_has_arm_sha2());
+#elif CPUINFO_ARCH_ARM
+	ASSERT_FALSE(cpuinfo_has_arm_sha2());
+#endif
 }
 
 TEST(ISA, pmull) {
-	#if CPUINFO_ARCH_ARM64
-		ASSERT_TRUE(cpuinfo_has_arm_pmull());
-	#elif CPUINFO_ARCH_ARM
-		ASSERT_FALSE(cpuinfo_has_arm_pmull());
-	#endif
+#if CPUINFO_ARCH_ARM64
+	ASSERT_TRUE(cpuinfo_has_arm_pmull());
+#elif CPUINFO_ARCH_ARM
+	ASSERT_FALSE(cpuinfo_has_arm_pmull());
+#endif
 }
 
 TEST(ISA, crc32) {
-	#if CPUINFO_ARCH_ARM64
-		ASSERT_TRUE(cpuinfo_has_arm_crc32());
-	#elif CPUINFO_ARCH_ARM
-		ASSERT_FALSE(cpuinfo_has_arm_crc32());
-	#endif
+#if CPUINFO_ARCH_ARM64
+	ASSERT_TRUE(cpuinfo_has_arm_crc32());
+#elif CPUINFO_ARCH_ARM
+	ASSERT_FALSE(cpuinfo_has_arm_crc32());
+#endif
 }
 
 TEST(L1I, count) {
@@ -534,8 +535,10 @@ TEST(L1I, associativity) {
 
 TEST(L1I, sets) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l1i_cache(i)->size,
-			cpuinfo_get_l1i_cache(i)->sets * cpuinfo_get_l1i_cache(i)->line_size * cpuinfo_get_l1i_cache(i)->partitions * cpuinfo_get_l1i_cache(i)->associativity);
+		ASSERT_EQ(
+			cpuinfo_get_l1i_cache(i)->size,
+			cpuinfo_get_l1i_cache(i)->sets * cpuinfo_get_l1i_cache(i)->line_size *
+				cpuinfo_get_l1i_cache(i)->partitions * cpuinfo_get_l1i_cache(i)->associativity);
 	}
 }
 
@@ -586,8 +589,10 @@ TEST(L1D, associativity) {
 
 TEST(L1D, sets) {
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l1d_cache(i)->size,
-			cpuinfo_get_l1d_cache(i)->sets * cpuinfo_get_l1d_cache(i)->line_size * cpuinfo_get_l1d_cache(i)->partitions * cpuinfo_get_l1d_cache(i)->associativity);
+		ASSERT_EQ(
+			cpuinfo_get_l1d_cache(i)->size,
+			cpuinfo_get_l1d_cache(i)->sets * cpuinfo_get_l1d_cache(i)->line_size *
+				cpuinfo_get_l1d_cache(i)->partitions * cpuinfo_get_l1d_cache(i)->associativity);
 	}
 }
 
@@ -638,8 +643,10 @@ TEST(L2, associativity) {
 
 TEST(L2, sets) {
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
-		ASSERT_EQ(cpuinfo_get_l2_cache(i)->size,
-			cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->line_size * cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->associativity);
+		ASSERT_EQ(
+			cpuinfo_get_l2_cache(i)->size,
+			cpuinfo_get_l2_cache(i)->sets * cpuinfo_get_l2_cache(i)->line_size *
+				cpuinfo_get_l2_cache(i)->partitions * cpuinfo_get_l2_cache(i)->associativity);
 	}
 }
 

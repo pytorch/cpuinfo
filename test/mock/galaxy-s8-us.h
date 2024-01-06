@@ -3,81 +3,80 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 1540,
-		.content =
-			"Processor\t: AArch64 Processor rev 4 (aarch64)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x801\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x801\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x801\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x801\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 4\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x800\n"
-			"CPU revision\t: 1\n"
-			"\n"
-			"processor\t: 5\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x800\n"
-			"CPU revision\t: 1\n"
-			"\n"
-			"processor\t: 6\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x800\n"
-			"CPU revision\t: 1\n"
-			"\n"
-			"processor\t: 7\n"
-			"BogoMIPS\t: 38.40\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0xa\n"
-			"CPU part\t: 0x800\n"
-			"CPU revision\t: 1\n"
-			"\n"
-			"Hardware\t: Qualcomm Technologies, Inc MSM8998\n",
+		.content = "Processor\t: AArch64 Processor rev 4 (aarch64)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x801\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x801\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x801\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x801\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 4\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x800\n"
+			   "CPU revision\t: 1\n"
+			   "\n"
+			   "processor\t: 5\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x800\n"
+			   "CPU revision\t: 1\n"
+			   "\n"
+			   "processor\t: 6\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x800\n"
+			   "CPU revision\t: 1\n"
+			   "\n"
+			   "processor\t: 7\n"
+			   "BogoMIPS\t: 38.40\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0xa\n"
+			   "CPU part\t: 0x800\n"
+			   "CPU revision\t: 1\n"
+			   "\n"
+			   "Hardware\t: Qualcomm Technologies, Inc MSM8998\n",
 	},
 #elif CPUINFO_ARCH_ARM
 	{
@@ -519,7 +518,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/devfreq/available_governors",
 		.size = 163,
-		.content = "spdm_bw_hyp mem_latency bw_hwmon msm-vidc-vmem+ msm-vidc-vmem msm-vidc-ddr bw_vbif gpubw_mon cpufreq msm-adreno-tz userspace powersave performance simple_ondemand\n",
+		.content =
+			"spdm_bw_hyp mem_latency bw_hwmon msm-vidc-vmem+ msm-vidc-vmem msm-vidc-ddr bw_vbif gpubw_mon cpufreq msm-adreno-tz userspace powersave performance simple_ondemand\n",
 	},
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/devfreq/cur_freq",
@@ -564,16 +564,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/devfreq/trans_stat",
 		.size = 533,
-		.content =
-			"   From  :   To\n"
-			"         :670000000596000000515000000414000000342000000257000000   time(ms)\n"
-			" 670000000:       0       2       0       0       0       0       750\n"
-			" 596000000:       0       0       2       0       0       0       180\n"
-			" 515000000:       0       0       0       0       0       2       980\n"
-			" 414000000:       0       0       0       0       0       0         0\n"
-			" 342000000:       0       0       0       0       0       0         0\n"
-			"*257000000:       2       0       0       0       0       0   8001780\n"
-			"Total transition : 8\n",
+		.content = "   From  :   To\n"
+			   "         :670000000596000000515000000414000000342000000257000000   time(ms)\n"
+			   " 670000000:       0       2       0       0       0       0       750\n"
+			   " 596000000:       0       0       2       0       0       0       180\n"
+			   " 515000000:       0       0       0       0       0       2       980\n"
+			   " 414000000:       0       0       0       0       0       0         0\n"
+			   " 342000000:       0       0       0       0       0       0         0\n"
+			   "*257000000:       2       0       0       0       0       0   8001780\n"
+			   "Total transition : 8\n",
 	},
 	{
 		.path = "/sys/class/kgsl/kgsl-3d0/freq_table_mhz",
@@ -753,63 +752,59 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/soc0/image_crm_version",
 		.size = 5,
-		.content =
-			"REL\n"
-			"\n",
+		.content = "REL\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/image_variant",
 		.size = 18,
-		.content =
-			"dreamqltesq-user\n"
-			"\n",
+		.content = "dreamqltesq-user\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/image_version",
 		.size = 25,
-		.content =
-			"10:NRD90M:G950USQU1AQC9\n"
-			"\n",
+		.content = "10:NRD90M:G950USQU1AQC9\n"
+			   "\n",
 	},
 	{
 		.path = "/sys/devices/soc0/images",
 		.size = 613,
-		.content =
-			"0:\n"
-			"\tCRM:\t\t00:BOOT.XF.1.2-00322\n"
-			"\tVariant:\tMsm8998LA\n"
-			"\tVersion:\t:SWHE7721\n"
-			"1:\n"
-			"\tCRM:\t\t01:TZ.BF.4.0.6.C1-00028\n"
-			"\tVariant:\t \n"
-			"\tVersion:\t:CRM\n"
-			"3:\n"
-			"\tCRM:\t\t03:RPM.BF.1.7.C2-00007\n"
-			"\tVariant:\tAAAAANAZR\n"
-			"\tVersion:\t:SWHE7721\n"
-			"10:\n"
-			"\tCRM:\t\t10:NRD90M:G950USQU1AQC9\n"
-			"\n"
-			"\tVariant:\tdreamqltesq-user\n"
-			"\n"
-			"\tVersion:\tREL\n"
-			"\n"
-			"11:\n"
-			"\tCRM:\t\t11:MPSS.AT.2.0.C2.2-87307\n"
-			"\tVariant:\t8998.gen.prodQ\n"
-			"\tVersion:\t:SWDG4503-VM02\n"
-			"12:\n"
-			"\tCRM:\t\t12:ADSP.HT.3.0.c2-00032-CB8998-1\n"
-			"\tVariant:\tAAAAAAAAQ\n"
-			"\tVersion:\t:SWDG4503-VM02\n"
-			"14:\n"
-			"\tCRM:\t\t14:VIDEO.VE.4.2-00046\n"
-			"\tVariant:\tPROD\n"
-			"\tVersion:\t\n"
-			"15:\n"
-			"\tCRM:\t\t15:SLPI.HB.2.0.c2-00009-M8998AZL-1.88149.3\n"
-			"\tVariant:\tAAAAAAAAQ\n"
-			"\tVersion:\t:SWHE7721\n",
+		.content = "0:\n"
+			   "\tCRM:\t\t00:BOOT.XF.1.2-00322\n"
+			   "\tVariant:\tMsm8998LA\n"
+			   "\tVersion:\t:SWHE7721\n"
+			   "1:\n"
+			   "\tCRM:\t\t01:TZ.BF.4.0.6.C1-00028\n"
+			   "\tVariant:\t \n"
+			   "\tVersion:\t:CRM\n"
+			   "3:\n"
+			   "\tCRM:\t\t03:RPM.BF.1.7.C2-00007\n"
+			   "\tVariant:\tAAAAANAZR\n"
+			   "\tVersion:\t:SWHE7721\n"
+			   "10:\n"
+			   "\tCRM:\t\t10:NRD90M:G950USQU1AQC9\n"
+			   "\n"
+			   "\tVariant:\tdreamqltesq-user\n"
+			   "\n"
+			   "\tVersion:\tREL\n"
+			   "\n"
+			   "11:\n"
+			   "\tCRM:\t\t11:MPSS.AT.2.0.C2.2-87307\n"
+			   "\tVariant:\t8998.gen.prodQ\n"
+			   "\tVersion:\t:SWDG4503-VM02\n"
+			   "12:\n"
+			   "\tCRM:\t\t12:ADSP.HT.3.0.c2-00032-CB8998-1\n"
+			   "\tVariant:\tAAAAAAAAQ\n"
+			   "\tVersion:\t:SWDG4503-VM02\n"
+			   "14:\n"
+			   "\tCRM:\t\t14:VIDEO.VE.4.2-00046\n"
+			   "\tVariant:\tPROD\n"
+			   "\tVersion:\t\n"
+			   "15:\n"
+			   "\tCRM:\t\t15:SLPI.HB.2.0.c2-00009-M8998AZL-1.88149.3\n"
+			   "\tVariant:\tAAAAAAAAQ\n"
+			   "\tVersion:\t:SWHE7721\n",
 	},
 	{
 		.path = "/sys/devices/soc0/machine",
@@ -939,95 +934,94 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/core_ctl/global_state",
 		.size = 1008,
-		.content =
-			"CPU0\n"
-			"\tCPU: 0\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 1\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU1\n"
-			"\tCPU: 1\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU2\n"
-			"\tCPU: 2\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU3\n"
-			"\tCPU: 3\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU4\n"
-			"\tCPU: 4\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n"
-			"CPU5\n"
-			"\tCPU: 5\n"
-			"\tOnline: 1\n"
-			"\tActive: 0\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n"
-			"CPU6\n"
-			"\tCPU: 6\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n"
-			"CPU7\n"
-			"\tCPU: 7\n"
-			"\tOnline: 1\n"
-			"\tActive: 0\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n",
+		.content = "CPU0\n"
+			   "\tCPU: 0\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 1\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU1\n"
+			   "\tCPU: 1\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU2\n"
+			   "\tCPU: 2\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU3\n"
+			   "\tCPU: 3\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU4\n"
+			   "\tCPU: 4\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n"
+			   "CPU5\n"
+			   "\tCPU: 5\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 0\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n"
+			   "CPU6\n"
+			   "\tCPU: 6\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n"
+			   "CPU7\n"
+			   "\tCPU: 7\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 0\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/core_ctl/is_big_cluster",
@@ -1052,11 +1046,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/core_ctl/not_preferred",
 		.size = 36,
-		.content =
-			"\tCPU:0 0\n"
-			"\tCPU:1 0\n"
-			"\tCPU:2 0\n"
-			"\tCPU:3 0\n",
+		.content = "\tCPU:0 0\n"
+			   "\tCPU:1 0\n"
+			   "\tCPU:2 0\n"
+			   "\tCPU:3 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms",
@@ -1101,7 +1094,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
 		.size = 167,
-		.content = "300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
+		.content =
+			"300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
@@ -1136,29 +1130,28 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 282,
-		.content =
-			"300000 592725\n"
-			"364800 11362\n"
-			"441600 3149\n"
-			"518400 2763\n"
-			"595200 2209\n"
-			"672000 1661\n"
-			"748800 1772\n"
-			"825600 1916\n"
-			"883200 1551\n"
-			"960000 2374\n"
-			"1036800 2238\n"
-			"1094400 1659\n"
-			"1171200 41468\n"
-			"1248000 13041\n"
-			"1324800 1904\n"
-			"1401600 4057\n"
-			"1478400 2750\n"
-			"1555200 1331\n"
-			"1670400 2015\n"
-			"1747200 3649\n"
-			"1824000 6966\n"
-			"1900800 98490\n",
+		.content = "300000 592725\n"
+			   "364800 11362\n"
+			   "441600 3149\n"
+			   "518400 2763\n"
+			   "595200 2209\n"
+			   "672000 1661\n"
+			   "748800 1772\n"
+			   "825600 1916\n"
+			   "883200 1551\n"
+			   "960000 2374\n"
+			   "1036800 2238\n"
+			   "1094400 1659\n"
+			   "1171200 41468\n"
+			   "1248000 13041\n"
+			   "1324800 1904\n"
+			   "1401600 4057\n"
+			   "1478400 2750\n"
+			   "1555200 1331\n"
+			   "1670400 2015\n"
+			   "1747200 3649\n"
+			   "1824000 6966\n"
+			   "1900800 98490\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -1378,7 +1371,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
 		.size = 167,
-		.content = "300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
+		.content =
+			"300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
@@ -1413,29 +1407,28 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 282,
-		.content =
-			"300000 593150\n"
-			"364800 11370\n"
-			"441600 3153\n"
-			"518400 2765\n"
-			"595200 2209\n"
-			"672000 1661\n"
-			"748800 1776\n"
-			"825600 1918\n"
-			"883200 1551\n"
-			"960000 2374\n"
-			"1036800 2238\n"
-			"1094400 1659\n"
-			"1171200 41492\n"
-			"1248000 13041\n"
-			"1324800 1906\n"
-			"1401600 4059\n"
-			"1478400 2750\n"
-			"1555200 1331\n"
-			"1670400 2015\n"
-			"1747200 3651\n"
-			"1824000 6970\n"
-			"1900800 98497\n",
+		.content = "300000 593150\n"
+			   "364800 11370\n"
+			   "441600 3153\n"
+			   "518400 2765\n"
+			   "595200 2209\n"
+			   "672000 1661\n"
+			   "748800 1776\n"
+			   "825600 1918\n"
+			   "883200 1551\n"
+			   "960000 2374\n"
+			   "1036800 2238\n"
+			   "1094400 1659\n"
+			   "1171200 41492\n"
+			   "1248000 13041\n"
+			   "1324800 1906\n"
+			   "1401600 4059\n"
+			   "1478400 2750\n"
+			   "1555200 1331\n"
+			   "1670400 2015\n"
+			   "1747200 3651\n"
+			   "1824000 6970\n"
+			   "1900800 98497\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -1480,7 +1473,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_frequencies",
 		.size = 167,
-		.content = "300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
+		.content =
+			"300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/scaling_available_governors",
@@ -1515,29 +1509,28 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 282,
-		.content =
-			"300000 593536\n"
-			"364800 11384\n"
-			"441600 3159\n"
-			"518400 2767\n"
-			"595200 2211\n"
-			"672000 1661\n"
-			"748800 1780\n"
-			"825600 1918\n"
-			"883200 1551\n"
-			"960000 2374\n"
-			"1036800 2238\n"
-			"1094400 1659\n"
-			"1171200 41506\n"
-			"1248000 13041\n"
-			"1324800 1906\n"
-			"1401600 4059\n"
-			"1478400 2750\n"
-			"1555200 1331\n"
-			"1670400 2015\n"
-			"1747200 3651\n"
-			"1824000 6970\n"
-			"1900800 98497\n",
+		.content = "300000 593536\n"
+			   "364800 11384\n"
+			   "441600 3159\n"
+			   "518400 2767\n"
+			   "595200 2211\n"
+			   "672000 1661\n"
+			   "748800 1780\n"
+			   "825600 1918\n"
+			   "883200 1551\n"
+			   "960000 2374\n"
+			   "1036800 2238\n"
+			   "1094400 1659\n"
+			   "1171200 41506\n"
+			   "1248000 13041\n"
+			   "1324800 1906\n"
+			   "1401600 4059\n"
+			   "1478400 2750\n"
+			   "1555200 1331\n"
+			   "1670400 2015\n"
+			   "1747200 3651\n"
+			   "1824000 6970\n"
+			   "1900800 98497\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -1582,7 +1575,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
 		.size = 167,
-		.content = "300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
+		.content =
+			"300000 364800 441600 518400 595200 672000 748800 825600 883200 960000 1036800 1094400 1171200 1248000 1324800 1401600 1478400 1555200 1670400 1747200 1824000 1900800 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
@@ -1617,29 +1611,28 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 282,
-		.content =
-			"300000 593868\n"
-			"364800 11386\n"
-			"441600 3165\n"
-			"518400 2777\n"
-			"595200 2213\n"
-			"672000 1665\n"
-			"748800 1788\n"
-			"825600 1922\n"
-			"883200 1555\n"
-			"960000 2376\n"
-			"1036800 2242\n"
-			"1094400 1661\n"
-			"1171200 41542\n"
-			"1248000 13045\n"
-			"1324800 1906\n"
-			"1401600 4065\n"
-			"1478400 2752\n"
-			"1555200 1331\n"
-			"1670400 2015\n"
-			"1747200 3653\n"
-			"1824000 6972\n"
-			"1900800 98497\n",
+		.content = "300000 593868\n"
+			   "364800 11386\n"
+			   "441600 3165\n"
+			   "518400 2777\n"
+			   "595200 2213\n"
+			   "672000 1665\n"
+			   "748800 1788\n"
+			   "825600 1922\n"
+			   "883200 1555\n"
+			   "960000 2376\n"
+			   "1036800 2242\n"
+			   "1094400 1661\n"
+			   "1171200 41542\n"
+			   "1248000 13045\n"
+			   "1324800 1906\n"
+			   "1401600 4065\n"
+			   "1478400 2752\n"
+			   "1555200 1331\n"
+			   "1670400 2015\n"
+			   "1747200 3653\n"
+			   "1824000 6972\n"
+			   "1900800 98497\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -1669,95 +1662,94 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu4/core_ctl/global_state",
 		.size = 1008,
-		.content =
-			"CPU0\n"
-			"\tCPU: 0\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 2\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU1\n"
-			"\tCPU: 1\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU2\n"
-			"\tCPU: 2\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU3\n"
-			"\tCPU: 3\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 0\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 1\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 4\n"
-			"\tNeed CPUs: 4\n"
-			"\tBoost: 0\n"
-			"CPU4\n"
-			"\tCPU: 4\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n"
-			"CPU5\n"
-			"\tCPU: 5\n"
-			"\tOnline: 1\n"
-			"\tActive: 0\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n"
-			"CPU6\n"
-			"\tCPU: 6\n"
-			"\tOnline: 1\n"
-			"\tActive: 1\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n"
-			"CPU7\n"
-			"\tCPU: 7\n"
-			"\tOnline: 1\n"
-			"\tActive: 0\n"
-			"\tFirst CPU: 4\n"
-			"\tBusy%: 0\n"
-			"\tIs busy: 0\n"
-			"\tNr running: 0\n"
-			"\tActive CPUs: 2\n"
-			"\tNeed CPUs: 2\n"
-			"\tBoost: 0\n",
+		.content = "CPU0\n"
+			   "\tCPU: 0\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 2\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU1\n"
+			   "\tCPU: 1\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU2\n"
+			   "\tCPU: 2\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU3\n"
+			   "\tCPU: 3\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 0\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 1\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 4\n"
+			   "\tNeed CPUs: 4\n"
+			   "\tBoost: 0\n"
+			   "CPU4\n"
+			   "\tCPU: 4\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n"
+			   "CPU5\n"
+			   "\tCPU: 5\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 0\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n"
+			   "CPU6\n"
+			   "\tCPU: 6\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 1\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n"
+			   "CPU7\n"
+			   "\tCPU: 7\n"
+			   "\tOnline: 1\n"
+			   "\tActive: 0\n"
+			   "\tFirst CPU: 4\n"
+			   "\tBusy%: 0\n"
+			   "\tIs busy: 0\n"
+			   "\tNr running: 0\n"
+			   "\tActive CPUs: 2\n"
+			   "\tNeed CPUs: 2\n"
+			   "\tBoost: 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster",
@@ -1782,11 +1774,10 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu4/core_ctl/not_preferred",
 		.size = 36,
-		.content =
-			"\tCPU:4 0\n"
-			"\tCPU:6 0\n"
-			"\tCPU:5 0\n"
-			"\tCPU:7 0\n",
+		.content = "\tCPU:4 0\n"
+			   "\tCPU:6 0\n"
+			   "\tCPU:5 0\n"
+			   "\tCPU:7 0\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms",
@@ -1831,7 +1822,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_frequencies",
 		.size = 231,
-		.content = "300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
+		.content =
+			"300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/scaling_available_governors",
@@ -1866,37 +1858,36 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
 		.size = 351,
-		.content =
-			"300000 38889\n"
-			"345600 23\n"
-			"422400 41\n"
-			"499200 26\n"
-			"576000 67\n"
-			"652800 73\n"
-			"729600 59\n"
-			"806400 46\n"
-			"902400 742666\n"
-			"979200 310\n"
-			"1056000 593\n"
-			"1132800 249\n"
-			"1190400 181\n"
-			"1267200 202\n"
-			"1344000 242\n"
-			"1420800 276\n"
-			"1497600 1249\n"
-			"1574400 4755\n"
-			"1651200 572\n"
-			"1728000 458\n"
-			"1804800 320\n"
-			"1881600 369\n"
-			"1958400 1012\n"
-			"2035200 689\n"
-			"2112000 775\n"
-			"2208000 365\n"
-			"2265600 204\n"
-			"2323200 106\n"
-			"2342400 45\n"
-			"2361600 7956\n",
+		.content = "300000 38889\n"
+			   "345600 23\n"
+			   "422400 41\n"
+			   "499200 26\n"
+			   "576000 67\n"
+			   "652800 73\n"
+			   "729600 59\n"
+			   "806400 46\n"
+			   "902400 742666\n"
+			   "979200 310\n"
+			   "1056000 593\n"
+			   "1132800 249\n"
+			   "1190400 181\n"
+			   "1267200 202\n"
+			   "1344000 242\n"
+			   "1420800 276\n"
+			   "1497600 1249\n"
+			   "1574400 4755\n"
+			   "1651200 572\n"
+			   "1728000 458\n"
+			   "1804800 320\n"
+			   "1881600 369\n"
+			   "1958400 1012\n"
+			   "2035200 689\n"
+			   "2112000 775\n"
+			   "2208000 365\n"
+			   "2265600 204\n"
+			   "2323200 106\n"
+			   "2342400 45\n"
+			   "2361600 7956\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
@@ -1941,7 +1932,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_frequencies",
 		.size = 231,
-		.content = "300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
+		.content =
+			"300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/scaling_available_governors",
@@ -1976,37 +1968,36 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
 		.size = 351,
-		.content =
-			"300000 38889\n"
-			"345600 23\n"
-			"422400 41\n"
-			"499200 26\n"
-			"576000 67\n"
-			"652800 73\n"
-			"729600 59\n"
-			"806400 46\n"
-			"902400 743103\n"
-			"979200 310\n"
-			"1056000 593\n"
-			"1132800 249\n"
-			"1190400 181\n"
-			"1267200 202\n"
-			"1344000 242\n"
-			"1420800 276\n"
-			"1497600 1249\n"
-			"1574400 4755\n"
-			"1651200 572\n"
-			"1728000 458\n"
-			"1804800 320\n"
-			"1881600 369\n"
-			"1958400 1012\n"
-			"2035200 689\n"
-			"2112000 775\n"
-			"2208000 365\n"
-			"2265600 204\n"
-			"2323200 106\n"
-			"2342400 45\n"
-			"2361600 7956\n",
+		.content = "300000 38889\n"
+			   "345600 23\n"
+			   "422400 41\n"
+			   "499200 26\n"
+			   "576000 67\n"
+			   "652800 73\n"
+			   "729600 59\n"
+			   "806400 46\n"
+			   "902400 743103\n"
+			   "979200 310\n"
+			   "1056000 593\n"
+			   "1132800 249\n"
+			   "1190400 181\n"
+			   "1267200 202\n"
+			   "1344000 242\n"
+			   "1420800 276\n"
+			   "1497600 1249\n"
+			   "1574400 4755\n"
+			   "1651200 572\n"
+			   "1728000 458\n"
+			   "1804800 320\n"
+			   "1881600 369\n"
+			   "1958400 1012\n"
+			   "2035200 689\n"
+			   "2112000 775\n"
+			   "2208000 365\n"
+			   "2265600 204\n"
+			   "2323200 106\n"
+			   "2342400 45\n"
+			   "2361600 7956\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
@@ -2051,7 +2042,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_frequencies",
 		.size = 231,
-		.content = "300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
+		.content =
+			"300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/scaling_available_governors",
@@ -2086,37 +2078,36 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
 		.size = 351,
-		.content =
-			"300000 38889\n"
-			"345600 23\n"
-			"422400 41\n"
-			"499200 26\n"
-			"576000 67\n"
-			"652800 73\n"
-			"729600 59\n"
-			"806400 46\n"
-			"902400 743514\n"
-			"979200 310\n"
-			"1056000 593\n"
-			"1132800 249\n"
-			"1190400 181\n"
-			"1267200 204\n"
-			"1344000 244\n"
-			"1420800 276\n"
-			"1497600 1249\n"
-			"1574400 4757\n"
-			"1651200 572\n"
-			"1728000 458\n"
-			"1804800 320\n"
-			"1881600 369\n"
-			"1958400 1012\n"
-			"2035200 689\n"
-			"2112000 775\n"
-			"2208000 365\n"
-			"2265600 204\n"
-			"2323200 106\n"
-			"2342400 45\n"
-			"2361600 7956\n",
+		.content = "300000 38889\n"
+			   "345600 23\n"
+			   "422400 41\n"
+			   "499200 26\n"
+			   "576000 67\n"
+			   "652800 73\n"
+			   "729600 59\n"
+			   "806400 46\n"
+			   "902400 743514\n"
+			   "979200 310\n"
+			   "1056000 593\n"
+			   "1132800 249\n"
+			   "1190400 181\n"
+			   "1267200 204\n"
+			   "1344000 244\n"
+			   "1420800 276\n"
+			   "1497600 1249\n"
+			   "1574400 4757\n"
+			   "1651200 572\n"
+			   "1728000 458\n"
+			   "1804800 320\n"
+			   "1881600 369\n"
+			   "1958400 1012\n"
+			   "2035200 689\n"
+			   "2112000 775\n"
+			   "2208000 365\n"
+			   "2265600 204\n"
+			   "2323200 106\n"
+			   "2342400 45\n"
+			   "2361600 7956\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
@@ -2161,7 +2152,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_frequencies",
 		.size = 231,
-		.content = "300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
+		.content =
+			"300000 345600 422400 499200 576000 652800 729600 806400 902400 979200 1056000 1132800 1190400 1267200 1344000 1420800 1497600 1574400 1651200 1728000 1804800 1881600 1958400 2035200 2112000 2208000 2265600 2323200 2342400 2361600 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/scaling_available_governors",
@@ -2196,37 +2188,36 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
 		.size = 351,
-		.content =
-			"300000 38889\n"
-			"345600 23\n"
-			"422400 41\n"
-			"499200 26\n"
-			"576000 67\n"
-			"652800 73\n"
-			"729600 59\n"
-			"806400 46\n"
-			"902400 743938\n"
-			"979200 310\n"
-			"1056000 593\n"
-			"1132800 249\n"
-			"1190400 181\n"
-			"1267200 204\n"
-			"1344000 244\n"
-			"1420800 276\n"
-			"1497600 1249\n"
-			"1574400 4757\n"
-			"1651200 572\n"
-			"1728000 458\n"
-			"1804800 320\n"
-			"1881600 369\n"
-			"1958400 1012\n"
-			"2035200 689\n"
-			"2112000 775\n"
-			"2208000 365\n"
-			"2265600 204\n"
-			"2323200 106\n"
-			"2342400 45\n"
-			"2361600 7956\n",
+		.content = "300000 38889\n"
+			   "345600 23\n"
+			   "422400 41\n"
+			   "499200 26\n"
+			   "576000 67\n"
+			   "652800 73\n"
+			   "729600 59\n"
+			   "806400 46\n"
+			   "902400 743938\n"
+			   "979200 310\n"
+			   "1056000 593\n"
+			   "1132800 249\n"
+			   "1190400 181\n"
+			   "1267200 204\n"
+			   "1344000 244\n"
+			   "1420800 276\n"
+			   "1497600 1249\n"
+			   "1574400 4757\n"
+			   "1651200 572\n"
+			   "1728000 458\n"
+			   "1804800 320\n"
+			   "1881600 369\n"
+			   "1958400 1012\n"
+			   "2035200 689\n"
+			   "2112000 775\n"
+			   "2208000 365\n"
+			   "2265600 204\n"
+			   "2323200 106\n"
+			   "2342400 45\n"
+			   "2361600 7956\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
@@ -2238,7 +2229,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "1\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -4942,6 +4933,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.wfd.status",
 		.value = "disconnected",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

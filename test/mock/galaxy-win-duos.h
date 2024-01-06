@@ -2,30 +2,29 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 414,
-		.content =
-			"Processor\t: ARMv7 Processor rev 1 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 159.25\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 159.25\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 159.25\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 159.25\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 \n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xc05\n"
-			"CPU revision\t: 1\n"
-			"\n"
-			"Hardware\t: QRD MSM8625Q SKUD\n"
-			"Revision\t: 0000\n"
-			"Serial\t\t: 420369c3c4d34128\n",
+		.content = "Processor\t: ARMv7 Processor rev 1 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 159.25\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 159.25\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "BogoMIPS\t: 159.25\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "BogoMIPS\t: 159.25\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpv4 \n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xc05\n"
+			   "CPU revision\t: 1\n"
+			   "\n"
+			   "Hardware\t: QRD MSM8625Q SKUD\n"
+			   "Revision\t: 0000\n"
+			   "Serial\t\t: 420369c3c4d34128\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -404,13 +403,12 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 71,
-		.content =
-			"245760 2541\n"
-			"320000 144\n"
-			"480000 164\n"
-			"700800 394\n"
-			"1008000 2542\n"
-			"1209600 2131\n",
+		.content = "245760 2541\n"
+			   "320000 144\n"
+			   "480000 164\n"
+			   "700800 394\n"
+			   "1008000 2542\n"
+			   "1209600 2131\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -420,15 +418,14 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/trans_table",
 		.size = 521,
-		.content =
-			"   From  :    To\n"
-			"         :    245760    320000    480000    700800   1008000   1209600 \n"
-			"   245760:         0         0         0        32         0         0 \n"
-			"   320000:         7         0         0         1         0         0 \n"
-			"   480000:         5         0         0        13         0         1 \n"
-			"   700800:        10         2        12         0        34         0 \n"
-			"  1008000:         5         2         2         5         0        63 \n"
-			"  1209600:         6         4         4         7        43         0 \n",
+		.content = "   From  :    To\n"
+			   "         :    245760    320000    480000    700800   1008000   1209600 \n"
+			   "   245760:         0         0         0        32         0         0 \n"
+			   "   320000:         7         0         0         1         0         0 \n"
+			   "   480000:         5         0         0        13         0         1 \n"
+			   "   700800:        10         2        12         0        34         0 \n"
+			   "  1008000:         5         2         2         5         0        63 \n"
+			   "  1209600:         6         4         4         7        43         0 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/topology/physical_package_id",
@@ -460,7 +457,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "1\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -1841,6 +1838,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

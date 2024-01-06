@@ -3,79 +3,78 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 1448,
-		.content =
-			"processor\t: 0\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x41\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0xd03\n"
-			"CPU revision\t: 4\n"
-			"\n"
-			"processor\t: 4\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x53\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x4\n"
-			"CPU part\t: 0x001\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"processor\t: 5\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x53\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x4\n"
-			"CPU part\t: 0x001\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"processor\t: 6\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x53\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x4\n"
-			"CPU part\t: 0x001\n"
-			"CPU revision\t: 0\n"
-			"\n"
-			"processor\t: 7\n"
-			"BogoMIPS\t: 52.00\n"
-			"Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
-			"CPU implementer\t: 0x53\n"
-			"CPU architecture: 8\n"
-			"CPU variant\t: 0x4\n"
-			"CPU part\t: 0x001\n"
-			"CPU revision\t: 0\n"
-			"\n",
+		.content = "processor\t: 0\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x41\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0xd03\n"
+			   "CPU revision\t: 4\n"
+			   "\n"
+			   "processor\t: 4\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x53\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x4\n"
+			   "CPU part\t: 0x001\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "processor\t: 5\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x53\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x4\n"
+			   "CPU part\t: 0x001\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "processor\t: 6\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x53\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x4\n"
+			   "CPU part\t: 0x001\n"
+			   "CPU revision\t: 0\n"
+			   "\n"
+			   "processor\t: 7\n"
+			   "BogoMIPS\t: 52.00\n"
+			   "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32\n"
+			   "CPU implementer\t: 0x53\n"
+			   "CPU architecture: 8\n"
+			   "CPU variant\t: 0x4\n"
+			   "CPU part\t: 0x001\n"
+			   "CPU revision\t: 0\n"
+			   "\n",
 	},
 #elif CPUINFO_ARCH_ARM
 	{
@@ -479,16 +478,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 101,
-		.content =
-			"1690000 6834\n"
-			"1456000 427\n"
-			"1248000 277\n"
-			"1053000 102\n"
-			"949000 117\n"
-			"832000 75\n"
-			"715000 64\n"
-			"598000 83\n"
-			"455000 257\n",
+		.content = "1690000 6834\n"
+			   "1456000 427\n"
+			   "1248000 277\n"
+			   "1053000 102\n"
+			   "949000 117\n"
+			   "832000 75\n"
+			   "715000 64\n"
+			   "598000 83\n"
+			   "455000 257\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -583,16 +581,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 101,
-		.content =
-			"1690000 6861\n"
-			"1456000 471\n"
-			"1248000 298\n"
-			"1053000 105\n"
-			"949000 141\n"
-			"832000 75\n"
-			"715000 69\n"
-			"598000 91\n"
-			"455000 391\n",
+		.content = "1690000 6861\n"
+			   "1456000 471\n"
+			   "1248000 298\n"
+			   "1053000 105\n"
+			   "949000 141\n"
+			   "832000 75\n"
+			   "715000 69\n"
+			   "598000 91\n"
+			   "455000 391\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -687,16 +684,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/time_in_state",
 		.size = 101,
-		.content =
-			"1690000 6861\n"
-			"1456000 471\n"
-			"1248000 298\n"
-			"1053000 105\n"
-			"949000 150\n"
-			"832000 75\n"
-			"715000 71\n"
-			"598000 95\n"
-			"455000 647\n",
+		.content = "1690000 6861\n"
+			   "1456000 471\n"
+			   "1248000 298\n"
+			   "1053000 105\n"
+			   "949000 150\n"
+			   "832000 75\n"
+			   "715000 71\n"
+			   "598000 95\n"
+			   "455000 647\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu2/cpufreq/stats/total_trans",
@@ -791,16 +787,15 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/time_in_state",
 		.size = 102,
-		.content =
-			"1690000 6951\n"
-			"1456000 538\n"
-			"1248000 301\n"
-			"1053000 105\n"
-			"949000 154\n"
-			"832000 78\n"
-			"715000 108\n"
-			"598000 95\n"
-			"455000 666\n",
+		.content = "1690000 6951\n"
+			   "1456000 538\n"
+			   "1248000 301\n"
+			   "1053000 105\n"
+			   "949000 154\n"
+			   "832000 78\n"
+			   "715000 108\n"
+			   "598000 95\n"
+			   "455000 666\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/stats/total_trans",
@@ -900,20 +895,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/time_in_state",
 		.size = 147,
-		.content =
-			"2314000 5088\n"
-			"2158000 62\n"
-			"2002000 22\n"
-			"1937000 62\n"
-			"1807000 120\n"
-			"1703000 78\n"
-			"1469000 143\n"
-			"1261000 691\n"
-			"1170000 28\n"
-			"1066000 57\n"
-			"962000 28\n"
-			"858000 77\n"
-			"741000 2792\n",
+		.content = "2314000 5088\n"
+			   "2158000 62\n"
+			   "2002000 22\n"
+			   "1937000 62\n"
+			   "1807000 120\n"
+			   "1703000 78\n"
+			   "1469000 143\n"
+			   "1261000 691\n"
+			   "1170000 28\n"
+			   "1066000 57\n"
+			   "962000 28\n"
+			   "858000 77\n"
+			   "741000 2792\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu4/cpufreq/stats/total_trans",
@@ -1013,20 +1007,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/time_in_state",
 		.size = 148,
-		.content =
-			"2314000 5088\n"
-			"2158000 68\n"
-			"2002000 22\n"
-			"1937000 64\n"
-			"1807000 127\n"
-			"1703000 100\n"
-			"1469000 165\n"
-			"1261000 750\n"
-			"1170000 28\n"
-			"1066000 57\n"
-			"962000 28\n"
-			"858000 85\n"
-			"741000 2932\n",
+		.content = "2314000 5088\n"
+			   "2158000 68\n"
+			   "2002000 22\n"
+			   "1937000 64\n"
+			   "1807000 127\n"
+			   "1703000 100\n"
+			   "1469000 165\n"
+			   "1261000 750\n"
+			   "1170000 28\n"
+			   "1066000 57\n"
+			   "962000 28\n"
+			   "858000 85\n"
+			   "741000 2932\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu5/cpufreq/stats/total_trans",
@@ -1126,20 +1119,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/time_in_state",
 		.size = 148,
-		.content =
-			"2314000 5140\n"
-			"2158000 73\n"
-			"2002000 22\n"
-			"1937000 68\n"
-			"1807000 128\n"
-			"1703000 108\n"
-			"1469000 193\n"
-			"1261000 824\n"
-			"1170000 28\n"
-			"1066000 68\n"
-			"962000 28\n"
-			"858000 92\n"
-			"741000 3016\n",
+		.content = "2314000 5140\n"
+			   "2158000 73\n"
+			   "2002000 22\n"
+			   "1937000 68\n"
+			   "1807000 128\n"
+			   "1703000 108\n"
+			   "1469000 193\n"
+			   "1261000 824\n"
+			   "1170000 28\n"
+			   "1066000 68\n"
+			   "962000 28\n"
+			   "858000 92\n"
+			   "741000 3016\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu6/cpufreq/stats/total_trans",
@@ -1239,20 +1231,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/time_in_state",
 		.size = 149,
-		.content =
-			"2314000 5140\n"
-			"2158000 73\n"
-			"2002000 22\n"
-			"1937000 68\n"
-			"1807000 128\n"
-			"1703000 122\n"
-			"1469000 220\n"
-			"1261000 904\n"
-			"1170000 28\n"
-			"1066000 70\n"
-			"962000 36\n"
-			"858000 108\n"
-			"741000 3112\n",
+		.content = "2314000 5140\n"
+			   "2158000 73\n"
+			   "2002000 22\n"
+			   "1937000 68\n"
+			   "1807000 128\n"
+			   "1703000 122\n"
+			   "1469000 220\n"
+			   "1261000 904\n"
+			   "1170000 28\n"
+			   "1066000 70\n"
+			   "962000 36\n"
+			   "858000 108\n"
+			   "741000 3112\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu7/cpufreq/stats/total_trans",
@@ -1289,7 +1280,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 2,
 		.content = "7\n",
 	},
-	{ NULL },
+	{NULL},
 };
 #ifdef __ANDROID__
 struct cpuinfo_mock_property properties[] = {
@@ -3433,6 +3424,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.wfd.status",
 		.value = "disconnected",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */

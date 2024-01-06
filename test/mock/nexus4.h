@@ -2,30 +2,29 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/proc/cpuinfo",
 		.size = 401,
-		.content =
-			"Processor\t: ARMv7 Processor rev 2 (v7l)\n"
-			"processor\t: 0\n"
-			"BogoMIPS\t: 13.53\n"
-			"\n"
-			"processor\t: 1\n"
-			"BogoMIPS\t: 13.53\n"
-			"\n"
-			"processor\t: 2\n"
-			"BogoMIPS\t: 13.53\n"
-			"\n"
-			"processor\t: 3\n"
-			"BogoMIPS\t: 13.53\n"
-			"\n"
-			"Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 \n"
-			"CPU implementer\t: 0x51\n"
-			"CPU architecture: 7\n"
-			"CPU variant\t: 0x0\n"
-			"CPU part\t: 0x06f\n"
-			"CPU revision\t: 2\n"
-			"\n"
-			"Hardware\t: QCT APQ8064 MAKO\n"
-			"Revision\t: 000b\n"
-			"Serial\t\t: 0000000000000000\n",
+		.content = "Processor\t: ARMv7 Processor rev 2 (v7l)\n"
+			   "processor\t: 0\n"
+			   "BogoMIPS\t: 13.53\n"
+			   "\n"
+			   "processor\t: 1\n"
+			   "BogoMIPS\t: 13.53\n"
+			   "\n"
+			   "processor\t: 2\n"
+			   "BogoMIPS\t: 13.53\n"
+			   "\n"
+			   "processor\t: 3\n"
+			   "BogoMIPS\t: 13.53\n"
+			   "\n"
+			   "Features\t: swp half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 \n"
+			   "CPU implementer\t: 0x51\n"
+			   "CPU architecture: 7\n"
+			   "CPU variant\t: 0x0\n"
+			   "CPU part\t: 0x06f\n"
+			   "CPU revision\t: 2\n"
+			   "\n"
+			   "Hardware\t: QCT APQ8064 MAKO\n"
+			   "Revision\t: 000b\n"
+			   "Serial\t\t: 0000000000000000\n",
 	},
 	{
 		.path = "/system/build.prop",
@@ -156,20 +155,19 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpufreq/all_time_in_state",
 		.size = 244,
-		.content =
-			"freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\t\n"
-			"384000\t\t332\t\t71\t\t\n"
-			"486000\t\t35\t\t0\t\t\n"
-			"594000\t\t45\t\t6\t\t\n"
-			"702000\t\t30\t\t29\t\t\n"
-			"810000\t\t5\t\t35\t\t\n"
-			"918000\t\t25\t\t25\t\t\n"
-			"1026000\t\t368\t\t134\t\t\n"
-			"1134000\t\t35\t\t15\t\t\n"
-			"1242000\t\t50\t\t50\t\t\n"
-			"1350000\t\t20\t\t61\t\t\n"
-			"1458000\t\t35\t\t5\t\t\n"
-			"1512000\t\t1642\t\t2152\t\t\n",
+		.content = "freq\t\tcpu0\t\tcpu1\t\tcpu2\t\tcpu3\t\t\n"
+			   "384000\t\t332\t\t71\t\t\n"
+			   "486000\t\t35\t\t0\t\t\n"
+			   "594000\t\t45\t\t6\t\t\n"
+			   "702000\t\t30\t\t29\t\t\n"
+			   "810000\t\t5\t\t35\t\t\n"
+			   "918000\t\t25\t\t25\t\t\n"
+			   "1026000\t\t368\t\t134\t\t\n"
+			   "1134000\t\t35\t\t15\t\t\n"
+			   "1242000\t\t50\t\t50\t\t\n"
+			   "1350000\t\t20\t\t61\t\t\n"
+			   "1458000\t\t35\t\t5\t\t\n"
+			   "1512000\t\t1642\t\t2152\t\t\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpuidle/current_driver",
@@ -209,7 +207,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
+		.content =
+			"384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors",
@@ -239,19 +238,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state",
 		.size = 129,
-		.content =
-			"384000 346\n"
-			"486000 35\n"
-			"594000 45\n"
-			"702000 30\n"
-			"810000 5\n"
-			"918000 25\n"
-			"1026000 392\n"
-			"1134000 35\n"
-			"1242000 50\n"
-			"1350000 20\n"
-			"1458000 45\n"
-			"1512000 1677\n",
+		.content = "384000 346\n"
+			   "486000 35\n"
+			   "594000 45\n"
+			   "702000 30\n"
+			   "810000 5\n"
+			   "918000 25\n"
+			   "1026000 392\n"
+			   "1134000 35\n"
+			   "1242000 50\n"
+			   "1350000 20\n"
+			   "1458000 45\n"
+			   "1512000 1677\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu0/cpufreq/stats/total_trans",
@@ -316,7 +314,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
+		.content =
+			"384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_governors",
@@ -351,19 +350,18 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/time_in_state",
 		.size = 117,
-		.content =
-			"384000 3\n"
-			"486000 0\n"
-			"594000 5\n"
-			"702000 0\n"
-			"810000 0\n"
-			"918000 10\n"
-			"1026000 0\n"
-			"1134000 5\n"
-			"1242000 5\n"
-			"1350000 5\n"
-			"1458000 0\n"
-			"1512000 120\n",
+		.content = "384000 3\n"
+			   "486000 0\n"
+			   "594000 5\n"
+			   "702000 0\n"
+			   "810000 0\n"
+			   "918000 10\n"
+			   "1026000 0\n"
+			   "1134000 5\n"
+			   "1242000 5\n"
+			   "1350000 5\n"
+			   "1458000 0\n"
+			   "1512000 120\n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu1/cpufreq/stats/total_trans",
@@ -428,7 +426,8 @@ struct cpuinfo_mock_file filesystem[] = {
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_frequencies",
 		.size = 91,
-		.content = "384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
+		.content =
+			"384000 486000 594000 702000 810000 918000 1026000 1134000 1242000 1350000 1458000 1512000 \n",
 	},
 	{
 		.path = "/sys/devices/system/cpu/cpu3/cpufreq/scaling_available_governors",
@@ -440,7 +439,7 @@ struct cpuinfo_mock_file filesystem[] = {
 		.size = 7,
 		.content = "384000\n",
 	},
-	{ NULL },
+	{NULL},
 };
 
 #ifdef __ANDROID__
@@ -1161,6 +1160,6 @@ struct cpuinfo_mock_property properties[] = {
 		.key = "wlan.driver.status",
 		.value = "ok",
 	},
-	{ NULL },
+	{NULL},
 };
 #endif /* __ANDROID__ */
