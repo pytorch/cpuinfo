@@ -13,6 +13,8 @@ mkdir -p build/local
 CMAKE_ARGS=()
 
 # CMake-level configuration
+#
+# If editing these flags, make sure `local-build-bazel.sh` flags are updated.
 CMAKE_ARGS+=("-DCMAKE_BUILD_TYPE=Release")
 CMAKE_ARGS+=("-DCMAKE_POSITION_INDEPENDENT_CODE=ON")
 
@@ -22,7 +24,7 @@ then
   CMAKE_ARGS+=("-GNinja")
 fi
 
-# Use-specified CMake arguments go last to allow overridding defaults
+# User-specified CMake arguments go last to allow overridding defaults
 CMAKE_ARGS+=($@)
 
 cd build/local && cmake ../.. \
