@@ -14,7 +14,6 @@
 #endif
 
 #include <sched.h>
-#include <sys/hwprobe.h>
 
 #include <cpuinfo/log.h>
 #include <riscv/api.h>
