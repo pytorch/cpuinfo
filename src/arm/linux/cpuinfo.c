@@ -873,7 +873,7 @@ static bool parse_line(
 			} else if (memcmp(line_start, "Hardware", key_length) == 0) {
 				size_t value_length = value_end - value_start;
 				if (value_length > CPUINFO_HARDWARE_VALUE_MAX) {
-					cpuinfo_log_info(
+					cpuinfo_log_warning(
 						"length of Hardware value \"%.*s\" in /proc/cpuinfo exceeds limit (%d): truncating to the limit",
 						(int)value_length,
 						value_start,
@@ -888,7 +888,7 @@ static bool parse_line(
 			} else if (memcmp(line_start, "Revision", key_length) == 0) {
 				size_t value_length = value_end - value_start;
 				if (value_length > CPUINFO_REVISION_VALUE_MAX) {
-					cpuinfo_log_info(
+					cpuinfo_log_warning(
 						"length of Revision value \"%.*s\" in /proc/cpuinfo exceeds limit (%d): truncating to the limit",
 						(int)value_length,
 						value_start,
