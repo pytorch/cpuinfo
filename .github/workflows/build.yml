@@ -93,3 +93,27 @@ jobs:
         working-directory: ${{ github.workspace }}
         env:
           ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+  cmake-linux-qemu:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        build_props:
+          - [
+              "riscv64",
+              "riscv64/ubuntu:22.04"
+          ]
+    env:
+      ARCH_NAME: ${{ matrix.build_props[0] }}
+      DOCKER_IMAGE: ${{ matrix.build_props[1] }}
+
+    name: ${ARCH_NAME}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install qemu and setup binfmt_misc
+        run: |
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Build cpuinfo in ${DOCKER_IMAGE}
+          docker run -i -v $(pwd):/cpuinfo ${DOCKER_IMAGE} /bin/bash -c "
+          apt update &&
+          apt install -y cmake git gcc g++ &&
+          scripts/local-build.sh"
