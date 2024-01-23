@@ -93,3 +93,26 @@ jobs:
         working-directory: ${{ github.workspace }}
         env:
           ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+  cmake-linux-qemu:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    strategy:
+      matrix:
+        build_props:
+          - [
+              "cmake-linux-riscv64",
+              "riscv64/ubuntu:22.04"
+          ]
+
+    name: ${{ matrix.build_props[0] }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+      - name: Build cpuinfo in ${{ matrix.build_props[1] }}
+        run: |
+          docker run -i -v $(pwd):/cpuinfo ${{ matrix.build_props[1] }} /bin/bash -c "
+          apt update &&
+          apt install -y cmake git gcc g++ &&
+          cd /cpuinfo &&
+          scripts/local-build.sh"
