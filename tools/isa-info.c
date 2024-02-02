@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
 
 	printf("Scalar instructions:\n");
 #if CPUINFO_ARCH_X86
-	printf("\tx87 FPU: %s\n", cpuinfo_has_x86_fpu() ? "yes" : "no");
+	printf("\tx86 FPU: %s\n", cpuinfo_has_x86_fpu() ? "yes" : "no");
 	printf("\tCMOV: %s\n", cpuinfo_has_x86_cmov() ? "yes" : "no");
 #endif
 	printf("\tLAHF/SAHF: %s\n", cpuinfo_has_x86_lahf_sahf() ? "yes" : "no");
