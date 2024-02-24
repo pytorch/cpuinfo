@@ -240,6 +240,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 				.line_size = 64,
 				.flags = CPUINFO_CACHE_INCLUSIVE,
 			};
+			break;
 		case 0x21:
 			/*
 			 * Intel ISA Reference:
