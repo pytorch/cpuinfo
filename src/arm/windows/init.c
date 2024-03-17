@@ -43,6 +43,15 @@ static struct woa_chip_info woa_chips[] = {
 		  2420000000,
 	  },
 	  {cpuinfo_vendor_arm, cpuinfo_uarch_cortex_a76, 3150000000}}},
+	/* Snapdragon (TM) 8cx Gen 3 @ 3.0 GHz */
+	{L"Snapdragon (TM) 8cx Gen 3",
+	 woa_chip_name_microsoft_sq_3,
+	 {{
+		  cpuinfo_vendor_arm,
+		  cpuinfo_uarch_cortex_a78,
+		  2420000000,
+	  },
+	  {cpuinfo_vendor_arm, cpuinfo_uarch_cortex_x1, 3000000000}}},
 	/* Microsoft Windows Dev Kit 2023 */
 	{L"Snapdragon Compute Platform",
 	 woa_chip_name_microsoft_sq_3,
