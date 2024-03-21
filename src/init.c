@@ -24,6 +24,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 #if defined(__MACH__) && defined(__APPLE__)
 	pthread_once(&init_guard, &cpuinfo_x86_mach_init);
+#elif defined(__FreeBSD__)
+	pthread_once(&init_guard, &cpuinfo_x86_freebsd_init);
 #elif defined(__linux__)
 	pthread_once(&init_guard, &cpuinfo_x86_linux_init);
 #elif defined(_WIN32) || defined(__CYGWIN__)
