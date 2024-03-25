@@ -812,6 +812,10 @@ struct cpuinfo_x86_isa {
 	bool avx512vp2intersect;
 	bool avx512_4vnniw;
 	bool avx512_4fmaps;
+	bool amx_bf16;
+	bool amx_tile;
+	bool amx_int8;
+	bool amx_fp16;
 	bool hle;
 	bool rtm;
 	bool xtest;
@@ -1323,6 +1327,58 @@ static inline bool cpuinfo_has_x86_avx512_4vnniw(void) {
 static inline bool cpuinfo_has_x86_avx512_4fmaps(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	return cpuinfo_isa.avx512_4fmaps;
+#else
+	return false;
+#endif
+}
+
+/* [NOTE] Intel Advanced Matrix Extensions (AMX) detection
+ *
+ * I.  AMX is a new extensions to the x86 ISA to work on matrices, consists of
+ *   1) 2-dimentional registers (tiles), hold sub-matrices from larger matrices in memory
+ *   2) Accelerator called Tile Matrix Multiply (TMUL), contains instructions operating on tiles
+ *
+ * II. Platforms that supports AMX:
+ * +-----------------+-----+----------+----------+----------+----------+
+ * |    Platforms    | Gen | amx-bf16 | amx-tile | amx-int8 | amx-fp16 |
+ * +-----------------+-----+----------+----------+----------+----------+
+ * | Sapphire Rapids | 4th |   YES    |   YES    |   YES    |    NO    |
+ * +-----------------+-----+----------+----------+----------+----------+
+ * | Emerald Rapids  | 5th |   YES    |   YES    |   YES    |    NO    |
+ * +-----------------+-----+----------+----------+----------+----------+
+ * | Granite Rapids  | 6th |   YES    |   YES    |   YES    |   YES    |
+ * +-----------------+-----+----------+----------+----------+----------+
+ *
+ * Reference: https://www.intel.com/content/www/us/en/products/docs
+ *    /accelerator-engines/advanced-matrix-extensions/overview.html
+ */
+static inline bool cpuinfo_has_x86_amx_bf16(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.amx_bf16;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_amx_tile(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.amx_tile;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_amx_int8(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.amx_int8;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_amx_fp16(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.amx_fp16;
 #else
 	return false;
 #endif
