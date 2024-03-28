@@ -816,6 +816,9 @@ struct cpuinfo_x86_isa {
 	bool amx_tile;
 	bool amx_int8;
 	bool amx_fp16;
+	bool avx_vnni_int8;
+	bool avx_vnni_int16;
+	bool avx_ne_convert;
 	bool hle;
 	bool rtm;
 	bool xtest;
@@ -1379,6 +1382,46 @@ static inline bool cpuinfo_has_x86_amx_int8(void) {
 static inline bool cpuinfo_has_x86_amx_fp16(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	return cpuinfo_isa.amx_fp16;
+#else
+	return false;
+#endif
+}
+
+/*
+ * Intel AVX Vector Neural Network Instructions (VNNI) INT8
+ * Supported Platfroms: Sierra Forest, Arrow Lake, Lunar Lake
+ */
+static inline bool cpuinfo_has_x86_avx_vnni_int8(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.avx_vnni_int8;
+#else
+	return false;
+#endif
+}
+
+/*
+ * Intel AVX Vector Neural Network Instructions (VNNI) INT16
+ * Supported Platfroms: Arrow Lake, Lunar Lake
+ */
+static inline bool cpuinfo_has_x86_avx_vnni_int16(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.avx_vnni_int16;
+#else
+	return false;
+#endif
+}
+
+/*
+ * A new set of instructions, which can convert low precision floating point
+ * like BF16/FP16 to high precision floating point FP32, as well as convert FP32
+ * elements to BF16. This instruction allows the platform to have improved AI
+ * capabilities and better compatibility.
+ *
+ * Supported Platforms: Sierra Forest, Arrow Lake, Lunar Lake
+ */
+static inline bool cpuinfo_has_x86_avx_ne_convert(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.avx_ne_convert;
 #else
 	return false;
 #endif
