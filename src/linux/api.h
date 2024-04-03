@@ -22,6 +22,7 @@
 #define CPUINFO_LINUX_FLAG_VALID UINT32_C(0x00001000)
 #define CPUINFO_LINUX_FLAG_CUR_FREQUENCY UINT32_C(0x00002000)
 #define CPUINFO_LINUX_FLAG_CLUSTER_CLUSTER UINT32_C(0x00004000)
+#define CPUINFO_LINUX_MASK_USABLE UINT32_C(0x00000003)
 
 typedef bool (*cpuinfo_cpulist_callback)(uint32_t, uint32_t, void*);
 CPUINFO_INTERNAL bool cpuinfo_linux_parse_cpulist(

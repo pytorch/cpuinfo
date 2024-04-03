@@ -522,6 +522,24 @@ TEST(CLUSTER, consistent_midr) {
 }
 #endif /* CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 */
 
+#if CPUINFO_ARCH_PPC64
+TEST(CLUSTER, consistent_pvr) {
+	ASSERT_TRUE(cpuinfo_initialize());
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster->pvr, core->pvr);
+		}
+	}
+	cpuinfo_deinitialize();
+}
+#endif /* CPUINFO_ARCH_PPC64 */
+
 TEST(CLUSTER, consistent_frequency) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #if !defined(__ANDROID__)
 /*
  * sched.h is only used for CPU_SETSIZE constant.
@@ -54,6 +53,12 @@
 inline static const char* parse_number(const char* start, const char* end, uint32_t number_ptr[restrict static 1]) {
 	uint32_t number = 0;
 	const char* parsed = start;
+	if (*parsed == '-')
+	{
+		*number_ptr = 0;
+		static const char newline[] = "\n";
+	        return newline;
+	}
 	for (; parsed != end; parsed++) {
 		const uint32_t digit = (uint32_t)(uint8_t)(*parsed) - (uint32_t)'0';
 		if (digit >= 10) {
@@ -83,7 +88,9 @@ inline static bool is_whitespace(char c) {
  * Android NDK headers before platform 21 do not define CPU_SETSIZE,
  * so we hard-code its value, as defined in platform 21 headers
  */
-#if defined(__LP64__)
+#if defined(__powerpc__)
+	static const uint32_t default_max_processors_count = 2048;
+#elif defined(__LP64__)
 static const uint32_t default_max_processors_count = 1024;
 #else
 static const uint32_t default_max_processors_count = 32;
