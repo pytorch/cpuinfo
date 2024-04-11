@@ -8,8 +8,9 @@ enum woa_chip_name {
 	woa_chip_name_microsoft_sq_1 = 0,
 	woa_chip_name_microsoft_sq_2 = 1,
 	woa_chip_name_microsoft_sq_3 = 2,
-	woa_chip_name_ampere_altra = 3,
-	woa_chip_name_unknown = 4,
+	woa_chip_name_microsoft_sq_3_devkit = 3,
+	woa_chip_name_ampere_altra = 4,
+	woa_chip_name_unknown = 5,
 	woa_chip_name_last = woa_chip_name_unknown
 };
 
