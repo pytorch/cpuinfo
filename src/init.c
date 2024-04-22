@@ -26,6 +26,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	pthread_once(&init_guard, &cpuinfo_x86_mach_init);
 #elif defined(__linux__)
 	pthread_once(&init_guard, &cpuinfo_x86_linux_init);
+#elif defined(__Fuchsia__)
+	pthread_once(&init_guard, &cpuinfo_x86_fuchsia_init);
 #elif defined(_WIN32) || defined(__CYGWIN__)
 	InitOnceExecuteOnce(&init_guard, &cpuinfo_x86_windows_init, NULL, NULL);
 #else
@@ -34,6 +36,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 #if defined(__linux__)
 	pthread_once(&init_guard, &cpuinfo_arm_linux_init);
+#elif defined(__Fuchsia__)
+	pthread_once(&init_guard, &cpuinfo_arm_fuchsia_init);
 #elif defined(__MACH__) && defined(__APPLE__)
 	pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 #elif defined(_WIN32)
