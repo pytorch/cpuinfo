@@ -76,6 +76,7 @@ def main(args):
                 sources += ["linux/mockfile.c"]
         build.static_library("cpuinfo", map(build.cc, sources))
         if build.target.is_ppc64:
+            source += [ "powerpc/cache.c", "powerpc/uarch.c", ]
             if build.target.is_linux:
                 sources += [
                     "powerpc/cache.c",
@@ -86,7 +87,7 @@ def main(args):
                     "powerpc/linux/hwcap.c",
                     "powerpc/linux/init.c",
                     "powerpc/linux/ppc64-isa.c",
-                        ]
+                    ]
 
 
     with build.options(source_dir="tools", deps=[build, build.deps.clog]):

@@ -180,17 +180,17 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       LIST(APPEND CPUINFO_SRCS src/x86/windows/init.c)
     ENDIF()
   ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(ppc64le)$" )
-	  LIST(APPEND CPUINFO_SRCS
-		  src/powerpc/cache.c
-		  src/powerpc/uarch.c
-		  src/powerpc/linux/chipset.c
-		  src/powerpc/linux/clusters.c
-		  src/powerpc/linux/cpuinfo.c
-		  src/powerpc/linux/hwcap.c
-		  src/powerpc/linux/init.c
-		  src/powerpc/linux/ppc64-isa.c)
+    LIST(APPEND CPUINFO_SRCS
+      src/powerpc/cache.c
+      src/powerpc/uarch.c
+      src/powerpc/linux/chipset.c
+      src/powerpc/linux/clusters.c
+      src/powerpc/linux/cpuinfo.c
+      src/powerpc/linux/hwcap.c
+      src/powerpc/linux/init.c
+      src/powerpc/linux/ppc64-isa.c)
   ELSEIF(CMAKE_SYSTEM_NAME MATCHES "^Windows" AND CPUINFO_TARGET_PROCESSOR MATCHES "^(ARM64|arm64)$")
-	  LIST(APPEND CPUINFO_SRCS
+    LIST(APPEND CPUINFO_SRCS
       src/arm/windows/init-by-logical-sys-info.c
       src/arm/windows/init.c)
   ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(armv[5-8].*|aarch64|arm64.*)$" OR IOS_ARCH MATCHES "^(armv7.*|arm64.*)$")
@@ -932,5 +932,3 @@ IF(CPUINFO_BUILD_PKG_CONFIG)
   DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 
 ENDIF()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
