@@ -8,6 +8,10 @@
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 
+#ifdef __QNXNTO__
+	#include <qnx/api.h>
+#endif
+
 #ifdef __APPLE__
 #include "TargetConditionals.h"
 #endif
@@ -30,6 +34,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	pthread_once(&init_guard, &cpuinfo_x86_linux_init);
 #elif defined(_WIN32) || defined(__CYGWIN__)
 	InitOnceExecuteOnce(&init_guard, &cpuinfo_x86_windows_init, NULL, NULL);
+#elif defined(__QNXNTO__)
+	pthread_once(&init_guard, &cpuinfo_qnx_init);
 #else
 	cpuinfo_log_error("operating system is not supported in cpuinfo");
 #endif
@@ -40,6 +46,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 #elif defined(_WIN32)
 	InitOnceExecuteOnce(&init_guard, &cpuinfo_arm_windows_init, NULL, NULL);
+#elif defined(__QNXNTO__)
+	pthread_once(&init_guard, &cpuinfo_qnx_init);
 #else
 	cpuinfo_log_error("operating system is not supported in cpuinfo");
 #endif
@@ -64,4 +72,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	return cpuinfo_is_initialized;
 }
 
-void CPUINFO_ABI cpuinfo_deinitialize(void) {}
+void CPUINFO_ABI cpuinfo_deinitialize(void) {
+	#ifdef __QNXNTO__
+		cpuinfo_qnx_deinit();
+	#endif
+}
