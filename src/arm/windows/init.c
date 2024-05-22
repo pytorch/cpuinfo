@@ -20,42 +20,56 @@ static struct woa_chip_info woa_chip_unknown = {
 	{{cpuinfo_vendor_unknown, cpuinfo_uarch_unknown, 0}}};
 
 /* Please add new SoC/chip info here! */
-static struct woa_chip_info woa_chips[] = {
+static struct woa_chip_info woa_chips[woa_chip_name_last] = {
 	/* Microsoft SQ1 Kryo 495 4 + 4 cores (3 GHz + 1.80 GHz) */
-	{L"Microsoft SQ1",
-	 woa_chip_name_microsoft_sq_1,
-	 {{
-		  cpuinfo_vendor_arm,
-		  cpuinfo_uarch_cortex_a55,
-		  1800000000,
-	  },
-	  {
-		  cpuinfo_vendor_arm,
-		  cpuinfo_uarch_cortex_a76,
-		  3000000000,
-	  }}},
+	[woa_chip_name_microsoft_sq_1] =
+		{L"Microsoft SQ1",
+		 woa_chip_name_microsoft_sq_1,
+		 {{
+			  cpuinfo_vendor_arm,
+			  cpuinfo_uarch_cortex_a55,
+			  1800000000,
+		  },
+		  {
+			  cpuinfo_vendor_arm,
+			  cpuinfo_uarch_cortex_a76,
+			  3000000000,
+		  }}},
 	/* Microsoft SQ2 Kryo 495 4 + 4 cores (3.15 GHz + 2.42 GHz) */
-	{L"Microsoft SQ2",
-	 woa_chip_name_microsoft_sq_2,
-	 {{
-		  cpuinfo_vendor_arm,
-		  cpuinfo_uarch_cortex_a55,
-		  2420000000,
-	  },
-	  {cpuinfo_vendor_arm, cpuinfo_uarch_cortex_a76, 3150000000}}},
+	[woa_chip_name_microsoft_sq_2] =
+		{L"Microsoft SQ2",
+		 woa_chip_name_microsoft_sq_2,
+		 {{
+			  cpuinfo_vendor_arm,
+			  cpuinfo_uarch_cortex_a55,
+			  2420000000,
+		  },
+		  {cpuinfo_vendor_arm, cpuinfo_uarch_cortex_a76, 3150000000}}},
+	/* Snapdragon (TM) 8cx Gen 3 @ 3.0 GHz */
+	[woa_chip_name_microsoft_sq_3] =
+		{L"Snapdragon (TM) 8cx Gen 3",
+		 woa_chip_name_microsoft_sq_3,
+		 {{
+			  cpuinfo_vendor_arm,
+			  cpuinfo_uarch_cortex_a78,
+			  2420000000,
+		  },
+		  {cpuinfo_vendor_arm, cpuinfo_uarch_cortex_x1, 3000000000}}},
 	/* Microsoft Windows Dev Kit 2023 */
-	{L"Snapdragon Compute Platform",
-	 woa_chip_name_microsoft_sq_3,
-	 {{
-		  cpuinfo_vendor_arm,
-		  cpuinfo_uarch_cortex_a78,
-		  2420000000,
-	  },
-	  {cpuinfo_vendor_arm, cpuinfo_uarch_cortex_x1, 3000000000}}},
+	[woa_chip_name_microsoft_sq_3_devkit] =
+		{L"Snapdragon Compute Platform",
+		 woa_chip_name_microsoft_sq_3_devkit,
+		 {{
+			  cpuinfo_vendor_arm,
+			  cpuinfo_uarch_cortex_a78,
+			  2420000000,
+		  },
+		  {cpuinfo_vendor_arm, cpuinfo_uarch_cortex_x1, 3000000000}}},
 	/* Ampere Altra */
-	{L"Ampere(R) Altra(R) Processor",
-	 woa_chip_name_ampere_altra,
-	 {{cpuinfo_vendor_arm, cpuinfo_uarch_neoverse_n1, 3000000000}}}};
+	[woa_chip_name_ampere_altra] = {
+		L"Ampere(R) Altra(R) Processor",
+		woa_chip_name_ampere_altra,
+		{{cpuinfo_vendor_arm, cpuinfo_uarch_neoverse_n1, 3000000000}}}};
 
 BOOL CALLBACK cpuinfo_arm_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context) {
 	struct woa_chip_info* chip_info = NULL;

@@ -538,6 +538,48 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	isa.avx512bf16 = avx512_regs && !!(structured_feature_info1.eax & UINT32_C(0x00000020));
 
 	/*
+	 * AMX_BF16 instructions:
+	 * - Intel: edx[bit 22] in structured feature info (ecx = 0).
+	 */
+	isa.amx_bf16 = avx512_regs && !!(structured_feature_info0.edx & UINT32_C(0x00400000));
+
+	/*
+	 * AMX_TILE instructions:
+	 * - Intel: edx[bit 24] in structured feature info (ecx = 0).
+	 */
+	isa.amx_tile = avx512_regs && !!(structured_feature_info0.edx & UINT32_C(0x01000000));
+
+	/*
+	 * AMX_INT8 instructions:
+	 * - Intel: edx[bit 25] in structured feature info (ecx = 0).
+	 */
+	isa.amx_int8 = avx512_regs && !!(structured_feature_info0.edx & UINT32_C(0x02000000));
+
+	/*
+	 * AMX_FP16 instructions:
+	 * - Intel: eax[bit 21] in structured feature info (ecx = 1).
+	 */
+	isa.amx_fp16 = avx512_regs && !!(structured_feature_info1.eax & UINT32_C(0x00200000));
+
+	/*
+	 * AVX_VNNI_INT8 instructions:
+	 * - Intel: edx[bit 4] in structured feature info (ecx = 1).
+	 */
+	isa.avx_vnni_int8 = avx_regs && !!(structured_feature_info1.edx & UINT32_C(0x00000010));
+
+	/*
+	 * AVX_VNNI_INT16 instructions:
+	 * - Intel: edx[bit 10] in structured feature info (ecx = 1).
+	 */
+	isa.avx_vnni_int16 = avx_regs && !!(structured_feature_info1.edx & UINT32_C(0x00000400));
+
+	/*
+	 * AVX_NE_CONVERT instructions:
+	 * - Intel: edx[bit 5] in structured feature info (ecx = 1).
+	 */
+	isa.avx_ne_convert = avx_regs && !!(structured_feature_info1.edx & UINT32_C(0x00000020));
+
+	/*
 	 * HLE instructions:
 	 * - Intel: ebx[bit 4] in structured feature info (ecx = 0).
 	 */
