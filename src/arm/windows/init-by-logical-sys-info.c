@@ -644,6 +644,22 @@ static bool parse_relation_cache_info(
 	struct cpuinfo_cache* l2_base = l1d_base + numbers_of_caches[cpuinfo_cache_level_1d];
 	struct cpuinfo_cache* l3_base = l2_base + numbers_of_caches[cpuinfo_cache_level_2];
 
+#ifdef __MINGW32__
+	cpuinfo_log_debug(
+    		"info->Cache.GroupMask:%" PRIu32
+		","
+		"info->Cache.Level:%" PRIu32 ", info->Cache.Associativity:%" PRIu32
+		","
+		"info->Cache.LineSize:%" PRIu32
+		","
+		"info->Cache.CacheSize:%" PRIu32 ", info->Cache.Type:%" PRIu32 "",
+    		(unsigned int)info->Cache.GroupMask.Mask,
+    		info->Cache.Level,
+		info->Cache.Associativity,
+		info->Cache.LineSize,
+		info->Cache.CacheSize,
+		info->Cache.Type);
+#else
 	cpuinfo_log_debug(
 		"info->Cache.GroupCount:%" PRIu32 ", info->Cache.GroupMask:%" PRIu32
 		","
@@ -701,6 +717,18 @@ static bool parse_relation_cache_info(
 		current_cache->flags = CPUINFO_CACHE_UNIFIED;
 	}
 
+#ifdef __MINGW32__
+	const uint32_t group_id = info->Cache.GroupMask.Group;
+	KAFFINITY group_processors_mask = info->Cache.GroupMask.Mask;
+	while (group_processors_mask != 0) {
+		const uint32_t processor_id_in_group = low_index_from_kaffinity(group_processors_mask);
+		const uint32_t processor_global_index = global_proc_index_per_group[group_id] + processor_id_in_group;
+
+		store_cache_info_per_processor(processors, processor_global_index, info, current_cache);
+
+		group_processors_mask &= ~(1 << processor_id_in_group);
+	}
+#else
 	for (uint32_t i = 0; i < info->Cache.GroupCount; i++) {
 		/* Zero GroupCount is valid, GroupMask still can store bits set.
 		 */
@@ -721,6 +749,7 @@ static bool parse_relation_cache_info(
 			group_processors_mask &= (group_processors_mask - 1);
 		}
 	}
+#endif
 	return true;
 }
 
