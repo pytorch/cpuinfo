@@ -2,6 +2,12 @@
 
 #include <cpuinfo.h>
 #include <x86/api.h>
+#include <x86/cpuid.h>
+
+CPUINFO_INTERNAL bool cpuinfo_x86_detect_pcores(){
+	if (((cpuid(0x1A).eax >> 24) & 0xFFF) == 0x40) return true;
+	return false;
+}
 
 enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 	enum cpuinfo_vendor vendor,
@@ -167,6 +173,26 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x7D: // Ice Lake-Y
 						case 0x7E: // Ice Lake-U
 							return cpuinfo_uarch_sunny_cove;
+						case 0xA7: // Rocket Lake
+							return cpuinfo_uarch_cypress_cove;
+						case 0x9A: // Alder Lake
+							if (cpuinfo_x86_detect_pcores()){
+								return cpuinfo_uarch_golden_cove;
+							} else { // E Core
+								return cpuinfo_uarch_gracemont_cove;
+							}
+						case 0xB7: // Raptor Lake
+							if (cpuinfo_x86_detect_pcores()){
+								return cpuinfo_uarch_raptor_cove;
+							} else { // E Core
+								return cpuinfo_uarch_gracemont_cove;
+							}
+						case 0xAA: // Meteor Lake
+							if (cpuinfo_x86_detect_pcores()){
+								return cpuinfo_uarch_redwood_cove;
+							} else { // E/LP-E Core
+								return cpuinfo_uarch_crestmont_cove;
+							}
 
 						/* Low-power cores */
 						case 0x1C: // Diamondville,

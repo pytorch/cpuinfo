@@ -353,6 +353,19 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_palm_cove = 0x0010020B,
 	/** Intel Sunny Cove microarchitecture (10 nm, Ice Lake). */
 	cpuinfo_uarch_sunny_cove = 0x0010020C,
+	/** Intel Cypress Cove microarchitecture (14 nm, Rocket Lake) */
+	cpuinfo_uarch_cypress_cove = 0x0010020E,
+	/** Intel Golden Cove microarchitecture (Intel 7, Alder Lake P-Cores) */
+	cpuinfo_uarch_golden_cove = 0x0010020F,
+	/** Intel Gracemont Cove microarchitecture (Intel 7, Alder/Raptor Lake E-Cores) */
+	cpuinfo_uarch_gracemont_cove = 0x00100210,
+	/** Intel Raptor Cove microarchitecture (Intel 7, Raptor Lake P-Cores) */
+	cpuinfo_uarch_raptor_cove = 0x00100211,
+	/** Intel Redwood Cove microarchitecture (Intel 4, Meteor Lake P-Cores) */
+	cpuinfo_uarch_redwood_cove = 0x00100212,
+	/** Intel Crestmont Cove microarchitecture (Intel 4, Meteor Lake E-Cores/LP-E-Cores) */
+	cpuinfo_uarch_crestmont_cove = 0x00100213,
+	
 
 	/** Pentium 4 with Willamette, Northwood, or Foster cores. */
 	cpuinfo_uarch_willamette = 0x00100300,
