@@ -179,19 +179,19 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							if (cpuinfo_x86_detect_pcores()){
 								return cpuinfo_uarch_golden_cove;
 							} else { // E Core
-								return cpuinfo_uarch_gracemont_cove;
+								return cpuinfo_uarch_gracemont;
 							}
 						case 0xB7: // Raptor Lake
 							if (cpuinfo_x86_detect_pcores()){
 								return cpuinfo_uarch_raptor_cove;
 							} else { // E Core
-								return cpuinfo_uarch_gracemont_cove;
+								return cpuinfo_uarch_gracemont;
 							}
 						case 0xAA: // Meteor Lake
 							if (cpuinfo_x86_detect_pcores()){
 								return cpuinfo_uarch_redwood_cove;
 							} else { // E/LP-E Core
-								return cpuinfo_uarch_crestmont_cove;
+								return cpuinfo_uarch_crestmont;
 							}
 
 						/* Low-power cores */
