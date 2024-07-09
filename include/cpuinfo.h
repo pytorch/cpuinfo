@@ -52,6 +52,13 @@
 #elif (__riscv_xlen == 64)
 #define CPUINFO_ARCH_RISCV64 1
 #endif
+
+// Not all systems include the hwprobe interface, introduced in Linux 6.4.
+#ifdef __has_include
+#if __has_include(<sys/hwprobe.h>)
+#define CPUINFO_HAS_RISCV_HWPROBE
+#endif // __has_include (<sys/hwprobe.h>)
+#endif // __has_include
 #endif
 
 /* Define other architecture-specific macros as 0 */
@@ -496,13 +503,19 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_cortex_x2 = 0x00300502,
 	/** ARM Cortex-X3. */
 	cpuinfo_uarch_cortex_x3 = 0x00300503,
+	/** ARM Cortex-X4. */
+	cpuinfo_uarch_cortex_x4 = 0x00300504,
 
 	/** ARM Cortex-A510. */
 	cpuinfo_uarch_cortex_a510 = 0x00300551,
+	/** ARM Cortex-A520. */
+	cpuinfo_uarch_cortex_a520 = 0x00300552,
 	/** ARM Cortex-A710. */
 	cpuinfo_uarch_cortex_a710 = 0x00300571,
 	/** ARM Cortex-A715. */
 	cpuinfo_uarch_cortex_a715 = 0x00300572,
+	/** ARM Cortex-A720. */
+	cpuinfo_uarch_cortex_a720 = 0x00300573,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
@@ -2044,20 +2057,6 @@ struct cpuinfo_riscv_isa {
 	 * Keep fields in line with the canonical order as defined by
 	 * Section 27.11 Subset Naming Convention.
 	 */
-	/* RV32I/64I/128I Base ISA. */
-	bool i;
-#if CPUINFO_ARCH_RISCV32
-	/* RV32E Base ISA. */
-	bool e;
-#endif
-	/* Integer Multiply/Divide Extension. */
-	bool m;
-	/* Atomic Extension. */
-	bool a;
-	/* Single-Precision Floating-Point Extension. */
-	bool f;
-	/* Double-Precision Floating-Point Extension. */
-	bool d;
 	/* Compressed Extension. */
 	bool c;
 	/* Vector Extension. */
@@ -2066,60 +2065,6 @@ struct cpuinfo_riscv_isa {
 
 extern struct cpuinfo_riscv_isa cpuinfo_isa;
 #endif
-
-static inline bool cpuinfo_has_riscv_i(void) {
-#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	return cpuinfo_isa.i;
-#else
-	return false;
-#endif
-}
-
-static inline bool cpuinfo_has_riscv_e(void) {
-#if CPUINFO_ARCH_RISCV32
-	return cpuinfo_isa.e;
-#else
-	return false;
-#endif
-}
-
-static inline bool cpuinfo_has_riscv_m(void) {
-#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	return cpuinfo_isa.m;
-#else
-	return false;
-#endif
-}
-
-static inline bool cpuinfo_has_riscv_a(void) {
-#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	return cpuinfo_isa.a;
-#else
-	return false;
-#endif
-}
-
-static inline bool cpuinfo_has_riscv_f(void) {
-#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	return cpuinfo_isa.f;
-#else
-	return false;
-#endif
-}
-
-static inline bool cpuinfo_has_riscv_d(void) {
-#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	return cpuinfo_isa.d;
-#else
-	return false;
-#endif
-}
-
-static inline bool cpuinfo_has_riscv_g(void) {
-	// The 'G' extension is simply shorthand for 'IMAFD'.
-	return cpuinfo_has_riscv_i() && cpuinfo_has_riscv_m() && cpuinfo_has_riscv_a() && cpuinfo_has_riscv_f() &&
-		cpuinfo_has_riscv_d();
-}
 
 static inline bool cpuinfo_has_riscv_c(void) {
 #if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
