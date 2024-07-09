@@ -497,6 +497,7 @@ enum cpuinfo_uarch {
 	/** ARM Neoverse V2. */
 	cpuinfo_uarch_neoverse_v2 = 0x00300404,
 
+
 	/** ARM Cortex-X1. */
 	cpuinfo_uarch_cortex_x1 = 0x00300501,
 	/** ARM Cortex-X2. */
