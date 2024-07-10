@@ -496,13 +496,19 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_cortex_x2 = 0x00300502,
 	/** ARM Cortex-X3. */
 	cpuinfo_uarch_cortex_x3 = 0x00300503,
+	/** ARM Cortex-X4. */
+	cpuinfo_uarch_cortex_x4 = 0x00300504,
 
 	/** ARM Cortex-A510. */
 	cpuinfo_uarch_cortex_a510 = 0x00300551,
+	/** ARM Cortex-A520. */
+	cpuinfo_uarch_cortex_a520 = 0x00300552,
 	/** ARM Cortex-A710. */
 	cpuinfo_uarch_cortex_a710 = 0x00300571,
 	/** ARM Cortex-A715. */
 	cpuinfo_uarch_cortex_a715 = 0x00300572,
+	/** ARM Cortex-A720. */
+	cpuinfo_uarch_cortex_a720 = 0x00300573,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
