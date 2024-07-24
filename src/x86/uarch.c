@@ -4,8 +4,8 @@
 #include <x86/api.h>
 #include <x86/cpuid.h>
 
-CPUINFO_INTERNAL bool cpuinfo_x86_detect_pcores(){
-	if (((cpuid(0x1A).eax >> 24) & 0xFFF) == 0x40) return true;
+CPUINFO_INTERNAL bool cpuinfo_x86_detect_hybrid_ecore(){
+	if (((cpuid(0x1A).eax >> 24) & 0xFFF) == 0x20) return true;
 	return false;
 }
 
@@ -174,24 +174,45 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x7E: // Ice Lake-U
 							return cpuinfo_uarch_sunny_cove;
 						case 0xA7: // Rocket Lake
+						case 0xA8: // Rocket Lake
 							return cpuinfo_uarch_cypress_cove;
-						case 0x9A: // Alder Lake
-							if (cpuinfo_x86_detect_pcores()){
-								return cpuinfo_uarch_golden_cove;
-							} else { // E Core
+						case 0x97: // Alder Lake 
+							// (S-processor 8+8)
+							// (HX SBGA - processor 8+8)
+							// (S-processor 6+0)
+						case 0x9A: // Alder Lake 
+							// (P-processor 6+8)
+							// (H-processor 6+8)
+							// (U15-processor 2+8)
+							// (U9-processor 2+8)
+							if (cpuinfo_x86_detect_hybrid_ecore()){
 								return cpuinfo_uarch_gracemont;
+							} else {
+								return cpuinfo_uarch_golden_cove;
 							}
 						case 0xB7: // Raptor Lake
-							if (cpuinfo_x86_detect_pcores()){
-								return cpuinfo_uarch_raptor_cove;
-							} else { // E Core
+							// (S/S Refresh 8P+16E )
+							// (HX/HX Refresh 8P+16E)
+							// (E 8P+0E)
+						case 0xBF: // Raptor Lake
+							// (S/S Refresh 8P+8E)
+							// (S/S Refresh 6P+0E)
+							// (HX 8P+8E)
+						case 0xBA: // Raptor Lake 
+							// (H 6P+8E)
+							// (P 6P+8E)
+							// (PX 6E+8P)
+							// (U/U Refresh 2E+8P)
+							if (cpuinfo_x86_detect_hybrid_ecore()){
 								return cpuinfo_uarch_gracemont;
+							} else {
+								return cpuinfo_uarch_raptor_cove;
 							}
 						case 0xAA: // Meteor Lake
-							if (cpuinfo_x86_detect_pcores()){
-								return cpuinfo_uarch_redwood_cove;
-							} else { // E/LP-E Core
+							if (cpuinfo_x86_detect_hybrid_ecore()){
 								return cpuinfo_uarch_crestmont;
+							} else {
+								return cpuinfo_uarch_redwood_cove;
 							}
 
 						/* Low-power cores */
