@@ -1670,6 +1670,7 @@ struct cpuinfo_arm_isa {
 	bool sve;
 	bool sve2;
 	bool i8mm;
+	int svelen;
 #endif
 	bool rdm;
 	bool fp16arith;
@@ -2039,6 +2040,30 @@ static inline bool cpuinfo_has_arm_sve2(void) {
 	return cpuinfo_isa.sve2;
 #else
 	return false;
+#endif
+}
+
+static inline bool cpuinfo_support_arm_sve128(void) {
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+    return (cpuinfo_isa.sve || cpuinfo_isa.sve2) && (cpuinfo_isa.svelen >= 16);
+#else
+    return false;
+#endif
+}
+
+static inline bool cpuinfo_support_arm_sve256(void) {
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+    return (cpuinfo_isa.sve || cpuinfo_isa.sve2) && (cpuinfo_isa.svelen >= 32);
+#else
+    return false;
+#endif
+}
+
+static inline bool cpuinfo_support_arm_sve512(void) {
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
+    return (cpuinfo_isa.sve || cpuinfo_isa.sve2) && (cpuinfo_isa.svelen >= 64);
+#else
+    return false;
 #endif
 }
 
