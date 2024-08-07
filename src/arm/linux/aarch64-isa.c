@@ -3,6 +3,8 @@
 #include <arm/linux/api.h>
 #include <cpuinfo/log.h>
 
+#include <sys/prctl.h>
+
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
 	uint32_t features2,
@@ -150,5 +152,22 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	}
 	if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDFHM) {
 		isa->fhm = true;
+	}
+
+#ifndef PR_SVE_GET_VL
+#define PR_SVE_GET_VL 51
+#endif
+
+#ifndef PR_SVE_VL_LEN_MASK
+#define PR_SVE_VL_LEN_MASK 0xffff
+#endif
+
+	int ret = prctl(PR_SVE_GET_VL);
+	if (ret < 0) {
+		cpuinfo_log_error("prctl(PR_SVE_GET_VL) failed");
+		isa->svelen = 0; // Assume no SVE support if the call fails
+	} else {
+		// Mask out the SVE vector length bits
+		isa->svelen = ret & PR_SVE_VL_LEN_MASK;
 	}
 }
