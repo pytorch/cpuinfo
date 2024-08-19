@@ -73,7 +73,7 @@ jobs:
   cmake-android:
     strategy:
       matrix:
-        script: [android-arm64-build.sh, android-armv7-build.sh, android-x86-build.sh]
+        script: [android-arm64-build.sh, android-armv7-build.sh, android-riscv64-build.sh, android-x86-build.sh]
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -86,7 +86,7 @@ jobs:
         id: setup-ndk
         uses: nttld/setup-ndk@v1.0.6
         with:
-          ndk-version: r23b
+          ndk-version: r27
           add-to-path: false
       - name: Configure and build
         run: scripts/${{ matrix.script }}
