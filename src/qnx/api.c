@@ -83,7 +83,7 @@ enum cpuinfo_uarch cpuinfo_qnx_get_uarch(){
         return cpuinfo_uarch_sky_lake;
     // cpu_name is an ASCII, NULL-terminated machine name. http://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.building/topic/syspage/cpuinfo.html
     char * token = strstr(cpu_name, "A7");
-    if( token != NULL && (token+2) != NULL && ((token+2)==' ' || (token+2)=='\0') )
+    if( token != NULL && (token+2) != NULL && (*(token+2)==' ' || *(token+2)=='\0') )
         return cpuinfo_uarch_cortex_a7;
     if( strstr(cpu_name, "A53") != NULL )
         return cpuinfo_uarch_cortex_a53;
