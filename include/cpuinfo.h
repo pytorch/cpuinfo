@@ -1670,6 +1670,7 @@ struct cpuinfo_arm_isa {
 	bool sve;
 	bool sve2;
 	bool i8mm;
+	bool sme;
 	uint32_t svelen;
 #endif
 	bool rdm;
@@ -2049,6 +2050,14 @@ static inline uint32_t cpuinfo_get_max_arm_sve_length(void) {
 	return cpuinfo_isa.svelen * 8; // bytes * 8 = bit length(vector length)
 #else
 	return 0;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme;
+#else
+	return false;
 #endif
 }
 
