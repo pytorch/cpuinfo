@@ -167,7 +167,7 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 
 	int ret = prctl(PR_SVE_GET_VL);
 	if (ret < 0) {
-		cpuinfo_log_error("prctl(PR_SVE_GET_VL) failed");
+		cpuinfo_log_warning("No SVE support on this machine");
 		isa->svelen = 0; // Assume no SVE support if the call fails
 	} else {
 		// Mask out the SVE vector length bits
