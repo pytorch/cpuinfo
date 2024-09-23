@@ -336,6 +336,39 @@ int main(int argc, char** argv) {
 			printf(", %s %s\n", vendor_string, uarch_string);
 		}
 	}
+	printf("Clusters:\n");
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const struct cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		if (cluster->processor_count == 1) {
+			printf("\t%" PRIu32 ": 1 processor (%" PRIu32 ")", i, cluster->processor_start);
+		} else {
+			printf("\t%" PRIu32 ": %" PRIu32 " processors (%" PRIu32 "-%" PRIu32 ")",
+			       i,
+			       cluster->processor_count,
+			       cluster->processor_start,
+			       cluster->processor_start + cluster->processor_count - 1);
+		}
+		if (cluster->core_count == 1) {
+			printf(",\t%" PRIu32 ": 1 core (%" PRIu32 ")", i, cluster->core_start);
+		} else {
+			printf(",\t%" PRIu32 ": %" PRIu32 " cores (%" PRIu32 "-%" PRIu32 ")",
+			       i,
+			       cluster->core_count,
+			       cluster->core_start,
+			       cluster->core_start + cluster->core_count - 1);
+		}
+		const char* vendor_string = vendor_to_string(cluster->vendor);
+		const char* uarch_string = uarch_to_string(cluster->uarch);
+		if (vendor_string == NULL) {
+			printf(", vendor 0x%08" PRIx32 " uarch 0x%08" PRIx32 "\n",
+			       (uint32_t)cluster->vendor,
+			       (uint32_t)cluster->uarch);
+		} else if (uarch_string == NULL) {
+			printf(", %s uarch 0x%08" PRIx32 "\n", vendor_string, (uint32_t)cluster->uarch);
+		} else {
+			printf(", %s %s\n", vendor_string, uarch_string);
+		}
+	}
 	printf("Logical processors");
 #if defined(__linux__)
 	printf(" (System ID)");

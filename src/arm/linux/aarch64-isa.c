@@ -3,6 +3,8 @@
 #include <arm/linux/api.h>
 #include <cpuinfo/log.h>
 
+#include <sys/prctl.h>
+
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
 	uint32_t features2,
@@ -142,6 +144,9 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SVE2) {
 		isa->sve2 = true;
 	}
+	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SME) {
+		isa->sme = true;
+	}
 	// SVEBF16 is set iff SVE and BF16 are both supported, but the SVEBF16
 	// feature flag was added in Linux kernel before the BF16 feature flag,
 	// so we check for either.
@@ -150,5 +155,22 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	}
 	if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDFHM) {
 		isa->fhm = true;
+	}
+
+#ifndef PR_SVE_GET_VL
+#define PR_SVE_GET_VL 51
+#endif
+
+#ifndef PR_SVE_VL_LEN_MASK
+#define PR_SVE_VL_LEN_MASK 0xffff
+#endif
+
+	int ret = prctl(PR_SVE_GET_VL);
+	if (ret < 0) {
+		cpuinfo_log_warning("No SVE support on this machine");
+		isa->svelen = 0; // Assume no SVE support if the call fails
+	} else {
+		// Mask out the SVE vector length bits
+		isa->svelen = ret & PR_SVE_VL_LEN_MASK;
 	}
 }
