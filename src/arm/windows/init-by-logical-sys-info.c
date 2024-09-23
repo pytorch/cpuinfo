@@ -675,6 +675,7 @@ static bool parse_relation_cache_info(
 		info->Cache.LineSize,
 		info->Cache.CacheSize,
 		info->Cache.Type);
+#endif
 
 	struct cpuinfo_cache* current_cache = NULL;
 	switch (info->Cache.Level) {
