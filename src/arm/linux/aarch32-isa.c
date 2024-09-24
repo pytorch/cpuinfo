@@ -24,7 +24,7 @@ void cpuinfo_set_wcid(uint32_t wcid) {
 
 void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
-	uint32_t features2,
+	uint64_t features2,
 	uint32_t midr,
 	uint32_t architecture_version,
 	uint32_t architecture_flags,
