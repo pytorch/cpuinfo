@@ -83,7 +83,7 @@ cleanup:
 }
 
 #ifdef __ANDROID__
-bool cpuinfo_arm_linux_hwcap_from_procfs(uint32_t hwcap[restrict static 1], uint32_t hwcap2[restrict static 1]) {
+bool cpuinfo_arm_linux_hwcap_from_procfs(uint32_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
 #if CPUINFO_MOCK
 	*hwcap = mock_hwcap;
 	*hwcap2 = mock_hwcap2;
