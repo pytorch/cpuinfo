@@ -89,7 +89,7 @@ bool cpuinfo_arm_linux_hwcap_from_procfs(uint32_t hwcap[restrict static 1], uint
 	*hwcap2 = mock_hwcap2;
 	return true;
 #else
-	uint32_t hwcaps[2] = {0, 0};
+	uint64_t hwcaps[2] = {0, 0};
 	bool result = false;
 	int file = -1;
 
@@ -113,7 +113,7 @@ bool cpuinfo_arm_linux_hwcap_from_procfs(uint32_t hwcap[restrict static 1], uint
 						hwcaps[0] = (uint32_t)elf_auxv.a_un.a_val;
 						break;
 					case AT_HWCAP2:
-						hwcaps[1] = (uint32_t)elf_auxv.a_un.a_val;
+						hwcaps[1] = (uint64_t)elf_auxv.a_un.a_val;
 						break;
 				}
 			} else {
@@ -141,13 +141,13 @@ cleanup:
 }
 #endif /* __ANDROID__ */
 #elif CPUINFO_ARCH_ARM64
-void cpuinfo_arm_linux_hwcap_from_getauxval(uint32_t hwcap[restrict static 1], uint32_t hwcap2[restrict static 1]) {
+void cpuinfo_arm_linux_hwcap_from_getauxval(uint32_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
 #if CPUINFO_MOCK
 	*hwcap = mock_hwcap;
 	*hwcap2 = mock_hwcap2;
 #else
 	*hwcap = (uint32_t)getauxval(AT_HWCAP);
-	*hwcap2 = (uint32_t)getauxval(AT_HWCAP2);
+	*hwcap2 = (uint64_t)getauxval(AT_HWCAP2);
 	return;
 #endif
 }
