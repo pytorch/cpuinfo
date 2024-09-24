@@ -218,7 +218,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
   ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(riscv(32|64))$")
     LIST(APPEND CPUINFO_SRCS
       src/riscv/uarch.c)
-    IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
       LIST(APPEND CPUINFO_SRCS
         src/riscv/linux/init.c
 	src/riscv/linux/riscv-hw.c
