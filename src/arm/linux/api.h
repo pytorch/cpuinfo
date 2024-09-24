@@ -138,6 +138,7 @@ struct cpuinfo_arm_linux_proc_cpuinfo_cache {
 #define CPUINFO_ARM_LINUX_FEATURE2_RNG UINT32_C(0x00010000)
 #define CPUINFO_ARM_LINUX_FEATURE2_BTI UINT32_C(0x00020000)
 #define CPUINFO_ARM_LINUX_FEATURE2_SME UINT32_C(0x00800000)
+#define CPUINFO_ARM_LINUX_FEATURE2_SME2 UINT64_C(0x0000002000000000)
 #endif
 
 #define CPUINFO_ARM_LINUX_VALID_ARCHITECTURE UINT32_C(0x00010000)
@@ -316,7 +317,7 @@ CPUINFO_INTERNAL void cpuinfo_arm_linux_hwcap_from_getauxval(
 
 CPUINFO_INTERNAL void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
-	uint32_t features2,
+	uint64_t features2,
 	uint32_t midr,
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	struct cpuinfo_arm_isa isa[restrict static 1]);
