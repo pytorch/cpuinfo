@@ -1671,7 +1671,7 @@ struct cpuinfo_arm_isa {
 	bool sve2;
 	bool i8mm;
 	bool sme;
-        bool sme2;
+	bool sme2;
 	uint32_t svelen;
 #endif
 	bool rdm;
