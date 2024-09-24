@@ -174,7 +174,7 @@ struct cpuinfo_arm_linux_processor {
 	struct cpuinfo_arm_linux_proc_cpuinfo_cache proc_cpuinfo_cache;
 #endif
 	uint32_t features;
-	uint32_t features2;
+	uint64_t features2;
 	/**
 	 * Main ID Register value.
 	 */
@@ -297,14 +297,14 @@ CPUINFO_INTERNAL bool cpuinfo_arm_linux_parse_proc_cpuinfo(
 #if CPUINFO_ARCH_ARM
 CPUINFO_INTERNAL bool cpuinfo_arm_linux_hwcap_from_getauxval(
 	uint32_t hwcap[restrict static 1],
-	uint32_t hwcap2[restrict static 1]);
+	uint64_t hwcap2[restrict static 1]);
 CPUINFO_INTERNAL bool cpuinfo_arm_linux_hwcap_from_procfs(
 	uint32_t hwcap[restrict static 1],
-	uint32_t hwcap2[restrict static 1]);
+	uint64_t hwcap2[restrict static 1]);
 
 CPUINFO_INTERNAL void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
-	uint32_t features2,
+	uint64_t features2,
 	uint32_t midr,
 	uint32_t architecture_version,
 	uint32_t architecture_flags,
@@ -313,7 +313,7 @@ CPUINFO_INTERNAL void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 #elif CPUINFO_ARCH_ARM64
 CPUINFO_INTERNAL void cpuinfo_arm_linux_hwcap_from_getauxval(
 	uint32_t hwcap[restrict static 1],
-	uint32_t hwcap2[restrict static 1]);
+	uint64_t hwcap2[restrict static 1]);
 
 CPUINFO_INTERNAL void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
