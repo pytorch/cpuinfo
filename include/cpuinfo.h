@@ -1671,6 +1671,7 @@ struct cpuinfo_arm_isa {
 	bool sve2;
 	bool i8mm;
 	bool sme;
+        bool sme2;
 	uint32_t svelen;
 #endif
 	bool rdm;
@@ -2056,6 +2057,14 @@ static inline uint32_t cpuinfo_get_max_arm_sve_length(void) {
 static inline bool cpuinfo_has_arm_sme(void) {
 #if CPUINFO_ARCH_ARM64
 	return cpuinfo_isa.sme;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme2(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme2;
 #else
 	return false;
 #endif
