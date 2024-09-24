@@ -246,9 +246,9 @@ void cpuinfo_arm_linux_init(void) {
 		cpuinfo_arm_linux_decode_chipset(proc_cpuinfo_hardware, proc_cpuinfo_revision, valid_processors, 0);
 #endif
 
+#if CPUINFO_ARCH_ARM
 	uint32_t isa_features = 0;
 	uint64_t isa_features2 = 0;
-#if CPUINFO_ARCH_ARM
 #ifdef __ANDROID__
 	/*
 	 * On Android before API 20, libc.so does not provide getauxval
@@ -300,7 +300,8 @@ void cpuinfo_arm_linux_init(void) {
 		&chipset,
 		&cpuinfo_isa);
 #elif CPUINFO_ARCH_ARM64
-	uint32_t isa_features = 0, isa_features2 = 0;
+	uint32_t isa_features = 0;
+	uint64_t isa_features2 = 0;
 	/* getauxval is always available on ARM64 Android */
 	cpuinfo_arm_linux_hwcap_from_getauxval(&isa_features, &isa_features2);
 	cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
