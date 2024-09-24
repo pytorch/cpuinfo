@@ -7,7 +7,7 @@
 
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	uint32_t features,
-	uint32_t features2,
+	uint64_t features2,
 	uint32_t midr,
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
 	struct cpuinfo_arm_isa isa[restrict static 1]) {
@@ -146,6 +146,9 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	}
 	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SME) {
 		isa->sme = true;
+	}
+	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SME2) {
+		isa->sme2 = true;
 	}
 	// SVEBF16 is set iff SVE and BF16 are both supported, but the SVEBF16
 	// feature flag was added in Linux kernel before the BF16 feature flag,
