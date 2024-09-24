@@ -31,8 +31,8 @@ void cpuinfo_set_hwcap(uint32_t hwcap) {
 	mock_hwcap = hwcap;
 }
 
-static uint32_t mock_hwcap2 = 0;
-void cpuinfo_set_hwcap2(uint32_t hwcap2) {
+static uint64_t mock_hwcap2 = 0;
+void cpuinfo_set_hwcap2(uint64_t hwcap2) {
 	mock_hwcap2 = hwcap2;
 }
 #endif
@@ -40,7 +40,7 @@ void cpuinfo_set_hwcap2(uint32_t hwcap2) {
 #if CPUINFO_ARCH_ARM
 typedef unsigned long (*getauxval_function_t)(unsigned long);
 
-bool cpuinfo_arm_linux_hwcap_from_getauxval(uint32_t hwcap[restrict static 1], uint32_t hwcap2[restrict static 1]) {
+bool cpuinfo_arm_linux_hwcap_from_getauxval(uint32_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
 #if CPUINFO_MOCK
 	*hwcap = mock_hwcap;
 	*hwcap2 = mock_hwcap2;
