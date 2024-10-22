@@ -423,7 +423,7 @@ void cpuinfo_arm_mach_init(void) {
 	if (has_feat_sme_f16f16 != 0) {
 		cpuinfo_isa.sme_f16f16 = true;
 	}
-	
+
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		cores[i] = (struct cpuinfo_core){
