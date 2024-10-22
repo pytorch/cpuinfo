@@ -399,6 +399,31 @@ void cpuinfo_arm_mach_init(void) {
 		cpuinfo_isa.i8mm = true;
 	}
 
+	const uint32_t has_feat_sme = get_sys_info_by_name("hw.optional.arm.FEAT_SME");
+	if (has_feat_sme != 0) {
+		cpuinfo_isa.sme = true;
+	}
+
+	const uint32_t has_feat_sme2 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2");
+	if (has_feat_sme2 != 0) {
+		cpuinfo_isa.sme2 = true;
+	}
+
+	const uint32_t has_feat_sme2p1 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2p1");
+	if (has_feat_sme2p1 != 0) {
+		cpuinfo_isa.sme2p1 = true;
+	}
+
+	const uint32_t has_feat_sme_b16b16 = get_sys_info_by_name("hw.optional.arm.FEAT_SME_B16B16");
+	if (has_feat_sme_b16b16 != 0) {
+		cpuinfo_isa.sme_b16b16 = true;
+	}
+
+	const uint32_t has_feat_sme_f16f16 = get_sys_info_by_name("hw.optional.arm.FEAT_SME_F16F16");
+	if (has_feat_sme_f16f16 != 0) {
+		cpuinfo_isa.sme_f16f16 = true;
+	}
+	
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		cores[i] = (struct cpuinfo_core){
