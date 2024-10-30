@@ -33,6 +33,9 @@
 #define CORE_ID_FILENAME_FORMAT "/sys/devices/system/cpu/cpu%" PRIu32 "/topology/core_id"
 #define CORE_ID_FILESIZE 32
 
+#define PROCESSOR_ONLINE_FILENAME_SIZE (sizeof("/sys/devices/system/cpu/cpu" STRINGIFY(UINT32_MAX) "/online"))
+#define PROCESSOR_ONLINE_FILENAME_FORMAT "/sys/devices/system/cpu/cpu%" PRIu32 "/online"
+#define PROCESSOR_ONLINE_FILESIZE 32
 #define CORE_CPUS_FILENAME_SIZE (sizeof("/sys/devices/system/cpu/cpu" STRINGIFY(UINT32_MAX) "/topology/core_cpus_list"))
 #define CORE_CPUS_FILENAME_FORMAT "/sys/devices/system/cpu/cpu%" PRIu32 "/topology/core_cpus_list"
 #define CORE_SIBLINGS_FILENAME_SIZE \
@@ -279,6 +282,31 @@ bool cpuinfo_linux_get_processor_package_id(uint32_t processor, uint32_t package
 		return false;
 	}
 }
+
+bool cpuinfo_linux_get_processor_online_status(uint32_t processor, uint32_t* online_status_ptr) {
+	char processor_online_filename[PROCESSOR_ONLINE_FILENAME_SIZE];
+	const int chars_formatted =
+		snprintf(processor_online_filename, PROCESSOR_ONLINE_FILENAME_SIZE, PROCESSOR_ONLINE_FILENAME_FORMAT, processor);
+        if ((unsigned int)chars_formatted >= PROCESSOR_ONLINE_FILENAME_SIZE) {
+		cpuinfo_log_warning("failed to format filename for online status of processor %" PRIu32, processor);
+		return 0;
+	}
+	uint32_t online_status;
+	if (cpuinfo_linux_parse_small_file(processor_online_filename, PROCESSOR_ONLINE_FILESIZE, uint32_parser, &online_status)) {
+		cpuinfo_log_debug(
+			"parsed online status value of %" PRIu32 " for logical processor %" PRIu32 " from %s",
+			online_status,
+			processor,
+			processor_online_filename);
+			*online_status_ptr = online_status;
+			return true;
+	} else {
+	cpuinfo_log_info(
+	"failed to parse online status for processor %" PRIu32 " from %s", processor, processor_online_filename);
+	return false;
+	}
+}
+
 
 static bool max_processor_number_parser(uint32_t processor_list_start, uint32_t processor_list_end, void* context) {
 	uint32_t* processor_number_ptr = (uint32_t*)context;
