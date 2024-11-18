@@ -646,15 +646,15 @@ static bool parse_relation_cache_info(
 
 #ifdef __MINGW32__
 	cpuinfo_log_debug(
-    		"info->Cache.GroupMask:%" PRIu32
+		"info->Cache.GroupMask:%" PRIu32
 		","
 		"info->Cache.Level:%" PRIu32 ", info->Cache.Associativity:%" PRIu32
 		","
 		"info->Cache.LineSize:%" PRIu32
 		","
 		"info->Cache.CacheSize:%" PRIu32 ", info->Cache.Type:%" PRIu32 "",
-    		(unsigned int)info->Cache.GroupMask.Mask,
-    		info->Cache.Level,
+		(unsigned int)info->Cache.GroupMask.Mask,
+		info->Cache.Level,
 		info->Cache.Associativity,
 		info->Cache.LineSize,
 		info->Cache.CacheSize,
