@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Update apt
         run: sudo apt update
       - name: Install ninja
@@ -28,7 +28,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install ninja
         run: brew install ninja
       - name: Configure and build
@@ -38,7 +38,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install ninja
         run: choco install ninja
       - name: Configure and build
@@ -49,7 +49,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: 'x64-uwp(Debug)'
         uses: lukka/run-cmake@v10
         with:
@@ -77,14 +77,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Update apt
         run: sudo apt update
       - name: Install ninja
         run: sudo apt install ninja-build
       - name: Setup Android NDK
         id: setup-ndk
-        uses: nttld/setup-ndk@v1.0.6
+        uses: nttld/setup-ndk@v1.2.0
         with:
           ndk-version: r27
           add-to-path: false
