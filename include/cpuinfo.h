@@ -631,19 +631,19 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
 
 	/** IBM POWER 7. */
-	cpuinfo_uarch_power7    = 0x00D00100,
+	cpuinfo_uarch_power7 = 0x00D00100,
 	/** IBM POWER 7p. */
-	cpuinfo_uarch_power7p   = 0x00D00101,
+	cpuinfo_uarch_power7p = 0x00D00101,
 	/** IBM POWER 8. */
-	cpuinfo_uarch_power8    = 0x00D00200,
+	cpuinfo_uarch_power8 = 0x00D00200,
 	/** IBM POWER8E. */
-	cpuinfo_uarch_power8e   = 0x00D00201,
+	cpuinfo_uarch_power8e = 0x00D00201,
 	/** IBM POWER8NVL */
 	cpuinfo_uarch_power8nvl = 0x00D00202,
 	/** IBM POWER 9. */
-	cpuinfo_uarch_power9    = 0x00D00303,
+	cpuinfo_uarch_power9 = 0x00D00303,
 	/** IBM POWER 10. */
-	cpuinfo_uarch_power10   = 0x00D00400,
+	cpuinfo_uarch_power10 = 0x00D00400,
 };
 
 struct cpuinfo_processor {
@@ -2301,13 +2301,13 @@ static inline bool cpuinfo_has_riscv_v(void) {
 }
 
 #if CPUINFO_ARCH_PPC64
-	struct cpuinfo_powerpc_isa {
-		bool vsx;
-		bool htm;
-		bool mma;
-	};
+struct cpuinfo_powerpc_isa {
+	bool vsx;
+	bool htm;
+	bool mma;
+};
 
-	extern struct cpuinfo_powerpc_isa cpuinfo_isa;
+extern struct cpuinfo_powerpc_isa cpuinfo_isa;
 #endif
 
 static inline bool cpuinfo_has_powerpc_vsx(void) {

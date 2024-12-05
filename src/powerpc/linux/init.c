@@ -234,7 +234,7 @@ void cpuinfo_powerpc_linux_init(void) {
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
 	uint32_t* linux_cpu_to_uarch_index_map = NULL;
-        struct cpuinfo_cache* l1i = NULL;
+	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
 	struct cpuinfo_cache* l3 = NULL;
@@ -287,9 +287,7 @@ void cpuinfo_powerpc_linux_init(void) {
 		goto cleanup;
 	}
 
-
-
-	uint32_t online_status=1;
+	uint32_t online_status = 1;
 	/* Populate processor information. */
 	for (size_t processor = 0; processor < max_processor_id; processor++) {
 		if (!bitmask_all(powerpc_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
@@ -300,40 +298,39 @@ void cpuinfo_powerpc_linux_init(void) {
 
 	/* Populate core information. */
 	for (size_t processor = 0; processor < max_processor_id; processor++) {
-	  if (!bitmask_all(powerpc_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
-	    continue;
-	  }
-	  online_status = 1;
-	  cpuinfo_linux_get_processor_online_status(processor, &online_status);
+		if (!bitmask_all(powerpc_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			continue;
+		}
+		online_status = 1;
+		cpuinfo_linux_get_processor_online_status(processor, &online_status);
 
-	  if (online_status == 1) {
-	  /* Populate processor start and count information.
-	   */
-	    if (!cpuinfo_linux_detect_core_cpus(
-			    max_processor_id,
-			    processor,
-			    (cpuinfo_siblings_callback)core_cpus_parser,
-			    powerpc_linux_processors)) {
-			cpuinfo_log_error("failed to detect core cpus for processor %zu.", processor);
-			goto cleanup;
-	    }
+		if (online_status == 1) {
+			/* Populate processor start and count information.
+			 */
+			if (!cpuinfo_linux_detect_core_cpus(
+				    max_processor_id,
+				    processor,
+				    (cpuinfo_siblings_callback)core_cpus_parser,
+				    powerpc_linux_processors)) {
+				cpuinfo_log_error("failed to detect core cpus for processor %zu.", processor);
+				goto cleanup;
+			}
 
-	  /* Populate core ID information. */
-	  if (cpuinfo_linux_get_processor_core_id(processor, &powerpc_linux_processors[processor].core.core_id)) {
-	    powerpc_linux_processors[processor].flags |= CPUINFO_LINUX_FLAG_CORE_ID;
-	  }
+			/* Populate core ID information. */
+			if (cpuinfo_linux_get_processor_core_id(
+				    processor, &powerpc_linux_processors[processor].core.core_id)) {
+				powerpc_linux_processors[processor].flags |= CPUINFO_LINUX_FLAG_CORE_ID;
+			}
 
-
-	/**
-	 * Populate the vendor and uarch of this core from /proc/cpuinfo.
-	 */
-        if (!cpuinfo_powerpc_linux_parse_proc_cpuinfo(max_processor_id,powerpc_linux_processors)) {
-	  cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
-	  return;
+			/**
+			 * Populate the vendor and uarch of this core from /proc/cpuinfo.
+			 */
+			if (!cpuinfo_powerpc_linux_parse_proc_cpuinfo(max_processor_id, powerpc_linux_processors)) {
+				cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
+				return;
+			}
+		}
 	}
-	}
-	}
-
 
 	/* Populate cluster information.
 	 * power10, the number of cores and the clusters are same.
@@ -342,30 +339,32 @@ void cpuinfo_powerpc_linux_init(void) {
 		if (!bitmask_all(powerpc_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;
 		}
-		online_status= 1;
+		online_status = 1;
 		cpuinfo_linux_get_processor_online_status(processor, &online_status);
 
 		if (online_status == 1) {
-		if (!cpuinfo_linux_detect_core_cpus(
-			    max_processor_id,
-			    processor,
-			    (cpuinfo_siblings_callback)cluster_cpus_parser,
-			    powerpc_linux_processors)) {
-			cpuinfo_log_warning("failed to detect cluster cpus for processor %zu.", processor);
-			goto cleanup;
+			if (!cpuinfo_linux_detect_core_cpus(
+				    max_processor_id,
+				    processor,
+				    (cpuinfo_siblings_callback)cluster_cpus_parser,
+				    powerpc_linux_processors)) {
+				cpuinfo_log_warning("failed to detect cluster cpus for processor %zu.", processor);
+				goto cleanup;
+			}
+
+			/**
+			 * Populate the vendor, uarch and frequency of this cluster from
+			 * this core.
+			 */
+			powerpc_linux_processors[processor].cluster.vendor =
+				powerpc_linux_processors[processor].core.vendor;
+			powerpc_linux_processors[processor].cluster.uarch =
+				powerpc_linux_processors[processor].core.uarch;
+			powerpc_linux_processors[processor].cluster.frequency =
+				powerpc_linux_processors[processor].core.frequency;
+			powerpc_linux_processors[processor].cluster.pvr = powerpc_linux_processors[processor].core.pvr;
 		}
-
-		/**
-		 * Populate the vendor, uarch and frequency of this cluster from
-		 * this core.
-		 */
-		powerpc_linux_processors[processor].cluster.vendor = powerpc_linux_processors[processor].core.vendor;
-		powerpc_linux_processors[processor].cluster.uarch = powerpc_linux_processors[processor].core.uarch;
-		powerpc_linux_processors[processor].cluster.frequency = powerpc_linux_processors[processor].core.frequency;
-		powerpc_linux_processors[processor].cluster.pvr = powerpc_linux_processors[processor].core.pvr;
 	}
-	}
-
 
 	/* Populate package information. */
 	for (size_t processor = 0; processor < max_processor_id; processor++) {
@@ -374,14 +373,14 @@ void cpuinfo_powerpc_linux_init(void) {
 		}
 		cpuinfo_linux_get_processor_online_status(processor, &online_status);
 		if (online_status == 1) {
-		if (!cpuinfo_linux_detect_package_cpus(
-			    max_processor_id,
-			    processor,
-			    (cpuinfo_siblings_callback)package_cpus_parser,
-			    powerpc_linux_processors)) {
-			cpuinfo_log_warning("failed to detect package cpus for processor %zu.", processor);
-			goto cleanup;
-		}
+			if (!cpuinfo_linux_detect_package_cpus(
+				    max_processor_id,
+				    processor,
+				    (cpuinfo_siblings_callback)package_cpus_parser,
+				    powerpc_linux_processors)) {
+				cpuinfo_log_warning("failed to detect package cpus for processor %zu.", processor);
+				goto cleanup;
+			}
 		}
 	}
 
@@ -389,32 +388,45 @@ void cpuinfo_powerpc_linux_init(void) {
 	for (size_t processor = 1; processor < max_processor_id; processor++) {
 		cpuinfo_linux_get_processor_online_status(processor, &online_status);
 		if (online_status == 1) {
-		if (powerpc_linux_processors[processor].package_leader_id == processor)
-		{
-		  powerpc_linux_processors[processor].core.core_id = 0;
-		  powerpc_linux_processors[processor].cluster.cluster_id = 0;
-		  powerpc_linux_processors[processor].cluster.core_start = powerpc_linux_processors[online_processor].cluster.core_start + powerpc_linux_processors[online_processor].cluster.core_count;
-		  powerpc_linux_processors[processor].package.core_start = powerpc_linux_processors[online_processor].package.core_start + powerpc_linux_processors[online_processor].package.core_count;
-		  powerpc_linux_processors[processor].package.cluster_start = powerpc_linux_processors[online_processor].package.cluster_start + powerpc_linux_processors[online_processor].package.cluster_count;
-		}
-		else {
-		  if (powerpc_linux_processors[processor].core.processor_start != powerpc_linux_processors[online_processor].core.processor_start)
-		    powerpc_linux_processors[processor].core.core_id = powerpc_linux_processors[online_processor].core.core_id + 1;
-		  else
-		    powerpc_linux_processors[processor].core.core_id = powerpc_linux_processors[online_processor].core.core_id;
-		  if (powerpc_linux_processors[processor].cluster.processor_start != powerpc_linux_processors[online_processor].cluster.processor_start) {
-		    powerpc_linux_processors[processor].cluster.core_start = powerpc_linux_processors[online_processor].cluster.core_start + powerpc_linux_processors[online_processor].cluster.core_count;
-		    powerpc_linux_processors[processor].cluster.cluster_id = powerpc_linux_processors[online_processor].cluster.cluster_id + 1;
-		  }
-		  else
-		  {
-		    powerpc_linux_processors[processor].cluster.core_start = powerpc_linux_processors[online_processor].cluster.core_start;
-		    powerpc_linux_processors[processor].cluster.cluster_id = powerpc_linux_processors[online_processor].cluster.cluster_id;
-		  }
-	          powerpc_linux_processors[processor].package.core_start = powerpc_linux_processors[online_processor].package.core_start;
-		  powerpc_linux_processors[processor].package.cluster_start = powerpc_linux_processors[online_processor].package.cluster_start;
-		}
-		online_processor = processor;
+			if (powerpc_linux_processors[processor].package_leader_id == processor) {
+				powerpc_linux_processors[processor].core.core_id = 0;
+				powerpc_linux_processors[processor].cluster.cluster_id = 0;
+				powerpc_linux_processors[processor].cluster.core_start =
+					powerpc_linux_processors[online_processor].cluster.core_start +
+					powerpc_linux_processors[online_processor].cluster.core_count;
+				powerpc_linux_processors[processor].package.core_start =
+					powerpc_linux_processors[online_processor].package.core_start +
+					powerpc_linux_processors[online_processor].package.core_count;
+				powerpc_linux_processors[processor].package.cluster_start =
+					powerpc_linux_processors[online_processor].package.cluster_start +
+					powerpc_linux_processors[online_processor].package.cluster_count;
+			} else {
+				if (powerpc_linux_processors[processor].core.processor_start !=
+				    powerpc_linux_processors[online_processor].core.processor_start)
+					powerpc_linux_processors[processor].core.core_id =
+						powerpc_linux_processors[online_processor].core.core_id + 1;
+				else
+					powerpc_linux_processors[processor].core.core_id =
+						powerpc_linux_processors[online_processor].core.core_id;
+				if (powerpc_linux_processors[processor].cluster.processor_start !=
+				    powerpc_linux_processors[online_processor].cluster.processor_start) {
+					powerpc_linux_processors[processor].cluster.core_start =
+						powerpc_linux_processors[online_processor].cluster.core_start +
+						powerpc_linux_processors[online_processor].cluster.core_count;
+					powerpc_linux_processors[processor].cluster.cluster_id =
+						powerpc_linux_processors[online_processor].cluster.cluster_id + 1;
+				} else {
+					powerpc_linux_processors[processor].cluster.core_start =
+						powerpc_linux_processors[online_processor].cluster.core_start;
+					powerpc_linux_processors[processor].cluster.cluster_id =
+						powerpc_linux_processors[online_processor].cluster.cluster_id;
+				}
+				powerpc_linux_processors[processor].package.core_start =
+					powerpc_linux_processors[online_processor].package.core_start;
+				powerpc_linux_processors[processor].package.cluster_start =
+					powerpc_linux_processors[online_processor].package.cluster_start;
+			}
+			online_processor = processor;
 		}
 	}
 
@@ -443,81 +455,86 @@ void cpuinfo_powerpc_linux_init(void) {
 		}
 		cpuinfo_linux_get_processor_online_status(processor, &online_status);
 		if (online_status == 1) {
-		/**
-		 * All comparisons to the leader id values MUST be done against
-		 * the 'linux_id' as opposed to 'processor'. The sort function
-		 * above no longer allows us to make the assumption that these
-		 * two values are the same.
-		 */
-		uint32_t linux_id = powerpc_linux_processors[processor].processor.linux_id;
+			/**
+			 * All comparisons to the leader id values MUST be done against
+			 * the 'linux_id' as opposed to 'processor'. The sort function
+			 * above no longer allows us to make the assumption that these
+			 * two values are the same.
+			 */
+			uint32_t linux_id = powerpc_linux_processors[processor].processor.linux_id;
 
-		valid_processors_count++;
-		if (powerpc_linux_processors[processor].core_leader_id == linux_id) {
-			valid_cores_count++;
-		}
-		if (powerpc_linux_processors[processor].cluster_leader_id == linux_id) {
-			valid_clusters_count++;
-		}
-		if (powerpc_linux_processors[processor].package_leader_id == linux_id) {
-			valid_packages_count++;
-		}
-		/**
-		 * As we've sorted by micro-architecture, when the uarch differs
-		 * between two entries, a unique uarch has been observed.
-		 */
-		if (last_uarch != powerpc_linux_processors[processor].core.uarch || valid_uarchs_count == 0) {
-			valid_uarchs_count++;
-			last_uarch = powerpc_linux_processors[processor].core.uarch;
-		}
+			valid_processors_count++;
+			if (powerpc_linux_processors[processor].core_leader_id == linux_id) {
+				valid_cores_count++;
+			}
+			if (powerpc_linux_processors[processor].cluster_leader_id == linux_id) {
+				valid_clusters_count++;
+			}
+			if (powerpc_linux_processors[processor].package_leader_id == linux_id) {
+				valid_packages_count++;
+			}
+			/**
+			 * As we've sorted by micro-architecture, when the uarch differs
+			 * between two entries, a unique uarch has been observed.
+			 */
+			if (last_uarch != powerpc_linux_processors[processor].core.uarch || valid_uarchs_count == 0) {
+				valid_uarchs_count++;
+				last_uarch = powerpc_linux_processors[processor].core.uarch;
+			}
 		}
 	}
 
 	smt = valid_processors_count / (valid_cores_count);
 	/* 1 cache instance for consecutive 4 even/odd  threads, if core has 8 threads then 2 cache instances */
-	cache_count = max_processor_id/4;
+	cache_count = max_processor_id / 4;
 
 	/* Asiigning linux_id's for all the online processors in consecutive manner.
 	 * This is only needed in other than SMT8 modes.
 	 */
-	if (smt !=8)
-	{
-	  size_t online_id = 0;
-	  for (size_t processor = 0; processor < max_processor_id; processor++) {
-	    cpuinfo_linux_get_processor_online_status(processor, &online_status);
-	    if (online_status == 1) {
-	      if (online_id != powerpc_linux_processors[processor].processor.linux_id)
-	      {
-	        if (powerpc_linux_processors[processor].core_leader_id == powerpc_linux_processors[processor].processor.linux_id) {
-		  powerpc_linux_processors[processor].core_leader_id = online_id;
-		  powerpc_linux_processors[processor].core.processor_start = powerpc_linux_processors[processor].core_leader_id;
+	if (smt != 8) {
+		size_t online_id = 0;
+		for (size_t processor = 0; processor < max_processor_id; processor++) {
+			cpuinfo_linux_get_processor_online_status(processor, &online_status);
+			if (online_status == 1) {
+				if (online_id != powerpc_linux_processors[processor].processor.linux_id) {
+					if (powerpc_linux_processors[processor].core_leader_id ==
+					    powerpc_linux_processors[processor].processor.linux_id) {
+						powerpc_linux_processors[processor].core_leader_id = online_id;
+						powerpc_linux_processors[processor].core.processor_start =
+							powerpc_linux_processors[processor].core_leader_id;
+					}
+					if (powerpc_linux_processors[processor].cluster_leader_id ==
+					    powerpc_linux_processors[processor].processor.linux_id) {
+						powerpc_linux_processors[processor].cluster_leader_id = online_id;
+						powerpc_linux_processors[processor].cluster.processor_start =
+							powerpc_linux_processors[processor].cluster_leader_id;
+					}
+					if (powerpc_linux_processors[processor].package_leader_id ==
+					    powerpc_linux_processors[processor].processor.linux_id) {
+						powerpc_linux_processors[processor].package_leader_id = online_id;
+						powerpc_linux_processors[processor].package.processor_start =
+							powerpc_linux_processors[processor].package_leader_id;
+					}
+					powerpc_linux_processors[processor].processor.linux_id = online_id;
+				}
+				online_id++;
+			}
 		}
-		if (powerpc_linux_processors[processor].cluster_leader_id == powerpc_linux_processors[processor].processor.linux_id) {
-		  powerpc_linux_processors[processor].cluster_leader_id = online_id;
-		  powerpc_linux_processors[processor].cluster.processor_start = powerpc_linux_processors[processor].cluster_leader_id;
-		}
-		if (powerpc_linux_processors[processor].package_leader_id == powerpc_linux_processors[processor].processor.linux_id) {
-		  powerpc_linux_processors[processor].package_leader_id = online_id;
-		  powerpc_linux_processors[processor].package.processor_start = powerpc_linux_processors[processor].package_leader_id;
-		}
-		powerpc_linux_processors[processor].processor.linux_id = online_id;
-	      }
-	      online_id++;
-	      }
-	   }
 	}
 
 	if (cache_count != 0) {
-	  l1i = calloc(cache_count, sizeof(struct cpuinfo_cache));
-	  l1d = calloc(cache_count, sizeof(struct cpuinfo_cache));
-	  l2 = calloc(cache_count, sizeof(struct cpuinfo_cache));
-	  l3 = calloc(cache_count, sizeof(struct cpuinfo_cache));
-	  if (l3 == NULL) {
-	    cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
-			       cache_count * sizeof(struct cpuinfo_cache), cache_count);
-	    goto cleanup;
-	  }
+		l1i = calloc(cache_count, sizeof(struct cpuinfo_cache));
+		l1d = calloc(cache_count, sizeof(struct cpuinfo_cache));
+		l2 = calloc(cache_count, sizeof(struct cpuinfo_cache));
+		l3 = calloc(cache_count, sizeof(struct cpuinfo_cache));
+		if (l3 == NULL) {
+			cpuinfo_log_error(
+				"failed to allocate %zu bytes for descriptions of %" PRIu32 " L3 caches",
+				cache_count * sizeof(struct cpuinfo_cache),
+				cache_count);
+			goto cleanup;
+		}
 	}
-
 
 	/* Allocate and populate final public ABI structures. */
 	processors = calloc(valid_processors_count, sizeof(struct cpuinfo_processor));
@@ -600,244 +617,253 @@ void cpuinfo_powerpc_linux_init(void) {
 	size_t valid_uarchs_index = 0;
 	last_uarch = cpuinfo_uarch_unknown;
 	for (size_t processor = 0; processor < max_processor_id; processor++) {
-	  cpuinfo_linux_get_processor_online_status(processor, &online_status);
-          if (online_status == 1) {
-		if (!bitmask_all(powerpc_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
-			continue;
+		cpuinfo_linux_get_processor_online_status(processor, &online_status);
+		if (online_status == 1) {
+			if (!bitmask_all(powerpc_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
+				continue;
+			}
+			/**
+			 * All comparisons to the leader id values MUST be done against
+			 * the 'linux_id' as opposed to 'processor'. The sort function
+			 * above no longer allows us to make the assumption that these
+			 * two values are the same.
+			 */
+			uint32_t linux_id = powerpc_linux_processors[processor].processor.linux_id;
+
+			/* Create uarch entry if this uarch has not been seen before. */
+			if (last_uarch != powerpc_linux_processors[processor].core.uarch || valid_uarchs_index == 0) {
+				uarchs[valid_uarchs_index++].uarch = powerpc_linux_processors[processor].core.uarch;
+				last_uarch = powerpc_linux_processors[processor].core.uarch;
+			}
+
+			/* Copy cpuinfo_processor information. */
+			memcpy(&processors[valid_processors_index++],
+			       &powerpc_linux_processors[processor].processor,
+			       sizeof(struct cpuinfo_processor));
+
+			/* Update uarch processor count. */
+			uarchs[valid_uarchs_index - 1].processor_count++;
+
+			/* Copy cpuinfo_core information, if this is the leader. */
+			if (powerpc_linux_processors[processor].core_leader_id == linux_id) {
+				memcpy(&cores[valid_cores_index++],
+				       &powerpc_linux_processors[processor].core,
+				       sizeof(struct cpuinfo_core));
+				/* Update uarch core count. */
+				uarchs[valid_uarchs_index - 1].core_count++;
+			}
+
+			/* Copy cpuinfo_cluster information, if this is the leader. */
+			if (powerpc_linux_processors[processor].cluster_leader_id == linux_id) {
+				memcpy(&clusters[valid_clusters_index++],
+				       &powerpc_linux_processors[processor].cluster,
+				       sizeof(struct cpuinfo_cluster));
+			}
+
+			/* Copy cpuinfo_package information, if this is the leader. */
+			if (powerpc_linux_processors[processor].package_leader_id == linux_id) {
+				memcpy(&packages[valid_packages_index++],
+				       &powerpc_linux_processors[processor].package,
+				       sizeof(struct cpuinfo_package));
+			}
+
+			/* Commit pointers on the final structures. */
+			processors[valid_processors_index - 1].core = &cores[valid_cores_index - 1];
+			processors[valid_processors_index - 1].cluster = &clusters[valid_clusters_index - 1];
+			processors[valid_processors_index - 1].package = &packages[valid_packages_index - 1];
+
+			cores[valid_cores_index - 1].cluster = &clusters[valid_clusters_index - 1];
+			cores[valid_cores_index - 1].package = &packages[valid_packages_index - 1];
+
+			clusters[valid_clusters_index - 1].package = &packages[valid_packages_index - 1];
+
+			linux_cpu_to_processor_map[linux_id] = &processors[valid_processors_index - 1];
+			linux_cpu_to_core_map[linux_id] = &cores[valid_cores_index - 1];
+			linux_cpu_to_uarch_index_map[linux_id] = valid_uarchs_index - 1;
 		}
-		/**
-		 * All comparisons to the leader id values MUST be done against
-		 * the 'linux_id' as opposed to 'processor'. The sort function
-		 * above no longer allows us to make the assumption that these
-		 * two values are the same.
-		 */
-		uint32_t linux_id = powerpc_linux_processors[processor].processor.linux_id;
-
-		/* Create uarch entry if this uarch has not been seen before. */
-		if (last_uarch != powerpc_linux_processors[processor].core.uarch || valid_uarchs_index == 0) {
-			uarchs[valid_uarchs_index++].uarch = powerpc_linux_processors[processor].core.uarch;
-			last_uarch = powerpc_linux_processors[processor].core.uarch;
-		}
-
-		/* Copy cpuinfo_processor information. */
-		memcpy(&processors[valid_processors_index++],
-		       &powerpc_linux_processors[processor].processor,
-		       sizeof(struct cpuinfo_processor));
-
-		/* Update uarch processor count. */
-		uarchs[valid_uarchs_index - 1].processor_count++;
-
-		/* Copy cpuinfo_core information, if this is the leader. */
-		if (powerpc_linux_processors[processor].core_leader_id == linux_id) {
-			memcpy(&cores[valid_cores_index++],
-			       &powerpc_linux_processors[processor].core,
-			       sizeof(struct cpuinfo_core));
-			/* Update uarch core count. */
-			uarchs[valid_uarchs_index - 1].core_count++;
-		}
-
-		/* Copy cpuinfo_cluster information, if this is the leader. */
-		if (powerpc_linux_processors[processor].cluster_leader_id == linux_id) {
-			memcpy(&clusters[valid_clusters_index++],
-			       &powerpc_linux_processors[processor].cluster,
-			       sizeof(struct cpuinfo_cluster));
-		}
-
-		/* Copy cpuinfo_package information, if this is the leader. */
-		if (powerpc_linux_processors[processor].package_leader_id == linux_id) {
-			memcpy(&packages[valid_packages_index++],
-			       &powerpc_linux_processors[processor].package,
-			       sizeof(struct cpuinfo_package));
-		}
-
-		/* Commit pointers on the final structures. */
-		processors[valid_processors_index - 1].core = &cores[valid_cores_index - 1];
-		processors[valid_processors_index - 1].cluster = &clusters[valid_clusters_index - 1];
-		processors[valid_processors_index - 1].package = &packages[valid_packages_index - 1];
-
-		cores[valid_cores_index - 1].cluster = &clusters[valid_clusters_index - 1];
-		cores[valid_cores_index - 1].package = &packages[valid_packages_index - 1];
-
-		clusters[valid_clusters_index - 1].package = &packages[valid_packages_index - 1];
-
-		linux_cpu_to_processor_map[linux_id] = &processors[valid_processors_index - 1];
-		linux_cpu_to_core_map[linux_id] = &cores[valid_cores_index - 1];
-		linux_cpu_to_uarch_index_map[linux_id] = valid_uarchs_index - 1;
-	    }
 	}
 
-        uint32_t l1i_index = UINT32_MAX, l1d_index = UINT32_MAX, l2_index = UINT32_MAX, l3_index = UINT32_MAX;
+	uint32_t l1i_index = UINT32_MAX, l1d_index = UINT32_MAX, l2_index = UINT32_MAX, l3_index = UINT32_MAX;
 	for (uint32_t i = 0; i < valid_processors_count; i++) {
-	struct cpuinfo_cache temp_l1i = {0}, temp_l1d = {0}, temp_l2 = {0}, temp_l3 = {0};
-	cpuinfo_powerpc_decode_cache(&temp_l1i, &temp_l1d, &temp_l2, &temp_l3);
-	/* Power10, even threads of a core shares 1 cache and odd threads of a core shares the another one
-	 * test/init.cc is expecting continuous therads for cache instance so disabled the check in init.cc for PPC64.
-	 */
-	if (temp_l1i.size != 0) {
-          if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1)) {
-	    /* new cache */
-	    l1i[++l1i_index] = (struct cpuinfo_cache){
-		 .size = temp_l1i.size,
-		 .associativity = temp_l1i.associativity,
-		 .sets = temp_l1i.sets,
-		 .partitions = 1,
-		 .line_size = temp_l1i.line_size,
-		 .flags = temp_l1i.flags,
-		 .processor_start = i,
-		 .processor_count = 1,
-		};
-	  }
-	  else if ((smt == 8 && (i%8 == 1)) || (smt == 4 && (i%4 == 1)) || (smt == 2 && (i%2 == 1))) {
-	    l1i[++l1i_index] = (struct cpuinfo_cache){
-		.size = temp_l1i.size,
-		.associativity = temp_l1i.associativity,
-		.sets = temp_l1i.sets,
-		.partitions = 1,
-		.line_size = temp_l1i.line_size,
-		.flags = temp_l1i.flags,
-		.processor_start = i,
-		.processor_count = 1,
-		};
-	  }
-	  else {
-	    /* another processor sharing the same cache.  */
-		if (i%2 == 0)
-		  l1i[l1i_index-1].processor_count += 1;
-		else
-		  l1i[l1i_index].processor_count += 1;
-	  }
-	  if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1))
-            processors[i].cache.l1i = &l1i[l1i_index];
-	  else if (i%2 == 0)
-	    processors[i].cache.l1i = &l1i[l1i_index-1];
-	  else
-	    processors[i].cache.l1i = &l1i[l1i_index];
-        }
+		struct cpuinfo_cache temp_l1i = {0}, temp_l1d = {0}, temp_l2 = {0}, temp_l3 = {0};
+		cpuinfo_powerpc_decode_cache(&temp_l1i, &temp_l1d, &temp_l2, &temp_l3);
+		/* Power10, even threads of a core shares 1 cache and odd threads of a core shares the another one
+		 * test/init.cc is expecting continuous therads for cache instance so disabled the check in init.cc for
+		 * PPC64.
+		 */
+		if (temp_l1i.size != 0) {
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1)) {
+				/* new cache */
+				l1i[++l1i_index] = (struct cpuinfo_cache){
+					.size = temp_l1i.size,
+					.associativity = temp_l1i.associativity,
+					.sets = temp_l1i.sets,
+					.partitions = 1,
+					.line_size = temp_l1i.line_size,
+					.flags = temp_l1i.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else if (
+				(smt == 8 && (i % 8 == 1)) || (smt == 4 && (i % 4 == 1)) ||
+				(smt == 2 && (i % 2 == 1))) {
+				l1i[++l1i_index] = (struct cpuinfo_cache){
+					.size = temp_l1i.size,
+					.associativity = temp_l1i.associativity,
+					.sets = temp_l1i.sets,
+					.partitions = 1,
+					.line_size = temp_l1i.line_size,
+					.flags = temp_l1i.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else {
+				/* another processor sharing the same cache.  */
+				if (i % 2 == 0)
+					l1i[l1i_index - 1].processor_count += 1;
+				else
+					l1i[l1i_index].processor_count += 1;
+			}
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1))
+				processors[i].cache.l1i = &l1i[l1i_index];
+			else if (i % 2 == 0)
+				processors[i].cache.l1i = &l1i[l1i_index - 1];
+			else
+				processors[i].cache.l1i = &l1i[l1i_index];
+		}
 
-	if (temp_l1d.size != 0) {
-	  if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1)) {
-	    /* new cache */
-	    l1d[++l1d_index] = (struct cpuinfo_cache){
-		.size = temp_l1d.size,
-		.associativity = temp_l1d.associativity,
-		.sets = temp_l1d.sets,
-		.partitions = 1,
-		.line_size = temp_l1d.line_size,
-		.flags = temp_l1d.flags,
-		.processor_start = i,
-		.processor_count = 1,
-	     };
-	  }
-	  else if ((smt == 8 && (i%8 == 1)) || (smt == 4 && (i%4 == 1)) || (smt == 2 && (i%2 == 1))) {
-	    /* new cache */
-	    l1d[++l1d_index] = (struct cpuinfo_cache){
-	    .size = temp_l1d.size,
-	    .associativity = temp_l1d.associativity,
-	    .sets = temp_l1d.sets,
-	    .partitions = 1,
-	    .line_size = temp_l1d.line_size,
-	    .flags = temp_l1d.flags,
-	    .processor_start = i,
-	    .processor_count = 1,
-	    };
-	  }
-	  else {
-	    /* another processor sharing the same cache.  */
-	      if (i%2 == 0)
-		l1d[l1d_index-1].processor_count += 1;
-	      else
-	        l1d[l1d_index].processor_count += 1;
-	  }
-	  if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1))
-            processors[i].cache.l1d = &l1d[l1d_index];
-	  else if (i%2 == 0)
-	    processors[i].cache.l1d = &l1d[l1d_index-1];
-	  else
-	    processors[i].cache.l1d = &l1d[l1d_index];
-       }
+		if (temp_l1d.size != 0) {
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1)) {
+				/* new cache */
+				l1d[++l1d_index] = (struct cpuinfo_cache){
+					.size = temp_l1d.size,
+					.associativity = temp_l1d.associativity,
+					.sets = temp_l1d.sets,
+					.partitions = 1,
+					.line_size = temp_l1d.line_size,
+					.flags = temp_l1d.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else if (
+				(smt == 8 && (i % 8 == 1)) || (smt == 4 && (i % 4 == 1)) ||
+				(smt == 2 && (i % 2 == 1))) {
+				/* new cache */
+				l1d[++l1d_index] = (struct cpuinfo_cache){
+					.size = temp_l1d.size,
+					.associativity = temp_l1d.associativity,
+					.sets = temp_l1d.sets,
+					.partitions = 1,
+					.line_size = temp_l1d.line_size,
+					.flags = temp_l1d.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else {
+				/* another processor sharing the same cache.  */
+				if (i % 2 == 0)
+					l1d[l1d_index - 1].processor_count += 1;
+				else
+					l1d[l1d_index].processor_count += 1;
+			}
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1))
+				processors[i].cache.l1d = &l1d[l1d_index];
+			else if (i % 2 == 0)
+				processors[i].cache.l1d = &l1d[l1d_index - 1];
+			else
+				processors[i].cache.l1d = &l1d[l1d_index];
+		}
 
-        if (temp_l2.size != 0) {
-	  if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1)) {
-	    /* new cache */
-	    l2[++l2_index] = (struct cpuinfo_cache){
-	        .size = temp_l2.size,
-		.associativity = temp_l2.associativity,
-		.sets = temp_l2.sets,
-		.partitions = 1,
-		.line_size = temp_l2.line_size,
-                .flags = temp_l2.flags,
-                .processor_start = i,
-                .processor_count = 1,
-             };
-	   }
-	  else if ((smt == 8 && (i%8 == 1)) || (smt == 4 && (i%4 == 1)) || (smt == 2 && (i%2 == 1))) {
-	    l2[++l2_index] = (struct cpuinfo_cache){
-	       .size = temp_l2.size,
-	       .associativity = temp_l2.associativity,
-	       .sets = temp_l2.sets,
-	       .partitions = 1,
-	       .line_size = temp_l2.line_size,
-	       .flags = temp_l2.flags,
-	       .processor_start = i,
-	       .processor_count = 1,
-	    };
-	  }
-	  else {
-	    /* another processor sharing the same cache.  */
-	    if (i%2 == 0)
-	      l2[l2_index-1].processor_count += 1;
-	    else
-	      l2[l2_index].processor_count += 1;
-	   }
-       if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1))
-         processors[i].cache.l2 = &l2[l2_index];
-       else if (i%2 == 0)
-	 processors[i].cache.l2 = &l2[l2_index-1];
-       else
-	 processors[i].cache.l2 = &l2[l2_index];
-       }
+		if (temp_l2.size != 0) {
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1)) {
+				/* new cache */
+				l2[++l2_index] = (struct cpuinfo_cache){
+					.size = temp_l2.size,
+					.associativity = temp_l2.associativity,
+					.sets = temp_l2.sets,
+					.partitions = 1,
+					.line_size = temp_l2.line_size,
+					.flags = temp_l2.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else if (
+				(smt == 8 && (i % 8 == 1)) || (smt == 4 && (i % 4 == 1)) ||
+				(smt == 2 && (i % 2 == 1))) {
+				l2[++l2_index] = (struct cpuinfo_cache){
+					.size = temp_l2.size,
+					.associativity = temp_l2.associativity,
+					.sets = temp_l2.sets,
+					.partitions = 1,
+					.line_size = temp_l2.line_size,
+					.flags = temp_l2.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else {
+				/* another processor sharing the same cache.  */
+				if (i % 2 == 0)
+					l2[l2_index - 1].processor_count += 1;
+				else
+					l2[l2_index].processor_count += 1;
+			}
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1))
+				processors[i].cache.l2 = &l2[l2_index];
+			else if (i % 2 == 0)
+				processors[i].cache.l2 = &l2[l2_index - 1];
+			else
+				processors[i].cache.l2 = &l2[l2_index];
+		}
 
-        if (temp_l3.size != 0) {
-	  if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1)) {
-	   /* new cache */
-	    l3[++l3_index] = (struct cpuinfo_cache){
-		.size = temp_l3.size,
-		.associativity = temp_l3.associativity,
-		.sets = temp_l3.sets,
-		.partitions = 1,
-		.line_size = temp_l3.line_size,
-                .flags = temp_l3.flags,
-                .processor_start = i,
-                .processor_count = 1,
-             };
-	 }
-	 else if ((smt == 8 && (i%8 == 1)) || (smt == 4 && (i%4 == 1)) || (smt == 2 && (i%2 == 1))) {
-            l3[++l3_index] = (struct cpuinfo_cache){
-	       .size = temp_l3.size,
-	       .associativity = temp_l3.associativity,
-	       .sets = temp_l3.sets,
-	       .partitions = 1,
-	       .line_size = temp_l3.line_size,
-	       .flags = temp_l3.flags,
-	       .processor_start = i,
-	       .processor_count = 1,
-	    };
-	 }
-	 else {
-	   /* another processor sharing the same cache.  */
-	   if (i%2 ==0 )
-	     l3[l3_index-1].processor_count += 1;
-	   else
-	     l3[l3_index].processor_count += 1;
-         }
-       if ((smt == 8 && (i%8 == 0)) || (smt == 4 && (i%4 == 0)) || (smt == 2 && (i%2 == 0)) || (smt ==1))
-         processors[i].cache.l3 = &l3[l3_index];
-       else if ( i%2 == 0)
-	 processors[i].cache.l3 = &l3[l3_index-1];
-       else
-	 processors[i].cache.l3 = &l3[l3_index];
-       }
-  }
+		if (temp_l3.size != 0) {
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1)) {
+				/* new cache */
+				l3[++l3_index] = (struct cpuinfo_cache){
+					.size = temp_l3.size,
+					.associativity = temp_l3.associativity,
+					.sets = temp_l3.sets,
+					.partitions = 1,
+					.line_size = temp_l3.line_size,
+					.flags = temp_l3.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else if (
+				(smt == 8 && (i % 8 == 1)) || (smt == 4 && (i % 4 == 1)) ||
+				(smt == 2 && (i % 2 == 1))) {
+				l3[++l3_index] = (struct cpuinfo_cache){
+					.size = temp_l3.size,
+					.associativity = temp_l3.associativity,
+					.sets = temp_l3.sets,
+					.partitions = 1,
+					.line_size = temp_l3.line_size,
+					.flags = temp_l3.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+			} else {
+				/* another processor sharing the same cache.  */
+				if (i % 2 == 0)
+					l3[l3_index - 1].processor_count += 1;
+				else
+					l3[l3_index].processor_count += 1;
+			}
+			if ((smt == 8 && (i % 8 == 0)) || (smt == 4 && (i % 4 == 0)) || (smt == 2 && (i % 2 == 0)) ||
+			    (smt == 1))
+				processors[i].cache.l3 = &l3[l3_index];
+			else if (i % 2 == 0)
+				processors[i].cache.l3 = &l3[l3_index - 1];
+			else
+				processors[i].cache.l3 = &l3[l3_index];
+		}
+	}
 
 	cpuinfo_processors = processors;
 	cpuinfo_processors_count = valid_processors_count;
@@ -852,8 +878,8 @@ void cpuinfo_powerpc_linux_init(void) {
 
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
-	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
-	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
+	cpuinfo_cache[cpuinfo_cache_level_2] = l2;
+	cpuinfo_cache[cpuinfo_cache_level_3] = l3;
 	cpuinfo_linux_cpu_max = valid_processors_count;
 	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
 	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
@@ -861,8 +887,8 @@ void cpuinfo_powerpc_linux_init(void) {
 
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = cache_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = cache_count;
-	cpuinfo_cache_count[cpuinfo_cache_level_2]  = cache_count;
-	cpuinfo_cache_count[cpuinfo_cache_level_3]  = cache_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_2] = cache_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_3] = cache_count;
 	__sync_synchronize();
 
 	cpuinfo_is_initialized = true;
@@ -877,7 +903,7 @@ void cpuinfo_powerpc_linux_init(void) {
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
 	linux_cpu_to_uarch_index_map = NULL;
-        l1i = l1d = l2 = l3 = NULL;
+	l1i = l1d = l2 = l3 = NULL;
 cleanup:
 	free(powerpc_linux_processors);
 	free(processors);
