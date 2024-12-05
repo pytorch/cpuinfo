@@ -95,7 +95,7 @@ IF(NOT CMAKE_SYSTEM_PROCESSOR)
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
     SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
   ENDIF()
-ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64.*|ARM64.*|riscv(32|64))$")
+ELSEIF(NOT CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?|armv[5-8].*|aarch64|arm64.*|ARM64.*|riscv(32|64)|ppc64le)$")
   MESSAGE(WARNING
     "Target processor architecture \"${CPUINFO_TARGET_PROCESSOR}\" is not supported in cpuinfo. "
     "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
@@ -184,6 +184,14 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
     ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
       LIST(APPEND CPUINFO_SRCS src/x86/freebsd/init.c)
     ENDIF()
+  ELSEIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^(ppc64le)$" )
+    LIST(APPEND CPUINFO_SRCS
+      src/powerpc/uarch.c
+      src/powerpc/cache.c
+      src/powerpc/linux/cpuinfo.c
+      src/powerpc/linux/ppc64-hw.c
+      src/powerpc/linux/init.c
+      src/powerpc/linux/ppc64-isa.c)
   ELSEIF(CMAKE_SYSTEM_NAME MATCHES "^Windows" AND CPUINFO_TARGET_PROCESSOR MATCHES "^(ARM64|arm64)$")
     LIST(APPEND CPUINFO_SRCS
       src/arm/windows/init-by-logical-sys-info.c
@@ -855,6 +863,14 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_UNIT_TESTS)
     TARGET_COMPILE_DEFINITIONS(cache-test PRIVATE __STDC_LIMIT_MACROS=1 __STDC_CONSTANT_MACROS=1)
     TARGET_LINK_LIBRARIES(cache-test PRIVATE cpuinfo_internals gtest gtest_main)
     ADD_TEST(NAME cache-test COMMAND cache-test)
+  ENDIF()
+
+  IF(CMAKE_SYSTEM_NAME STREQUAL "POWER" OR CMAKE_SYSTEM_PROCESSOR MATCHES "^(ppc64le)$")
+    ADD_EXECUTABLE(power-features-test test/name/power-features.cc)
+    CPUINFO_TARGET_ENABLE_CXX11(power-features-test)
+    CPUINFO_TARGET_RUNTIME_LIBRARY(power-features-test)
+    TARGET_LINK_LIBRARIES(power-features-test PRIVATE cpuinfo_internals gtest gtest_main)
+    ADD_TEST(NAME power-features-test COMMAND power-features-test)
   ENDIF()
 ENDIF()
 
