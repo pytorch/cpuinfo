@@ -433,7 +433,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	 * AVX 10.1 instructions:
 	 */
 	isa.avx10_1 = avx512_regs && !!(structured_feature_info1.edx & UINT32_C(0x00080000));
-	
+
 	/*
 	 * AVX512PF instructions:
 	 * - Intel: ebx[bit 26] in structured feature info (ecx = 0).
