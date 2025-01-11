@@ -166,7 +166,7 @@ static struct woa_chip_info* get_system_info_from_registry(void) {
 	}
 	for (uint32_t i = 0; i < (uint32_t)woa_chip_name_last; i++) {
 		size_t compare_length = wcsnlen(woa_chips[i].chip_name_string, CPUINFO_PACKAGE_NAME_MAX);
-		int compare_result = wcsncmp(text_buffer, woa_chips[i].chip_name_string, compare_length);
+		int compare_result = _wcsnicmp(text_buffer, woa_chips[i].chip_name_string, compare_length);
 		if (compare_result == 0) {
 			chip_info = woa_chips + i;
 			break;
