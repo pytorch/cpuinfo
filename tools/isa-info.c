@@ -193,4 +193,26 @@ int main(int argc, char** argv) {
 	printf("\tCompressed: %s\n", cpuinfo_has_riscv_c() ? "yes" : "no");
 	printf("\tVector: %s\n", cpuinfo_has_riscv_v() ? "yes" : "no");
 #endif
+#if CPUINFO_ARCH_LOONGARCH64
+	printf("Loongarch:\n");
+	printf("\tCPUCFG: %s\n", cpuinfo_has_loongarch_cpucfg() ? "yes" : "no");
+	printf("\tLAM: %s\n", cpuinfo_has_loongarch_lam() ? "yes" : "no");
+	printf("\tUAL: %s\n", cpuinfo_has_loongarch_ual() ? "yes" : "no");
+	printf("\tCOMPLEX: %s\n", cpuinfo_has_loongarch_complex() ? "yes" : "no");
+	printf("\tLVZ: %s\n", cpuinfo_has_loongarch_lvz() ? "yes" : "no");
+	printf("\tLBT_X86: %s\n", cpuinfo_has_loongarch_lbt_x86() ? "yes" : "no");
+	printf("\tLBT_arm: %s\n", cpuinfo_has_loongarch_lbt_arm() ? "yes" : "no");
+	printf("\tLBT_mips: %s\n", cpuinfo_has_loongarch_lbt_mips() ? "yes" : "no");
+
+	printf("Scalar instructions:\n");
+	printf("\tFPU: %s\n", cpuinfo_has_loongarch_fpu() ? "yes" : "no");
+
+	printf("SIMD extensions:\n");
+	printf("\tLSX: %s\n", cpuinfo_has_loongarch_lsx() ? "yes" : "no");
+	printf("\tLASX: %s\n", cpuinfo_has_loongarch_lasx() ? "yes" : "no");
+
+	printf("Cryptography extensions:\n");
+	printf("\tCRYPTO: %s\n", cpuinfo_has_loongarch_crypto() ? "yes" : "no");
+	printf("\tCRC32: %s\n", cpuinfo_has_loongarch_crc32() ? "yes" : "no");
+#endif
 }
