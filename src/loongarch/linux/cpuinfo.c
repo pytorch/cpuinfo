@@ -102,6 +102,10 @@ static void parse_features(
 					#if CPUINFO_ARCH_LOONGARCH64
 						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LVZ;
 					#endif
+				} else if (memcmp(feature_start, "ptw", feature_length) == 0) {
+					#if CPUINFO_ARCH_LOONGARCH64
+						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_PTW;
+					#endif
 				} else {
 					goto unexpected;
 				}
@@ -110,6 +114,10 @@ static void parse_features(
 				if (memcmp(feature_start, "lasx", feature_length) == 0) {
 					#if CPUINFO_ARCH_LOONGARCH64
 						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LASX;
+					#endif
+				} else if (memcmp(feature_start, "lspw", feature_length) == 0) {
+					#if CPUINFO_ARCH_LOONGARCH64
+						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LSPW;
 					#endif
 				} else {
 					goto unexpected;
