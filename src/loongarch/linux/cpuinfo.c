@@ -350,23 +350,41 @@ struct proc_cpuinfo_parser_state {
 /*
  *	Decode a single line of /proc/cpuinfo information.
  *	Lines have format <words-with-spaces>[ ]*:[ ]<space-separated words>
- *	An example of /proc/cpuinfo (from Loongarch-3a5000):
+ *	An example of /proc/cpuinfo (from Loongson-3A5000 Loongnix20.6):
  *
  *		system type		: generic-loongson-machine
  *		processor		: 0
  *		package			: 0
  *		core			: 0
  *		cpu family		: Loongson-64bit
- *		model name		: Loongson-3A5000
- *		CPU Revision		: 0x10
+ *		model name		: Loongson-3A5000-HV
+ *		CPU Revision		: 0x11
  *		FPU Revision		: 0x00
- *		CPU MHz			: 2300.00
- *		BogoMIPS		: 4600.00
+ *		CPU MHz			: 2500.00
+ *		BogoMIPS		: 5000.00
  *		TLB entries		: 2112
  *		Address sizes		: 48 bits physical, 48 bits virtual
  *		isa			: loongarch32 loongarch64
- *		features		: cpucfg lam ual fpu lsx lasx complex crypto lvz lbt_x86 lbt_arm lbt_mips
+ *		features		: cpucfg lam ual fpu lsx lasx crc32 lvz lbt_x86 lbt_arm lbt_mips
  *		hardware watchpoint	: yes, iwatch count: 8, dwatch count: 8
+ *
+ *	An example of /proc/cpuinfo (from Loongson-3A6000 AOSC OS):
+ *		system type		: generic-loongson-machine
+ *		processor		: 0
+ *		package			: 0
+ *		core			: 1
+ *		global_id		: 0
+ *		CPU Family		: Loongson-64bit
+ *		Model Name		: Loongson-3A6000
+ *		CPU Revision		: 0x00
+ *		FPU Revision		: 0x00
+ *		CPU MHz			: 2500.00
+ *		BogoMIPS		: 5000.00
+ *		TLB Entries		: 2112
+ *		Address Sizes		: 48 bits physical, 48 bits virtual
+ *		ISA			: loongarch32r loongarch32s loongarch64
+ *		Features		: cpucfg lam ual fpu lsx lasx crc32 complex crypto lspw lvz lbt_x86 lbt_arm lbt_mips
+ *		Hardware Watchpoint	: yes, iwatch count: 8, dwatch count: 4
  */
 static bool parse_line(
 	const char* line_start,
@@ -440,39 +458,39 @@ static bool parse_line(
 	const size_t key_length = key_end - line_start;
 	switch (key_length) {
 		case 3:
-			if (memcmp(line_start, "isa", key_length) == 0) {
+			if (strncasecmp(line_start, "isa", key_length) == 0) {
 				/* isa Revision is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}
 			break;
 		case 4:
-			if (memcmp(line_start, "core", key_length) == 0) {
+			if (strncasecmp(line_start, "core", key_length) == 0) {
 				/* core is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}
 			break;
 		case 7:
-			if (memcmp(line_start, "package", key_length) == 0) {
+			if (strncasecmp(line_start, "package", key_length) == 0) {
 				parse_package(value_start, value_end, processor);
-			} else if (memcmp(line_start, "CPU MHz", key_length) == 0) {
+			} else if (strncasecmp(line_start, "CPU MHz", key_length) == 0) {
 				/* CPU MHz is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}
 			break;
 		case 8:
-			if (memcmp(line_start, "features", key_length) == 0) {
+			if (strncasecmp(line_start, "features", key_length) == 0) {
 				parse_features(value_start, value_end, processor);
-			} else if (memcmp(line_start, "BogoMIPS", key_length) == 0) {
+			} else if (strncasecmp(line_start, "BogoMIPS", key_length) == 0) {
 				/* BogoMIPS is useless, don't parse */
 			} else {
 				goto unknown;
 			}
 			break;
 		case 9:
-			if (memcmp(line_start, "processor", key_length) == 0) {
+			if (strncasecmp(line_start, "processor", key_length) == 0) {
 				const uint32_t new_processor_index = parse_processor_number(value_start, value_end);
 				if (new_processor_index < processor_index) {
 					/* Strange: decreasing processor number */
@@ -496,46 +514,48 @@ static bool parse_line(
 				state->processor_index = new_processor_index;
 				processors[new_processor_index].cpucfg_id = new_processor_index;
 				return true;
+			} else if (strncasecmp(line_start, "global_id", key_length) == 0) {
+				/* global_id is useless, don't parse */
 			} else{
 				goto unknown;
 			}
 			break;
 		case 10:
-			if (memcmp(line_start, "cpu family", key_length) == 0) {
+			if (strncasecmp(line_start, "cpu family", key_length) == 0) {
 				/* cpu family is presently useless, don't parse */
-			} else if (memcmp(line_start, "model name", key_length) == 0) {
+			} else if (strncasecmp(line_start, "model name", key_length) == 0) {
 				parse_model_name(value_start,value_end,state->hardware,processor);
 			} else {
 				goto unknown;
 			}
 			break;		
 		case 11:
-			if (memcmp(line_start, "system type", key_length) == 0) {
+			if (strncasecmp(line_start, "system type", key_length) == 0) {
 				/* system type is presently useless, don't parse */
-			} else if (memcmp(line_start, "TLB entries", key_length) == 0) {
+			} else if (strncasecmp(line_start, "TLB entries", key_length) == 0) {
 				/* TLB entries is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}
 			break;
 		case 12:
-			if (memcmp(line_start, "CPU Revision", key_length) == 0) {
+			if (strncasecmp(line_start, "CPU Revision", key_length) == 0) {
 				/* CPU Revision is presently useless, don't parse */
-			} else if (memcmp(line_start, "FPU Revision", key_length) == 0) {
+			} else if (strncasecmp(line_start, "FPU Revision", key_length) == 0) {
 				/* FPU Revision is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}
 			break;
 		case 13:
-			if (memcmp(line_start, "Address sizes", key_length) == 0) {
+			if (strncasecmp(line_start, "Address sizes", key_length) == 0) {
 				/* Address sizes is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}
 			break;
 		case 18:
-			if (memcmp(line_start, "hardware watchpoint", key_length) == 0) {
+			if (strncasecmp(line_start, "hardware watchpoint", key_length) == 0) {
 				/* Address sizes is presently useless, don't parse */
 			} else {
 				goto unknown;
