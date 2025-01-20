@@ -2272,6 +2272,8 @@ struct cpuinfo_loongarch_isa {
 	bool lbt_x86;
 	bool lbt_arm;
 	bool lbt_mips;
+	bool ptw;
+	bool lspw;
 };
 
 extern struct cpuinfo_loongarch_isa cpuinfo_isa;
@@ -2376,6 +2378,22 @@ static inline bool cpuinfo_has_loongarch_lbt_arm(void) {
 static inline bool cpuinfo_has_loongarch_lbt_mips(void) {
 #if CPUINFO_ARCH_LOONGARCH64
 	return cpuinfo_isa.lbt_mips;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_loongarch_ptw(void) {
+#if CPUINFO_ARCH_LOONGARCH64
+	return cpuinfo_isa.ptw;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_loongarch_lspw(void) {
+#if CPUINFO_ARCH_LOONGARCH64
+	return cpuinfo_isa.lspw;
 #else
 	return false;
 #endif
