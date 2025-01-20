@@ -188,10 +188,7 @@ void cpuinfo_loongarch_linux_init(void) {
 
 
 	#if CPUINFO_ARCH_LOONGARCH64
-		uint32_t isa_features = 0;
-		cpuinfo_loongarch_linux_hwcap_from_getauxval(&isa_features);
-		cpuinfo_loongarch64_linux_decode_isa_from_proc_cpuinfo(
-			isa_features, &cpuinfo_isa);
+	cpuinfo_loongarch64_linux_decode_isa_from_hwcap(&cpuinfo_isa);
 	#endif
 
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {

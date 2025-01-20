@@ -72,7 +72,6 @@ def main(args):
                     "loongarch/linux/clusters.c",
                     "loongarch/linux/cpucfg.c",
                     "loongarch/linux/chipset.c",
-                    "loongarch/linux/hwcap.c",
                     "loongarch/linux/loongarch64-isa.c",
                 ]
 

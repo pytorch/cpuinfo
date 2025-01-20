@@ -1,11 +1,17 @@
 #include <stdint.h>
+#include <sys/auxv.h>
 
 #include <loongarch/linux/api.h>
 
-void cpuinfo_loongarch64_linux_decode_isa_from_proc_cpuinfo(
-	uint32_t features,
+static inline uint32_t hwcap_from_getauxval()
+{
+	return (uint32_t) getauxval(AT_HWCAP);
+}
+
+void cpuinfo_loongarch64_linux_decode_isa_from_hwcap(
 	struct cpuinfo_loongarch_isa isa[restrict static 1])
 {
+	uint32_t features = hwcap_from_getauxval();
 #define ISA_ENABLE(BIT, FLAG) isa->BIT = !!(features & CPUINFO_LOONGARCH_LINUX_FEATURE_##FLAG)
 	ISA_ENABLE(cpucfg, CPUCFG);
 	ISA_ENABLE(lam, LAM);
