@@ -76,11 +76,7 @@ CPUINFO_INTERNAL bool cpuinfo_loongarch_linux_parse_proc_cpuinfo(
 	struct cpuinfo_loongarch_linux_processor processors[restrict static max_processors_count]);
 
 #if CPUINFO_ARCH_LOONGARCH64
-	CPUINFO_INTERNAL void cpuinfo_loongarch_linux_hwcap_from_getauxval(
-		uint32_t hwcap[restrict static 1]);
-
-	CPUINFO_INTERNAL void cpuinfo_loongarch64_linux_decode_isa_from_proc_cpuinfo(
-		uint32_t features,
+	CPUINFO_INTERNAL void cpuinfo_loongarch64_linux_decode_isa_from_hwcap(
 		struct cpuinfo_loongarch_isa isa[restrict static 1]);
 #endif
 
