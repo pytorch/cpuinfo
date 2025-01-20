@@ -40,7 +40,7 @@ struct cpuinfo_loongarch_chipset {
 		struct cpuinfo_loongarch_chipset chipset[restrict static 1], uint32_t cores);
 
 	CPUINFO_INTERNAL void cpuinfo_loongarch_decode_vendor_uarch(
-		uint32_t cpucfg,
+		uint32_t prid,
 		enum cpuinfo_vendor vendor[restrict static 1],
 		enum cpuinfo_uarch uarch[restrict static 1]);
 

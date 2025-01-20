@@ -6,7 +6,7 @@
 #include <cpuinfo.h>
 #include <loongarch/linux/api.h>
 #include <loongarch/api.h>
-#include <loongarch/cpucfg.h>
+#include <loongarch/prid.h>
 #include <linux/api.h>
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>

@@ -5,7 +5,7 @@
 
 #include <cpuinfo.h>
 #include <cpuinfo/common.h>
-#include <loongarch/cpucfg.h>
+#include <loongarch/prid.h>
 #include <loongarch/api.h>
 #include <linux/api.h>
 
@@ -33,18 +33,18 @@
 #define CPUINFO_LOONGARCH_LINUX_FEATURE_LSPW		UINT32_C(0x00004000)
 #endif
 
-#define CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID UINT32_C(0x00010000)
-#define CPUINFO_LOONGARCH_LINUX_VALID_PROCESSORID  UINT32_C(0x00020000)
-#define CPUINFO_LOONGARCH_LINUX_VALID_REVISION      UINT32_C(0x00040000)
-#define CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR    UINT32_C(0x00200000)
-#define CPUINFO_LOONGARCH_LINUX_VALID_FEATURES     UINT32_C(0x00400000)
-#define CPUINFO_LOONGARCH_LINUX_VALID_INFO          UINT32_C(0x007F0000)
-#define CPUINFO_LOONGARCH_LINUX_VALID_CPUCFG          UINT32_C(0x003F0000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID		UINT32_C(0x00010000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_PROCESSORID	UINT32_C(0x00020000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_REVISION		UINT32_C(0x00040000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR		UINT32_C(0x00200000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_FEATURES		UINT32_C(0x00400000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_INFO		UINT32_C(0x007F0000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_PRID		UINT32_C(0x003F0000)
 
 struct cpuinfo_loongarch_linux_processor {
 	uint32_t architecture_version;
 	uint32_t features;
-	uint32_t cpucfg_id;
+	uint32_t prid;
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
 	uint32_t uarch_index;
@@ -104,7 +104,7 @@ CPUINFO_INTERNAL void cpuinfo_loongarch_linux_count_cluster_processors(
 	uint32_t max_processors,
 	struct cpuinfo_loongarch_linux_processor processors[restrict static max_processors]);
 
-CPUINFO_INTERNAL uint32_t cpuinfo_loongarch_linux_detect_cluster_cpucfg(
+CPUINFO_INTERNAL uint32_t cpuinfo_loongarch_linux_detect_cluster_prid(
 	const struct cpuinfo_loongarch_chipset chipset[restrict static 1],
 	uint32_t max_processors,
 	uint32_t usable_processors,

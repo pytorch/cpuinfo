@@ -6,7 +6,7 @@
 
 #include <linux/api.h>
 #include <loongarch/linux/api.h>
-#include <loongarch/cpucfg.h>
+#include <loongarch/prid.h>
 #include <cpuinfo/log.h>
 
 /*
@@ -252,22 +252,22 @@ static void parse_model_name(
 			(int) name_length, separator + 1, model_name_end);
 		return;
 	}
-	uint32_t cpucfg_companyID = 0;
-	uint32_t cpucfg_processorID = 0;
+	uint32_t prid_companyID = 0;
+	uint32_t prid_processorID = 0;
 	
 	/* Verify the presence of hex prefix */
 	bool is_loongson = parse_loongson(model_name_start, model_length);
 	if (is_loongson) {
-		cpucfg_companyID = 0x14;
-		processor->cpucfg_id = cpucfg_set_companyID(processor->cpucfg_id, cpucfg_companyID);
+		prid_companyID = 0x14;
+		processor->prid = prid_set_companyID(processor->prid, prid_companyID);
 		processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID | CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
 	}else{
 		cpuinfo_log_warning("Model %.*s in /proc/cpuinfo is ignored due to unexpected words",
 			(int) model_length, model_name_start);
 		return;
 	}
-	parse_processorID(separator + 1, name_length, &cpucfg_processorID);
-	processor->cpucfg_id = cpucfg_set_processorID(processor->cpucfg_id, cpucfg_processorID);
+	parse_processorID(separator + 1, name_length, &prid_processorID);
+	processor->prid = prid_set_seriesID(processor->prid, prid_processorID);
 	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_PROCESSORID | CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
 
 }
@@ -320,7 +320,7 @@ static void parse_cpu_revision(
 		return;
 	}
 
-	processor->cpucfg_id = cpucfg_set_revision(processor->cpucfg_id, cpu_revision);
+	processor->prid = prid_set_productID(processor->prid, cpu_revision);
 	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_REVISION | CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
 }
 
@@ -520,7 +520,7 @@ static bool parse_line(
 						new_processor_index, max_processors_count - 1);
 				}
 				state->processor_index = new_processor_index;
-				processors[new_processor_index].cpucfg_id = new_processor_index;
+				processors[new_processor_index].prid = new_processor_index;
 				return true;
 			} else if (strncasecmp(line_start, "global_id", key_length) == 0) {
 				/* global_id is useless, don't parse */
