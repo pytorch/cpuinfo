@@ -6,7 +6,7 @@
 #include <cpuinfo.h>
 #include <loongarch/linux/api.h>
 #include <loongarch/api.h>
-#include <loongarch/cpucfg.h>
+#include <loongarch/prid.h>
 #include <linux/api.h>
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
@@ -156,7 +156,7 @@ void cpuinfo_loongarch_linux_init(void) {
 	}
 	
 
-	uint32_t valid_processors = 0, last_cpucfg = 0;
+	uint32_t valid_processors = 0, last_prid = 0;
 
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
 		loongarch_linux_processors[i].system_processor_id = i;
@@ -171,8 +171,8 @@ void cpuinfo_loongarch_linux_init(void) {
 				cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
 			}
 
-			if (bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LOONGARCH_LINUX_VALID_CPUCFG)) {
-				last_cpucfg = loongarch_linux_processors[i].cpucfg_id;
+			if (bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LOONGARCH_LINUX_VALID_PRID)) {
+				last_prid = loongarch_linux_processors[i].prid;
 			}
 
 		} else {
@@ -236,24 +236,24 @@ void cpuinfo_loongarch_linux_init(void) {
 
 	cpuinfo_loongarch_linux_count_cluster_processors(loongarch_linux_processors_count, loongarch_linux_processors);
 
-	const uint32_t cluster_count = cpuinfo_loongarch_linux_detect_cluster_cpucfg(
+	const uint32_t cluster_count = cpuinfo_loongarch_linux_detect_cluster_prid(
 		&chipset,
 		loongarch_linux_processors_count, valid_processors, loongarch_linux_processors);
 
-	/* Initialize core vendor, uarch, and cpucfg for every logical processor */
+	/* Initialize core vendor, uarch, and prid for every logical processor */
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
 		if (bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			const uint32_t cluster_leader = loongarch_linux_processors[i].package_leader_id;
 			if (cluster_leader == i) {
 				/* Cluster leader: decode core vendor and uarch */
 				cpuinfo_loongarch_decode_vendor_uarch(
-				loongarch_linux_processors[cluster_leader].cpucfg_id,
+				loongarch_linux_processors[cluster_leader].prid,
 				&loongarch_linux_processors[cluster_leader].vendor,
 				&loongarch_linux_processors[cluster_leader].uarch);
 			} else {
-				/* Cluster non-leader: copy vendor, uarch, and cpucfg from cluster leader */
+				/* Cluster non-leader: copy vendor, uarch, and prid from cluster leader */
 				loongarch_linux_processors[i].flags = loongarch_linux_processors[cluster_leader].flags;
-				loongarch_linux_processors[i].cpucfg_id = loongarch_linux_processors[cluster_leader].cpucfg_id;
+				loongarch_linux_processors[i].prid = loongarch_linux_processors[cluster_leader].prid;
 				loongarch_linux_processors[i].vendor = loongarch_linux_processors[cluster_leader].vendor;
 				loongarch_linux_processors[i].uarch = loongarch_linux_processors[cluster_leader].uarch;
 			}
@@ -405,7 +405,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		cores[i].package = &package;
 		cores[i].vendor = loongarch_linux_processors[i].vendor;
 		cores[i].uarch = loongarch_linux_processors[i].uarch;
-		cores[i].cpucfg = loongarch_linux_processors[i].cpucfg_id;
+		cores[i].prid = loongarch_linux_processors[i].prid;
 		linux_cpu_to_core_map[loongarch_linux_processors[i].system_processor_id] = &cores[i];
 
 		if (linux_cpu_to_uarch_index_map != NULL) {

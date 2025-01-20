@@ -234,7 +234,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
         src/loongarch/linux/cpuinfo.c
         src/loongarch/linux/clusters.c
         src/loongarch/linux/chipset.c
-        src/loongarch/linux/cpucfg.c
+        src/loongarch/linux/prid.c
         src/loongarch/linux/loongarch64-isa.c)
     ENDIF()
   ENDIF()

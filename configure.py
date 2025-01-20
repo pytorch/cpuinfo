@@ -70,7 +70,7 @@ def main(args):
                     "loongarch/linux/init.c",
                     "loongarch/linux/cpuinfo.c",
                     "loongarch/linux/clusters.c",
-                    "loongarch/linux/cpucfg.c",
+                    "loongarch/linux/prid.c",
                     "loongarch/linux/chipset.c",
                     "loongarch/linux/loongarch64-isa.c",
                 ]

@@ -614,8 +614,14 @@ enum cpuinfo_uarch {
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
 
-	/** Loongson LA4 64 (Loongarch3 series processors). */
-	cpuinfo_uarch_LA464 = 0x00D00100,
+	/** Loongson 64bit, 2-issue. */
+	cpuinfo_uarch_LA264 = 0x00D00100,
+	/** Loongson 64bit, 3-issue. */
+	cpuinfo_uarch_LA364 = 0x00D00101,
+	/** Loongson 64bit, 4-issue. */
+	cpuinfo_uarch_LA464 = 0x00D00102,
+	/** Loongson 64bit, 6-issue. */
+	cpuinfo_uarch_LA664 = 0x00D00103,
 };
 
 struct cpuinfo_processor {
@@ -650,10 +656,6 @@ struct cpuinfo_processor {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	/** APIC ID (unique x86-specific ID of the logical processor) */
 	uint32_t apic_id;
-#endif
-#if CPUINFO_ARCH_LOONGARCH64
-	/** CPUCFG ID (unique loongarch-specific ID of the logical processor) */
-	uint32_t cpucfg_id;
 #endif
 	struct {
 		/** Level 1 instruction cache */
@@ -691,8 +693,8 @@ struct cpuinfo_core {
 	/** Value of Main ID Register (MIDR) for this core */
 	uint32_t midr;
 #elif CPUINFO_ARCH_LOONGARCH64
-	/** Value of CPUCFG for this core */
-	uint32_t cpucfg;
+	/** Value of PRocessorID (PRID) for this core */
+	uint32_t prid;
 #endif
 	/** Clock rate (non-Turbo) of the core, in Hz */
 	uint64_t frequency;

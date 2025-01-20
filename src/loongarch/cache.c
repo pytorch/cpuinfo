@@ -4,7 +4,7 @@
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 #include <loongarch/api.h>
-#include <loongarch/cpucfg.h>
+#include <loongarch/prid.h>
 
 
 void cpuinfo_loongarch_decode_cache(
