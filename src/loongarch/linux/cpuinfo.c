@@ -15,18 +15,17 @@
  */
 #define BUFFER_SIZE 1024
 
-struct cpuinfo_loongarch_processorID{
-	const char* name;
-	uint32_t processorID;
+struct cpuinfo_loongarch_seriesID {
+	const char* prefix;
+	enum prid_series seriesID;
 };
 
-
-static const struct cpuinfo_loongarch_processorID loongson_name_map_processorID[] = {
-	{
-		/* "3A5000" -> 0xc0 */
-		.name = "3A5000",
-		.processorID = 0xc0,
-	},
+static const struct cpuinfo_loongarch_seriesID loongson_name_map_seriesID[] = {
+	{ .prefix = "3A5000", .seriesID = prid_series_la464, },
+	{ .prefix = "3C5000", .seriesID = prid_series_la464, },
+	{ .prefix = "3D5000", .seriesID = prid_series_la464, },
+	{ .prefix = "3A6000", .seriesID = prid_series_la664, },
+	{ .prefix = "3C6000", .seriesID = prid_series_la664, },
 };
 
 
@@ -69,7 +68,7 @@ static void parse_features(
 	const char* feature_end;
 
 	/* Mark the features as valid */
-	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_FEATURES | CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
+	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_FEATURES;
 
 	do {
 		feature_end = feature_start + 1;
@@ -150,7 +149,7 @@ static void parse_features(
 					processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_COMPLEX;
 				} else if (memcmp(feature_start, "lbt_x86", feature_length) == 0) {
 					#if CPUINFO_ARCH_LOONGARCH64
-						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LBT_MIPS;
+						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LBT_X86;
 					#endif
 				} else if (memcmp(feature_start, "lbt_arm", feature_length) == 0) {
 					#if CPUINFO_ARCH_LOONGARCH64
@@ -163,11 +162,12 @@ static void parse_features(
 			case 8:
 				if (memcmp(feature_start, "lbt_mips", feature_length) == 0) {
 					#if CPUINFO_ARCH_LOONGARCH64
-						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LBT_X86;
+						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LBT_MIPS;
 					#endif
 				} else {
 					goto unexpected;
 				}
+				break;
 			default:
 			unexpected:
 				cpuinfo_log_warning("unexpected /proc/cpuinfo feature \"%.*s\" is ignored",
@@ -196,20 +196,17 @@ static bool parse_loongson(const char* name_start, size_t length){
 	return true;
 }
 
-static void parse_processorID(const char* name_start, size_t length, int* processorID){
-	/* expected 3A5000 or 3C5000L or other , its length is 6 or 7 */
-	if(length != 6 && length != 7) return ;
-	char cpy[] = "";
-	for (size_t i = 0; i < CPUINFO_COUNT_OF(loongson_name_map_processorID); i++) {
-
-			if (strncmp(loongson_name_map_processorID[i].name, strncpy(cpy, name_start,length), length) == 0)
-			{
-				cpuinfo_log_debug(
-					"found /proc/cpuinfo model name second string \"%.*s\" in loongson processorID table",
-					(int) length, name_start);
-				/* Create chipset name from entry */
-				*processorID = loongson_name_map_processorID[i].processorID;
-			}
+static void parse_seriesID(const char* name_start, size_t length, int* seriesID){
+	for (size_t i = 0; i < CPUINFO_COUNT_OF(loongson_name_map_seriesID); i++) {
+		const struct cpuinfo_loongarch_seriesID *cur = &loongson_name_map_seriesID[i];
+		if (strncmp(cur->prefix, name_start, strlen(cur->prefix)))
+			continue;
+		cpuinfo_log_debug(
+			"found /proc/cpuinfo model name second string \"%.*s\" in loongson seriesID table",
+			(int) length, name_start);
+		/* Create chipset name from entry */
+		*seriesID = cur->seriesID;
+		break;
 	}
 }
 
@@ -252,25 +249,26 @@ static void parse_model_name(
 			(int) name_length, separator + 1, model_name_end);
 		return;
 	}
-	uint32_t prid_companyID = 0;
-	uint32_t prid_processorID = 0;
 	
 	/* Verify the presence of hex prefix */
 	bool is_loongson = parse_loongson(model_name_start, model_length);
 	if (is_loongson) {
-		prid_companyID = 0x14;
-		processor->prid = prid_set_companyID(processor->prid, prid_companyID);
-		processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID | CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
-	}else{
+		processor->prid = prid_set_companyID(processor->prid, prid_company_loongson);
+		processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID;
+	} else {
 		cpuinfo_log_warning("Model %.*s in /proc/cpuinfo is ignored due to unexpected words",
 			(int) model_length, model_name_start);
 		return;
 	}
-	parse_processorID(separator + 1, name_length, &prid_processorID);
-	processor->prid = prid_set_seriesID(processor->prid, prid_processorID);
-	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_PROCESSORID | CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
+
+	uint32_t prid_seriesID = 0;
+
+	parse_seriesID(separator + 1, name_length, &prid_seriesID);
+	processor->prid = prid_set_seriesID(processor->prid, prid_seriesID);
+	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_SERIESID;
 
 }
+
 static void parse_cpu_revision(
 	const char* cpu_revision_start,
 	const char* cpu_revision_end,
@@ -321,7 +319,7 @@ static void parse_cpu_revision(
 	}
 
 	processor->prid = prid_set_productID(processor->prid, cpu_revision);
-	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_REVISION | CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
+	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_REVISION;
 }
 
 static void parse_package(
@@ -520,7 +518,6 @@ static bool parse_line(
 						new_processor_index, max_processors_count - 1);
 				}
 				state->processor_index = new_processor_index;
-				processors[new_processor_index].prid = new_processor_index;
 				return true;
 			} else if (strncasecmp(line_start, "global_id", key_length) == 0) {
 				/* global_id is useless, don't parse */
@@ -532,7 +529,8 @@ static bool parse_line(
 			if (strncasecmp(line_start, "cpu family", key_length) == 0) {
 				/* cpu family is presently useless, don't parse */
 			} else if (strncasecmp(line_start, "model name", key_length) == 0) {
-				parse_model_name(value_start,value_end,state->hardware,processor);
+				if (!(processor->flags & (CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID | CPUINFO_LOONGARCH_LINUX_VALID_SERIESID)))
+					parse_model_name(value_start,value_end,state->hardware,processor);
 			} else {
 				goto unknown;
 			}
@@ -548,7 +546,8 @@ static bool parse_line(
 			break;
 		case 12:
 			if (strncasecmp(line_start, "CPU Revision", key_length) == 0) {
-				/* CPU Revision is presently useless, don't parse */
+				if (!(processor->flags & CPUINFO_LOONGARCH_LINUX_VALID_REVISION))
+					parse_cpu_revision(value_start, value_end, processor);
 			} else if (strncasecmp(line_start, "FPU Revision", key_length) == 0) {
 				/* FPU Revision is presently useless, don't parse */
 			} else {
