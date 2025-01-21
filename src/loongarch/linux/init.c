@@ -6,6 +6,7 @@
 #include <cpuinfo.h>
 #include <loongarch/linux/api.h>
 #include <loongarch/api.h>
+#include <loongarch/cpucfg.h>
 #include <loongarch/prid.h>
 #include <linux/api.h>
 #include <cpuinfo/internal-api.h>
@@ -76,8 +77,21 @@ static int cmp_loongarch_linux_processor(const void* ptr_a, const void* ptr_b) {
 
 }
 
-void cpuinfo_loongarch_linux_init(void) {
+static void try_set_prid_by_cpucfg(
+	struct cpuinfo_loongarch_linux_processor *processors,
+	uint32_t count)
+{
+	uint32_t prid;
+	if (!cpucfg(CPUCFG_REG_PRID, &prid)) {
+		return;
+	}
+	for (uint32_t i = 0; i < count; i++) {
+		processors[i].prid = prid;
+		processors[i].flags |= CPUINFO_LOONGARCH_LINUX_VALID_PRID;
+	}
+}
 
+void cpuinfo_loongarch_linux_init(void) {
 	struct cpuinfo_loongarch_linux_processor* loongarch_linux_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
 	struct cpuinfo_core* cores = NULL;
@@ -139,7 +153,17 @@ void cpuinfo_loongarch_linux_init(void) {
 			CPUINFO_LINUX_FLAG_PRESENT);
 	}
 
+	#if CPUINFO_ARCH_LOONGARCH64
+	/* Populate ISA structure with hwcap information. */
+	cpuinfo_loongarch64_linux_decode_isa_from_hwcap(&cpuinfo_isa);
+	if (cpuinfo_isa.cpucfg) {
+		try_set_prid_by_cpucfg(loongarch_linux_processors, loongarch_linux_processors_count);
+	}
+	#endif
+
+	/* Populate processor information. */
 	char proc_cpuinfo_hardware[CPUINFO_HARDWARE_VALUE_MAX];
+	uint32_t valid_processors = 0;
 
 	if (!cpuinfo_loongarch_linux_parse_proc_cpuinfo(
 			proc_cpuinfo_hardware,
@@ -154,9 +178,6 @@ void cpuinfo_loongarch_linux_init(void) {
 			loongarch_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_VALID;
 		}
 	}
-	
-
-	uint32_t valid_processors = 0, last_prid = 0;
 
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
 		loongarch_linux_processors[i].system_processor_id = i;
@@ -171,10 +192,6 @@ void cpuinfo_loongarch_linux_init(void) {
 				cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
 			}
 
-			if (bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LOONGARCH_LINUX_VALID_PRID)) {
-				last_prid = loongarch_linux_processors[i].prid;
-			}
-
 		} else {
 			/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore */
 			if (!(loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR)) {
@@ -185,11 +202,6 @@ void cpuinfo_loongarch_linux_init(void) {
 
 	const struct cpuinfo_loongarch_chipset chipset =
 		cpuinfo_loongarch_linux_decode_chipset(proc_cpuinfo_hardware);
-
-
-	#if CPUINFO_ARCH_LOONGARCH64
-	cpuinfo_loongarch64_linux_decode_isa_from_hwcap(&cpuinfo_isa);
-	#endif
 
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
 		if (bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
