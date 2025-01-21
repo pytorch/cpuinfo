@@ -322,6 +322,29 @@ static void parse_cpu_revision(
 	processor->flags |= CPUINFO_LOONGARCH_LINUX_VALID_REVISION;
 }
 
+static void parse_core(
+	const char* cpu_core_start,
+	const char* cpu_core_end,
+	struct cpuinfo_loongarch_linux_processor processor[restrict static 1])
+{
+	uint32_t cpu_core = 0;
+	for (const char* digit_ptr = cpu_core_start; digit_ptr != cpu_core_end; digit_ptr++) {
+		const uint32_t digit = (uint32_t) (*digit_ptr - '0');
+
+		/* Verify that the character in core is a decimal digit */
+		if (digit >= 10) {
+			cpuinfo_log_warning("core %.*s in /proc/cpuinfo is ignored due to unexpected non-digit character '%c' at offset %zu",
+				(int) (cpu_core_end - cpu_core_start), cpu_core_start,
+				*digit_ptr, (size_t) (digit_ptr - cpu_core_start));
+			return;
+		}
+
+		cpu_core = cpu_core * 10 + digit;
+	}
+
+	processor->core_id = cpu_core;
+}
+
 static void parse_package(
 	const char* cpu_package_start,
 	const char* cpu_package_end,
@@ -472,7 +495,7 @@ static bool parse_line(
 			break;
 		case 4:
 			if (strncasecmp(line_start, "core", key_length) == 0) {
-				/* core is presently useless, don't parse */
+				parse_core(value_start, value_end, processor);
 			} else {
 				goto unknown;
 			}

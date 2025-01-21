@@ -67,14 +67,12 @@ static int cmp_loongarch_linux_processor(const void* ptr_a, const void* ptr_b) {
 	if (usable_a != usable_b) {
 		return (int) usable_b - (int) usable_a;
 	}
-	
+
 	/* Compare based on processsor ID (i.e. processor 0 < processor 1) */
 	const uint32_t pro_a = processor_a->system_processor_id;
 	const uint32_t pro_b = processor_b->system_processor_id;
-	
-	return cmp(pro_a,pro_b);
 
-
+	return cmp(pro_a, pro_b);
 }
 
 static void try_set_prid_by_cpucfg(
@@ -115,7 +113,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		cpuinfo_linux_get_max_present_processor(max_processors_count);
 	cpuinfo_log_debug("maximum present processors count: %"PRIu32, max_present_processors_count);
 
-	uint32_t valid_processor_mask = 0;
+	uint32_t valid_processor_mask = CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
 	uint32_t loongarch_linux_processors_count = max_processors_count;
 	if (max_present_processors_count != 0) {
 		loongarch_linux_processors_count = min(loongarch_linux_processors_count, max_present_processors_count);
@@ -163,7 +161,7 @@ void cpuinfo_loongarch_linux_init(void) {
 
 	/* Populate processor information. */
 	char proc_cpuinfo_hardware[CPUINFO_HARDWARE_VALUE_MAX];
-	uint32_t valid_processors = 0;
+	uint32_t valid_processors = 0, core_count = 0, last_core_id_1 = UINT32_MAX;
 
 	if (!cpuinfo_loongarch_linux_parse_proc_cpuinfo(
 			proc_cpuinfo_hardware,
@@ -172,32 +170,28 @@ void cpuinfo_loongarch_linux_init(void) {
 		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
 		return;
 	}
-	
+
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
 		if (bitmask_all(loongarch_linux_processors[i].flags, valid_processor_mask)) {
-			loongarch_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_VALID;
-		}
-	}
-
-	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
-		loongarch_linux_processors[i].system_processor_id = i;
-		if (bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			valid_processors += 1;
-
-			if (!(loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR)) {
-				/*
-				 * Processor is in possible and present lists, but not reported in /proc/cpuinfo.
-				 * This is fairly common: high-index processors can be not reported if they are offline.
-				 */
-				cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
+			loongarch_linux_processors[i].system_processor_id = i;
+			loongarch_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_VALID;
+			if (loongarch_linux_processors[i].core_id != last_core_id_1) {
+				core_count += 1;
+				last_core_id_1 = loongarch_linux_processors[i].core_id;
 			}
-
-		} else {
-			/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore */
-			if (!(loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR)) {
-				cpuinfo_log_warning("invalid processor %"PRIu32" reported in /proc/cpuinfo", i);
-			}
+			continue;
 		}
+		if (!(loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR)) {
+			/*
+			 * Processor is in possible and present lists, but not reported in /proc/cpuinfo.
+			 * This is fairly common: high-index processors can be not reported if they are offline.
+			 */
+			cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
+			continue;
+		}
+		/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore */
+		cpuinfo_log_warning("invalid processor %"PRIu32" reported in /proc/cpuinfo", i);
 	}
 
 	const struct cpuinfo_loongarch_chipset chipset =
@@ -298,7 +292,7 @@ void cpuinfo_loongarch_linux_init(void) {
 	cpuinfo_loongarch_chipset_to_string(&chipset, package.name);
 	
 	package.processor_count = valid_processors;
-	package.core_count = valid_processors;
+	package.core_count = core_count;
 	package.cluster_count = cluster_count;
 
 	processors = calloc(valid_processors, sizeof(struct cpuinfo_processor));
@@ -383,17 +377,28 @@ void cpuinfo_loongarch_linux_init(void) {
 
 
 	uint32_t l2_count = 0, l3_count = 0, big_l3_size = 0, cluster_id = UINT32_MAX;
+	uint32_t smt_id = 0, core_index = UINT32_MAX, last_core_id = UINT32_MAX;
 	/* Indication whether L3 (if it exists) is shared between all cores */
 	bool shared_l3 = true;
 	/* Populate cache information structures in l1i, l1d */
-	for (uint32_t i = 0; i < valid_processors; i++) {
+	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
+		if (!bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			continue;
+		}
+
+		const uint32_t core_id = loongarch_linux_processors[i].core_id;
+		smt_id++;
+		if (last_core_id != core_id) {
+			core_index++;
+			smt_id = 0;
+		}
+
 		if (loongarch_linux_processors[i].package_leader_id == loongarch_linux_processors[i].system_processor_id) {
 			cluster_id += 1;
 			clusters[cluster_id] = (struct cpuinfo_cluster) {
 				.processor_start = i,
 				.processor_count = loongarch_linux_processors[i].package_processor_count,
 				.core_start = i,
-				.core_count = loongarch_linux_processors[i].package_processor_count,
 				.cluster_id = cluster_id,
 				.package = &package,
 				.vendor = loongarch_linux_processors[i].vendor,
@@ -401,8 +406,8 @@ void cpuinfo_loongarch_linux_init(void) {
 			};
 		}
 
-		processors[i].smt_id = 0;
-		processors[i].core = cores + i;
+		processors[i].smt_id = smt_id;
+		processors[i].core = cores + core_index;
 		processors[i].cluster = clusters + cluster_id;
 		processors[i].package = &package;
 		processors[i].linux_id = (int) loongarch_linux_processors[i].system_processor_id;
@@ -410,15 +415,24 @@ void cpuinfo_loongarch_linux_init(void) {
 		processors[i].cache.l1d = l1d + i;
 		linux_cpu_to_processor_map[loongarch_linux_processors[i].system_processor_id] = &processors[i];
 
-		cores[i].processor_start = i;
-		cores[i].processor_count = 1;
-		cores[i].core_id = i;
-		cores[i].cluster = clusters + cluster_id;
-		cores[i].package = &package;
-		cores[i].vendor = loongarch_linux_processors[i].vendor;
-		cores[i].uarch = loongarch_linux_processors[i].uarch;
-		cores[i].prid = loongarch_linux_processors[i].prid;
-		linux_cpu_to_core_map[loongarch_linux_processors[i].system_processor_id] = &cores[i];
+		if (last_core_id != core_id) {
+			cores[core_index] = (struct cpuinfo_core){
+				.processor_start = i,
+				.processor_count = 1,
+				.core_id = core_id,
+				.cluster = clusters + cluster_id,
+				.package = &package,
+				.vendor = loongarch_linux_processors[i].vendor,
+				.uarch = loongarch_linux_processors[i].uarch,
+				.prid = loongarch_linux_processors[i].prid,
+			};
+			last_core_id = core_id;
+			clusters[cluster_id].core_count += 1;
+		} else {
+			/* another logical processor on the same core */
+			cores[core_index].processor_count++;
+		}
+		linux_cpu_to_core_map[loongarch_linux_processors[i].system_processor_id] = &cores[core_index];
 
 		if (linux_cpu_to_uarch_index_map != NULL) {
 			linux_cpu_to_uarch_index_map[loongarch_linux_processors[i].system_processor_id] =

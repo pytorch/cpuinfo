@@ -64,6 +64,8 @@ struct cpuinfo_loongarch_linux_processor {
 
 	/** Linux processor ID */
 	uint32_t system_processor_id;
+	/** CoreID */
+	uint32_t core_id;
 	uint32_t flags;
 };
 
