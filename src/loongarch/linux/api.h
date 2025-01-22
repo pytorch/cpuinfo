@@ -37,10 +37,14 @@
 #define CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR		UINT32_C(0x00200000)
 #define CPUINFO_LOONGARCH_LINUX_VALID_FEATURES		UINT32_C(0x00400000)
 #define CPUINFO_LOONGARCH_LINUX_VALID_INFO		UINT32_C(0x007F0000)
-#define CPUINFO_LOONGARCH_LINUX_VALID_PRID		CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID | CPUINFO_LOONGARCH_LINUX_VALID_SERIESID | CPUINFO_LOONGARCH_LINUX_VALID_REVISION
+#define CPUINFO_LOONGARCH_LINUX_VALID_L1I		UINT32_C(0x01000000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_L1D		UINT32_C(0x02000000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_L2		UINT32_C(0x04000000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_L3		UINT32_C(0x08000000)
+#define CPUINFO_LOONGARCH_LINUX_VALID_PRID		(CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID | CPUINFO_LOONGARCH_LINUX_VALID_SERIESID | CPUINFO_LOONGARCH_LINUX_VALID_REVISION)
+#define CPUINFO_LOONGARCH_LINUX_VALID_CACHE		(CPUINFO_LOONGARCH_LINUX_VALID_L1I | CPUINFO_LOONGARCH_LINUX_VALID_L1D | CPUINFO_LOONGARCH_LINUX_VALID_L2 | CPUINFO_LOONGARCH_LINUX_VALID_L3)
 
 struct cpuinfo_loongarch_linux_processor {
-	uint32_t architecture_version;
 	uint32_t features;
 	uint32_t prid;
 	enum cpuinfo_vendor vendor;
@@ -66,6 +70,13 @@ struct cpuinfo_loongarch_linux_processor {
 	uint32_t system_processor_id;
 	/** CoreID */
 	uint32_t core_id;
+
+	/** Cache info */
+	struct cpuinfo_cache l1i;
+	struct cpuinfo_cache l1d;
+	struct cpuinfo_cache l2;
+	struct cpuinfo_cache l3;
+
 	uint32_t flags;
 };
 
@@ -109,6 +120,10 @@ CPUINFO_INTERNAL uint32_t cpuinfo_loongarch_linux_detect_cluster_prid(
 	uint32_t max_processors,
 	uint32_t usable_processors,
 	struct cpuinfo_loongarch_linux_processor processors[restrict static max_processors]);
+
+CPUINFO_INTERNAL bool cpuinfo_loongarch_linux_parse_cpu_cache(
+	uint32_t max_processors_count,
+	struct cpuinfo_loongarch_linux_processor processors[restrict static max_processors_count]);
 
 extern CPUINFO_INTERNAL const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_linux_cpu_to_uarch_index_map_entries;

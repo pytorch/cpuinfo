@@ -75,6 +75,79 @@ static int cmp_loongarch_linux_processor(const void* ptr_a, const void* ptr_b) {
 	return cmp(pro_a, pro_b);
 }
 
+static inline bool is_cache_bit_set(enum cache_baseinfo_bit bit, uint32_t info) {
+	return !!((info >> bit) & 1);
+}
+
+static inline bool set_cpuinfo_cache_by_cpucfg(
+	enum cpucfg_regs reg,
+	struct cpuinfo_cache cache[restrict static 1])
+{
+	uint32_t data;
+
+	if (!cpucfg(reg, &data)) {
+		return false;
+	}
+
+	*cache = (struct cpuinfo_cache) {
+		.associativity = ((data & CACHE_WAYS_MASK) >> CACHE_WAYS_OFFSET) + 1,
+		.sets = 1 << ((data & CACHE_SETS_MASK) >> CACHE_SETS_OFFSET),
+		.line_size = 1 << ((data & CACHE_LSIZE_MASK) >> CACHE_LSIZE_OFFSET),
+		.partitions = 1,
+	};
+	cache->size = cache->associativity * cache->sets * cache->line_size;
+	return true;
+}
+
+static void try_set_cache_by_cpucfg(
+	struct cpuinfo_loongarch_linux_processor *processors,
+	uint32_t count)
+{
+	uint32_t info, flags = 0;
+	struct cpuinfo_cache l1i, l1d, l2, l3;
+
+	if (!cpucfg(CPUCFG_REG_CACHE_BASEINFO, &info)) {
+		return;
+	}
+
+	if (is_cache_bit_set(L1_IU_Present, info) && !is_cache_bit_set(L1_IU_Unify, info)) {
+		if (set_cpuinfo_cache_by_cpucfg(CPUCFG_REG_CACHE_L1_IU, &l1i)) {
+			flags |= CPUINFO_LOONGARCH_LINUX_VALID_L1I;
+		}
+	}
+	if (is_cache_bit_set(L1_D_Present, info)) {
+		if (set_cpuinfo_cache_by_cpucfg(CPUCFG_REG_CACHE_L1_D, &l1d)) {
+			flags |= CPUINFO_LOONGARCH_LINUX_VALID_L1D;
+		}
+	}
+	if (is_cache_bit_set(L2_IU_Present, info) && is_cache_bit_set(L2_IU_Unify, info)) {
+		if (set_cpuinfo_cache_by_cpucfg(CPUCFG_REG_CACHE_L2_IU, &l2)) {
+			flags |= CPUINFO_LOONGARCH_LINUX_VALID_L2;
+		}
+	}
+	if (is_cache_bit_set(L3_IU_Present, info) && is_cache_bit_set(L3_IU_Unify, info)) {
+		if (set_cpuinfo_cache_by_cpucfg(CPUCFG_REG_CACHE_L3_IU, &l3)) {
+			flags |= CPUINFO_LOONGARCH_LINUX_VALID_L3;
+		}
+	}
+
+	for (uint32_t i = 0; i < count; i++) {
+		if (flags & CPUINFO_LOONGARCH_LINUX_VALID_L1I) {
+			processors[i].l1i = l1i;
+		}
+		if (flags & CPUINFO_LOONGARCH_LINUX_VALID_L1D) {
+			processors[i].l1d = l1d;
+		}
+		if (flags & CPUINFO_LOONGARCH_LINUX_VALID_L2) {
+			processors[i].l2 = l2;
+		}
+		if (flags & CPUINFO_LOONGARCH_LINUX_VALID_L3) {
+			processors[i].l3 = l3;
+		}
+		processors[i].flags |= flags;
+	}
+}
+
 static void try_set_prid_by_cpucfg(
 	struct cpuinfo_loongarch_linux_processor *processors,
 	uint32_t count)
@@ -156,6 +229,7 @@ void cpuinfo_loongarch_linux_init(void) {
 	cpuinfo_loongarch64_linux_decode_isa_from_hwcap(&cpuinfo_isa);
 	if (cpuinfo_isa.cpucfg) {
 		try_set_prid_by_cpucfg(loongarch_linux_processors, loongarch_linux_processors_count);
+		try_set_cache_by_cpucfg(loongarch_linux_processors, loongarch_linux_processors_count);
 	}
 	#endif
 
@@ -168,6 +242,13 @@ void cpuinfo_loongarch_linux_init(void) {
 			loongarch_linux_processors_count,
 			loongarch_linux_processors)) {
 		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
+		return;
+	}
+
+	if (!cpuinfo_loongarch_linux_parse_cpu_cache(
+			loongarch_linux_processors_count,
+			loongarch_linux_processors)) {
+		cpuinfo_log_error("failed to parse processor information from /sys/devices/system/cpu/cpuX/cache/indexY/*");
 		return;
 	}
 
@@ -440,11 +521,10 @@ void cpuinfo_loongarch_linux_init(void) {
 		}
 
 		struct cpuinfo_cache temp_l2 = { 0 }, temp_l3 = { 0 };
-		cpuinfo_loongarch_decode_cache(
-			loongarch_linux_processors[i].uarch,
-			loongarch_linux_processors[i].package_processor_count,
-			loongarch_linux_processors[i].architecture_version,
-			&l1i[i], &l1d[i], &temp_l2, &temp_l3);
+		memcpy(&l1i[i], &loongarch_linux_processors[i].l1i, sizeof(struct cpuinfo_cache));
+		memcpy(&l1d[i], &loongarch_linux_processors[i].l1d, sizeof(struct cpuinfo_cache));
+		memcpy(&temp_l2, &loongarch_linux_processors[i].l2, sizeof(struct cpuinfo_cache));
+		memcpy(&temp_l3, &loongarch_linux_processors[i].l3, sizeof(struct cpuinfo_cache));
 		l1i[i].processor_start = l1d[i].processor_start = i;
 		l1i[i].processor_count = l1d[i].processor_count = 1;
 		
@@ -505,11 +585,8 @@ void cpuinfo_loongarch_linux_init(void) {
 		}
 
 		struct cpuinfo_cache dummy_l1i, dummy_l1d, temp_l2 = { 0 }, temp_l3 = { 0 };
-		cpuinfo_loongarch_decode_cache(
-			loongarch_linux_processors[i].uarch,
-			loongarch_linux_processors[i].package_processor_count,
-			loongarch_linux_processors[i].architecture_version,
-			&dummy_l1i, &dummy_l1d, &temp_l2, &temp_l3);
+		memcpy(&temp_l2, &loongarch_linux_processors[i].l2, sizeof(struct cpuinfo_cache));
+		memcpy(&temp_l3, &loongarch_linux_processors[i].l3, sizeof(struct cpuinfo_cache));
 
 		if (temp_l3.size != 0) {
 			/*
@@ -590,7 +667,7 @@ void cpuinfo_loongarch_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = valid_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_2]  = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3]  = l3_count;
-	cpuinfo_max_cache_size = cpuinfo_loongarch_compute_max_cache_size(&processors[0]);
+	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
 
 	cpuinfo_linux_cpu_max = loongarch_linux_processors_count;
 	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
