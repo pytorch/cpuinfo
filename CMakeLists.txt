@@ -226,8 +226,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
     ENDIF()
   ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(loongarch64)$")
     LIST(APPEND CPUINFO_SRCS
-      src/loongarch/uarch.c
-      src/loongarch/cache.c)
+      src/loongarch/uarch.c)
     IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
       LIST(APPEND CPUINFO_SRCS
         src/loongarch/linux/init.c
@@ -235,6 +234,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
         src/loongarch/linux/clusters.c
         src/loongarch/linux/chipset.c
         src/loongarch/linux/prid.c
+        src/loongarch/linux/cache.c
         src/loongarch/linux/loongarch64-isa.c)
     ENDIF()
   ENDIF()

@@ -64,13 +64,14 @@ def main(args):
                 ]
 
         if build.target.is_loongarch64:
-            sources += ["loongarch/uarch.c", "loongarch/cache.c"]
+            sources += ["loongarch/uarch.c"]
             if build.target.is_linux:
                 sources += [
                     "loongarch/linux/init.c",
                     "loongarch/linux/cpuinfo.c",
                     "loongarch/linux/clusters.c",
                     "loongarch/linux/prid.c",
+                    "loongarch/linux/cache.c",
                     "loongarch/linux/chipset.c",
                     "loongarch/linux/loongarch64-isa.c",
                 ]
