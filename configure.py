@@ -69,10 +69,7 @@ def main(args):
                 sources += [
                     "loongarch/linux/init.c",
                     "loongarch/linux/cpuinfo.c",
-                    "loongarch/linux/clusters.c",
-                    "loongarch/linux/prid.c",
                     "loongarch/linux/cache.c",
-                    "loongarch/linux/chipset.c",
                     "loongarch/linux/loongarch64-isa.c",
                 ]
 
