@@ -724,8 +724,8 @@ struct cpuinfo_cluster {
 	/** Value of Main ID Register (MIDR) of the cores in the cluster */
 	uint32_t midr;
 #elif CPUINFO_ARCH_LOONGARCH64
-	/** Value of CPUCFG for this cores in the cluster */
-	uint32_t cpucfg;
+	/** Value of PRID for this cores in the cluster */
+	uint32_t prid;
 #endif
 	/** Clock rate (non-Turbo) of the cores in the cluster, in Hz */
 	uint64_t frequency;
@@ -760,8 +760,8 @@ struct cpuinfo_uarch_info {
 	/** Value of Main ID Register (MIDR) for the microarchitecture */
 	uint32_t midr;
 #elif CPUINFO_ARCH_LOONGARCH64
-	/** Value of CPUCFG for the microarchitecture */
-	uint32_t cpucfg;
+	/** Value of PRID for the microarchitecture */
+	uint32_t prid;
 #endif
 	/** Number of logical processors with the microarchitecture */
 	uint32_t processor_count;

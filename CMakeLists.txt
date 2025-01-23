@@ -231,9 +231,6 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       LIST(APPEND CPUINFO_SRCS
         src/loongarch/linux/init.c
         src/loongarch/linux/cpuinfo.c
-        src/loongarch/linux/clusters.c
-        src/loongarch/linux/chipset.c
-        src/loongarch/linux/prid.c
         src/loongarch/linux/cache.c
         src/loongarch/linux/loongarch64-isa.c)
     ENDIF()

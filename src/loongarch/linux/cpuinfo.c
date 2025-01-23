@@ -28,7 +28,9 @@ static const struct cpuinfo_loongarch_seriesID loongson_name_map_seriesID[] = {
 	{ .prefix = "3C6000", .seriesID = prid_series_la664, },
 };
 
-
+static inline size_t min(size_t a, size_t b) {
+        return a < b ? a : b;
+}
 
 static uint32_t parse_processor_number(
 	const char* processor_start,
@@ -213,7 +215,6 @@ static void parse_seriesID(const char* name_start, size_t length, int* seriesID)
 static void parse_model_name(
 	const char* model_name_start,
 	const char* model_name_end,
-	char* hardware,
 	struct cpuinfo_loongarch_linux_processor processor[restrict static 1])
 {	
 	const char* separator = model_name_start;
@@ -233,10 +234,8 @@ static void parse_model_name(
 			"length of model name value \"%.*s\" in /proc/cpuinfo exceeds limit (%d): truncating to the limit",
 			(int) value_length, separator+1, CPUINFO_HARDWARE_VALUE_MAX);
 		value_length = CPUINFO_HARDWARE_VALUE_MAX;
-	} else {
-		hardware[value_length] = '\0';
 	}
-	memcpy(hardware, separator+1, value_length);
+
 	cpuinfo_log_debug("parsed /proc/cpuinfo model name second value = \"%.*s\"", (int) value_length, separator+1);
 
 	if (model_length != 8) {
@@ -343,6 +342,7 @@ static void parse_core(
 	}
 
 	processor->core_id = cpu_core;
+	processor->flags |= CPUINFO_LINUX_FLAG_CORE_ID;
 }
 
 static void parse_package(
@@ -366,10 +366,10 @@ static void parse_package(
 	}
 
 	processor->package_id = cpu_package;
+	processor->flags |= CPUINFO_LINUX_FLAG_PACKAGE_ID;
 }
 
 struct proc_cpuinfo_parser_state {
-	char* hardware;
 	uint32_t processor_index;
 	uint32_t max_processors_count;
 	struct cpuinfo_loongarch_linux_processor* processors;
@@ -552,8 +552,10 @@ static bool parse_line(
 			if (strncasecmp(line_start, "cpu family", key_length) == 0) {
 				/* cpu family is presently useless, don't parse */
 			} else if (strncasecmp(line_start, "model name", key_length) == 0) {
+				memcpy(processor->hardware_name, value_start, min(value_end - value_start, CPUINFO_HARDWARE_VALUE_MAX));
+				processor->hardware_name[min(value_end - value_start, CPUINFO_HARDWARE_VALUE_MAX)] = '\0';
 				if (!(processor->flags & (CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID | CPUINFO_LOONGARCH_LINUX_VALID_SERIESID)))
-					parse_model_name(value_start,value_end,state->hardware,processor);
+					parse_model_name(value_start, value_end, processor);
 			} else {
 				goto unknown;
 			}
@@ -600,12 +602,10 @@ static bool parse_line(
 }
 
 bool cpuinfo_loongarch_linux_parse_proc_cpuinfo(
-	char hardware[restrict static CPUINFO_HARDWARE_VALUE_MAX],
 	uint32_t max_processors_count,
 	struct cpuinfo_loongarch_linux_processor processors[restrict static max_processors_count])
 {
 	struct proc_cpuinfo_parser_state state = {
-		.hardware = hardware,
 		.processor_index = 0,
 		.max_processors_count = max_processors_count,
 		.processors = processors,
