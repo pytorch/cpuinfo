@@ -16,26 +16,23 @@ TEST(PowerFeatures, Power) {
 		fprintf(stderr, "failed to initialize CPU information\n");
 		exit(1);
 	}
-#if CPUINFO_MOCK
-	int a = mock_hwcap;
-#else
-	int a = (uint32_t)getauxval(AT_HWCAP);
-	int b = (uint32_t)getauxval(AT_HWCAP2);
-#endif // CPUINFO_MOCK //
+	uint32_t a = (uint32_t)getauxval(AT_HWCAP);
+	volatile uint32_t b = (uint32_t)getauxval(AT_HWCAP2);
 
-#if (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_1)
+	if (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_1) {
 	EXPECT_EQ(0, cpuinfo_has_powerpc_htm());
 	EXPECT_EQ(1, cpuinfo_has_powerpc_mma());
 	EXPECT_EQ(1, cpuinfo_has_powerpc_vsx());
-#elif (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_00)
+	}
+	else if (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_00) {
 	EXPECT_EQ(0, cpuinfo_has_powerpc_htm());
 	EXPECT_EQ(0, cpuinfo_has_powerpc_mma());
 	EXPECT_EQ(1, cpuinfo_has_powerpc_vsx());
-#elif (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_2_07)
+	}
+	else if (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_2_07) {
 	EXPECT_EQ(1, cpuinfo_has_powerpc_htm());
 	EXPECT_EQ(0, cpuinfo_has_powerpc_mma());
 	EXPECT_EQ(1, cpuinfo_has_powerpc_vsx());
-#endif
-
+	}
 	cpuinfo_deinitialize();
 }
