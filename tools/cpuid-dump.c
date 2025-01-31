@@ -123,6 +123,15 @@ int main(int argc, char** argv) {
 					print_cpuidex(regs, eax, ecx);
 				}
 				break;
+			case UINT32_C(0x00000024):
+				for (uint32_t ecx = 0; ecx <= max_socid_index; ecx++) {
+					const struct cpuid_regs regs = cpuidex(eax, ecx);
+					if (ecx == 0) {
+						max_socid_index = regs.eax;
+					}
+					print_cpuidex(regs, eax, ecx);
+				}
+				break;
 			default:
 				print_cpuid(cpuidex(eax, 0), eax);
 				break;

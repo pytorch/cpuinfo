@@ -46,6 +46,8 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 		(max_base_index >= 7) ? cpuidex(7, 0) : (struct cpuid_regs){0, 0, 0, 0};
 	const struct cpuid_regs structured_feature_info1 =
 		(max_base_index >= 7) ? cpuidex(7, 1) : (struct cpuid_regs){0, 0, 0, 0};
+    const struct cpuid_regs structured_feature_info2 =
+	    (max_base_index >= 7) ? cpuidex(0x24, 0) : (struct cpuid_regs){0, 0, 0, 0};
 
 	const uint32_t processor_capacity_info_index = UINT32_C(0x80000008);
 	const struct cpuid_regs processor_capacity_info = (max_extended_index >= processor_capacity_info_index)
@@ -433,6 +435,11 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	 * AVX 10.1 instructions:
 	 */
 	isa.avx10_1 = avx512_regs && !!(structured_feature_info1.edx & UINT32_C(0x00080000));
+
+	/*
+	 * AVX 10.2 instructions:
+	 */
+	isa.avx10_2 = !!((structured_feature_info2.ebx & UINT32_C(0x0000007F)) >= 2) && isa.avx10_1;
 
 	/*
 	 * AVX512PF instructions:
