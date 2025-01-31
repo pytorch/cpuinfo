@@ -439,7 +439,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	/*
 	 * AVX 10.2 instructions:
 	 */
-	isa.avx10_2 = !!((structured_feature_info2.ebx & UINT32_C(0x0000007F)) >= 2) && isa.avx10_1;
+	isa.avx10_2 = !!((structured_feature_info2.ebx & UINT32_C(0x000000FF)) >= 2) && isa.avx10_1;
 
 	/*
 	 * AVX512PF instructions:
