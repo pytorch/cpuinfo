@@ -47,7 +47,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	const struct cpuid_regs structured_feature_info1 =
 		(max_base_index >= 7) ? cpuidex(7, 1) : (struct cpuid_regs){0, 0, 0, 0};
 	const struct cpuid_regs structured_feature_info2 =
-	    (max_base_index >= 7) ? cpuidex(0x24, 0) : (struct cpuid_regs){0, 0, 0, 0};
+		(max_base_index >= 7) ? cpuidex(0x24, 0) : (struct cpuid_regs){0, 0, 0, 0};
 
 	const uint32_t processor_capacity_info_index = UINT32_C(0x80000008);
 	const struct cpuid_regs processor_capacity_info = (max_extended_index >= processor_capacity_info_index)
