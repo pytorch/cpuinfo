@@ -8,20 +8,8 @@ void cpuinfo_x86_decode_cache_descriptor(
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info* model_info,
 	struct cpuinfo_x86_caches* cache,
-	struct cpuinfo_tlb* itlb_4KB,
-	struct cpuinfo_tlb* itlb_2MB,
-	struct cpuinfo_tlb* itlb_4MB,
-	struct cpuinfo_tlb* dtlb0_4KB,
-	struct cpuinfo_tlb* dtlb0_2MB,
-	struct cpuinfo_tlb* dtlb0_4MB,
-	struct cpuinfo_tlb* dtlb_4KB,
-	struct cpuinfo_tlb* dtlb_2MB,
-	struct cpuinfo_tlb* dtlb_4MB,
-	struct cpuinfo_tlb* dtlb_1GB,
-	struct cpuinfo_tlb* stlb2_4KB,
-	struct cpuinfo_tlb* stlb2_2MB,
-	struct cpuinfo_tlb* stlb2_1GB,
-	uint32_t* prefetch_size) {
+	struct cpuinfo_x86_tlbs* tlb)
+{
 	/*
 	 * Descriptors are parsed according to:
 	 * - Application Note 485: Intel Processor Indentification and CPUID
@@ -41,7 +29,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Instruction TLB: 4-KB Pages, 4-way set
 			 * associative, 32 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -55,7 +43,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Instruction TLB: 4-MB Pages, fully associative,
 			 * 2 entries"
 			 */
-			*itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 2,
 				.associativity = 2,
 				.pages = CPUINFO_PAGE_SIZE_4MB,
@@ -68,7 +56,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 64 entries" Application Note 485: "Data TLB: 4-KB
 			 * Pages, 4-way set associative, 64 entries"
 			 */
-			*dtlb_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -81,7 +69,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 8 entries" Application Note 485: "Data TLB: 4-MB
 			 * Pages, 4-way set associative, 8 entries"
 			 */
-			*dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4MB,
@@ -94,7 +82,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 32 entries" Application Note 485: "Data TLB: 4-MB
 			 * Pages, 4-way set associative, 32 entries"
 			 */
-			*dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4MB,
@@ -172,7 +160,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Instruction TLB: 4-MB pages, 4-way set
 			 * associative, 4 entries"
 			 */
-			*itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 4,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4MB,
@@ -710,7 +698,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * Application Note 485:
 			 *     "Instruction TLB: 4-KB pages, 32 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				/* Assume full associativity from nearby
 				 * entries: manual lacks detail
@@ -727,7 +715,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * TLB: 4-KB, 2-MB or 4-MB pages, fully associative, 64
 			 * entries"
 			 */
-			*itlb_4KB = *itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = tlb->itlb_2MB = tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 64,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -741,7 +729,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * "Instruction TLB: 4-KB, 2-MB or 4-MB pages, fully
 			 * associative, 128 entries"
 			 */
-			*itlb_4KB = *itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = tlb->itlb_2MB = tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 128,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -755,7 +743,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * "Instruction TLB: 4-KB, 2-MB or 4-MB pages, fully
 			 * associative, 256 entries"
 			 */
-			*itlb_4KB = *itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = tlb->itlb_2MB = tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 256,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -769,7 +757,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * "Instruction TLB: 2-MB or 4-MB pages, fully
 			 * associative, 7 entries"
 			 */
-			*itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_2MB = tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 7,
 				.associativity = 7,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -782,7 +770,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 16 entries" Application Note 485: "L1 Data TLB: 4-MB
 			 * pages, 4-way set associative, 16 entries"
 			 */
-			*dtlb0_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb0_4MB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4MB,
@@ -795,7 +783,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * entries" Application Note 485: "L1 Data TLB: 4-KB
 			 * pages, 4-way set associative, 16 entries"
 			 */
-			*dtlb0_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb0_4KB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -808,7 +796,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * entries" Application Note 485: "Data TLB0: 4-KB
 			 * pages, fully associative, 16 entries"
 			 */
-			*dtlb0_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb0_4KB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 16,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -822,7 +810,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * TLB0: 2-MB or 4-MB pages, 4-way associative, 32
 			 * entries"
 			 */
-			*dtlb0_2MB = *dtlb0_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb0_2MB = tlb->dtlb0_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -836,7 +824,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Data TLB: 4-KB or 4-MB pages, fully associative,
 			 * 64 entries"
 			 */
-			*dtlb_4KB = *dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 64,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
@@ -849,7 +837,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * entries" Application Note 485: "Data TLB: 4-KB or
 			 * 4-MB pages, fully associative, 128 entries"
 			 */
-			*dtlb_4KB = *dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 128,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
@@ -862,7 +850,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * entries" Application Note 485: "Data TLB: 4-KB or
 			 * 4-MB pages, fully associative, 256 entries"
 			 */
-			*dtlb_4KB = *dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 256,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
@@ -888,7 +876,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Instruction TLB: 4 KByte pages, fully
 			 * associative, 48 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 48,
 				.associativity = 48,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -901,12 +889,12 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * associative, 32 entries and a separate array with 1
 			 * GByte pages, 4-way set associative, 4 entries"
 			 */
-			*dtlb_2MB = *dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_2MB = tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
-			*dtlb_1GB = (struct cpuinfo_tlb){
+			tlb->dtlb_1GB = (struct cpuinfo_tlb) {
 				.entries = 4,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_1GB,
@@ -919,7 +907,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 512 entries"
 			 *
 			 */
-			*dtlb_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 512,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -977,7 +965,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			/* uTLB is, an fact, a normal 1-level DTLB on Silvermont
 			 * & Knoghts Landing
 			 */
-			*dtlb_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 8,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -989,7 +977,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "DTLB: 4 KByte pages, 8-way set associative, 256
 			 * entries"
 			 */
-			*dtlb_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 8,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1001,7 +989,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "DTLB: 2M/4M pages, 8-way set associative, 128
 			 * entries"
 			 */
-			*dtlb_2MB = *dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_2MB = tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 8,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -1013,7 +1001,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "DTLB: 1 GByte pages, fully associative, 16
 			 * entries"
 			 */
-			*dtlb_1GB = (struct cpuinfo_tlb){
+			tlb->dtlb_1GB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 16,
 				.pages = CPUINFO_PAGE_SIZE_1GB,
@@ -1033,7 +1021,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 #if CPUINFO_ARCH_X86
 				case cpuinfo_vendor_cyrix:
 				case cpuinfo_vendor_nsc:
-					*dtlb_4KB = *itlb_4KB = (struct cpuinfo_tlb){
+					tlb->dtlb_4KB = tlb->itlb_4KB = (struct cpuinfo_tlb) {
 						.entries = 32,
 						.associativity = 4,
 						.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1085,7 +1073,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 8 entries" Application Note 485: "Instruction TLB:
 			 * 2M/4M pages, fully associative, 8 entries"
 			 */
-			*itlb_2MB = *itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_2MB = tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 8,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -1352,7 +1340,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * Intel ISA Reference:
 			 *     "DTLB: 4k pages, fully associative, 32 entries"
 			 */
-			*dtlb_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 32,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1366,7 +1354,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * "Instruction TLB: 4-KB Pages, 4-way set associative,
 			 * 128 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1380,12 +1368,12 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * "Instruction TLB: 2-MB pages, 4-way, 8 entries or 4M
 			 * pages, 4-way, 4 entries"
 			 */
-			*itlb_2MB = (struct cpuinfo_tlb){
+			tlb->itlb_2MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
 			};
-			*itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 4,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -1399,7 +1387,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Instruction TLB: 4-KB pages, 4-way set
 			 * associative, 64 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1412,7 +1400,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 128 entries" Application Note 485: "Data TLB: 4-KB
 			 * Pages, 4-way set associative, 128 entries"
 			 */
-			*dtlb_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1425,7 +1413,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * entries" Application Note 485: "Data TLB: 4-KB Pages,
 			 * 4-way set associative, 256 entries"
 			 */
-			*dtlb_4KB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 256,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1437,7 +1425,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Instruction TLB: 4KByte pages, 8-way set
 			 * associative, 64 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 8,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1449,7 +1437,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Instruction TLB: 4KByte pages, 8-way set
 			 * associative, 128 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 128,
 				.associativity = 8,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1462,7 +1450,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * entries" Application Note 485: "Data TLB: 4-KB Pages,
 			 * 4-way set associative, 64 entries"
 			 */
-			*itlb_4KB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = (struct cpuinfo_tlb) {
 				.entries = 64,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
@@ -1476,7 +1464,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * TLB: 4-KB or 4-MB Pages, 4-way set associative, 8
 			 * entries"
 			 */
-			*itlb_4KB = *itlb_4MB = (struct cpuinfo_tlb){
+			tlb->itlb_4KB = tlb->itlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 8,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_4MB,
@@ -1488,7 +1476,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "Shared 2nd-Level TLB: 4 KByte/2MByte pages,
 			 * 8-way associative, 1024 entries"
 			 */
-			*stlb2_4KB = *stlb2_2MB = (struct cpuinfo_tlb){
+			tlb->stlb2_4KB = tlb->stlb2_2MB = (struct cpuinfo_tlb) {
 				.entries = 1024,
 				.associativity = 8,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB,
@@ -1500,7 +1488,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "DTLB: 4 KByte/2 MByte pages, 4-way associative,
 			 * 16 entries"
 			 */
-			*dtlb_4KB = *dtlb_2MB = (struct cpuinfo_tlb){
+			tlb->dtlb_4KB = tlb->dtlb_2MB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB,
@@ -1513,12 +1501,12 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * 6-way associative, 1536 entries. Also 1GBbyte pages,
 			 * 4-way, 16 entries."
 			 */
-			*stlb2_4KB = *stlb2_2MB = (struct cpuinfo_tlb){
+			tlb->stlb2_4KB = tlb->stlb2_2MB = (struct cpuinfo_tlb) {
 				.entries = 1536,
 				.associativity = 6,
 				.pages = CPUINFO_PAGE_SIZE_4KB | CPUINFO_PAGE_SIZE_2MB,
 			};
-			*stlb2_1GB = (struct cpuinfo_tlb){
+			tlb->stlb2_1GB = (struct cpuinfo_tlb) {
 				.entries = 16,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_1GB,
@@ -1530,7 +1518,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 *     "DTLB: 2M/4M Byte pages, 4-way associative, 32
 			 * entries"
 			 */
-			*dtlb_2MB = *dtlb_4MB = (struct cpuinfo_tlb){
+			tlb->dtlb_2MB = tlb->dtlb_4MB = (struct cpuinfo_tlb) {
 				.entries = 32,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_2MB | CPUINFO_PAGE_SIZE_4MB,
@@ -1544,7 +1532,7 @@ void cpuinfo_x86_decode_cache_descriptor(
 			 * "Shared 2nd-level TLB: 4 KB pages, 4-way set
 			 * associative, 512 entries"
 			 */
-			*stlb2_4KB = (struct cpuinfo_tlb){
+			tlb->stlb2_4KB = (struct cpuinfo_tlb) {
 				.entries = 512,
 				.associativity = 4,
 				.pages = CPUINFO_PAGE_SIZE_4KB,
