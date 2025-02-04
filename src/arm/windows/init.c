@@ -69,7 +69,12 @@ static struct woa_chip_info woa_chips[woa_chip_name_last] = {
 	[woa_chip_name_ampere_altra] = {
 		L"Ampere(R) Altra(R) Processor",
 		woa_chip_name_ampere_altra,
-		{{cpuinfo_vendor_arm, cpuinfo_uarch_neoverse_n1, 3000000000}}}};
+		{{cpuinfo_vendor_arm, cpuinfo_uarch_neoverse_n1, 3000000000}}},
+	/* Snapdragon(R) X Elite */
+	[woa_chip_name_dell_latitude_7455] = {
+		L"Snapdragon(R) X Elite - X1E80100 - Qualcomm(R) Oryon(TM) CPU",
+		woa_chip_name_qualcomm_oryon_cpu,
+		{{cpuinfo_vendor_arm, cpuinfo_uarch_oryon_gen1, 3400000000}}}};
 
 BOOL CALLBACK cpuinfo_arm_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context) {
 	struct woa_chip_info* chip_info = NULL;
