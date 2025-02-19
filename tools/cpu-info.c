@@ -274,6 +274,20 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "ThunderX2";
 		case cpuinfo_uarch_pj4:
 			return "PJ4";
+		case cpuinfo_uarch_power7:
+			return "POWER7";
+		case cpuinfo_uarch_power7p:
+			return "POWER7+";
+		case cpuinfo_uarch_power8:
+			return "POWER8";
+		case cpuinfo_uarch_power8e:
+			return "POWER8E";
+		case cpuinfo_uarch_power8nvl:
+			return "POWER8NVL";
+		case cpuinfo_uarch_power9:
+			return "POWER9";
+		case cpuinfo_uarch_power10:
+			return "POWER10";
 		case cpuinfo_uarch_brahma_b15:
 			return "Brahma B15";
 		case cpuinfo_uarch_brahma_b53:
@@ -317,6 +331,8 @@ int main(int argc, char** argv) {
 	printf("Cores:\n");
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
 		const struct cpuinfo_core* core = cpuinfo_get_core(i);
+		if (core->disabled)
+			continue;
 		if (core->processor_count == 1) {
 			printf("\t%" PRIu32 ": 1 processor (%" PRIu32 ")", i, core->processor_start);
 		} else {
