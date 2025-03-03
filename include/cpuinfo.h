@@ -864,10 +864,37 @@ struct cpuinfo_x86_isa {
 	bool phe;
 	bool pmm;
 	bool lwp;
+	bool erms;
+	bool smap;
+	bool serialize;
 };
 
 extern struct cpuinfo_x86_isa cpuinfo_isa;
 #endif
+
+static inline bool cpuinfo_has_x86_erms(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.erms;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_smap(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.smap;
+	#else
+		return false;
+	#endif
+}
+
+static inline bool cpuinfo_has_x86_serialize(void) {
+	#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+		return cpuinfo_isa.serialize;
+	#else
+		return false;
+	#endif
+}
 
 static inline bool cpuinfo_has_x86_rdtsc(void) {
 #if CPUINFO_ARCH_X86_64
