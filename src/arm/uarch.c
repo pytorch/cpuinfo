@@ -254,6 +254,10 @@ void cpuinfo_arm_decode_vendor_uarch(
 			*vendor = cpuinfo_vendor_qualcomm;
 			switch (midr_get_part(midr)) {
 #if CPUINFO_ARCH_ARM
+				case 0x001:
+					/* Qualcomm Snapdragon X series (Oryon) */
+					*uarch = cpuinfo_uarch_oryon;
+					break;
 				case 0x00F:
 					/* Mostly Scorpions, but some Cortex A5
 					 * may report this value as well
