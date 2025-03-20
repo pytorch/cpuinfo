@@ -750,12 +750,12 @@ void store_core_info_per_processor(
 	if (cores) {
 		processors[processor_global_index].core = cores + core_id;
 		cores[core_id].core_id = core_id;
-		
+
 		if (chip_info->uarchs == NULL) {
 			cpuinfo_log_error("uarch is NULL for core %d", core_id);
 			return;
 		}
-		
+
 		cores[core_id].uarch = chip_info->uarchs[0].uarch;
 		cores[core_id].frequency = chip_info->uarchs[0].frequency;
 
