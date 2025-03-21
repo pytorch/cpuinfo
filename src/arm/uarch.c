@@ -9,8 +9,8 @@ void cpuinfo_arm_decode_vendor_uarch(
 #if CPUINFO_ARCH_ARM
 	bool has_vfpv4,
 #endif /* CPUINFO_ARCH_ARM */
-	enum cpuinfo_vendor vendor[restrict static 1],
-	enum cpuinfo_uarch uarch[restrict static 1]) {
+	enum cpuinfo_vendor vendor[RESTRICT_STATIC 1],
+	enum cpuinfo_uarch uarch[RESTRICT_STATIC 1]) {
 	switch (midr_get_implementer(midr)) {
 		case 'A':
 			*vendor = cpuinfo_vendor_arm;
@@ -333,7 +333,6 @@ void cpuinfo_arm_decode_vendor_uarch(
 					break;
 #if CPUINFO_ARCH_ARM64
 				case 0x001:
-					/* Qualcomm Snapdragon X series (Oryon) */
 					*uarch = cpuinfo_uarch_oryon;
 					break;
 				case 0xC00:
