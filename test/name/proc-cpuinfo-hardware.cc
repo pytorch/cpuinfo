@@ -458,6 +458,11 @@ TEST(PROC_CPUINFO_HARDWARE, telechips) {
 	EXPECT_EQ("Telechips TCC893X", parse_proc_cpuinfo_hardware("tcc893x"));
 }
 
+TEST(PROC_CPUINFO_HARDWARE, unisoc) {
+	EXPECT_EQ("Unisoc T301", parse_proc_cpuinfo_hardware("Unisoc T301", 4, 1800000));
+	EXPECT_EQ("Unisoc UMS312", parse_proc_cpuinfo_hardware("Unisoc UMS312", 4, 1800000));
+}
+
 #if CPUINFO_ARCH_ARM
 TEST(PROC_CPUINFO_HARDWARE, texas_instruments_omap) {
 	EXPECT_EQ("Texas Instruments OMAP4430", parse_proc_cpuinfo_hardware("OMAP4430"));

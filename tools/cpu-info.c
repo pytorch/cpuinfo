@@ -132,6 +132,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Zen 3";
 		case cpuinfo_uarch_zen4:
 			return "Zen 4";
+		case cpuinfo_uarch_zen5:
+			return "Zen 5";
 		case cpuinfo_uarch_geode:
 			return "Geode";
 		case cpuinfo_uarch_bobcat:
@@ -220,6 +222,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Falkor";
 		case cpuinfo_uarch_saphira:
 			return "Saphira";
+		case cpuinfo_uarch_oryon:
+			return "Oryon";
 		case cpuinfo_uarch_denver:
 			return "Denver";
 		case cpuinfo_uarch_denver2:

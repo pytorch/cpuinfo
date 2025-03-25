@@ -187,7 +187,8 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
   ELSEIF(CMAKE_SYSTEM_NAME MATCHES "^Windows" AND CPUINFO_TARGET_PROCESSOR MATCHES "^(ARM64|arm64)$")
     LIST(APPEND CPUINFO_SRCS
       src/arm/windows/init-by-logical-sys-info.c
-      src/arm/windows/init.c)
+      src/arm/windows/init.c
+      src/arm/uarch.c)
   ELSEIF(CPUINFO_TARGET_PROCESSOR MATCHES "^(armv[5-8].*|aarch64|arm64.*)$" OR IOS_ARCH MATCHES "^(armv7.*|arm64.*)$")
     LIST(APPEND CPUINFO_SRCS
       src/arm/uarch.c

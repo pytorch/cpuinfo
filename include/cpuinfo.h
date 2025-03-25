@@ -419,6 +419,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_zen3 = 0x0020010B,
 	/** AMD Zen 4 microarchitecture. */
 	cpuinfo_uarch_zen4 = 0x0020010C,
+	/** AMD Zen 5 microarchitecture. */
+	cpuinfo_uarch_zen5 = 0x0020010D,
 
 	/** NSC Geode and AMD Geode GX and LX. */
 	cpuinfo_uarch_geode = 0x00200200,
@@ -520,6 +522,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_falkor = 0x00400103,
 	/** Qualcomm Saphira. */
 	cpuinfo_uarch_saphira = 0x00400104,
+	/** Qualcomm Oryon. */
+	cpuinfo_uarch_oryon = 0x00400105,
 
 	/** Nvidia Denver. */
 	cpuinfo_uarch_denver = 0x00500100,
@@ -818,6 +822,8 @@ struct cpuinfo_x86_isa {
 	bool avx512vp2intersect;
 	bool avx512_4vnniw;
 	bool avx512_4fmaps;
+	bool avx10_1;
+	bool avx10_2;
 	bool amx_bf16;
 	bool amx_tile;
 	bool amx_int8;
@@ -1460,6 +1466,22 @@ static inline bool cpuinfo_has_x86_avx_ne_convert(void) {
 #endif
 }
 
+static inline bool cpuinfo_has_x86_avx10_1(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.avx10_1;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_avx10_2(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.avx10_2;
+#else
+	return false;
+#endif
+}
+
 static inline bool cpuinfo_has_x86_hle(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	return cpuinfo_isa.hle;
@@ -1698,6 +1720,12 @@ struct cpuinfo_arm_isa {
 	bool sve2;
 	bool i8mm;
 	bool sme;
+	bool sme2;
+	bool sme2p1;
+	bool sme_i16i32;
+	bool sme_bi32i32;
+	bool sme_b16b16;
+	bool sme_f16f16;
 	uint32_t svelen;
 #endif
 	bool rdm;
@@ -2083,6 +2111,54 @@ static inline uint32_t cpuinfo_get_max_arm_sve_length(void) {
 static inline bool cpuinfo_has_arm_sme(void) {
 #if CPUINFO_ARCH_ARM64
 	return cpuinfo_isa.sme;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme2(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme2;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme2p1(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme2p1;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme_i16i32(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme_i16i32;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme_bi32i32(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme_bi32i32;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme_b16b16(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme_b16b16;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme_f16f16(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme_f16f16;
 #else
 	return false;
 #endif
