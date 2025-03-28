@@ -15,6 +15,10 @@
 #endif
 #endif
 
+#ifdef __QNXNTO__
+#include <qnx/api.h>
+#endif
+
 bool cpuinfo_is_initialized = false;
 
 struct cpuinfo_processor* cpuinfo_processors = NULL;
@@ -50,28 +54,44 @@ const struct cpuinfo_processor* cpuinfo_get_processors(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "processors");
 	}
+#ifdef __QNXNTO__
+	return qnx_processors;
+#else
 	return cpuinfo_processors;
+#endif
 }
 
 const struct cpuinfo_core* cpuinfo_get_cores(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "core");
 	}
+#ifdef __QNXNTO__
+	return (const struct cpuinfo_core*)qnx_core;
+#else
 	return cpuinfo_cores;
+#endif
 }
 
 const struct cpuinfo_cluster* cpuinfo_get_clusters(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "clusters");
 	}
+#ifdef __QNXNTO__
+	return (const struct cpuinfo_cluster*)qnx_cluster;
+#else
 	return cpuinfo_clusters;
+#endif
 }
 
 const struct cpuinfo_package* cpuinfo_get_packages(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "packages");
 	}
+#ifdef __QNXNTO__
+	return qnx_package;
+#else
 	return cpuinfo_packages;
+#endif
 }
 
 const struct cpuinfo_uarch_info* cpuinfo_get_uarchs() {
@@ -92,7 +112,11 @@ const struct cpuinfo_processor* cpuinfo_get_processor(uint32_t index) {
 	if CPUINFO_UNLIKELY (index >= cpuinfo_processors_count) {
 		return NULL;
 	}
+#ifdef __QNXNTO__
+	return (const struct cpuinfo_processor*)&qnx_processors[index];
+#else
 	return &cpuinfo_processors[index];
+#endif
 }
 
 const struct cpuinfo_core* cpuinfo_get_core(uint32_t index) {
@@ -102,7 +126,11 @@ const struct cpuinfo_core* cpuinfo_get_core(uint32_t index) {
 	if CPUINFO_UNLIKELY (index >= cpuinfo_cores_count) {
 		return NULL;
 	}
+#ifdef __QNXNTO__
+	return qnx_core;
+#else
 	return &cpuinfo_cores[index];
+#endif
 }
 
 const struct cpuinfo_cluster* cpuinfo_get_cluster(uint32_t index) {
@@ -112,7 +140,11 @@ const struct cpuinfo_cluster* cpuinfo_get_cluster(uint32_t index) {
 	if CPUINFO_UNLIKELY (index >= cpuinfo_clusters_count) {
 		return NULL;
 	}
+#ifdef __QNXNTO__
+	return qnx_cluster;
+#else
 	return &cpuinfo_clusters[index];
+#endif
 }
 
 const struct cpuinfo_package* cpuinfo_get_package(uint32_t index) {
@@ -122,7 +154,11 @@ const struct cpuinfo_package* cpuinfo_get_package(uint32_t index) {
 	if CPUINFO_UNLIKELY (index >= cpuinfo_packages_count) {
 		return NULL;
 	}
+#ifdef __QNXNTO__
+	return qnx_package;
+#else
 	return &cpuinfo_packages[index];
+#endif
 }
 
 const struct cpuinfo_uarch_info* cpuinfo_get_uarch(uint32_t index) {
@@ -146,28 +182,44 @@ uint32_t cpuinfo_get_processors_count(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "processors_count");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_processors_count();
+#else
 	return cpuinfo_processors_count;
+#endif
 }
 
 uint32_t cpuinfo_get_cores_count(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "cores_count");
 	}
+#ifdef __QNXNTO__
+	return 1;
+#else
 	return cpuinfo_cores_count;
+#endif
 }
 
 uint32_t cpuinfo_get_clusters_count(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "clusters_count");
 	}
+#ifdef __QNXNTO__
+	return 1;
+#else
 	return cpuinfo_clusters_count;
+#endif
 }
 
 uint32_t cpuinfo_get_packages_count(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "packages_count");
 	}
+#ifdef __QNXNTO__
+	return 1;
+#else
 	return cpuinfo_packages_count;
+#endif
 }
 
 uint32_t cpuinfo_get_uarchs_count(void) {
@@ -175,7 +227,11 @@ uint32_t cpuinfo_get_uarchs_count(void) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "uarchs_count");
 	}
 #if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+#ifdef __QNXNTO__
+	return 1;
+#else
 	return cpuinfo_uarchs_count;
+#endif
 #else
 	return 1;
 #endif
@@ -185,85 +241,125 @@ const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_caches(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l1i_caches");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l1i_caches();
+#else
 	return cpuinfo_cache[cpuinfo_cache_level_1i];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_caches(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l1d_caches");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l1d_caches();
+#else
 	return cpuinfo_cache[cpuinfo_cache_level_1d];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l2_caches(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l2_caches");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l1d_caches();
+#else
 	return cpuinfo_cache[cpuinfo_cache_level_2];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l3_caches(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l3_caches");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l1d_caches();
+#else
 	return cpuinfo_cache[cpuinfo_cache_level_3];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_caches(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l4_caches");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l1d_caches();
+#else
 	return cpuinfo_cache[cpuinfo_cache_level_4];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_cache(uint32_t index) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l1i_cache");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l1i_caches();
+#else
 	if CPUINFO_UNLIKELY (index >= cpuinfo_cache_count[cpuinfo_cache_level_1i]) {
 		return NULL;
 	}
 	return &cpuinfo_cache[cpuinfo_cache_level_1i][index];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1d_cache(uint32_t index) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l1d_cache");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l1d_caches();
+#else
 	if CPUINFO_UNLIKELY (index >= cpuinfo_cache_count[cpuinfo_cache_level_1d]) {
 		return NULL;
 	}
 	return &cpuinfo_cache[cpuinfo_cache_level_1d][index];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l2_cache(uint32_t index) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l2_cache");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l2_caches();
+#else
 	if CPUINFO_UNLIKELY (index >= cpuinfo_cache_count[cpuinfo_cache_level_2]) {
 		return NULL;
 	}
 	return &cpuinfo_cache[cpuinfo_cache_level_2][index];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l3_cache(uint32_t index) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l3_cache");
 	}
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l3_caches();
+#else
 	if CPUINFO_UNLIKELY (index >= cpuinfo_cache_count[cpuinfo_cache_level_3]) {
 		return NULL;
 	}
 	return &cpuinfo_cache[cpuinfo_cache_level_3][index];
+#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l4_cache(uint32_t index) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "l4_cache");
 	}
-	if CPUINFO_UNLIKELY (index >= cpuinfo_cache_count[cpuinfo_cache_level_4]) {
+#ifdef __QNXNTO__
+	return cpuinfo_qnx_get_l4_caches();
+#else
+	if CPUINFO_UNLIKELY(index >= cpuinfo_cache_count[cpuinfo_cache_level_4]) {
 		return NULL;
 	}
 	return &cpuinfo_cache[cpuinfo_cache_level_4][index];
+#endif
 }
 
 uint32_t CPUINFO_ABI cpuinfo_get_l1i_caches_count(void) {
