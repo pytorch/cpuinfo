@@ -178,6 +178,7 @@ int main(int argc, char** argv) {
 
 	printf("ARM SVE Capabilities:\n");
 	printf("\tSVE max length: %d\n", cpuinfo_get_max_arm_sve_length());
+	printf("\tSME max length: %d\n", cpuinfo_get_max_arm_sme_length());
 
 	printf("Cryptography extensions:\n");
 	printf("\tAES: %s\n", cpuinfo_has_arm_aes() ? "yes" : "no");
