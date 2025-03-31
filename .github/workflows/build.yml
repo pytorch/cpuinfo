@@ -94,14 +94,14 @@ jobs:
         env:
           ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
   cmake-linux-qemu:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     strategy:
       matrix:
         build_props:
           - [
               "cmake-linux-riscv64",
-              "riscv64/ubuntu:22.04"
+              "riscv64/ubuntu:24.04"
           ]
 
     name: ${{ matrix.build_props[0] }}
