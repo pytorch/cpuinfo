@@ -173,6 +173,8 @@ int main(int argc, char** argv) {
 	printf("SIMD extensions:\n");
 	printf("\tARM SVE: %s\n", cpuinfo_has_arm_sve() ? "yes" : "no");
 	printf("\tARM SVE 2: %s\n", cpuinfo_has_arm_sve2() ? "yes" : "no");
+	printf("\tARM SME: %s\n", cpuinfo_has_arm_sme() ? "yes" : "no");
+	printf("\tARM SME 2: %s\n", cpuinfo_has_arm_sme2() ? "yes" : "no");
 
 	printf("ARM SVE Capabilities:\n");
 	printf("\tSVE max length: %d\n", cpuinfo_get_max_arm_sve_length());
