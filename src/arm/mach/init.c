@@ -27,6 +27,48 @@
 #ifndef CPUFAMILY_ARM_AVALANCHE_BLIZZARD
 #define CPUFAMILY_ARM_AVALANCHE_BLIZZARD 0xDA33D83D
 #endif
+// Following are copied over from ncnn/src/cpu.cpp
+// A15 / M2
+#ifndef CPUFAMILY_ARM_AVALANCHE_BLIZZARD
+#define CPUFAMILY_ARM_AVALANCHE_BLIZZARD 0xda33d83d
+#endif
+// A16
+#ifndef CPUFAMILY_ARM_EVEREST_SAWTOOTH
+#define CPUFAMILY_ARM_EVEREST_SAWTOOTH 0x8765edea
+#endif
+// A17
+#ifndef CPUFAMILY_ARM_COLL
+#define CPUFAMILY_ARM_COLL 0x2876f5b5
+#endif
+// A18
+#ifndef CPUFAMILY_ARM_TUPAI
+#define CPUFAMILY_ARM_TUPAI 0x204526d0
+#endif
+// A18 Pro
+#ifndef CPUFAMILY_ARM_TAHITI
+#define CPUFAMILY_ARM_TAHITI 0x75d4acb9
+#endif
+// M3
+#ifndef CPUFAMILY_ARM_IBIZA
+#define CPUFAMILY_ARM_IBIZA 0xfa33415e
+#endif
+// M3 Pro
+#ifndef CPUFAMILY_ARM_LOBOS
+#define CPUFAMILY_ARM_LOBOS 0x5f4dea93
+#endif
+// M3 Max
+#ifndef CPUFAMILY_ARM_PALMA
+#define CPUFAMILY_ARM_PALMA 0x72015832
+#endif
+// M4
+#ifndef CPUFAMILY_ARM_DONAN
+#define CPUFAMILY_ARM_DONAN 0x6f5129ac
+#endif
+// M4 Pro / M4 Max
+#ifndef CPUFAMILY_ARM_BRAVA
+#define CPUFAMILY_ARM_BRAVA 0x17d5b93a
+#endif
+#endif // __APPLE__
 
 struct cpuinfo_arm_isa cpuinfo_isa = {
 	.aes = true,
