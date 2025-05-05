@@ -359,8 +359,6 @@ int main(int argc, char** argv) {
 	printf("Cores:\n");
 	for (uint32_t i = 0; i < cpuinfo_get_cores_count(); i++) {
 		const struct cpuinfo_core* core = cpuinfo_get_core(i);
-		if (core->disabled)
-			continue;
 		if (core->processor_count == 1) {
 			printf("\t%" PRIu32 ": 1 processor (%" PRIu32 ")", i, core->processor_start);
 		} else {

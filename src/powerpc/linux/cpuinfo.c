@@ -117,7 +117,6 @@ static void parse_cpu_architecture(
 					cpu_architecture_start);
 		}
 		processor->flags |= CPUINFO_POWERPC_LINUX_VALID_PROCESSOR;
-		processor->core.disabled = false;
 	} else {
 		cpuinfo_log_warning(
 			"processor %.*s in /proc/cpuinfo is ignored due not a Power processor",
@@ -326,10 +325,6 @@ bool cpuinfo_powerpc_linux_parse_proc_cpuinfo(
 		.max_processors_count = max_processors_count,
 		.processors = processors,
 	};
-
-	for (int i = 0; i < max_processors_count; i++)
-		processors[i].core.disabled = true;
-
 	return cpuinfo_linux_parse_multiline_file(
 		"/proc/cpuinfo", BUFFER_SIZE, (cpuinfo_line_callback)parse_line, &state);
 }
