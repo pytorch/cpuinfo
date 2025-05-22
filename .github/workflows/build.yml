@@ -111,7 +111,7 @@ jobs:
         uses: docker/setup-qemu-action@v3.0.0
       - name: Build cpuinfo in ${{ matrix.build_props[1] }}
         run: |
-          docker run -i -v $(pwd):/cpuinfo ${{ matrix.build_props[1] }} /bin/bash -c "
+          docker run --platform linux/riscv64 -i -v $(pwd):/cpuinfo ${{ matrix.build_props[1] }} /bin/bash -c "
           apt update &&
           apt install -y cmake git gcc g++ &&
           cd /cpuinfo &&
