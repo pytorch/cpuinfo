@@ -158,19 +158,19 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_BENCHMARKS)
 ENDIF()
 
 # ---[ cpuinfo library
-SET(CPUINFO_SRCS src/api.c src/cache.c src/init.c src/log.c)
+SET(CPUINFO_SRCS src/api.c src/cache.c src/maininit.c src/log.c)
 
 IF(CPUINFO_SUPPORTED_PLATFORM)
   IF(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten" AND (CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?)$" OR IOS_ARCH MATCHES "^(i386|x86_64)$"))
     LIST(APPEND CPUINFO_SRCS
-      src/x86/init.c
+      src/x86/x86init.c
       src/x86/info.c
       src/x86/vendor.c
       src/x86/uarch.c
       src/x86/name.c
-      src/x86/topology.c
+      src/x86/x86topology.c
       src/x86/isa.c
-      src/x86/cache/init.c
+      src/x86/cache/cacheinit.c
       src/x86/cache/descriptor.c
       src/x86/cache/deterministic.c)
     IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
