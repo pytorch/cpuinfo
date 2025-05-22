@@ -209,4 +209,3 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		isa->smelen = ret & PR_SME_VL_LEN_MASK;
 	}
 }
-
