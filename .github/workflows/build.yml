@@ -108,7 +108,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v3.0.0
+        uses: docker/setup-qemu-action@v3.6.0
       - name: Build cpuinfo in ${{ matrix.build_props[1] }}
         run: |
           docker run -i -v $(pwd):/cpuinfo ${{ matrix.build_props[1] }} /bin/bash -c "
