@@ -101,7 +101,7 @@ jobs:
         build_props:
           - [
               "cmake-linux-riscv64",
-              "riscv64/ubuntu:24.04"
+              "ubuntu:24.04"
           ]
 
     name: ${{ matrix.build_props[0] }}
@@ -113,7 +113,7 @@ jobs:
         uses: docker/setup-docker-action@v4.3.0
       - name: Build cpuinfo in ${{ matrix.build_props[1] }}
         run: |
-          docker run -i -v $(pwd):/cpuinfo ${{ matrix.build_props[1] }} /bin/bash -c "
+          docker run --platform linux/riscv64 -i -v $(pwd):/cpuinfo ${{ matrix.build_props[1] }} /bin/bash -c "
           apt update &&
           apt install -y cmake git gcc g++ &&
           cd /cpuinfo &&
