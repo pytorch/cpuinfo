@@ -66,7 +66,6 @@
 #ifndef CPUFAMILY_ARM_BRAVA
 #define CPUFAMILY_ARM_BRAVA 0x17d5b93a
 #endif
-#endif // __APPLE__
 
 struct cpuinfo_arm_isa cpuinfo_isa = {
 	.aes = true,
