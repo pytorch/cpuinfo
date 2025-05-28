@@ -581,6 +581,22 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_avalanche = 0x0070010D,
 	/** Apple A15 / M2 processor (little cores). */
 	cpuinfo_uarch_blizzard = 0x0070010E,
+	/** Apple A16 processor (big cores). */
+	cpuinfo_uarch_everest = 0x00700200,
+	/** Apple A16 processor (little cores). */
+	cpuinfo_uarch_sawtooth = 0x00700201,
+	/** Apple A17 processor (big cores). */
+	cpuinfo_uarch_coll_everest = 0x00700202,
+	/** Apple A17 processor (little cores). */
+	cpuinfo_uarch_coll_sawtooth = 0x00700203,
+	/** Apple A18 processor (big cores). */
+	cpuinfo_uarch_tupai_everest = 0x00700204,
+	/** Apple A18 processor (little cores). */
+	cpuinfo_uarch_tupai_sawtooth = 0x00700205,
+	/** Apple A18 pro processor (big cores). */
+	cpuinfo_uarch_tahiti_everest = 0x00700206,
+	/** Apple A18 pro processor (little cores). */
+	cpuinfo_uarch_tahiti_sawtooth = 0x00700207,
 
 	/** Cavium ThunderX. */
 	cpuinfo_uarch_thunderx = 0x00800100,
