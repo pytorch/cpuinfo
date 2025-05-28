@@ -270,6 +270,22 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Avalanche";
 		case cpuinfo_uarch_blizzard:
 			return "Blizzard";
+		case cpuinfo_uarch_everest:
+			return "Everest";
+		case cpuinfo_uarch_sawtooth:
+			return "Sawtooth";
+		case cpuinfo_uarch_coll_everest:
+			return "Coll_Everest";
+		case cpuinfo_uarch_coll_sawtooth:
+			return "Coll_Sawtooth";
+		case cpuinfo_uarch_tupai_everest:
+			return "Tupai_Everest";
+		case cpuinfo_uarch_tupai_sawtooth:
+			return "Tupai_Sawtooth";
+		case cpuinfo_uarch_tahiti_everest:
+			return "Tahiti_Everest";
+		case cpuinfo_uarch_tahiti_sawtooth:
+			return "Tahiti_Sawtooth";
 		case cpuinfo_uarch_thunderx:
 			return "ThunderX";
 		case cpuinfo_uarch_thunderx2:
