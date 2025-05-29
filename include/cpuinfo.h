@@ -1716,6 +1716,7 @@ struct cpuinfo_arm_isa {
 	bool sme_b16b16;
 	bool sme_f16f16;
 	uint32_t svelen;
+	uint32_t smelen;
 #endif
 	bool rdm;
 	bool fp16arith;
@@ -2092,6 +2093,15 @@ static inline bool cpuinfo_has_arm_sve2(void) {
 static inline uint32_t cpuinfo_get_max_arm_sve_length(void) {
 #if CPUINFO_ARCH_ARM64
 	return cpuinfo_isa.svelen * 8; // bytes * 8 = bit length(vector length)
+#else
+	return 0;
+#endif
+}
+
+// Function to get the max SME vector length on ARM CPU's which support SME.
+static inline uint32_t cpuinfo_get_max_arm_sme_length(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.smelen * 8; // bytes * 8 = bit length(vector length)
 #else
 	return 0;
 #endif
