@@ -382,6 +382,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_knights_hill = 0x00100503,
 	/** Intel Knights Mill Xeon Phi. */
 	cpuinfo_uarch_knights_mill = 0x00100504,
+	/** Intel Darkmont microarchitecture (e-core used in Clearwater Forest). */
+	cpuinfo_uarch_silvermont = 0x00100505,
 
 	/** Intel/Marvell XScale series. */
 	cpuinfo_uarch_xscale = 0x00100600,
