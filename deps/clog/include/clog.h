@@ -12,7 +12,11 @@
 #define CLOG_DEBUG 5
 
 #ifndef CLOG_VISIBILITY
-	#if defined(__ELF__)
+	#if defined(__GNUC__)
+	// ld.lld: error: undefined hidden symbol: clog_vlog_error
+	// referenced by log.h:16 (external/cpuinfo/src/cpuinfo/log.h)
+		#define CLOG_VISIBILITY
+	#elif defined(__ELF__)
 		#define CLOG_VISIBILITY __attribute__((__visibility__("internal")))
 	#elif defined(__MACH__)
 		#define CLOG_VISIBILITY __attribute__((__visibility__("hidden")))
