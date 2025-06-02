@@ -185,6 +185,8 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x5A: // Moorefield
 						case 0x5D: // SoFIA
 							return cpuinfo_uarch_silvermont;
+						case 0xAF: // Sierra Forest
+							return cpuinfo_uarch_crestmont;
 						case 0x4C: // Braswell, Cherry
 							   // Trail
 						case 0x75: // Spreadtrum
