@@ -203,6 +203,8 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							return cpuinfo_uarch_knights_landing;
 						case 0x85:
 							return cpuinfo_uarch_knights_mill;
+						case 0xDD: // Clearwater Forest
+							return cpuinfo_uarch_darkmont;
 					}
 					break;
 				case 0x0F:

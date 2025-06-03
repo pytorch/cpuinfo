@@ -98,6 +98,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Goldmont";
 		case cpuinfo_uarch_goldmont_plus:
 			return "Goldmont Plus";
+		case cpuinfo_uarch_darkmont:
+			return "Darkmont";
 		case cpuinfo_uarch_knights_ferry:
 			return "Knights Ferry";
 		case cpuinfo_uarch_knights_corner:
