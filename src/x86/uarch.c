@@ -21,6 +21,8 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							   // systems
 						case 0x04: // Pentium MMX
 							return cpuinfo_uarch_p5;
+						case 0x06: // Tiger Lake, Alder Lake, Raptor Lake and Meteor Lake
+							return cpuinfo_uarch_
 						case 0x09:
 							return cpuinfo_uarch_quark;
 					}
@@ -168,6 +170,9 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x7E: // Ice Lake-U
 							return cpuinfo_uarch_sunny_cove;
 
+						case 0x8C: // Tiger U
+						case 0x8D: // Tiger H
+							return cpuinfo_uarch_willow_cove;
 						/* Low-power cores */
 						case 0x1C: // Diamondville,
 							   // Silverthorne,
