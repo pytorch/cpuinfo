@@ -21,8 +21,6 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							   // systems
 						case 0x04: // Pentium MMX
 							return cpuinfo_uarch_p5;
-						case 0x06: // Tiger Lake, Alder Lake, Raptor Lake and Meteor Lake
-							return cpuinfo_uarch_
 						case 0x09:
 							return cpuinfo_uarch_quark;
 					}
