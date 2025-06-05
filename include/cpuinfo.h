@@ -353,7 +353,7 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_palm_cove = 0x0010020B,
 	/** Intel Sunny Cove microarchitecture (10 nm, Ice Lake). */
 	cpuinfo_uarch_sunny_cove = 0x0010020C,
-	/** Intel Willow Cove (10 nm, Tiger Lake). */
+	/** Intel Willow Cove microarchitecture (10 nm, Tiger Lake). */
 	cpuinfo_uarch_willow_cove = 0x0010020D,
 
 	/** Pentium 4 with Willamette, Northwood, or Foster cores. */
