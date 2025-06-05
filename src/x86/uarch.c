@@ -168,6 +168,9 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x7E: // Ice Lake-U
 							return cpuinfo_uarch_sunny_cove;
 
+						case 0x8C: // Tiger U
+						case 0x8D: // Tiger H
+							return cpuinfo_uarch_willow_cove;
 						/* Low-power cores */
 						case 0x1C: // Diamondville,
 							   // Silverthorne,
