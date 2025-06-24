@@ -92,6 +92,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Saltwell";
 		case cpuinfo_uarch_silvermont:
 			return "Silvermont";
+		case cpuinfo_uarch_gracemont:
+			return "Gracemont";
 		case cpuinfo_uarch_crestmont:
 			return "Crestmont";
 		case cpuinfo_uarch_airmont:
