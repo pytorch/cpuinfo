@@ -373,6 +373,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_goldmont = 0x00100404,
 	/** Intel Goldmont Plus microarchitecture (Gemini Lake). */
 	cpuinfo_uarch_goldmont_plus = 0x00100405,
+	/** Intel Gracemont microarchitecture (Twin Lake). */
+	cpuinfo_uarch_gracemont = 0x00100406,
 	/** Intel Crestmont microarchitecture (Sierra Forest). */
 	cpuinfo_uarch_crestmont = 0x00100407,
 
