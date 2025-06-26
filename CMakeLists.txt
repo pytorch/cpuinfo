@@ -108,7 +108,7 @@ IF(NOT CMAKE_SYSTEM_NAME)
       "Target operating system is not specified. "
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
   SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
-ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android|FreeBSD)$")
+ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android|FreeBSD|QNX)$")
   IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT IS_APPLE_OS)
     MESSAGE(WARNING
       "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
@@ -160,7 +160,27 @@ ENDIF()
 # ---[ cpuinfo library
 SET(CPUINFO_SRCS src/api.c src/cache.c src/init.c src/log.c)
 
-IF(CPUINFO_SUPPORTED_PLATFORM)
+IF(QNX)
+  LIST(APPEND CPUINFO_SRCS
+  src/qnx/api.c
+  src/arm/uarch.c
+  )
+  IF(CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?)$")
+    LIST(APPEND CPUINFO_SRCS
+      src/x86/init.c
+      src/x86/info.c
+      src/x86/vendor.c
+      src/x86/uarch.c
+      src/x86/name.c
+      src/x86/topology.c
+      src/x86/isa.c
+      src/x86/cache/init.c
+      src/x86/cache/descriptor.c
+      src/x86/cache/deterministic.c)
+  ENDIF()
+ENDIF()
+
+IF(CPUINFO_SUPPORTED_PLATFORM AND NOT QNX)
   IF(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten" AND (CPUINFO_TARGET_PROCESSOR MATCHES "^(i[3-6]86|AMD64|x86(_64)?)$" OR IOS_ARCH MATCHES "^(i386|x86_64)$"))
     LIST(APPEND CPUINFO_SRCS
       src/x86/init.c
@@ -808,7 +828,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
 ENDIF()
 
 # ---[ cpuinfo unit tests
-IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_UNIT_TESTS)
+IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_UNIT_TESTS AND NOT QNX)
   ADD_EXECUTABLE(init-test test/init.cc)
   CPUINFO_TARGET_ENABLE_CXX11(init-test)
   CPUINFO_TARGET_RUNTIME_LIBRARY(init-test)
@@ -879,7 +899,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_TOOLS)
   TARGET_LINK_LIBRARIES(cache-info PRIVATE cpuinfo)
   INSTALL(TARGETS cache-info RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-  IF(CMAKE_SYSTEM_NAME MATCHES "^(Android|Linux)$" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv[5-8].*|aarch64)$")
+  IF(CMAKE_SYSTEM_NAME MATCHES "^(Android|Linux|QNX)$" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv[5-8].*|aarch64)$")
     ADD_EXECUTABLE(auxv-dump tools/auxv-dump.c)
     CPUINFO_TARGET_ENABLE_C99(auxv-dump)
     CPUINFO_TARGET_RUNTIME_LIBRARY(auxv-dump)
