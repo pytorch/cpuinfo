@@ -7,11 +7,41 @@
 #include <cpuinfo/utils.h>
 #include <x86/api.h>
 #include <x86/cpuid.h>
+#include <x86/linux/api.h>
 
-struct cpuinfo_x86_isa cpuinfo_isa = {0};
+/*
+ * Structs cpuinfo_x86_isa, cpuinfo_x86_model_info and cpuinfo_x86_processor
+ * are dumped into cpuid.info file by cpuinfo-svc service on boot.
+ * Whenever libcpuinfo is initialized by any application, it will attempt to
+ * read cpuid.info file, if it exists, and the binary dump in the file is
+ * copied to these structs. If the file doesn't exist, we will fall back to
+ * original method of calling __cpuid() intrinsics to get the info.
+ * By this method, we can avoid __cpuid() calls during each init of cpuinfo.
+ * This will reduce VMX events in virtualized environments thereby
+ * improving performance.
+ * CPUID being a privileged instn costs considerable number of CPU cycles.
+ */
+
+#ifdef __ANDROID__
+struct cpuinfo_x86_cpuid_info x86_cpuid_info = { 0 };
+#endif //__ANDROID__
+
+struct cpuinfo_x86_isa cpuinfo_isa = { 0 };
 CPUINFO_INTERNAL uint32_t cpuinfo_x86_clflush_size = 0;
 
 void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
+	#ifdef __ANDROID__
+	if (cpuinfo_x86_linux_parse_cpuid_info(&x86_cpuid_info)) {
+		*processor  = x86_cpuid_info.processor;
+		cpuinfo_isa = x86_cpuid_info.isa;
+		#ifdef DEBUG_CPUINFO
+		debug_print_cpuid_info_file();
+		#endif //DEBUG_CPUINFO
+		return;
+	}
+	cpuinfo_log_debug("falling back to CPUID method");
+	#endif //__ANDROID__
+
 	const struct cpuid_regs leaf0 = cpuid(0);
 	const uint32_t max_base_index = leaf0.eax;
 	const enum cpuinfo_vendor vendor = processor->vendor =
@@ -66,6 +96,10 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 
 		cpuinfo_isa = cpuinfo_x86_detect_isa(
 			leaf1, leaf0x80000001, max_base_index, max_extended_index, vendor, uarch);
+
+		#ifdef __ANDROID__
+		x86_cpuid_info.model = model_info;
+		#endif //__ANDROID__
 	}
 	if (max_extended_index >= UINT32_C(0x80000004)) {
 		struct cpuid_regs brand_string[3];
@@ -75,4 +109,11 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 		memcpy(processor->brand_string, brand_string, sizeof(processor->brand_string));
 		cpuinfo_log_debug("raw CPUID brand string: \"%48s\"", processor->brand_string);
 	}
+	#ifdef __ANDROID__
+	x86_cpuid_info.processor = *processor;
+	x86_cpuid_info.isa = cpuinfo_isa;
+	#ifdef DEBUG_CPUINFO
+	debug_print_cpuid_info_file();
+	#endif //DEBUG_CPUINFO
+	#endif //__ANDROID__
 }
