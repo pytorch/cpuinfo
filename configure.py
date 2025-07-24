@@ -75,6 +75,16 @@ def main(args):
             if options.mock:
                 sources += ["linux/mockfile.c"]
         build.static_library("cpuinfo", map(build.cc, sources))
+        if build.target.is_ppc64:
+            sources += [ "powerpc/uarch.c", "powerpc/cache.c"]
+            if build.target.is_linux:
+                sources += [
+                    "powerpc/linux/cpuinfo.c"
+                    "powerpc/linux/ppc64-hw.c",
+                    "powerpc/linux/init.c",
+                    "powerpc/linux/ppc64-isa.c",
+                    ]
+
 
     with build.options(source_dir="tools", deps=[build, build.deps.clog]):
         build.executable("cpu-info", build.cc("cpu-info.c"))
@@ -91,6 +101,8 @@ def main(args):
             build.smoketest("get-current-test", build.cxx("get-current.cc"))
         if build.target.is_x86_64:
             build.smoketest("brand-string-test", build.cxx("name/brand-string.cc"))
+        if build.target.is_ppc64:
+            build.smoketest("power-features-test", build.cxx("name/power-features.cc"))
     if options.mock:
         with build.options(source_dir="test", include_dirs="test", macros="CPUINFO_MOCK", deps=[build, build.deps.googletest]):
             if build.target.is_arm64 and build.target.is_linux:
