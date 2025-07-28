@@ -890,10 +890,122 @@ struct cpuinfo_x86_isa {
 	bool phe;
 	bool pmm;
 	bool lwp;
+	bool erms;
+	bool smap;
+	bool serialize;
 };
 
 extern struct cpuinfo_x86_isa cpuinfo_isa;
+
+struct cpuid_regs {
+	uint32_t eax;
+	uint32_t ebx;
+	uint32_t ecx;
+	uint32_t edx;
+};
+
+struct cpuinfo_x86_cache {
+	uint32_t size;
+	uint32_t associativity;
+	uint32_t sets;
+	uint32_t partitions;
+	uint32_t line_size;
+	uint32_t flags;
+	uint32_t apic_bits;
+};
+
+struct cpuinfo_x86_caches {
+	struct cpuinfo_trace_cache trace;
+	struct cpuinfo_x86_cache l1i;
+	struct cpuinfo_x86_cache l1d;
+	struct cpuinfo_x86_cache l2;
+	struct cpuinfo_x86_cache l3;
+	struct cpuinfo_x86_cache l4;
+	uint32_t prefetch_size;
+};
+
+struct cpuinfo_x86_tlbs {
+	struct cpuinfo_tlb itlb_4KB;
+	struct cpuinfo_tlb itlb_2MB;
+	struct cpuinfo_tlb itlb_4MB;
+	struct cpuinfo_tlb dtlb0_4KB;
+	struct cpuinfo_tlb dtlb0_2MB;
+	struct cpuinfo_tlb dtlb0_4MB;
+	struct cpuinfo_tlb dtlb_4KB;
+	struct cpuinfo_tlb dtlb_2MB;
+	struct cpuinfo_tlb dtlb_4MB;
+	struct cpuinfo_tlb dtlb_1GB;
+	struct cpuinfo_tlb stlb2_4KB;
+	struct cpuinfo_tlb stlb2_2MB;
+	struct cpuinfo_tlb stlb2_1GB;
+};
+
+struct cpuinfo_x86_model_info {
+	uint32_t model;
+	uint32_t family;
+	uint32_t base_model;
+	uint32_t base_family;
+	uint32_t stepping;
+	uint32_t extended_model;
+	uint32_t extended_family;
+	uint32_t processor_type;
+};
+
+struct cpuinfo_x86_topology {
+	uint32_t apic_id;
+	uint32_t thread_bits_offset;
+	uint32_t thread_bits_length;
+	uint32_t core_bits_offset;
+	uint32_t core_bits_length;
+};
+
+struct cpuinfo_x86_processor {
+	uint32_t cpuid;
+	enum cpuinfo_vendor vendor;
+	enum cpuinfo_uarch uarch;
+#ifdef __linux__
+	int linux_id;
 #endif
+	struct cpuinfo_x86_caches cache;
+	struct cpuinfo_x86_tlbs tlb;
+	struct cpuinfo_x86_topology topology;
+	char brand_string[CPUINFO_PACKAGE_NAME_MAX];
+};
+
+#ifdef __ANDROID__
+static const char CPUID_INFO_FILE[] = "/data/vendor/cpuinfo/cpuid.info";
+
+struct cpuinfo_x86_cpuid_info {
+	struct cpuinfo_x86_isa isa;
+	struct cpuinfo_x86_model_info model;
+	struct cpuinfo_x86_processor processor;
+};
+#endif //__ANDROID__
+#endif //CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+
+static inline bool cpuinfo_has_x86_erms(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.erms;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_smap(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.smap;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_serialize(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.serialize;
+#else
+	return false;
+#endif
+}
 
 static inline bool cpuinfo_has_x86_rdtsc(void) {
 #if CPUINFO_ARCH_X86_64
