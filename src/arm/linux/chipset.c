@@ -468,6 +468,58 @@ static bool match_universal(const char* start, const char* end, struct cpuinfo_a
 	return true;
 }
 
+
+
+/**
+ * Tries to match /s5e\d{4}$/ signature for Samsung Exynos chipsets.
+ * If match successful, extracts model information into \p chipset argument.
+ *
+ * @param start - start of the platform identifier (ro.product.board or
+ * ro.board.platform) to match.
+ * @param end - end of the platform identifier (ro.product.board or
+ * ro.board.platform) to match.
+ * @param[out] chipset - location where chipset information will be stored upon
+ * a successful match.
+ *
+ * @returns true if signature matched, false otherwise.
+ */
+static bool match_s5e(const char* start, const char* end, struct cpuinfo_arm_chipset chipset[restrict static 1]) {
+	/* Expect exactly 7 symbols: "s5e" (3 symbols) + 4-digit model number */
+	if (start + 7 != end) {
+		return false;
+	}
+
+	/* Check that string starts with "s5e" */
+	if (start[0] != 's') {
+		return false;
+	}
+
+	/* Load next 2 bytes as little endian 16-bit word */
+	const uint16_t expected_5e = load_u16le(start + 1);
+	if (expected_5e != UINT16_C(0x6535) /* "e5" = reverse("5e") */) {
+		return false;
+	}
+
+	/* Check and parse 4-digit model number */
+	uint32_t model = 0;
+	for (uint32_t i = 3; i < 7; i++) {
+		const uint32_t digit = (uint32_t)(uint8_t)start[i] - '0';
+		if (digit >= 10) {
+			/* Not really a digit */
+			return false;
+		}
+		model = model * 10 + digit;
+	}
+
+	/* Return parsed chipset. */
+	*chipset = (struct cpuinfo_arm_chipset){
+		.vendor = cpuinfo_arm_chipset_vendor_samsung,
+		.series = cpuinfo_arm_chipset_series_samsung_exynos,
+		.model = model,
+	};
+	return true;
+}
+
 /**
  * Compares, case insensitively, a string to known values "SMDK4210" and
  * "SMDK4x12" for Samsung Exynos chipsets. If platform identifier matches one of
@@ -2832,6 +2884,15 @@ struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_product_bo
 	if (match_universal(board, board_end, &chipset)) {
 		cpuinfo_log_debug(
 			"matched UNIVERSAL (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
+			(int)board_length,
+			board);
+		return chipset;
+	}
+
+	/* Check s5eXXXX (Samsung Exynos) signature */
+	if (match_s5e(board, board_end, &chipset)) {
+		cpuinfo_log_debug(
+			"matched S5E (Samsung Exynos) signature in ro.product.board string \"%.*s\"",
 			(int)board_length,
 			board);
 		return chipset;
