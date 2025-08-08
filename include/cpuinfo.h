@@ -373,10 +373,14 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_goldmont = 0x00100404,
 	/** Intel Goldmont Plus microarchitecture (Gemini Lake). */
 	cpuinfo_uarch_goldmont_plus = 0x00100405,
-	/** Intel Gracemont microarchitecture (Twin Lake). */
-	cpuinfo_uarch_gracemont = 0x00100406,
+	/** Intel Airmont microarchitecture (10 nm out-of-order Atom). */
+	cpuinfo_uarch_tremont = 0x00100406,
+	/** Intel Gracemont microarchitecture (AlderLake N). */
+	cpuinfo_uarch_gracemont = 0x00100407,
 	/** Intel Crestmont microarchitecture (Sierra Forest). */
-	cpuinfo_uarch_crestmont = 0x00100407,
+	cpuinfo_uarch_crestmont = 0x00100408,
+	/** Intel Darkmont microarchitecture (e-core used in Clearwater Forest). */
+	cpuinfo_uarch_darkmont = 0x00100409,
 
 	/** Intel Knights Ferry HPC boards. */
 	cpuinfo_uarch_knights_ferry = 0x00100500,
@@ -388,8 +392,6 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_knights_hill = 0x00100503,
 	/** Intel Knights Mill Xeon Phi. */
 	cpuinfo_uarch_knights_mill = 0x00100504,
-	/** Intel Darkmont microarchitecture (e-core used in Clearwater Forest). */
-	cpuinfo_uarch_darkmont = 0x00100505,
 
 	/** Intel/Marvell XScale series. */
 	cpuinfo_uarch_xscale = 0x00100600,
