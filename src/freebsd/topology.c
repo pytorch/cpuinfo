@@ -52,7 +52,7 @@ struct cpuinfo_freebsd_topology cpuinfo_freebsd_detect_topology(void) {
 		.threads_per_core = 0,
 		.threads = 0,
 	};
-#if defined (__FreeBSD__)
+#if defined(__FreeBSD__)
 	char* topology_spec = sysctl_str("kern.sched.topology_spec");
 	if (!topology_spec) {
 		return topology;
