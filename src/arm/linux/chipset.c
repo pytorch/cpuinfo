@@ -931,13 +931,15 @@ static bool match_t(const char* start, const char* end, struct cpuinfo_arm_chips
 	/* Check that string starts with "Unisoc T" or "UNISOC T". The first four characters
 	 * are loaded as 32-bit little endian word */
 	const uint32_t expected_unis = load_u32le(start);
-	if (expected_unis != UINT32_C(0x73696E55) /* "sinU" = reverse("Unis") */ && expected_unis != UINT32_C(0x53494E55) /* "SINU" = reverse("UNIS") */) {
+	if (expected_unis != UINT32_C(0x73696E55) /* "sinU" = reverse("Unis") */ &&
+	    expected_unis != UINT32_C(0x53494E55) /* "SINU" = reverse("UNIS") */) {
 		return false;
 	}
 
 	/* The next four characters are loaded as 32-bit little endian word */
 	const uint32_t expected_oc_t = load_u32le(start + 4);
-	if (expected_oc_t != UINT32_C(0x5420636F) /* "T co" = reverse("oc T") */ && expected_oc_t != UINT32_C(0x5420434F) /* "T CO" = reverse("OC T") */) {
+	if (expected_oc_t != UINT32_C(0x5420636F) /* "T co" = reverse("oc T") */ &&
+	    expected_oc_t != UINT32_C(0x5420434F) /* "T CO" = reverse("OC T") */) {
 		return false;
 	}
 
