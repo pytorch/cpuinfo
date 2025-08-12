@@ -468,8 +468,6 @@ static bool match_universal(const char* start, const char* end, struct cpuinfo_a
 	return true;
 }
 
-
-
 /**
  * Tries to match /s5e\d{4}$/ signature for Samsung Exynos chipsets.
  * If match successful, extracts model information into \p chipset argument.
