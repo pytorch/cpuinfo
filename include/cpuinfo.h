@@ -732,7 +732,7 @@ struct cpuinfo_cluster {
 	uint64_t frequency;
 };
 
-#define CPUINFO_PACKAGE_NAME_MAX 48
+#define CPUINFO_PACKAGE_NAME_MAX 64
 
 struct cpuinfo_package {
 	/** SoC or processor chip model name */
