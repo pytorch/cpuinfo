@@ -142,15 +142,10 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Neoverse V1 cores
 		 * - Neoverse V2 cores
 		 */
-		if (chipset->series == cpuinfo_arm_chipset_series_spreadtrum_sc && chipset->model == 9863) {
-			cpuinfo_log_warning(
-				"VDOT instructions disabled: cause occasional SIGILL on Spreadtrum SC9863A");
-		} else if (chipset->series == cpuinfo_arm_chipset_series_unisoc_t && chipset->model == 310) {
-			cpuinfo_log_warning("VDOT instructions disabled: cause occasional SIGILL on Unisoc T310");
-		} else if (chipset->series == cpuinfo_arm_chipset_series_unisoc_ums && chipset->model == 312) {
-			cpuinfo_log_warning("VDOT instructions disabled: cause occasional SIGILL on Unisoc UMS312");
-		} else if (chipset->vendor == cpuinfo_arm_chipset_vendor_unknown) {
-			cpuinfo_log_warning("VDOT instructions disabled: unknown chipset");
+		if (chipset->series == cpuinfo_arm_chipset_series_spreadtrum_sc ||
+			chipset->series == cpuinfo_arm_chipset_series_unisoc_t ||
+			chipset->series == cpuinfo_arm_chipset_series_unisoc_ums) {
+			cpuinfo_log_warning("VDOT instructions disabled: cause occasional SIGILL on Unisoc");
 		} else {
 			switch (midr & (CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK)) {
 				case UINT32_C(0x4100D0B0): /* Cortex-A76 */
