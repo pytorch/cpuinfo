@@ -16,18 +16,17 @@ TEST(PowerFeatures, Power) {
 		fprintf(stderr, "failed to initialize CPU information\n");
 		exit(1);
 	}
-	uint32_t a = (uint32_t)getauxval(AT_HWCAP);
-	volatile uint32_t b = (uint32_t)getauxval(AT_HWCAP2);
+	uint32_t hwcap2 = (uint32_t)getauxval(AT_HWCAP2);
 
-	if (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_1) {
+	if (hwcap2 & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_1) {
 		EXPECT_EQ(0, cpuinfo_has_powerpc_htm());
 		EXPECT_EQ(1, cpuinfo_has_powerpc_mma());
 		EXPECT_EQ(1, cpuinfo_has_powerpc_vsx());
-	} else if (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_00) {
+	} else if (hwcap2 & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_3_00) {
 		EXPECT_EQ(0, cpuinfo_has_powerpc_htm());
 		EXPECT_EQ(0, cpuinfo_has_powerpc_mma());
 		EXPECT_EQ(1, cpuinfo_has_powerpc_vsx());
-	} else if (b & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_2_07) {
+	} else if (hwcap2 & CPUINFO_POWERPC_LINUX_FEATURE_ARCH_2_07) {
 		EXPECT_EQ(1, cpuinfo_has_powerpc_htm());
 		EXPECT_EQ(0, cpuinfo_has_powerpc_mma());
 		EXPECT_EQ(1, cpuinfo_has_powerpc_vsx());

@@ -73,45 +73,18 @@ static void parse_cpu_architecture(
 		}
 
 		switch (arch_version) {
-			case 7: /* POWER7 */
-				if (*cpu_arch_ptr == ' ') {
-					processor->core.uarch = cpuinfo_uarch_power7;
-				} else if (*cpu_arch_ptr == '+') {
-					processor->core.uarch = cpuinfo_uarch_power7p;
-					cpu_arch_ptr++;
-				} else {
-					goto unsupported;
-				}
-				break;
-			case 8: /* POWER8 */
-				if (*cpu_arch_ptr == ' ') {
-					processor->core.uarch = cpuinfo_uarch_power8;
-				} else if (*cpu_arch_ptr == 'E') {
-					processor->core.uarch = cpuinfo_uarch_power8e;
-					cpu_arch_ptr++;
-				} else if (*cpu_arch_ptr == 'N') {
-					cpu_arch_ptr++;
-					if (*cpu_arch_ptr == 'V') {
-						cpu_arch_ptr++;
-					}
-					if (*cpu_arch_ptr == 'L') {
-						processor->core.uarch = cpuinfo_uarch_power8nvl;
-						cpu_arch_ptr++;
-					}
-				}
-				if (*cpu_arch_ptr != ' ') {
-					goto unsupported;
-				}
-				break;
 			case 9: /* POWER9 */
 				processor->core.uarch = cpuinfo_uarch_power9;
 				break;
 			case 10: /* POWER10 */
 				processor->core.uarch = cpuinfo_uarch_power10;
 				break;
+			case 11: /* POWER11 */
+				processor->core.uarch = cpuinfo_uarch_power11;
+				break;
 			default:
 			unsupported:
-				cpuinfo_log_warning(
+				cpuinfo_log_error(
 					"CPU architecture %.*s in /proc/cpuinfo is ignored due to a unsupported architecture version",
 					(int)(cpu_architecture_end - cpu_architecture_start),
 					cpu_architecture_start);
@@ -119,7 +92,7 @@ static void parse_cpu_architecture(
 		processor->flags |= CPUINFO_POWERPC_LINUX_VALID_PROCESSOR;
 	} else {
 		cpuinfo_log_warning(
-			"processor %.*s in /proc/cpuinfo is ignored due not a Power processor",
+			"processor %.*s in /proc/cpuinfo is ignored due to not a Power processor",
 			(int)(cpu_architecture_end - cpu_architecture_start),
 			cpu_architecture_start);
 	}
@@ -281,33 +254,36 @@ static bool parse_line(
 			if (memcmp(line_start, "cpu", key_length) == 0) {
 				parse_cpu_architecture(value_start, value_end, processor);
 			} else {
-				goto unknown;
+				cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int)key_length, line_start);
 			}
 			break;
 		case 5:
 			if (memcmp(line_start, "clock", key_length) == 0) {
 				parse_cpu_architecture(value_start, value_end, processor);
 			} else {
-				goto unknown;
+				cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int)key_length, line_start);
 			}
+			break;
 		case 7:
 			if (memcmp(line_start, "machine", key_length) == 0) {
 				parse_cpu_architecture(value_start, value_end, processor);
 			} else {
-				goto unknown;
+				cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int)key_length, line_start);
 			}
+			break;
 		case 8:
 			if (memcmp(line_start, "revision", key_length) == 0) {
 				parse_cpu_pvr(value_start, value_end, processor);
 			} else {
-				goto unknown;
+				cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int)key_length, line_start);
 			}
+			break;
 		case 9:
 			if (memcmp(line_start, "processor", key_length) == 0) {
 				state->processor_index = parse_processor_number(value_start, value_end);
 				return true;
 			} else {
-				goto unknown;
+				cpuinfo_log_debug("unknown /proc/cpuinfo key: %.*s", (int)key_length, line_start);
 			}
 			break;
 		default:
