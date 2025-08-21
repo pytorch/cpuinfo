@@ -81,6 +81,7 @@ def main(args):
                 sources += [
                     "powerpc/linux/cpuinfo.c"
                     "powerpc/linux/ppc64-hw.c",
+                    "powerpc/linux/processors.c",
                     "powerpc/linux/init.c",
                     "powerpc/linux/ppc64-isa.c",
                     ]

@@ -190,6 +190,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       src/powerpc/cache.c
       src/powerpc/linux/cpuinfo.c
       src/powerpc/linux/ppc64-hw.c
+      src/powerpc/linux/processors.c
       src/powerpc/linux/init.c
       src/powerpc/linux/ppc64-isa.c)
   ELSEIF(CMAKE_SYSTEM_NAME MATCHES "^Windows" AND CPUINFO_TARGET_PROCESSOR MATCHES "^(ARM64|arm64)$")

@@ -51,7 +51,6 @@ CPUINFO_INTERNAL bool cpuinfo_linux_get_processor_package_id(
 	uint32_t processor,
 	uint32_t package_id[restrict static 1]);
 CPUINFO_INTERNAL bool cpuinfo_linux_get_processor_core_id(uint32_t processor, uint32_t core_id[restrict static 1]);
-CPUINFO_INTERNAL bool cpuinfo_linux_get_processor_online_status(uint32_t processor, uint32_t* online_status);
 
 CPUINFO_INTERNAL bool cpuinfo_linux_detect_possible_processors(
 	uint32_t max_processors_count,
