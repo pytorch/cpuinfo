@@ -1,1 +1,3 @@
 module(name = "cpuinfo")
+
+bazel_dep(name = "platforms", version = "1.0.0")
