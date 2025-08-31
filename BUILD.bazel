@@ -1,12 +1,24 @@
 # Copied from TensorFlow's `tensorflow/tree/master/third_party/cpuinfo/BUILD
 # Licenced under Apache-2.0 License
+load("@rules_license//rules:license.bzl", "license")
 
 # cpuinfo, a library to detect information about the host CPU
-package(default_visibility = ["//visibility:public"])
+package(
+    default_applicable_licenses = [":license"],
+    default_visibility = ["//visibility:public"]
+)
 
 licenses(["notice"])
 
-exports_files(["LICENSE"])
+exports_files([
+    "LICENSE",
+])
+
+license(
+    name = "license",
+    license_kinds = ["@rules_license//licenses/spdx:BSD-2-Clause"],
+    license_text = "LICENSE",
+)
 
 C99OPTS = [
     "-std=gnu99",  # gnu99, not c99, because dprintf is used
