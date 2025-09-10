@@ -169,6 +169,10 @@ TEST(RO_PRODUCT_BOARD, samsung_universal) {
 	EXPECT_EQ("Samsung Exynos 8895", parse_ro_product_board("universal8895"));
 }
 
+TEST(PROC_CPUINFO_HARDWARE, samsung_s5e) {
+	EXPECT_EQ("Samsung Exynos 9925", parse_ro_product_board("s5e9925"));
+}
+
 #if CPUINFO_ARCH_ARM
 TEST(RO_PRODUCT_BOARD, samsung_smdk) {
 	EXPECT_EQ("Samsung Exynos 4212", parse_ro_product_board("smdk4x12", 2));
