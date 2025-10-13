@@ -21,7 +21,6 @@ static struct woa_chip_info woa_chip_unknown = {L"Unknown", {{cpuinfo_vendor_unk
 
 BOOL CALLBACK cpuinfo_arm_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context) {
 	struct woa_chip_info* chip_info = NULL;
-	enum cpuinfo_vendor vendor = cpuinfo_vendor_unknown;
 
 	set_cpuinfo_isa_fields();
 
