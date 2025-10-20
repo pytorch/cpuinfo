@@ -195,21 +195,30 @@ static void set_cpuinfo_isa_fields(void) {
 	const bool dotprod = IsProcessorFeaturePresent(PF_ARM_V82_DP_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.dot = dotprod;
 
-	SYSTEM_INFO system_info;
-	GetSystemInfo(&system_info);
-	switch (system_info.wProcessorLevel) {
-		case 0x803: // Kryo 385 Silver (Snapdragon 850)
-			cpuinfo_isa.fp16arith = dotprod;
-			cpuinfo_isa.rdm = dotprod;
-			break;
-		default:
-			// Assume that Dot Product support implies FP16
-			// arithmetics and RDM support. ARM manuals don't
-			// guarantee that, but it holds in practice.
-			cpuinfo_isa.fp16arith = dotprod;
-			cpuinfo_isa.rdm = dotprod;
-			break;
-	}
+	cpuinfo_isa.sve = IsProcessorFeaturePresent(PF_ARM_SVE_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sve2 = IsProcessorFeaturePresent(PF_ARM_SVE2_INSTRUCTIONS_AVAILABLE) != 0;
+
+	// TODO:
+	// - i8mm
+	// - jscvt
+	// - fcma
+	// - sme
+	// - sme2
+	// - sme2p1
+	// - sme_i16i32
+	// - sme_bi32i32
+	// - sme_b16b16
+	// - sme_f16f16
+	// - bf16
+	// - fhm
+	// - svelen
+	// - smelen
+
+	// Assume that Dot Product support implies FP16
+	// arithmetics and RDM support. ARM manuals don't
+	// guarantee that, but it holds in practice.
+	cpuinfo_isa.fp16arith = dotprod;
+	cpuinfo_isa.rdm = dotprod;
 
 	/* Windows API reports all or nothing for cryptographic instructions. */
 	const bool crypto = IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE) != 0;
