@@ -197,20 +197,21 @@ static void set_cpuinfo_isa_fields(void) {
 
 	cpuinfo_isa.sve = IsProcessorFeaturePresent(PF_ARM_SVE_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.sve2 = IsProcessorFeaturePresent(PF_ARM_SVE2_INSTRUCTIONS_AVAILABLE) != 0;
-
-	// TODO:
-	// - i8mm
-	// - jscvt
-	// - fcma
-	// - sme
-	// - sme2
-	// - sme2p1
+	cpuinfo_isa.i8mm = IsProcessorFeaturePresent(PF_ARM_V82_I8MM_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.jscvt = IsProcessorFeaturePresent(PF_ARM_V83_JSCVT_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.fcma = IsProcessorFeaturePresent(PF_ARM_FMAC_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sme = IsProcessorFeaturePresent(PF_ARM_SME_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sme2 = IsProcessorFeaturePresent(PF_ARM_SME2_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sme2p1 = IsProcessorFeaturePresent(PF_ARM_SME2_1_INSTRUCTIONS_AVAILABLE) != 0;
+	// I don't see 
 	// - sme_i16i32
 	// - sme_bi32i32
-	// - sme_b16b16
-	// - sme_f16f16
-	// - bf16
+	// cpuinfo_isa.sme_bi32i32 = IsProcessorFeaturePresent(PF_ARM_SME_BI32I32_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sme_b16b16 = IsProcessorFeaturePresent(PF_ARM_SME_B16B16_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sme_f16f16 = IsProcessorFeaturePresent(PF_ARM_SME_F16F16_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.bf16 = IsProcessorFeaturePresent(PF_ARM_V86_BF16_INSTRUCTIONS_AVAILABLE) != 0;
 	// - fhm
+	// Not available in Windows API:
 	// - svelen
 	// - smelen
 
