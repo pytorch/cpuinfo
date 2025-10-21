@@ -76,6 +76,16 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Broadwell";
 		case cpuinfo_uarch_sky_lake:
 			return "Sky Lake";
+		case cpuinfo_uarch_golden_cove:
+			return "Alder Lake / Raptor Lake / Sapphire Rapids";
+		case cpuinfo_uarch_redwood_cove:
+			return "Meteor Lake / Granite Rapids";
+		case cpuinfo_uarch_lion_cove:
+			return "Lunar Lake / Arrow Lake";
+		case cpuinfo_uarch_cougar_cove:
+			return "Panther Lake Core";
+		case cpuinfo_uarch_skymont:
+			return "Lunar Lake / Arrow Lake E-Core";
 		case cpuinfo_uarch_palm_cove:
 			return "Palm Cove";
 		case cpuinfo_uarch_sunny_cove:
