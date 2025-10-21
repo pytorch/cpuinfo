@@ -27,6 +27,45 @@
 #ifndef CPUFAMILY_ARM_AVALANCHE_BLIZZARD
 #define CPUFAMILY_ARM_AVALANCHE_BLIZZARD 0xDA33D83D
 #endif
+// Following are copied over from ncnn/src/cpu.cpp
+// A16
+#ifndef CPUFAMILY_ARM_EVEREST_SAWTOOTH
+#define CPUFAMILY_ARM_EVEREST_SAWTOOTH 0x8765edea
+#endif
+// A17
+#ifndef CPUFAMILY_ARM_COLL
+#define CPUFAMILY_ARM_COLL 0x2876f5b5
+#endif
+// A18
+#ifndef CPUFAMILY_ARM_TUPAI
+#define CPUFAMILY_ARM_TUPAI 0x204526d0
+#endif
+// A18 Pro
+#ifndef CPUFAMILY_ARM_TAHITI
+#define CPUFAMILY_ARM_TAHITI 0x75d4acb9
+#endif
+// For M3/M4 we need to populate more information about
+// efficiency and perf cores.
+// M3
+#ifndef CPUFAMILY_ARM_IBIZA
+#define CPUFAMILY_ARM_IBIZA 0xfa33415e
+#endif
+// M3 Pro
+#ifndef CPUFAMILY_ARM_LOBOS
+#define CPUFAMILY_ARM_LOBOS 0x5f4dea93
+#endif
+// M3 Max
+#ifndef CPUFAMILY_ARM_PALMA
+#define CPUFAMILY_ARM_PALMA 0x72015832
+#endif
+// M4
+#ifndef CPUFAMILY_ARM_DONAN
+#define CPUFAMILY_ARM_DONAN 0x6f5129ac
+#endif
+// M4 Pro / M4 Max
+#ifndef CPUFAMILY_ARM_BRAVA
+#define CPUFAMILY_ARM_BRAVA 0x17d5b93a
+#endif
 
 struct cpuinfo_arm_isa cpuinfo_isa = {
 	.aes = true,
@@ -93,6 +132,23 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t core_index,
 		case CPUFAMILY_ARM_AVALANCHE_BLIZZARD:
 			/* Hexa-core: 2x Avalanche + 4x Blizzard */
 			return core_index + 4 < core_count ? cpuinfo_uarch_avalanche : cpuinfo_uarch_blizzard;
+		case CPUFAMILY_ARM_EVEREST_SAWTOOTH:
+			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			return core_index + 4 < core_count ? cpuinfo_uarch_everest : cpuinfo_uarch_sawtooth;
+			return core_index + 4 < core_count ? cpuinfo_uarch_avalanche : cpuinfo_uarch_blizzard;
+		case CPUFAMILY_ARM_COLL:
+			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			return core_index + 4 < core_count ? cpuinfo_uarch_coll_everest : cpuinfo_uarch_coll_sawtooth;
+
+		case CPUFAMILY_ARM_TUPAI:
+			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			return core_index + 4 < core_count ? cpuinfo_uarch_tupai_everest : cpuinfo_uarch_tupai_sawtooth;
+
+		case CPUFAMILY_ARM_TAHITI:
+			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			return core_index + 4 < core_count ? cpuinfo_uarch_tahiti_everest
+							   : cpuinfo_uarch_tahiti_sawtooth;
+
 		default:
 			/* Use hw.cpusubtype for detection */
 			break;
@@ -101,17 +157,34 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t core_index,
 	return cpuinfo_uarch_unknown;
 }
 
-static void decode_package_name(char* package_name) {
+static int read_package_name_from_brand_string(char* package_name) {
+	size_t size;
+	if (sysctlbyname("machdep.cpu.brand_string", NULL, &size, NULL, 0) != 0) {
+	sysctlfail:
+		cpuinfo_log_warning("sysctlbyname(\"machdep.cpu.brand_string\") failed: %s", strerror(errno));
+		return false;
+	}
+
+	char* brand_string = alloca(size);
+	if (sysctlbyname("machdep.cpu.brand_string", brand_string, &size, NULL, 0) != 0)
+		goto sysctlfail;
+	cpuinfo_log_debug("machdep.cpu.brand_string: %s", brand_string);
+
+	strlcpy(package_name, brand_string, CPUINFO_PACKAGE_NAME_MAX);
+	return true;
+}
+
+static int decode_package_name_from_hw_machine(char* package_name) {
 	size_t size;
 	if (sysctlbyname("hw.machine", NULL, &size, NULL, 0) != 0) {
 		cpuinfo_log_warning("sysctlbyname(\"hw.machine\") failed: %s", strerror(errno));
-		return;
+		return false;
 	}
 
 	char* machine_name = alloca(size);
 	if (sysctlbyname("hw.machine", machine_name, &size, NULL, 0) != 0) {
 		cpuinfo_log_warning("sysctlbyname(\"hw.machine\") failed: %s", strerror(errno));
-		return;
+		return false;
 	}
 	cpuinfo_log_debug("hw.machine: %s", machine_name);
 
@@ -119,7 +192,7 @@ static void decode_package_name(char* package_name) {
 	uint32_t major = 0, minor = 0;
 	if (sscanf(machine_name, "%9[^,0123456789]%" SCNu32 ",%" SCNu32, name, &major, &minor) != 3) {
 		cpuinfo_log_warning("parsing \"hw.machine\" failed: %s", strerror(errno));
-		return;
+		return false;
 	}
 
 	uint32_t chip_model = 0;
@@ -224,7 +297,9 @@ static void decode_package_name(char* package_name) {
 	}
 	if (chip_model != 0) {
 		snprintf(package_name, CPUINFO_PACKAGE_NAME_MAX, "Apple A%" PRIu32 "%c", chip_model, suffix);
+		return true;
 	}
+	return false;
 }
 
 void cpuinfo_arm_mach_init(void) {
@@ -275,7 +350,8 @@ void cpuinfo_arm_mach_init(void) {
 			.core_start = i * cores_per_package,
 			.core_count = cores_per_package,
 		};
-		decode_package_name(packages[i].name);
+		if (!read_package_name_from_brand_string(packages[i].name))
+			decode_package_name_from_hw_machine(packages[i].name);
 	}
 
 	const uint32_t cpu_family = get_sys_info_by_name("hw.cpufamily");

@@ -440,7 +440,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	/*
 	 * AVX 10.2 instructions: avx 10 version information.
 	 * - Intel: ebx[bits 0-7] in structured features info (eax = 24 ecx = 0).
-  	 */
+	 */
 	isa.avx10_2 = ((structured_feature_info2.ebx & UINT32_C(0x000000FF)) >= 2) && isa.avx10_1;
 
 	/*

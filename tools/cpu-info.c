@@ -80,6 +80,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Palm Cove";
 		case cpuinfo_uarch_sunny_cove:
 			return "Sunny Cove";
+		case cpuinfo_uarch_willow_cove:
+			return "Willow Cove";
 		case cpuinfo_uarch_willamette:
 			return "Willamette";
 		case cpuinfo_uarch_prescott:
@@ -96,6 +98,14 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Goldmont";
 		case cpuinfo_uarch_goldmont_plus:
 			return "Goldmont Plus";
+		case cpuinfo_uarch_tremont:
+			return "Tremont";
+		case cpuinfo_uarch_gracemont:
+			return "Gracemont";
+		case cpuinfo_uarch_crestmont:
+			return "Crestmont";
+		case cpuinfo_uarch_darkmont:
+			return "Darkmont";
 		case cpuinfo_uarch_knights_ferry:
 			return "Knights Ferry";
 		case cpuinfo_uarch_knights_corner:
@@ -230,6 +240,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Falkor";
 		case cpuinfo_uarch_saphira:
 			return "Saphira";
+		case cpuinfo_uarch_oryon:
+			return "Oryon";
 		case cpuinfo_uarch_denver:
 			return "Denver";
 		case cpuinfo_uarch_denver2:
@@ -276,6 +288,22 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Avalanche";
 		case cpuinfo_uarch_blizzard:
 			return "Blizzard";
+		case cpuinfo_uarch_everest:
+			return "Everest";
+		case cpuinfo_uarch_sawtooth:
+			return "Sawtooth";
+		case cpuinfo_uarch_coll_everest:
+			return "Coll_Everest";
+		case cpuinfo_uarch_coll_sawtooth:
+			return "Coll_Sawtooth";
+		case cpuinfo_uarch_tupai_everest:
+			return "Tupai_Everest";
+		case cpuinfo_uarch_tupai_sawtooth:
+			return "Tupai_Sawtooth";
+		case cpuinfo_uarch_tahiti_everest:
+			return "Tahiti_Everest";
+		case cpuinfo_uarch_tahiti_sawtooth:
+			return "Tahiti_Sawtooth";
 		case cpuinfo_uarch_thunderx:
 			return "ThunderX";
 		case cpuinfo_uarch_thunderx2:
