@@ -131,6 +131,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD82: /* Cortex-X4 */
 					*uarch = cpuinfo_uarch_cortex_x4;
 					break;
+				case 0xD85: /* Cortex-X925 */
+					*uarch = cpuinfo_uarch_cortex_x925;
+					break;
 				case 0xD87: /* Cortex-A725 */
 					*uarch = cpuinfo_uarch_cortex_a725;
 					break;
