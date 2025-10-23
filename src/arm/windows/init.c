@@ -134,6 +134,26 @@ static struct core_info_by_chip_name get_core_info_from_midr(uint32_t midr, uint
 	return info;
 }
 
+/* https://developer.arm.com/documentation/ddi0601/2024-06/AArch64-Registers
+  CP 4000: MIDR_EL1
+  CP 4020: ID_AA64PFR0_EL1
+  CP 4021: ID_AA64PFR1_EL1
+  CP 4028: ID_AA64DFR0_EL1
+  CP 4029: ID_AA64DFR1_EL1
+  CP 402C: ID_AA64AFR0_EL1
+  CP 402D: ID_AA64AFR1_EL1
+  CP 4030: ID_AA64ISAR0_EL1
+  CP 4031: ID_AA64ISAR1_EL1
+  CP 4038: ID_AA64MMFR0_EL1
+  CP 4039: ID_AA64MMFR1_EL1
+  CP 403A: ID_AA64MMFR2_EL1 
+  CP 4080: ?
+  CP 4081: ?
+  CP 4100: ?
+  CP 4510: ?
+  CP 5801: ?
+  */
+
 static struct woa_chip_info* get_system_info_from_registry(void) {
 	wchar_t* text_buffer = NULL;
 	LPCWSTR cpu0_subkey = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
@@ -200,26 +220,29 @@ static void set_cpuinfo_isa_fields(void) {
 	cpuinfo_isa.i8mm = IsProcessorFeaturePresent(PF_ARM_V82_I8MM_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.jscvt = IsProcessorFeaturePresent(PF_ARM_V83_JSCVT_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.fcma = IsProcessorFeaturePresent(PF_ARM_FMAC_INSTRUCTIONS_AVAILABLE) != 0;
+	// FEAT_FP16 Implies FEAT_FHM in 8.4 https://developer.arm.com/documentation/109697/2025_09/Feature-descriptions/The-Armv8-4-architecture-extension?lang=en
+	cpuinfo_isa.fhm = IsProcessorFeaturePresent(PF_ARM_V82_FP16_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.fp16arith = cpuinfo_isa.fhm;
+
 	cpuinfo_isa.sme = IsProcessorFeaturePresent(PF_ARM_SME_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.sme2 = IsProcessorFeaturePresent(PF_ARM_SME2_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.sme2p1 = IsProcessorFeaturePresent(PF_ARM_SME2_1_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sme_b16b16 = IsProcessorFeaturePresent(PF_ARM_SME_B16B16_INSTRUCTIONS_AVAILABLE) != 0;
+	cpuinfo_isa.sme_f16f16 = IsProcessorFeaturePresent(PF_ARM_SME_F16F16_INSTRUCTIONS_AVAILABLE) != 0;
 
 	// TODO: 
 	// - sme_i16i32
 	// - sme_bi32i32
-	// - fhm
 
-	cpuinfo_isa.sme_b16b16 = IsProcessorFeaturePresent(PF_ARM_SME_B16B16_INSTRUCTIONS_AVAILABLE) != 0;
-	cpuinfo_isa.sme_f16f16 = IsProcessorFeaturePresent(PF_ARM_SME_F16F16_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.bf16 = IsProcessorFeaturePresent(PF_ARM_V86_BF16_INSTRUCTIONS_AVAILABLE) != 0;
-	// Not available in Windows API:
+
+	// TODO:
 	// - svelen
 	// - smelen
 
 	// Assume that Dot Product support implies FP16
 	// arithmetics and RDM support. ARM manuals don't
 	// guarantee that, but it holds in practice.
-	cpuinfo_isa.fp16arith = dotprod;
 	cpuinfo_isa.rdm = dotprod;
 
 	/* Windows API reports all or nothing for cryptographic instructions. */
