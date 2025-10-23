@@ -230,15 +230,18 @@ static void set_cpuinfo_isa_fields(void) {
 	cpuinfo_isa.sme_b16b16 = IsProcessorFeaturePresent(PF_ARM_SME_B16B16_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.sme_f16f16 = IsProcessorFeaturePresent(PF_ARM_SME_F16F16_INSTRUCTIONS_AVAILABLE) != 0;
 
-	// TODO: 
+	// TODO: There are no PF flags for these yet. 
 	// - sme_i16i32
 	// - sme_bi32i32
 
 	cpuinfo_isa.bf16 = IsProcessorFeaturePresent(PF_ARM_V86_BF16_INSTRUCTIONS_AVAILABLE) != 0;
 
-	// TODO:
-	// - svelen
-	// - smelen
+	// TODO: This is not available in the Windows SDK yet , so conservatively go with the lowest value (128 bits)
+	// https://developer.arm.com/documentation/101427/0102/Register-descriptions/Scalable-vector-extensions--SVE--registers/ZCR-EL1--SVE-Control-Register--EL1
+	cpuinfo_isa.svelen = cpuinfo_isa.sve ? 128 / 8 : 0; // This value is in bytes, see cpuinfo_get_max_arm_sve_length
+	
+	// TODO : Fetch from feature registers when available
+	// cpuinfo_isa.smelen = 0;
 
 	// Assume that Dot Product support implies FP16
 	// arithmetics and RDM support. ARM manuals don't
