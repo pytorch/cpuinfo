@@ -194,7 +194,6 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x9C: // Jacobsville
 							return cpuinfo_uarch_tremont;
 						case 0x8F: // Sapphire Rapids (Golden Cove)
-							return cpuinfo_uarch_golden_cove;
 						case 0x97: // Alder Lake S (Golden Cove)
 						case 0x9A: // Alder Lake (Golden Cove)
 						case 0x9D: // Alder Lake P (Golden Cove)
@@ -204,17 +203,15 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						    return cpuinfo_uarch_golden_cove;
 						case 0xBE: // Alder Lake N / Raptor Lake N (Golden Cove)
 						    return cpuinfo_uarch_gracemont;
-						case 0xAD: // Granite Rapids (Redood Cove)
-							return cpuinfo_uarch_redwood_cove;
 						case 0xAA: // Meteor Lake P/M (Redwood Cove)
 						case 0xAC: // Meteor Lake S (Redwood Cove)
+						case 0xAD: // Granite Rapids (Redood Cove)
 						case 0xAE: // Meteor Lake U/Y (Redwood Cove)
 							return cpuinfo_uarch_redwood_cove;
 						case 0xB5: // Arrow Lake U
+						case 0xBD: // Lunar Lake, (Lion Cove)
 						case 0xC5: // Arrow Lake P
 						case 0xC6: // Arrow Lake S/HX
-							return cpuinfo_uarch_lion_cove;
-						case 0xBD: // Lunar Lake, (Lion Cove)
 							return cpuinfo_uarch_lion_cove;
 						case 0xCC: // Panther Lake 
 							return cpuinfo_uarch_cougar_cove;
