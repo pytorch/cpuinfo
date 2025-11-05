@@ -47,7 +47,6 @@ static void cpuinfo_x86_count_objects(
 	uint32_t linux_processors_count,
 	const struct cpuinfo_x86_linux_processor linux_processors[restrict static linux_processors_count],
 	const struct cpuinfo_x86_processor processor[restrict static 1],
-	uint32_t valid_processor_mask,
 	uint32_t llc_apic_bits,
 	uint32_t cores_count_ptr[restrict static 1],
 	uint32_t clusters_count_ptr[restrict static 1],
@@ -70,7 +69,7 @@ static void cpuinfo_x86_count_objects(
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
 	for (uint32_t i = 0; i < linux_processors_count; i++) {
-		if (bitmask_all(linux_processors[i].flags, valid_processor_mask)) {
+		if (bitmask_all(linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			const uint32_t apic_id = linux_processors[i].apic_id;
 			cpuinfo_log_debug(
 				"APID ID %" PRIu32 ": system processor %" PRIu32,
@@ -167,13 +166,13 @@ void cpuinfo_x86_linux_init(void) {
 	const uint32_t max_present_processors_count = 1 + cpuinfo_linux_get_max_present_processor(max_processors_count);
 	cpuinfo_log_debug("maximum present processors count: %" PRIu32, max_present_processors_count);
 
-	uint32_t valid_processor_mask = 0;
+	uint32_t valid_processor_mask = CPUINFO_LINUX_FLAG_APIC_ID;
 	uint32_t x86_linux_processors_count = max_processors_count;
 	if (max_present_processors_count != 0) {
 		x86_linux_processors_count = min(x86_linux_processors_count, max_present_processors_count);
-		valid_processor_mask = CPUINFO_LINUX_FLAG_PRESENT;
+		valid_processor_mask |= CPUINFO_LINUX_FLAG_PRESENT;
 	} else {
-		valid_processor_mask = CPUINFO_LINUX_FLAG_PROC_CPUINFO;
+		valid_processor_mask |= CPUINFO_LINUX_FLAG_PROC_CPUINFO;
 	}
 	if (max_possible_processors_count != 0) {
 		x86_linux_processors_count = min(x86_linux_processors_count, max_possible_processors_count);
@@ -260,7 +259,6 @@ void cpuinfo_x86_linux_init(void) {
 		x86_linux_processors_count,
 		x86_linux_processors,
 		&x86_processor,
-		valid_processor_mask,
 		llc_apic_bits,
 		&cores_count,
 		&clusters_count,
