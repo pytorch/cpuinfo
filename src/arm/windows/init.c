@@ -21,7 +21,7 @@ static struct woa_chip_info woa_chip_unknown = {L"Unknown", {{cpuinfo_vendor_unk
 
 BOOL CALLBACK cpuinfo_arm_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context) {
 	struct woa_chip_info* chip_info = NULL;
-	
+
 	set_cpuinfo_isa_fields();
 
 	chip_info = get_system_info_from_registry();
@@ -218,5 +218,4 @@ static void set_cpuinfo_isa_fields(void) {
 	cpuinfo_isa.pmull = crypto;
 
 	cpuinfo_isa.crc32 = IsProcessorFeaturePresent(PF_ARM_V8_CRC32_INSTRUCTIONS_AVAILABLE) != 0;
-
 }
