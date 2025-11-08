@@ -903,4 +903,3 @@ static inline uint32_t low_index_from_kaffinity(KAFFINITY kaffinity) {
 	_BitScanForward64(&index, (unsigned __int64)kaffinity);
 	return (uint32_t)index;
 }
-
