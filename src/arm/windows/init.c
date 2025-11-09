@@ -146,7 +146,7 @@ static struct core_info_by_chip_name get_core_info_from_midr(uint32_t midr, uint
   CP 4031: ID_AA64ISAR1_EL1
   CP 4038: ID_AA64MMFR0_EL1
   CP 4039: ID_AA64MMFR1_EL1
-  CP 403A: ID_AA64MMFR2_EL1 
+  CP 403A: ID_AA64MMFR2_EL1
   CP 4080: ?
   CP 4081: ?
   CP 4100: ?
@@ -220,7 +220,8 @@ static void set_cpuinfo_isa_fields(void) {
 	cpuinfo_isa.i8mm = IsProcessorFeaturePresent(PF_ARM_V82_I8MM_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.jscvt = IsProcessorFeaturePresent(PF_ARM_V83_JSCVT_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.fcma = IsProcessorFeaturePresent(PF_ARM_FMAC_INSTRUCTIONS_AVAILABLE) != 0;
-	// FEAT_FP16 Implies FEAT_FHM in 8.4 https://developer.arm.com/documentation/109697/2025_09/Feature-descriptions/The-Armv8-4-architecture-extension?lang=en
+	// FEAT_FP16 Implies FEAT_FHM in 8.4
+	// https://developer.arm.com/documentation/109697/2025_09/Feature-descriptions/The-Armv8-4-architecture-extension?lang=en
 	cpuinfo_isa.fhm = IsProcessorFeaturePresent(PF_ARM_V82_FP16_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.fp16arith = cpuinfo_isa.fhm;
 
@@ -230,7 +231,7 @@ static void set_cpuinfo_isa_fields(void) {
 	cpuinfo_isa.sme_b16b16 = IsProcessorFeaturePresent(PF_ARM_SME_B16B16_INSTRUCTIONS_AVAILABLE) != 0;
 	cpuinfo_isa.sme_f16f16 = IsProcessorFeaturePresent(PF_ARM_SME_F16F16_INSTRUCTIONS_AVAILABLE) != 0;
 
-	// TODO: There are no PF flags for these yet. 
+	// TODO: Add when available in Windows SDK
 	// - sme_i16i32
 	// - sme_bi32i32
 
@@ -238,8 +239,9 @@ static void set_cpuinfo_isa_fields(void) {
 
 	// TODO: This is not available in the Windows SDK yet , so conservatively go with the lowest value (128 bits)
 	// https://developer.arm.com/documentation/101427/0102/Register-descriptions/Scalable-vector-extensions--SVE--registers/ZCR-EL1--SVE-Control-Register--EL1
-	cpuinfo_isa.svelen = cpuinfo_isa.sve ? 128 / 8 : 0; // This value is in bytes, see cpuinfo_get_max_arm_sve_length
-	
+	cpuinfo_isa.svelen =
+		cpuinfo_isa.sve ? 128 / 8 : 0; // This value is in bytes, see cpuinfo_get_max_arm_sve_length
+
 	// TODO : Fetch from feature registers when available
 	// cpuinfo_isa.smelen = 0;
 
