@@ -20,8 +20,6 @@ struct woa_chip_info {
 
 bool cpu_info_init_by_logical_sys_info(const struct woa_chip_info* chip_info, enum cpuinfo_vendor vendor);
 
-
-
 #ifndef PF_ARM_FMAC_INSTRUCTIONS_AVAILABLE
 #define PF_ARM_FMAC_INSTRUCTIONS_AVAILABLE (27)
 #endif
