@@ -460,6 +460,7 @@ TEST(PROC_CPUINFO_HARDWARE, telechips) {
 
 TEST(PROC_CPUINFO_HARDWARE, unisoc) {
 	EXPECT_EQ("Unisoc T301", parse_proc_cpuinfo_hardware("Unisoc T301", 4, 1800000));
+	EXPECT_EQ("Unisoc T618", parse_proc_cpuinfo_hardware("UNISOC T618", 4, 1800000));
 	EXPECT_EQ("Unisoc UMS312", parse_proc_cpuinfo_hardware("Unisoc UMS312", 4, 1800000));
 }
 
