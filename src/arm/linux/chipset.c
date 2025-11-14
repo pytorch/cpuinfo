@@ -4010,6 +4010,20 @@ static inline struct cpuinfo_arm_chipset disambiguate_spreadtrum_chipset(
 	return *ro_board_platform_chipset;
 }
 
+static enum cpuinfo_arm_chipset_vendor disambiguate_chipset_vendor(
+	enum cpuinfo_arm_chipset_vendor vendor_a,
+	enum cpuinfo_arm_chipset_vendor vendor_b) {
+	/* Some UNISOC-based platforms reporting conflicting vendor names depending
+	 * on the source. For phones that report both UNISOC and Spreadtrum, treat it
+	 * as UNISOC. */
+	if (vendor_a == cpuinfo_arm_chipset_vendor_unisoc && vendor_b == cpuinfo_arm_chipset_vendor_spreadtrum ||
+	    vendor_a == cpuinfo_arm_chipset_vendor_spreadtrum && vendor_b == cpuinfo_arm_chipset_vendor_unisoc) {
+		return cpuinfo_arm_chipset_vendor_unisoc;
+	}
+
+	return cpuinfo_arm_chipset_vendor_unknown;
+}
+
 /*
  * Decodes chipset name from Android system properties:
  * - /proc/cpuinfo Hardware string
@@ -4070,10 +4084,19 @@ struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset(
 			} else if (vendor != decoded_vendor) {
 				/* Parsing different system properties produces
 				 * different chipset vendors. This situation is
-				 * rare. */
-				cpuinfo_log_error(
-					"chipset detection failed: different chipset vendors reported in different system properties");
-				goto finish;
+				 * rare. Try to disambiguate for known cases,
+				 * otherwise treat as unknown. */
+
+				enum cpuinfo_arm_chipset_vendor disambiguated_vendor =
+					disambiguate_chipset_vendor(vendor, decoded_vendor);
+
+				if (disambiguated_vendor != cpuinfo_arm_chipset_vendor_unknown) {
+					vendor = disambiguated_vendor;
+				} else {
+					cpuinfo_log_error(
+						"chipset detection failed: different chipset vendors reported in different system properties");
+					goto finish;
+				}
 			}
 		}
 	}
