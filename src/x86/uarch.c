@@ -200,9 +200,9 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0xB7: // Raptor Lake (Golden Cove)
 						case 0xBA: // Raptor Lake S (Golden Cove)
 						case 0xBF: // Raptor Lake HX (Golden Cove)
-						    return cpuinfo_uarch_golden_cove;
+							return cpuinfo_uarch_golden_cove;
 						case 0xBE: // Alder Lake N / Raptor Lake N (Golden Cove)
-						    return cpuinfo_uarch_gracemont;
+							return cpuinfo_uarch_gracemont;
 						case 0xAA: // Meteor Lake P/M (Redwood Cove)
 						case 0xAC: // Meteor Lake S (Redwood Cove)
 						case 0xAD: // Granite Rapids (Redood Cove)
@@ -213,7 +213,7 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0xC5: // Arrow Lake P
 						case 0xC6: // Arrow Lake S/HX
 							return cpuinfo_uarch_lion_cove;
-						case 0xCC: // Panther Lake 
+						case 0xCC: // Panther Lake
 							return cpuinfo_uarch_cougar_cove;
 						case 0xAF: // Sierra Forest
 							return cpuinfo_uarch_crestmont;

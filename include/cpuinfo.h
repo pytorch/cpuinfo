@@ -356,7 +356,7 @@ enum cpuinfo_uarch {
 	/** Intel Willow Cove microarchitecture (10 nm, Tiger Lake). */
 	cpuinfo_uarch_willow_cove = 0x0010020D,
 	/** Intel Golden Cove microarchitecture (Alder Lake P-Core) */
-    cpuinfo_uarch_golden_cove = 0x0010020E,
+	cpuinfo_uarch_golden_cove = 0x0010020E,
 	/** Intel Redwood Cove microarchitecture (Meteor Lake P-Core). */
 	cpuinfo_uarch_redwood_cove = 0x0010020F,
 	/** Intel Lion Cove microarchitecture (Lunar Lake P-Core). */
