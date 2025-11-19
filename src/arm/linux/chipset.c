@@ -4016,8 +4016,8 @@ static enum cpuinfo_arm_chipset_vendor disambiguate_chipset_vendor(
 	/* Some UNISOC-based platforms reporting conflicting vendor names depending
 	 * on the source. For phones that report both UNISOC and Spreadtrum, treat it
 	 * as UNISOC. */
-	if (vendor_a == cpuinfo_arm_chipset_vendor_unisoc && vendor_b == cpuinfo_arm_chipset_vendor_spreadtrum ||
-	    vendor_a == cpuinfo_arm_chipset_vendor_spreadtrum && vendor_b == cpuinfo_arm_chipset_vendor_unisoc) {
+	if ((vendor_a == cpuinfo_arm_chipset_vendor_unisoc && vendor_b == cpuinfo_arm_chipset_vendor_spreadtrum) ||
+	    (vendor_a == cpuinfo_arm_chipset_vendor_spreadtrum && vendor_b == cpuinfo_arm_chipset_vendor_unisoc)) {
 		return cpuinfo_arm_chipset_vendor_unisoc;
 	}
 
