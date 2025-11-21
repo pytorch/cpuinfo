@@ -92,6 +92,7 @@ int main(int argc, char** argv) {
 				}
 				break;
 			case UINT32_C(0x0000000B):
+			case UINT32_C(0x0000001F): // Extended/V2
 				for (uint32_t ecx = 0;; ecx++) {
 					const struct cpuid_regs regs = cpuidex(eax, ecx);
 					if ((regs.ecx & UINT32_C(0x0000FF00)) == 0) {
