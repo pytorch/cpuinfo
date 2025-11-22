@@ -105,28 +105,10 @@ int main(int argc, char** argv) {
 		exit(1);
 	}
 	n_log_proc = CPU_COUNT(&mask_default);
-#endif
-	if (max_base_index >= 1) {
-		// TODO: handle case of >256 logical CPUs, or multiple packages
-		const struct cpuid_regs regs = cpuid(1);
-		uint32_t n_apic_id;
-		if (regs.edx & UINT32_C(0x10000000)) { // Number of logical CPUs field is valid
-			n_apic_id = ((regs.ebx & UINT32_C(0x00ff0000)) >> 16);
-
-#ifdef __linux__
-			if (n_apic_id != n_log_proc)
-				fprintf(stderr,
-					"WARNING: %d logical CPUs per CPUID.01h.EBX[23:16] != %d per sched_getaffinity()\n",
-					n_apic_id,
-					n_log_proc);
 #else
-			if (n_apic_id > 1)
-				fprintf(stderr,
-					"WARNING: %d logical CPUs per CPUID.01h.EBX, results may vary by logical CPU\n",
-					n_apic_id);
+	fprintf(stderr,
+		"WARNING: results may vary by CPU, core or thread, but switching CPU is unsupported.\n");
 #endif
-		}
-	}
 
 	for (uint32_t lp = 0; lp < n_log_proc; lp++) {
 		force_one_cpu(lp, n_log_proc);
