@@ -12,7 +12,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 jobs:
-  bazel-linux-local:
+  zig-linux-local:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
