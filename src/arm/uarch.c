@@ -94,6 +94,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 					*uarch = cpuinfo_uarch_neoverse_v1;
 					break;
 				case 0xD41: /* Cortex-A78 */
+				case 0xD4B: /* Cortex-A78C */
 					*uarch = cpuinfo_uarch_cortex_a78;
 					break;
 				case 0xD44: /* Cortex-X1 */

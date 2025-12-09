@@ -101,6 +101,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D470): /* Cortex-A710 */
 				case UINT32_C(0x4100D480): /* Cortex-X2 */
 				case UINT32_C(0x4100D490): /* Neoverse N2 */
+				case UINT32_C(0x4100D4B0): /* Cortex-A78C */
 				case UINT32_C(0x4100D4D0): /* Cortex-A715 */
 				case UINT32_C(0x4100D4E0): /* Cortex-X3 */
 				case UINT32_C(0x4100D4F0): /* Neoverse V2 */
@@ -162,6 +163,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D470): /* Cortex-A710 */
 				case UINT32_C(0x4100D480): /* Cortex-X2 */
 				case UINT32_C(0x4100D490): /* Neoverse N2 */
+				case UINT32_C(0x4100D4B0): /* Cortex-A78C */
 				case UINT32_C(0x4100D4D0): /* Cortex-A715 */
 				case UINT32_C(0x4100D4E0): /* Cortex-X3 */
 				case UINT32_C(0x4100D4F0): /* Neoverse V2 */
