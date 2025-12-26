@@ -348,6 +348,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x001:
 					*uarch = cpuinfo_uarch_oryon;
 					break;
+				case 0x002:
+					*uarch = cpuinfo_uarch_oryon_v3;
+					break;
 				case 0xC00:
 					*uarch = cpuinfo_uarch_falkor;
 					break;
