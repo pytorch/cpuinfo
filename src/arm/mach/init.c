@@ -135,7 +135,6 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t core_index,
 		case CPUFAMILY_ARM_EVEREST_SAWTOOTH:
 			/* Hexa-core: 2x Avalanche + 4x Blizzard */
 			return core_index + 4 < core_count ? cpuinfo_uarch_everest : cpuinfo_uarch_sawtooth;
-			return core_index + 4 < core_count ? cpuinfo_uarch_avalanche : cpuinfo_uarch_blizzard;
 		case CPUFAMILY_ARM_COLL:
 			/* Hexa-core: 2x Avalanche + 4x Blizzard */
 			return core_index + 4 < core_count ? cpuinfo_uarch_coll_everest : cpuinfo_uarch_coll_sawtooth;
