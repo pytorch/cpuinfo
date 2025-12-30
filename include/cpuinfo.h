@@ -614,6 +614,11 @@ enum cpuinfo_uarch {
 	/** Apple A18 pro processor (little cores). */
 	cpuinfo_uarch_tahiti_sawtooth = 0x00700207,
 
+	/** Apple M4 processor (big cores). */
+	cpuinfo_uarch_donan_everest = 0x00700308,
+	/** Apple M4 processor (little cores). */
+	cpuinfo_uarch_donan_sawtooth = 0x00700309,
+
 	/** Cavium ThunderX. */
 	cpuinfo_uarch_thunderx = 0x00800100,
 	/** Cavium ThunderX2 (originally Broadcom Vulkan). */
