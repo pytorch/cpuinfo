@@ -148,12 +148,20 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t core_index,
 			/* Hexa-core: 2x Avalanche + 4x Blizzard */
 			return core_index + 4 < core_count ? cpuinfo_uarch_tahiti_everest
 							   : cpuinfo_uarch_tahiti_sawtooth;
+<<<<<<< HEAD
 		case CPUFAMILY_ARM_DONAN:  /* M4 */
 			/* 10-core: 4x Donan Everest + 6x Donan Sawtooth */
 		case CPUFAMILY_ARM_BRAVA:  /* M4 Pro */
 			/* 14-core: 10x Donan Everest + 4x Donan Sawtooth */
 			return core_index + 4 < core_count ? cpuinfo_uarch_donan_everest
 							   : cpuinfo_uarch_donan_sawtooth;
+=======
+		case CPUFAMILY_ARM_DONAN: /* M4 */
+			/* 10-core: 4x Donan Everest + 6x Donan Sawtooth */
+		case CPUFAMILY_ARM_BRAVA: /* M4 Pro */
+			/* 14-core: 10x Donan Everest + 4x Donan Sawtooth */
+			return core_index + 4 < core_count ? cpuinfo_uarch_donan_everest : cpuinfo_uarch_donan_sawtooth;
+>>>>>>> 34fee96 (Apple M4 uarch detect)
 		default:
 			/* Use hw.cpusubtype for detection */
 			break;
