@@ -21,9 +21,11 @@
 #ifndef CPUFAMILY_ARM_LIGHTNING_THUNDER
 #define CPUFAMILY_ARM_LIGHTNING_THUNDER 0x462504D2
 #endif
+// A14 / M1
 #ifndef CPUFAMILY_ARM_FIRESTORM_ICESTORM
 #define CPUFAMILY_ARM_FIRESTORM_ICESTORM 0x1B588BB3
 #endif
+// A15 / M2
 #ifndef CPUFAMILY_ARM_AVALANCHE_BLIZZARD
 #define CPUFAMILY_ARM_AVALANCHE_BLIZZARD 0xDA33D83D
 #endif
@@ -118,34 +120,33 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t core_index,
 			/* 2x Monsoon + 4x Mistral cores */
 			return core_index < 2 ? cpuinfo_uarch_monsoon : cpuinfo_uarch_mistral;
 		case CPUFAMILY_ARM_VORTEX_TEMPEST:
-			/* Hexa-core: 2x Vortex + 4x Tempest; Octa-core: 4x
-			 * Cortex + 4x Tempest */
+			/* Hexa-core: 2x Vortex + 4x Tempest; */
+			/* Octa-core: 4x Cortex + 4x Tempest */
 			return core_index + 4 < core_count ? cpuinfo_uarch_vortex : cpuinfo_uarch_tempest;
 		case CPUFAMILY_ARM_LIGHTNING_THUNDER:
-			/* Hexa-core: 2x Lightning + 4x Thunder; Octa-core
-			 * (presumed): 4x Lightning + 4x Thunder */
+			/* Hexa-core: 2x Lightning + 4x Thunder; */
+			/* Octa-core: 4x Lightning + 4x Thunder */
 			return core_index + 4 < core_count ? cpuinfo_uarch_lightning : cpuinfo_uarch_thunder;
 		case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
-			/* Hexa-core: 2x Firestorm + 4x Icestorm; Octa-core: 4x
-			 * Firestorm + 4x Icestorm */
+			/* Hexa-core: 2x Firestorm + 4x Icestorm; */
+			/* Octa-core: 4x Firestorm + 4x Icestorm */
 			return core_index + 4 < core_count ? cpuinfo_uarch_firestorm : cpuinfo_uarch_icestorm;
 		case CPUFAMILY_ARM_AVALANCHE_BLIZZARD:
 			/* Hexa-core: 2x Avalanche + 4x Blizzard */
 			return core_index + 4 < core_count ? cpuinfo_uarch_avalanche : cpuinfo_uarch_blizzard;
 		case CPUFAMILY_ARM_EVEREST_SAWTOOTH:
-			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			/* Hexa-core: 2x Everest + 4x Sawtooth */
 			return core_index + 4 < core_count ? cpuinfo_uarch_everest : cpuinfo_uarch_sawtooth;
-			return core_index + 4 < core_count ? cpuinfo_uarch_avalanche : cpuinfo_uarch_blizzard;
 		case CPUFAMILY_ARM_COLL:
-			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			/* Hexa-core: 2x Coll Everest + 4x Coll Sawtooth */
 			return core_index + 4 < core_count ? cpuinfo_uarch_coll_everest : cpuinfo_uarch_coll_sawtooth;
 
 		case CPUFAMILY_ARM_TUPAI:
-			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			/* Hexa-core: 2x Tupai Everest + 4x Tupai Sawtooth */
 			return core_index + 4 < core_count ? cpuinfo_uarch_tupai_everest : cpuinfo_uarch_tupai_sawtooth;
 
 		case CPUFAMILY_ARM_TAHITI:
-			/* Hexa-core: 2x Avalanche + 4x Blizzard */
+			/* Hexa-core: 2x Tahiti Everest + 4x Tahiti Sawtooth */
 			return core_index + 4 < core_count ? cpuinfo_uarch_tahiti_everest
 							   : cpuinfo_uarch_tahiti_sawtooth;
 
