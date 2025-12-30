@@ -449,7 +449,7 @@ void cpuinfo_arm_mach_init(void) {
 	}
 
 	cpuinfo_isa.i8mm = get_sys_info_by_name("hw.optional.arm.FEAT_I8MM") != 0;
-	cpuinfo_isa.sme= get_sys_info_by_name("hw.optional.arm.FEAT_SME") != 0;
+	cpuinfo_isa.sme = get_sys_info_by_name("hw.optional.arm.FEAT_SME") != 0;
 	cpuinfo_isa.sme2 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2") != 0;
 	cpuinfo_isa.sme2p1 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2p1") != 0;
 	cpuinfo_isa.sme_i16i32 = get_sys_info_by_name("hw.optional.arm.SME_I16I32") != 0;
