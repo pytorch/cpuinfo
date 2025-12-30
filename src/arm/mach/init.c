@@ -486,6 +486,16 @@ void cpuinfo_arm_mach_init(void) {
 		cpuinfo_isa.sme2 = true;
 	}
 
+	const uint32_t has_feat_sme2p1 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2p1");
+	if (has_feat_sme2p1 != 0) {
+		cpuinfo_isa.sme2p1 = true;
+	}
+
+	const uint32_t has_sme_max_svl_b = get_sys_info_by_name("hw.optional.arm.sme_max_svl_b");
+	if (has_sme_max_svl_b != 0) {
+		cpuinfo_isa.smelen = has_sme_max_svl_b;
+	}
+
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
 		cores[i] = (struct cpuinfo_core){
