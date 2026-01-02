@@ -68,6 +68,18 @@
 #ifndef CPUFAMILY_ARM_BRAVA
 #define CPUFAMILY_ARM_BRAVA 0x17d5b93a
 #endif
+// M5
+#ifndef CPUFAMILY_ARM_HIDRA
+#define CPUFAMILY_ARM_HIDRA 0x1d5a87e8
+#endif
+// A19
+#ifndef CPUFAMILY_ARM_TILOS
+#define CPUFAMILY_ARM_TILOS 0x01d7a72b
+#endif
+// A19 Pro
+#ifndef CPUFAMILY_ARM_THERA
+#define CPUFAMILY_ARM_THERA 0xab345f09
+#endif
 
 struct cpuinfo_arm_isa cpuinfo_isa = {
 	.aes = true,
@@ -137,23 +149,42 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t core_index,
 		case CPUFAMILY_ARM_EVEREST_SAWTOOTH:
 			/* Hexa-core: 2x Everest + 4x Sawtooth */
 			return core_index + 4 < core_count ? cpuinfo_uarch_everest : cpuinfo_uarch_sawtooth;
+
+		case CPUFAMILY_ARM_IBIZA: /* M3 */
+			/* 8-core: 4x Coll Everest v2 + 4x Coll Sawtooth v2*/
+		case CPUFAMILY_ARM_PALMA: /* M3 Max */
+			/* 14-core: 10x Coll Everest v2 + 4x Coll Sawtooth v2*/
 		case CPUFAMILY_ARM_COLL:
-			/* Hexa-core: 2x Coll Everest + 4x Coll Sawtooth */
+			/* Hexa-core: 2x Coll Everest v2 + 4x Coll Sawtooth v2 */
 			return core_index + 4 < core_count ? cpuinfo_uarch_coll_everest : cpuinfo_uarch_coll_sawtooth;
+		case CPUFAMILY_ARM_LOBOS: /* M3 Pro */
+			/* 12-core: 6x Coll Everest v2 + 6x Coll Sawtooth v2v2 */
+			return core_index + 6 < core_count ? cpuinfo_uarch_coll_everest : cpuinfo_uarch_coll_sawtooth;
 
 		case CPUFAMILY_ARM_TUPAI:
-			/* Hexa-core: 2x Tupai Everest + 4x Tupai Sawtooth */
+			/* Hexa-core: 2x Tupai Everest v3 + 4x Tupai Sawtooth v3 */
 			return core_index + 4 < core_count ? cpuinfo_uarch_tupai_everest : cpuinfo_uarch_tupai_sawtooth;
 
 		case CPUFAMILY_ARM_TAHITI:
 			/* Hexa-core: 2x Tahiti Everest + 4x Tahiti Sawtooth */
 			return core_index + 4 < core_count ? cpuinfo_uarch_tahiti_everest
 							   : cpuinfo_uarch_tahiti_sawtooth;
+
 		case CPUFAMILY_ARM_DONAN: /* M4 */
-			/* 10-core: 4x Donan Everest + 6x Donan Sawtooth */
+			/* 10-core: 4x Donan Everest v3 + 6x Donan Sawtooth v3 */
+			return core_index + 6 < core_count ? cpuinfo_uarch_donan_everest : cpuinfo_uarch_donan_sawtooth;
 		case CPUFAMILY_ARM_BRAVA: /* M4 Pro */
-			/* 14-core: 10x Donan Everest + 4x Donan Sawtooth */
+			/* 14-core: 10x Donan Everest v3 + 4x Donan Sawtooth v3 */
 			return core_index + 4 < core_count ? cpuinfo_uarch_donan_everest : cpuinfo_uarch_donan_sawtooth;
+
+		case CPUFAMILY_ARM_TILOS: /* A19 */
+		case CPUFAMILY_ARM_THERA: /* A19 Pro */
+			/* Hexa-core: 2x Tilos Everest v4 + 4x Tilos Sawtooth v4 */
+			return core_index + 4 < core_count ? cpuinfo_uarch_tilos_everest : cpuinfo_uarch_tilos_sawtooth;
+		case CPUFAMILY_ARM_HIDRA: /* M5 */
+			/* 10-core: 4x Tilos Everest v4 + 6x Tilos Sawtooth v4 */
+			return core_index + 6 < core_count ? cpuinfo_uarch_tilos_everest : cpuinfo_uarch_tilos_sawtooth;
+
 		default:
 			/* Use hw.cpusubtype for detection */
 			break;

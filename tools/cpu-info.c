@@ -306,6 +306,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Tahiti_Everest";
 		case cpuinfo_uarch_tahiti_sawtooth:
 			return "Tahiti_Sawtooth";
+		case cpuinfo_uarch_tilos_everest:
+			return "Tilos_Everest";
+		case cpuinfo_uarch_tilos_sawtooth:
+			return "Tilos_Sawtooth";
 		case cpuinfo_uarch_donan_everest:
 			return "Donan Everest";
 		case cpuinfo_uarch_donan_sawtooth:
