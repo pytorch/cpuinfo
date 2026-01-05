@@ -366,10 +366,8 @@ void cpuinfo_arm_mach_init(void) {
 	 * possible. Otherwise, fallback to hardcoded set of CPUs with known
 	 * support.
 	 */
-	const uint32_t has_feat_lse = get_sys_info_by_name("hw.optional.arm.FEAT_LSE");
-	if (has_feat_lse != 0) {
-		cpuinfo_isa.atomics = true;
-	} else {
+	cpuinfo_isa.atomics = get_sys_info_by_name("hw.optional.arm.FEAT_LSE") != 0;
+	if (!cpuinfo_isa.atomics) {
 		// Mandatory in ARMv8.1-A, list only cores released before iOS
 		// 15 / macOS 12
 		switch (cpu_family) {
@@ -381,10 +379,8 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_feat_rdm = get_sys_info_by_name("hw.optional.arm.FEAT_RDM");
-	if (has_feat_rdm != 0) {
-		cpuinfo_isa.rdm = true;
-	} else {
+	cpuinfo_isa.rdm = get_sys_info_by_name("hw.optional.arm.FEAT_RDM") != 0;
+	if (!cpuinfo_isa.rdm) {
 		// Optional in ARMv8.2-A (implemented in Apple cores),
 		// list only cores released before iOS 15 / macOS 12
 		switch (cpu_family) {
@@ -396,10 +392,8 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_feat_fp16 = get_sys_info_by_name("hw.optional.arm.FEAT_FP16");
-	if (has_feat_fp16 != 0) {
-		cpuinfo_isa.fp16arith = true;
-	} else {
+	cpuinfo_isa.fp16arith = get_sys_info_by_name("hw.optional.arm.FEAT_FP16") != 0;
+	if (!cpuinfo_isa.fp16arith) {
 		// Optional in ARMv8.2-A (implemented in Apple cores),
 		// list only cores released before iOS 15 / macOS 12
 		switch (cpu_family) {
@@ -411,15 +405,11 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_feat_fhm = get_sys_info_by_name("hw.optional.arm.FEAT_FHM");
-	if (has_feat_fhm != 0) {
-		cpuinfo_isa.fhm = true;
-	} else {
+	cpuinfo_isa.fhm = get_sys_info_by_name("hw.optional.arm.FEAT_FHM") != 0;
+	if (!cpuinfo_isa.fhm) {
 		// Prior to iOS 15, use 'hw.optional.armv8_2_fhm'
-		const uint32_t has_feat_fhm_legacy = get_sys_info_by_name("hw.optional.armv8_2_fhm");
-		if (has_feat_fhm_legacy != 0) {
-			cpuinfo_isa.fhm = true;
-		} else {
+		cpuinfo_isa.fhm = get_sys_info_by_name("hw.optional.armv8_2_fhm") != 0;
+		if (!cpuinfo_isa.fhm) {
 			// Mandatory in ARMv8.4-A when FP16 arithmetics is
 			// implemented, list only cores released before iOS 15 /
 			// macOS 12
@@ -431,17 +421,10 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_feat_bf16 = get_sys_info_by_name("hw.optional.arm.FEAT_BF16");
-	if (has_feat_bf16 != 0) {
-		cpuinfo_isa.bf16 = true;
-	}
-
-	const uint32_t has_feat_fcma = get_sys_info_by_name("hw.optional.arm.FEAT_FCMA");
-	if (has_feat_fcma != 0) {
-		cpuinfo_isa.fcma = true;
-	} else {
-		// Mandatory in ARMv8.3-A, list only cores released before iOS
-		// 15 / macOS 12
+	cpuinfo_isa.bf16 = get_sys_info_by_name("hw.optional.arm.FEAT_BF16") != 0;
+	cpuinfo_isa.fcma = get_sys_info_by_name("hw.optional.arm.FEAT_FCMA") != 0;
+	if (!cpuinfo_isa.fcma) {
+		// Mandatory in ARMv8.3-A, list only cores released before iOS 15 / macOS 12
 		switch (cpu_family) {
 			case CPUFAMILY_ARM_LIGHTNING_THUNDER:
 			case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
@@ -449,12 +432,9 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_feat_jscvt = get_sys_info_by_name("hw.optional.arm.FEAT_JSCVT");
-	if (has_feat_jscvt != 0) {
-		cpuinfo_isa.jscvt = true;
-	} else {
-		// Mandatory in ARMv8.3-A, list only cores released before iOS
-		// 15 / macOS 12
+	cpuinfo_isa.jscvt = get_sys_info_by_name("hw.optional.arm.FEAT_JSCVT") != 0;
+	if (!cpuinfo_isa.jscvt) {
+		// Mandatory in ARMv8.3-A, list only cores released before iOS 15 / macOS 12
 		switch (cpu_family) {
 			case CPUFAMILY_ARM_LIGHTNING_THUNDER:
 			case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
@@ -462,12 +442,9 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_feat_dotprod = get_sys_info_by_name("hw.optional.arm.FEAT_DotProd");
-	if (has_feat_dotprod != 0) {
-		cpuinfo_isa.dot = true;
-	} else {
-		// Mandatory in ARMv8.4-A, list only cores released before iOS
-		// 15 / macOS 12
+	cpuinfo_isa.dot = get_sys_info_by_name("hw.optional.arm.FEAT_DotProd") != 0;
+	if (!cpuinfo_isa.dot) {
+		// Mandatory in ARMv8.4-A, list only cores released before iOS 15 / macOS 12
 		switch (cpu_family) {
 			case CPUFAMILY_ARM_LIGHTNING_THUNDER:
 			case CPUFAMILY_ARM_FIRESTORM_ICESTORM:
@@ -475,20 +452,16 @@ void cpuinfo_arm_mach_init(void) {
 		}
 	}
 
-	const uint32_t has_feat_i8mm = get_sys_info_by_name("hw.optional.arm.FEAT_I8MM");
-	if (has_feat_i8mm != 0) {
-		cpuinfo_isa.i8mm = true;
-	}
+	cpuinfo_isa.i8mm = get_sys_info_by_name("hw.optional.arm.FEAT_I8MM") != 0;
+	cpuinfo_isa.sme = get_sys_info_by_name("hw.optional.arm.FEAT_SME") != 0;
+	cpuinfo_isa.sme2 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2") != 0;
+	cpuinfo_isa.sme2p1 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2p1") != 0;
+	cpuinfo_isa.sme_i16i32 = get_sys_info_by_name("hw.optional.arm.SME_I16I32") != 0;
+	cpuinfo_isa.sme_bi32i32 = get_sys_info_by_name("hw.optional.arm.SME_BI32I32") != 0;
+	cpuinfo_isa.sme_b16b16 = get_sys_info_by_name("hw.optional.arm.FEAT_SME_B16B16") != 0;
+	cpuinfo_isa.sme_f16f16 = get_sys_info_by_name("hw.optional.arm.FEAT_SME_F16F16") != 0;
 
-	const uint32_t has_feat_sme = get_sys_info_by_name("hw.optional.arm.FEAT_SME");
-	if (has_feat_sme != 0) {
-		cpuinfo_isa.sme = true;
-	}
-
-	const uint32_t has_feat_sme2 = get_sys_info_by_name("hw.optional.arm.FEAT_SME2");
-	if (has_feat_sme2 != 0) {
-		cpuinfo_isa.sme2 = true;
-	}
+	cpuinfo_isa.smelen = get_sys_info_by_name("hw.optional.arm.sme_max_svl_b");
 
 	uint32_t num_clusters = 1;
 	for (uint32_t i = 0; i < mach_topology.cores; i++) {
