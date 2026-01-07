@@ -614,6 +614,11 @@ enum cpuinfo_uarch {
 	/** Apple A18 pro processor (little cores). */
 	cpuinfo_uarch_tahiti_sawtooth = 0x00700207,
 
+	/** Apple A19 processor (big cores). */
+	cpuinfo_uarch_tilos_everest = 0x00700208,
+	/** Apple A19 processor (little cores). */
+	cpuinfo_uarch_tilos_sawtooth = 0x00700209,
+
 	/** Apple M4 processor (big cores). */
 	cpuinfo_uarch_donan_everest = 0x00700308,
 	/** Apple M4 processor (little cores). */
