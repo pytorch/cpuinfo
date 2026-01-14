@@ -221,6 +221,9 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100D030): /* Cortex-A53 */
 		case UINT32_C(0x4100D050): /* Cortex-A55 */
 		case UINT32_C(0x4100D460): /* Cortex-A510 */
+#if CPUINFO_ARCH_ARM64
+		case UINT32_C(0x4100D800): /* Cortex-A520 */
+#endif /* CPUINFO_ARCH_ARM64 */
 			/* Cortex-A53 is usually in LITTLE role, but can be in
 			 * big role w.r.t. Cortex-A35 */
 			return 2;

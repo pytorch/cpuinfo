@@ -126,6 +126,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD4F: /* Neoverse V2 */
 					*uarch = cpuinfo_uarch_neoverse_v2;
 					break;
+				case 0xD80: /* Cortex-A520 */
+					*uarch = cpuinfo_uarch_cortex_a520;
+					break;
 				case 0xD81: /* Cortex-A720 */
 					*uarch = cpuinfo_uarch_cortex_a720;
 					break;
