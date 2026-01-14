@@ -202,6 +202,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Cortex-A78";
 		case cpuinfo_uarch_cortex_a510:
 			return "Cortex-A510";
+		case cpuinfo_uarch_cortex_a520:
+			return "Cortex-A520";
 		case cpuinfo_uarch_cortex_a710:
 			return "Cortex-A710";
 		case cpuinfo_uarch_cortex_a715:

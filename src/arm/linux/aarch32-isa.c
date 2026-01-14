@@ -69,6 +69,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Processors with Cortex-A77 cores
 		 * - Processors with Cortex-A78 cores
 		 * - Processors with Cortex-A510 cores
+		 * - Processors with Cortex-A520 cores
 		 * - Processors with Cortex-A710 cores
 		 * - Processors with Cortex-A715 cores
 		 * - Processors with Cortex-X1 cores
