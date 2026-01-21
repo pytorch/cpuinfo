@@ -631,6 +631,7 @@ void cpuinfo_arm_linux_init(void) {
 				.vendor = arm_linux_processors[i].vendor,
 				.uarch = arm_linux_processors[i].uarch,
 				.midr = arm_linux_processors[i].midr,
+				.frequency = arm_linux_processors[i].max_frequency,
 			};
 		}
 
@@ -651,6 +652,7 @@ void cpuinfo_arm_linux_init(void) {
 		cores[i].vendor = arm_linux_processors[i].vendor;
 		cores[i].uarch = arm_linux_processors[i].uarch;
 		cores[i].midr = arm_linux_processors[i].midr;
+		cores[i].frequency = arm_linux_processors[i].max_frequency;
 		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
 
 		if (linux_cpu_to_uarch_index_map != NULL) {
