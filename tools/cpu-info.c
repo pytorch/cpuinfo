@@ -222,6 +222,14 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Cortex-X4";
 		case cpuinfo_uarch_cortex_x925:
 			return "Cortex-X925";
+		case cpuinfo_uarch_lumex_c1_ultra:
+			return "Lumex-C1-Ultra";
+		case cpuinfo_uarch_lumex_c1_premium:
+			return "Lumex-C1-Premium";
+		case cpuinfo_uarch_lumex_c1_pro:
+			return "Lumex-C1-Pro";
+		case cpuinfo_uarch_lumex_c1_nano:
+			return "Lumex-C1-Nano";
 		case cpuinfo_uarch_neoverse_n1:
 			return "Neoverse N1";
 		case cpuinfo_uarch_neoverse_e1:

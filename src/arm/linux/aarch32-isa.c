@@ -75,6 +75,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Processors with Cortex-X1 cores
 		 * - Processors with Cortex-X2 cores
 		 * - Processors with Cortex-X3 cores
+		 * - Processors with Lumex-C1 cores
 		 * - Processors with Exynos M4 cores
 		 * - Processors with Exynos M5 cores
 		 * - Neoverse N1 cores
@@ -106,6 +107,10 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D4D0): /* Cortex-A715 */
 				case UINT32_C(0x4100D4E0): /* Cortex-X3 */
 				case UINT32_C(0x4100D4F0): /* Neoverse V2 */
+				case UINT32_C(0x4100D8C0): /* Lumex-C1-Ultra */
+				case UINT32_C(0x4100D900): /* Lumex-C1-Premium */
+				case UINT32_C(0x4100D8B0): /* Lumex-C1-Pro */
+				case UINT32_C(0x4100D8A0): /* Lumex-C1-Nano */
 				case UINT32_C(0x4800D400): /* Cortex-A76
 							      (HiSilicon) */
 				case UINT32_C(0x51008020): /* Kryo 385 Gold
@@ -137,6 +142,7 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 		 * - Processors with Cortex-X1 cores
 		 * - Processors with Cortex-X2 cores
 		 * - Processors with Cortex-X3 cores
+		 * - Processors with Lumex-C1 cores
 		 * - Processors with Exynos M4 cores
 		 * - Processors with Exynos M5 cores
 		 * - Neoverse N1 cores
@@ -168,6 +174,10 @@ void cpuinfo_arm_linux_decode_isa_from_proc_cpuinfo(
 				case UINT32_C(0x4100D4D0): /* Cortex-A715 */
 				case UINT32_C(0x4100D4E0): /* Cortex-X3 */
 				case UINT32_C(0x4100D4F0): /* Neoverse V2 */
+				case UINT32_C(0x4100D8C0): /* Lumex-C1-Ultra */
+				case UINT32_C(0x4100D900): /* Lumex-C1-Premium */
+				case UINT32_C(0x4100D8B0): /* Lumex-C1-Pro */
+				case UINT32_C(0x4100D8A0): /* Lumex-C1-Nano */
 				case UINT32_C(0x4800D400): /* Cortex-A76
 							      (HiSilicon) */
 				case UINT32_C(0x51008040): /* Kryo 485 Gold
