@@ -141,6 +141,18 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD87: /* Cortex-A725 */
 					*uarch = cpuinfo_uarch_cortex_a725;
 					break;
+				case 0xD8C:
+					*uarch = cpuinfo_uarch_lumex_c1_ultra;
+					break;
+				case 0xD90:
+					*uarch = cpuinfo_uarch_lumex_c1_premium;
+					break;
+				case 0xD8B:
+					*uarch = cpuinfo_uarch_lumex_c1_pro;
+					break;
+				case 0xD8A:
+					*uarch = cpuinfo_uarch_lumex_c1_nano;
+					break;
 				default:
 					switch (midr_get_part(midr) >> 8) {
 #if CPUINFO_ARCH_ARM

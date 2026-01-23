@@ -526,6 +526,15 @@ enum cpuinfo_uarch {
 	/** ARM Cortex-A725. */
 	cpuinfo_uarch_cortex_a725 = 0x00300574,
 
+	/** ARM Lumex-C1-Ultra. */
+	cpuinfo_uarch_lumex_c1_ultra = 0x00300600,
+	/** ARM Lumex-C1-Premium. */
+	cpuinfo_uarch_lumex_c1_premium = 0x00300601,
+	/** ARM Lumex-C1-Pro. */
+	cpuinfo_uarch_lumex_c1_pro = 0x00300602,
+	/** ARM Lumex-C1-Nano. */
+	cpuinfo_uarch_lumex_c1_nano = 0x00300603,
+
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
 	/** Qualcomm Krait. */
