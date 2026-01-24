@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 #if CPUINFO_MOCK
-#include "third_party/cpuinfo/include/cpuinfo-mock.h"
+#include <cpuinfo-mock.h>
 #endif
 #include <arm/linux/api.h>
 #include <arm/linux/cp.h>
