@@ -431,6 +431,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_zen4 = 0x0020010C,
 	/** AMD Zen 5 microarchitecture. */
 	cpuinfo_uarch_zen5 = 0x0020010D,
+	/** AMD Zen 6 microarchitecture. */
+	cpuinfo_uarch_zen6 = 0x0020010E,
 
 	/** NSC Geode and AMD Geode GX and LX. */
 	cpuinfo_uarch_geode = 0x00200200,
