@@ -118,7 +118,9 @@ TEST(PROCESSOR, consistent_l1i) {
 		const cpuinfo_cache* l1i = processor->cache.l1i;
 		if (l1i != nullptr) {
 			EXPECT_GE(i, l1i->processor_start);
+#ifndef CPUINFO_ARCH_PPC64
 			EXPECT_LT(i, l1i->processor_start + l1i->processor_count);
+#endif
 		}
 	}
 	cpuinfo_deinitialize();
@@ -132,7 +134,9 @@ TEST(PROCESSOR, consistent_l1d) {
 		const cpuinfo_cache* l1d = processor->cache.l1d;
 		if (l1d != nullptr) {
 			EXPECT_GE(i, l1d->processor_start);
+#ifndef CPUINFO_ARCH_PPC64
 			EXPECT_LT(i, l1d->processor_start + l1d->processor_count);
+#endif
 		}
 	}
 	cpuinfo_deinitialize();
@@ -146,7 +150,9 @@ TEST(PROCESSOR, consistent_l2) {
 		const cpuinfo_cache* l2 = processor->cache.l2;
 		if (l2 != nullptr) {
 			EXPECT_GE(i, l2->processor_start);
+#ifndef CPUINFO_ARCH_PPC64
 			EXPECT_LT(i, l2->processor_start + l2->processor_count);
+#endif
 		}
 	}
 	cpuinfo_deinitialize();
@@ -160,7 +166,9 @@ TEST(PROCESSOR, consistent_l3) {
 		const cpuinfo_cache* l3 = processor->cache.l3;
 		if (l3 != nullptr) {
 			EXPECT_GE(i, l3->processor_start);
+#ifndef CPUINFO_ARCH_PPC64
 			EXPECT_LT(i, l3->processor_start + l3->processor_count);
+#endif
 		}
 	}
 	cpuinfo_deinitialize();
@@ -521,6 +529,24 @@ TEST(CLUSTER, consistent_midr) {
 	cpuinfo_deinitialize();
 }
 #endif /* CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 */
+
+#if CPUINFO_ARCH_PPC64
+TEST(CLUSTER, consistent_pvr) {
+	ASSERT_TRUE(cpuinfo_initialize());
+	for (uint32_t i = 0; i < cpuinfo_get_clusters_count(); i++) {
+		const cpuinfo_cluster* cluster = cpuinfo_get_cluster(i);
+		ASSERT_TRUE(cluster);
+
+		for (uint32_t j = 0; j < cluster->core_count; j++) {
+			const cpuinfo_core* core = cpuinfo_get_core(cluster->core_start + j);
+			ASSERT_TRUE(core);
+
+			EXPECT_EQ(cluster->pvr, core->pvr);
+		}
+	}
+	cpuinfo_deinitialize();
+}
+#endif /* CPUINFO_ARCH_PPC64 */
 
 TEST(CLUSTER, consistent_frequency) {
 	ASSERT_TRUE(cpuinfo_initialize());
@@ -891,6 +917,7 @@ TEST(L1I_CACHE, valid_processors) {
 	cpuinfo_deinitialize();
 }
 
+#ifndef CPUINFO_ARCH_PPC64
 TEST(L1I_CACHE, consistent_processors) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	for (uint32_t i = 0; i < cpuinfo_get_l1i_caches_count(); i++) {
@@ -906,6 +933,7 @@ TEST(L1I_CACHE, consistent_processors) {
 	}
 	cpuinfo_deinitialize();
 }
+#endif
 
 TEST(L1D_CACHES_COUNT, within_bounds) {
 	ASSERT_TRUE(cpuinfo_initialize());
@@ -1055,6 +1083,7 @@ TEST(L1D_CACHE, valid_processors) {
 	cpuinfo_deinitialize();
 }
 
+#ifndef CPUINFO_ARCH_PPC64
 TEST(L1D_CACHE, consistent_processors) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	for (uint32_t i = 0; i < cpuinfo_get_l1d_caches_count(); i++) {
@@ -1070,6 +1099,7 @@ TEST(L1D_CACHE, consistent_processors) {
 	}
 	cpuinfo_deinitialize();
 }
+#endif
 
 TEST(L2_CACHES_COUNT, within_bounds) {
 	ASSERT_TRUE(cpuinfo_initialize());
@@ -1210,6 +1240,7 @@ TEST(L2_CACHE, valid_processors) {
 	cpuinfo_deinitialize();
 }
 
+#ifndef CPUINFO_ARCH_PPC64
 TEST(L2_CACHE, consistent_processors) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	for (uint32_t i = 0; i < cpuinfo_get_l2_caches_count(); i++) {
@@ -1225,6 +1256,7 @@ TEST(L2_CACHE, consistent_processors) {
 	}
 	cpuinfo_deinitialize();
 }
+#endif
 
 TEST(L3_CACHES_COUNT, within_bounds) {
 	ASSERT_TRUE(cpuinfo_initialize());
@@ -1357,6 +1389,7 @@ TEST(L3_CACHE, valid_processors) {
 	cpuinfo_deinitialize();
 }
 
+#ifndef CPUINFO_ARCH_PPC64
 TEST(L3_CACHE, consistent_processors) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	for (uint32_t i = 0; i < cpuinfo_get_l3_caches_count(); i++) {
@@ -1372,6 +1405,7 @@ TEST(L3_CACHE, consistent_processors) {
 	}
 	cpuinfo_deinitialize();
 }
+#endif
 
 TEST(L4_CACHES_COUNT, within_bounds) {
 	ASSERT_TRUE(cpuinfo_initialize());

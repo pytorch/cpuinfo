@@ -332,6 +332,12 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "ThunderX2";
 		case cpuinfo_uarch_pj4:
 			return "PJ4";
+		case cpuinfo_uarch_power9:
+			return "POWER9";
+		case cpuinfo_uarch_power10:
+			return "POWER10";
+		case cpuinfo_uarch_power11:
+			return "POWER11";
 		case cpuinfo_uarch_brahma_b15:
 			return "Brahma B15";
 		case cpuinfo_uarch_brahma_b53:

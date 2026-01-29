@@ -34,7 +34,7 @@ extern CPUINFO_INTERNAL uint32_t cpuinfo_packages_count;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
 extern CPUINFO_INTERNAL uint32_t cpuinfo_max_cache_size;
 
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64 || CPUINFO_ARCH_PPC64
 extern CPUINFO_INTERNAL struct cpuinfo_uarch_info* cpuinfo_uarchs;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_uarchs_count;
 #else
@@ -61,6 +61,7 @@ CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_arm_linux_init(void);
 CPUINFO_PRIVATE void cpuinfo_riscv_linux_init(void);
 CPUINFO_PRIVATE void cpuinfo_emscripten_init(void);
+CPUINFO_PRIVATE void cpuinfo_powerpc_linux_init(void);
 
 CPUINFO_PRIVATE uint32_t cpuinfo_compute_max_cache_size(const struct cpuinfo_processor* processor);
 
