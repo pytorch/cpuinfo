@@ -63,6 +63,16 @@ def main(args):
                     "riscv/linux/riscv-isa.c",
                 ]
 
+        if build.target.is_loongarch64:
+            sources += ["loongarch/uarch.c"]
+            if build.target.is_linux:
+                sources += [
+                    "loongarch/linux/init.c",
+                    "loongarch/linux/cpuinfo.c",
+                    "loongarch/linux/cache.c",
+                    "loongarch/linux/loongarch64-isa.c",
+                ]
+
         if build.target.is_macos:
             sources += ["mach/topology.c"]
         if build.target.is_linux or build.target.is_android:
