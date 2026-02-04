@@ -355,6 +355,14 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_sunny_cove = 0x0010020C,
 	/** Intel Willow Cove microarchitecture (10 nm, Tiger Lake). */
 	cpuinfo_uarch_willow_cove = 0x0010020D,
+	/** Intel Golden Cove microarchitecture (Alder Lake P-Core) */
+	cpuinfo_uarch_golden_cove = 0x0010020E,
+	/** Intel Redwood Cove microarchitecture (Meteor Lake P-Core). */
+	cpuinfo_uarch_redwood_cove = 0x0010020F,
+	/** Intel Lion Cove microarchitecture (Lunar Lake P-Core). */
+	cpuinfo_uarch_lion_cove = 0x00100210,
+	/** Intel Cougar Cove microarchitecture (Panther Lake P-Core). */
+	cpuinfo_uarch_cougar_cove = 0x00100211,
 
 	/** Pentium 4 with Willamette, Northwood, or Foster cores. */
 	cpuinfo_uarch_willamette = 0x00100300,
@@ -381,6 +389,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_crestmont = 0x00100408,
 	/** Intel Darkmont microarchitecture (e-core used in Clearwater Forest). */
 	cpuinfo_uarch_darkmont = 0x00100409,
+	/** Intel Skymont microarchitecture (Lunar Lake E-Core). */
+	cpuinfo_uarch_skymont = 0x0010040A,
 
 	/** Intel Knights Ferry HPC boards. */
 	cpuinfo_uarch_knights_ferry = 0x00100500,
