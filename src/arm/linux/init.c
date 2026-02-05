@@ -19,9 +19,24 @@
 /* Read cache size from sysfs */
 static uint32_t cpuinfo_linux_read_sysfs_cache_size(uint32_t cpu_id, uint32_t cache_level) {
 	char path[256];
-	snprintf(path, sizeof(path), "/sys/devices/system/cpu/cpu%u/cache/index%u/size", cpu_id, cache_level);
 	
+	/* Verify the index actually corresponds to the requested cache level */
+	snprintf(path, sizeof(path), "/sys/devices/system/cpu/cpu%u/cache/index%u/level", cpu_id, cache_level);
 	FILE* file = fopen(path, "r");
+	if (!file) {
+		return 0;
+	}
+	
+	uint32_t actual_level = 0;
+	if (fscanf(file, "%u", &actual_level) != 1 || actual_level != cache_level) {
+		fclose(file);
+		return 0;
+	}
+	fclose(file);
+	
+	/* Read cache size */
+	snprintf(path, sizeof(path), "/sys/devices/system/cpu/cpu%u/cache/index%u/size", cpu_id, cache_level);
+	file = fopen(path, "r");
 	if (!file) {
 		return 0;
 	}
