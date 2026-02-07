@@ -50,6 +50,7 @@ extern CPUINFO_INTERNAL const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_ma
 CPUINFO_PRIVATE void cpuinfo_x86_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_x86_linux_init(void);
 CPUINFO_PRIVATE void cpuinfo_x86_freebsd_init(void);
+CPUINFO_PRIVATE void cpuinfo_x86_fuchsia_init(void);
 #if defined(_WIN32) || defined(__CYGWIN__)
 #if CPUINFO_ARCH_ARM64
 CPUINFO_PRIVATE BOOL CALLBACK cpuinfo_arm_windows_init(PINIT_ONCE init_once, PVOID parameter, PVOID* context);
@@ -59,6 +60,7 @@ CPUINFO_PRIVATE BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVO
 #endif
 CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_arm_linux_init(void);
+CPUINFO_PRIVATE void cpuinfo_arm_fuchsia_init(void);
 CPUINFO_PRIVATE void cpuinfo_riscv_linux_init(void);
 CPUINFO_PRIVATE void cpuinfo_emscripten_init(void);
 
