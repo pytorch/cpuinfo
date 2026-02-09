@@ -1,9 +1,9 @@
+#include <ctype.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include <ctype.h>
 
 #include <arm/linux/api.h>
 #include <cpuinfo.h>
@@ -16,85 +16,89 @@
 #include <cpuinfo/log.h>
 #include <linux/api.h>
 
-/* Read cache size from sysfs */
+/* Parse a uint32 from sysfs file content */
+static bool uint32_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
+	uint32_t* value_ptr = (uint32_t*)context;
+	if (text_start == text_end) {
+		return false;
+	}
+	uint32_t value = 0;
+	for (const char* p = text_start; p < text_end && *p >= '0' && *p <= '9'; p++) {
+		value = value * 10 + (*p - '0');
+	}
+	*value_ptr = value;
+	return value > 0;
+}
+
+/* Parse cache size with K/M suffix from sysfs (e.g. "2048K", "1M") */
+static bool cache_size_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
+	uint32_t* size_ptr = (uint32_t*)context;
+	if (text_start == text_end) {
+		return false;
+	}
+	uint32_t value = 0;
+	const char* p = text_start;
+	while (p < text_end && *p >= '0' && *p <= '9') {
+		value = value * 10 + (*p - '0');
+		p++;
+	}
+	if (p == text_start || value == 0) {
+		return false;
+	}
+	uint32_t multiplier = 1024;
+	if (p < text_end && toupper(*p) == 'M') {
+		multiplier = 1024 * 1024;
+	}
+	*size_ptr = value * multiplier;
+	return true;
+}
+
+/* Check if shared_cpu_list indicates a single CPU (per-core cache) */
+static bool shared_cpu_list_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
+	bool* is_per_core = (bool*)context;
+	for (const char* p = text_start; p < text_end; p++) {
+		if (*p == ',' || *p == '-') {
+			*is_per_core = false;
+			return true;
+		}
+	}
+	*is_per_core = (text_start != text_end);
+	return *is_per_core;
+}
+
+/*
+ * Read cache size from sysfs.
+ *
+ * ARM CPUs lack a CPUID-equivalent instruction to query cache properties,
+ * so the library relies on hardcoded values that are often incorrect.
+ * Linux exposes cache topology via sysfs (existed before 2008, documented 2014):
+ * https://raw.githubusercontent.com/torvalds/linux/master/Documentation/ABI/testing/sysfs-devices-system-cpu
+ *
+ */
 static uint32_t cpuinfo_linux_read_sysfs_cache_size(uint32_t cpu_id, uint32_t cache_level) {
 	char path[256];
-	
-	/* Verify the index actually corresponds to the requested cache level */
+
+	/* Verify the index corresponds to the requested cache level */
 	snprintf(path, sizeof(path), "/sys/devices/system/cpu/cpu%u/cache/index%u/level", cpu_id, cache_level);
-	FILE* file = fopen(path, "r");
-	if (!file) {
-		return 0;
-	}
-	
 	uint32_t actual_level = 0;
-	if (fscanf(file, "%u", &actual_level) != 1 || actual_level != cache_level) {
-		fclose(file);
+	if (!cpuinfo_linux_parse_small_file(path, 16, uint32_parser, &actual_level) || actual_level != cache_level) {
 		return 0;
 	}
-	fclose(file);
-	
-	/* Read cache size */
+
 	snprintf(path, sizeof(path), "/sys/devices/system/cpu/cpu%u/cache/index%u/size", cpu_id, cache_level);
-	file = fopen(path, "r");
-	if (!file) {
+	uint32_t size = 0;
+	if (!cpuinfo_linux_parse_small_file(path, 32, cache_size_parser, &size)) {
 		return 0;
 	}
-	
-	char size_str[32];
-	if (!fgets(size_str, sizeof(size_str), file)) {
-		fclose(file);
-		return 0;
-	}
-	fclose(file);
-	
-	size_t len = strlen(size_str);
-	while (len > 0 && isspace(size_str[len - 1])) {
-		size_str[--len] = '\0';
-	}
-	
-	if (len == 0) {
-		return 0;
-	}
-	
-	char suffix = toupper(size_str[len - 1]);
-	uint32_t multiplier = 1024; /* Default: KiB */
-	
-	if (suffix == 'K') {
-		size_str[len - 1] = '\0';
-	} else if (suffix == 'M') {
-		size_str[len - 1] = '\0';
-		multiplier = 1024 * 1024;
-	} else if (!isdigit(suffix)) {
-		return 0;
-	}
-	
-	long value = strtol(size_str, NULL, 10);
-	if (value <= 0) {
-		return 0;
-	}
-	
-	return (uint32_t)(value * multiplier);
+	return size;
 }
 
 /* Check if L2 cache is per-core by reading sysfs shared_cpu_list */
 static bool cpuinfo_linux_is_l2_per_core(uint32_t cpu_id) {
 	char path[256];
 	snprintf(path, sizeof(path), "/sys/devices/system/cpu/cpu%u/cache/index2/shared_cpu_list", cpu_id);
-	
-	FILE* file = fopen(path, "r");
-	if (!file) {
-		return false;
-	}
-	
-	char shared_list[128];
 	bool is_per_core = false;
-	if (fgets(shared_list, sizeof(shared_list), file)) {
-		/* If shared_cpu_list contains only one CPU (no ',' or '-'), L2 is per-core */
-		is_per_core = (strchr(shared_list, ',') == NULL && strchr(shared_list, '-') == NULL);
-	}
-	fclose(file);
-	
+	cpuinfo_linux_parse_small_file(path, 128, shared_cpu_list_parser, &is_per_core);
 	return is_per_core;
 }
 
@@ -806,9 +810,9 @@ void cpuinfo_arm_linux_init(void) {
 				/* Check if L2 is per-core using sysfs */
 				uint32_t sysfs_l2_size = cpuinfo_linux_read_sysfs_cache_size(
 					arm_linux_processors[i].system_processor_id, 2);
-				bool l2_is_per_core = (sysfs_l2_size > 0) && 
+				bool l2_is_per_core = (sysfs_l2_size > 0) &&
 					cpuinfo_linux_is_l2_per_core(arm_linux_processors[i].system_processor_id);
-				
+
 				if (l2_is_per_core) {
 					/* L2 is private to each core */
 					l2_count += 1;
@@ -866,18 +870,20 @@ void cpuinfo_arm_linux_init(void) {
 			&temp_l3);
 
 		/* Try to read L2 cache size from sysfs (more accurate) */
-		uint32_t sysfs_l2_size = cpuinfo_linux_read_sysfs_cache_size(
-			arm_linux_processors[i].system_processor_id, 2);
+		uint32_t sysfs_l2_size =
+			cpuinfo_linux_read_sysfs_cache_size(arm_linux_processors[i].system_processor_id, 2);
 		if (sysfs_l2_size > 0) {
 			temp_l2.size = sysfs_l2_size;
-			/* Recalculate sets to maintain consistency: size = associativity * sets * partitions * line_size */
+			/* Recalculate sets to maintain consistency: size = associativity * sets * partitions *
+			 * line_size */
 			if (temp_l2.associativity > 0 && temp_l2.line_size > 0 && temp_l2.partitions > 0) {
-				temp_l2.sets = sysfs_l2_size / (temp_l2.associativity * temp_l2.partitions * temp_l2.line_size);
+				temp_l2.sets = sysfs_l2_size /
+					(temp_l2.associativity * temp_l2.partitions * temp_l2.line_size);
 			}
 		}
 
 		/* Check if L2 is per-core by reading sysfs */
-		bool l2_is_per_core = (sysfs_l2_size > 0) && 
+		bool l2_is_per_core = (sysfs_l2_size > 0) &&
 			cpuinfo_linux_is_l2_per_core(arm_linux_processors[i].system_processor_id);
 
 		if (temp_l3.size != 0 || l2_is_per_core) {
