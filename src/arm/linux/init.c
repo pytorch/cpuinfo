@@ -30,7 +30,7 @@ static bool uint32_parser(const char* filename, const char* text_start, const ch
 	return value > 0;
 }
 
-/* Parse cache size with K/M suffix from sysfs (e.g. "2048K", "1M") */
+/* Parse cache size with K/M suffix from /sys/devices/system/cpu/cpuN/cache/indexN/size (e.g. "2048K", "1M") */
 static bool cache_size_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	uint32_t* size_ptr = (uint32_t*)context;
 	if (text_start == text_end) {
@@ -53,7 +53,7 @@ static bool cache_size_parser(const char* filename, const char* text_start, cons
 	return true;
 }
 
-/* Check if shared_cpu_list indicates a single CPU (per-core cache) */
+/* Check if /sys/devices/system/cpu/cpuN/cache/index2/shared_cpu_list indicates a single CPU (per-core cache) */
 static bool shared_cpu_list_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	bool* is_per_core = (bool*)context;
 	for (const char* p = text_start; p < text_end; p++) {
