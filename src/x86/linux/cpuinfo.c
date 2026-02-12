@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include <cpuinfo/log.h>
 #include <linux/api.h>
@@ -213,3 +214,108 @@ bool cpuinfo_x86_linux_parse_proc_cpuinfo(
 	};
 	return cpuinfo_linux_parse_multiline_file("/proc/cpuinfo", BUFFER_SIZE, parse_line, &state);
 }
+
+#ifdef __ANDROID__
+bool cpuinfo_x86_linux_parse_cpuid_info(
+    struct cpuinfo_x86_cpuid_info* x86_cpuid_info) {
+    cpuinfo_log_debug("reading cpuid.info file");
+    FILE* fd_info = fopen(CPUID_INFO_FILE, "rb");
+    if (!fd_info) {
+        cpuinfo_log_warning("failed to open file %s: %s", CPUID_INFO_FILE, strerror(errno));
+        return false;
+    }
+
+    int ret = fread(x86_cpuid_info, sizeof(struct cpuinfo_x86_cpuid_info), 1, fd_info);
+    if (!ret) {
+        cpuinfo_log_warning("failed to read cpuid info from %s: %s", CPUID_INFO_FILE, strerror(errno));
+    }
+
+    if (fclose(fd_info)) {
+        cpuinfo_log_warning("failed to close file %s: %s", CPUID_INFO_FILE, strerror(errno));
+    }
+
+    return ret ? true : false;
+}
+
+#ifdef DEBUG_CPUINFO
+void debug_print_cpuid_info_file (void) {
+    cpuinfo_log_debug("cpuinfo: ----------------------------");
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "erms", cpuinfo_has_x86_erms());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "smap", cpuinfo_has_x86_smap());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "serialize", cpuinfo_has_x86_serialize());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "adx", cpuinfo_has_x86_adx());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "aes", cpuinfo_has_x86_aes());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx", cpuinfo_has_x86_avx());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx2", cpuinfo_has_x86_avx2());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512bf16", cpuinfo_has_x86_avx512bf16());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512bitalg", cpuinfo_has_x86_avx512bitalg());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512bw", cpuinfo_has_x86_avx512bw());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512cd", cpuinfo_has_x86_avx512cd());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512dq", cpuinfo_has_x86_avx512dq());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512er", cpuinfo_has_x86_avx512er());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512f", cpuinfo_has_x86_avx512f());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512ifma", cpuinfo_has_x86_avx512ifma());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512pf", cpuinfo_has_x86_avx512pf());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512vbmi", cpuinfo_has_x86_avx512vbmi());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512vbmi2", cpuinfo_has_x86_avx512vbmi2());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512vl", cpuinfo_has_x86_avx512vl());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512vnni", cpuinfo_has_x86_avx512vnni());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512vp2intersect", cpuinfo_has_x86_avx512vp2intersect());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512vpopcntdq", cpuinfo_has_x86_avx512vpopcntdq());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512_4fmaps", cpuinfo_has_x86_avx512_4fmaps());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "avx512_4vnniw", cpuinfo_has_x86_avx512_4vnniw());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "bmi", cpuinfo_has_x86_bmi());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "bmi2", cpuinfo_has_x86_bmi2());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "clwb", cpuinfo_has_x86_clwb());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "clzero", cpuinfo_has_x86_clzero());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "cmpxchg16b", cpuinfo_has_x86_cmpxchg16b());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "f16c", cpuinfo_has_x86_f16c());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "fma3", cpuinfo_has_x86_fma3());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "fma4", cpuinfo_has_x86_fma4());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "gfni", cpuinfo_has_x86_gfni());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "hle", cpuinfo_has_x86_hle());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "lzcnt", cpuinfo_has_x86_lzcnt());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "misaligned_sse", cpuinfo_has_x86_misaligned_sse());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "movbe", cpuinfo_has_x86_movbe());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "mpx", cpuinfo_has_x86_mpx());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "mwait", cpuinfo_has_x86_mwait());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "mwaitx", cpuinfo_has_x86_mwaitx());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "pclmulqdq", cpuinfo_has_x86_pclmulqdq());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "popcnt", cpuinfo_has_x86_popcnt());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "prefetch", cpuinfo_has_x86_prefetch());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "prefetchw", cpuinfo_has_x86_prefetchw());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "prefetchwt1", cpuinfo_has_x86_prefetchwt1());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "rdpid", cpuinfo_has_x86_rdpid());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "rdrand", cpuinfo_has_x86_rdrand());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "rdseed", cpuinfo_has_x86_rdseed());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "rdtscp", cpuinfo_has_x86_rdtscp());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "rtm", cpuinfo_has_x86_rtm());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "sha", cpuinfo_has_x86_sha());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "sse3", cpuinfo_has_x86_sse3());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "sse4a", cpuinfo_has_x86_sse4a());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "sse4_1", cpuinfo_has_x86_sse4_1());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "sse4_2", cpuinfo_has_x86_sse4_2());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "ssse3", cpuinfo_has_x86_ssse3());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "tbm", cpuinfo_has_x86_tbm());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "three_d_now", cpuinfo_has_x86_3dnow());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "three_d_now_plus", cpuinfo_has_x86_3dnow_plus());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "vaes", cpuinfo_has_x86_vaes());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "vpclmulqdq", cpuinfo_has_x86_vpclmulqdq());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "xop", cpuinfo_has_x86_xop());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "xsave", cpuinfo_has_x86_xsave());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "xtest", cpuinfo_has_x86_xtest());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "cmov", cpuinfo_has_x86_cmov());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "cmpxchg8b", cpuinfo_has_x86_cmpxchg8b());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "daz", cpuinfo_has_x86_daz());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "fpu", cpuinfo_has_x86_fpu());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "mmx", cpuinfo_has_x86_mmx());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "mmx_plus", cpuinfo_has_x86_mmx_plus());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "rdtsc", cpuinfo_has_x86_rdtsc());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "sse", cpuinfo_has_x86_sse());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "sse2", cpuinfo_has_x86_sse2());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "three_d_now_geode", cpuinfo_has_x86_3dnow_geode());
+    cpuinfo_log_debug("cpuinfo: %-20s: %d", "lahf_sahf", cpuinfo_has_x86_lahf_sahf());
+    cpuinfo_log_debug("cpuinfo: ----------------------------");
+}
+#endif //DEBUG_CPUINFO
+#endif //__ANDROID__

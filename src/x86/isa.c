@@ -828,5 +828,23 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	 */
 	isa.rdpid = !!(structured_feature_info0.ecx & UINT32_C(0x00400000));
 
+	/*
+	 * ERMS instruction:
+	 * - Intel: ebx[bit 9] in structured feature info (ecx = 0).
+	 */
+	isa.erms = !!(structured_feature_info0.ebx & UINT32_C(0x00000200));
+
+	/*
+	 * SMAP instruction:
+	 * - Intel: ebx[bit 20] in structured feature info (ecx = 0).
+	 */
+	isa.smap = !!(structured_feature_info0.ebx & UINT32_C(0x00100000));
+
+	/*
+	 * SERIALIZE instruction:
+	 * - Intel: edx[bit 14] in structured feature info (ecx = 0).
+	 */
+	isa.serialize = !!(structured_feature_info0.edx & UINT32_C(0x00004000));
+
 	return isa;
 }
