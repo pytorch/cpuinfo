@@ -53,6 +53,10 @@ struct riscv_hwprobe {
 #define RISCV_HWPROBE_EXT_ZBB (1 << 4)
 #define RISCV_HWPROBE_EXT_ZBS (1 << 5)
 #define RISCV_HWPROBE_EXT_ZICBOZ (1 << 6)
+#define	RISCV_HWPROBE_EXT_ZFH (1 << 27)
+#define	RISCV_HWPROBE_EXT_ZFHMIN (1 << 28)
+#define	RISCV_HWPROBE_EXT_ZIHINTNTL (1 << 29)
+#define	RISCV_HWPROBE_EXT_ZVFH (1 << 30)
 #define RISCV_HWPROBE_KEY_CPUPERF_0 5
 #define RISCV_HWPROBE_MISALIGNED_UNKNOWN (0 << 0)
 #define RISCV_HWPROBE_MISALIGNED_EMULATED (1 << 0)
@@ -72,7 +76,8 @@ struct riscv_hwprobe {
 void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	uint32_t processor,
 	enum cpuinfo_vendor vendor[restrict static 1],
-	enum cpuinfo_uarch uarch[restrict static 1]) {
+	enum cpuinfo_uarch uarch[restrict static 1],
+	struct cpuinfo_riscv_isa isa[restrict static 1]) {
 	struct riscv_hwprobe pairs[] = {
 		{
 			.key = RISCV_HWPROBE_KEY_MVENDORID,
@@ -82,6 +87,9 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 		},
 		{
 			.key = RISCV_HWPROBE_KEY_MIMPID,
+		},
+		{
+			.key = RISCV_HWPROBE_KEY_IMA_EXT_0,
 		},
 	};
 	const size_t pairs_count = sizeof(pairs) / sizeof(struct riscv_hwprobe);
@@ -128,6 +136,7 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	uint32_t vendor_id = 0;
 	uint32_t arch_id = 0;
 	uint32_t imp_id = 0;
+	uint64_t ima_ext_0 = 0;
 	for (size_t pair = 0; pair < pairs_count; pair++) {
 		switch (pairs[pair].key) {
 			case RISCV_HWPROBE_KEY_MVENDORID:
@@ -139,12 +148,25 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 			case RISCV_HWPROBE_KEY_MIMPID:
 				imp_id = pairs[pair].value;
 				break;
+			case RISCV_HWPROBE_KEY_IMA_EXT_0:
+				ima_ext_0 = pairs[pair].value;
+				break;
 			default:
 				/* The key value may be -1 if unsupported. */
 				break;
 		}
 	}
 	cpuinfo_riscv_decode_vendor_uarch(vendor_id, arch_id, imp_id, vendor, uarch);
+
+	/* Parse ISA extensions retrieved. */
+	if (ima_ext_0 != 0) {
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZFH) {
+			isa->zfh = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVFH) {
+			isa->zvfh = true;
+		}
+	}
 
 cleanup:
 	CPU_FREE(cpu_set);
