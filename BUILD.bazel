@@ -151,6 +151,7 @@ cc_library(
         ":linux_armeabi": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM32_SRCS,
         ":linux_aarch64": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM64_SRCS,
         ":linux_mips64": COMMON_SRCS + LINUX_SRCS,
+        ":linux_ppc64le": COMMON_SRCS + LINUX_SRCS,
         ":linux_riscv32": COMMON_SRCS + RISCV_SRCS + LINUX_SRCS + LINUX_RISCV_SRCS,
         ":linux_riscv64": COMMON_SRCS + RISCV_SRCS + LINUX_SRCS + LINUX_RISCV_SRCS,
         ":linux_s390x": COMMON_SRCS + LINUX_SRCS,
@@ -291,6 +292,14 @@ config_setting(
     constraint_values = [
         "@platforms//os:linux",
         "@platforms//cpu:mips64",
+    ],
+)
+
+config_setting(
+    name = "linux_ppc64le",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:ppc64le",
     ],
 )
 
