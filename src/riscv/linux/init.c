@@ -321,7 +321,7 @@ void cpuinfo_riscv_linux_init(void) {
 			processor,
 			&riscv_linux_processors[processor].core.vendor,
 			&riscv_linux_processors[processor].core.uarch,
-			&cpuinfo_isa); // TEMPORARY
+			&cpuinfo_isa);
 
 		/* Populate frequency information of this core. */
 		uint32_t frequency = cpuinfo_linux_get_processor_cur_frequency(processor);
