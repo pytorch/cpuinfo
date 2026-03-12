@@ -7,6 +7,8 @@ build/
 bin/
 lib/
 libs/
+zig-out/
+.zig-cache/
 obj/
 *.pyc
 *.pyo
