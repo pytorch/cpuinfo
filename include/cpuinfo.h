@@ -656,6 +656,13 @@ enum cpuinfo_uarch {
 
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
+
+	/** IBM POWER 9. */
+	cpuinfo_uarch_power9 = 0x00D00100,
+	/** IBM POWER 10. */
+	cpuinfo_uarch_power10 = 0x00D00200,
+	/** IBM POWER11. */
+	cpuinfo_uarch_power11 = 0x00D00300,
 };
 
 struct cpuinfo_processor {
@@ -726,6 +733,9 @@ struct cpuinfo_core {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) for this core */
 	uint32_t midr;
+#elif CPUINFO_ARCH_PPC64
+	/** Value of Processor Version Register for this core */
+	uint32_t pvr;
 #endif
 	/** Clock rate (non-Turbo) of the core, in Hz */
 	uint64_t frequency;
@@ -754,6 +764,9 @@ struct cpuinfo_cluster {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) of the cores in the cluster */
 	uint32_t midr;
+#elif CPUINFO_ARCH_PPC64
+	/** Value of Processor Version Register in this cluster */
+	uint32_t pvr;
 #endif
 	/** Clock rate (non-Turbo) of the cores in the cluster, in Hz */
 	uint64_t frequency;
@@ -787,6 +800,9 @@ struct cpuinfo_uarch_info {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) for the microarchitecture */
 	uint32_t midr;
+#elif CPUINFO_ARCH_PPC64
+	/** Value of Processor Version Register for this core */
+	uint32_t pvr;
 #endif
 	/** Number of logical processors with the microarchitecture */
 	uint32_t processor_count;
@@ -2296,6 +2312,40 @@ static inline bool cpuinfo_has_riscv_c(void) {
 static inline bool cpuinfo_has_riscv_v(void) {
 #if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 	return cpuinfo_isa.v;
+#else
+	return false;
+#endif
+}
+
+#if CPUINFO_ARCH_PPC64
+struct cpuinfo_powerpc_isa {
+	bool vsx;
+	bool htm;
+	bool mma;
+};
+
+extern struct cpuinfo_powerpc_isa cpuinfo_isa;
+#endif
+
+static inline bool cpuinfo_has_powerpc_vsx(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.vsx;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_htm(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.htm;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_mma(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.mma;
 #else
 	return false;
 #endif
