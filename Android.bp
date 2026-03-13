@@ -1,0 +1,134 @@
+// Copyright (C) 2020 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package {
+    default_applicable_licenses: ["external_cpuinfo_license"],
+}
+
+// Added automatically by a large-scale-change
+// See: http://go/android-license-faq
+license {
+    name: "external_cpuinfo_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-BSD",
+    ],
+    license_text: [
+        "LICENSE",
+    ],
+}
+
+cpuinfo_arm_common_src_files = [
+    "src/arm/uarch.c",
+    "src/arm/cache.c",
+    "src/arm/linux/init.c",
+    "src/arm/linux/cpuinfo.c",
+    "src/arm/linux/clusters.c",
+    "src/arm/linux/chipset.c",
+    "src/arm/linux/midr.c",
+    "src/arm/linux/hwcap.c",
+    "src/arm/android/properties.c",
+]
+
+cpuinfo_x86_common_src_files = [
+    "src/x86/init.c",
+    "src/x86/info.c",
+    "src/x86/name.c",
+    "src/x86/isa.c",
+    "src/x86/vendor.c",
+    "src/x86/uarch.c",
+    "src/x86/topology.c",
+    "src/x86/cache/init.c",
+    "src/x86/cache/descriptor.c",
+    "src/x86/cache/deterministic.c",
+    "src/x86/linux/cpuinfo.c",
+    "src/x86/linux/init.c",
+]
+
+cc_library {
+    name: "libcpuinfo",
+    export_include_dirs: ["include"],
+    host_supported: true,
+    vendor_available: true,
+    product_available: true,
+    min_sdk_version: "29",
+    sdk_version: "current",
+    local_include_dirs: [
+        "src",
+        "include",
+    ],
+    srcs: [
+        "src/init.c",
+        "src/api.c",
+        "src/cache.c",
+        "src/log.c",
+        "src/linux/processors.c",
+        "src/linux/smallfile.c",
+        "src/linux/multiline.c",
+        "src/linux/cpulist.c",
+    ],
+    arch: {
+        arm: {
+            srcs: cpuinfo_arm_common_src_files + [
+                "src/arm/linux/aarch32-isa.c",
+            ],
+       },
+        arm64: {
+            srcs: cpuinfo_arm_common_src_files + [
+                "src/arm/linux/aarch64-isa.c",
+            ],
+        },
+        riscv64: {
+            srcs: [
+                "src/riscv/linux/init.c",
+                "src/riscv/linux/riscv-hw.c",
+                "src/riscv/linux/riscv-isa.c",
+                "src/riscv/uarch.c",
+            ],
+        },
+        x86: {
+            srcs: cpuinfo_x86_common_src_files,
+        },
+        x86_64: {
+            srcs: cpuinfo_x86_common_src_files,
+        },
+    },
+    cflags: [
+        "-std=c99",
+        "-Oz",
+        "-D_GNU_SOURCE=1",
+        "-DCPUINFO_LOG_LEVEL=2",
+        "-Wno-unused-function",
+        "-Wno-unused-parameter",
+        "-Wno-missing-field-initializers",
+        // __riscv_hwprobe() changed from unsigned long* to cpu_set_t*,
+        // but upstream hasn't updated yet.
+        "-Wno-incompatible-pointer-types",
+    ],
+    product_variables: {
+        debuggable: {
+            cflags: [
+                "-DDEBUG_CPUINFO",
+            ],
+        },
+    },
+    shared_libs: [
+        "liblog",
+        "libclog",
+    ],
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+}
