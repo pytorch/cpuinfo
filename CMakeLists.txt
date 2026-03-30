@@ -108,7 +108,7 @@ IF(NOT CMAKE_SYSTEM_NAME)
       "Target operating system is not specified. "
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
   SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
-ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android|FreeBSD|Emscripten)$")
+ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android|FreeBSD|Emscripten|Generic)$")
   IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT IS_APPLE_OS)
     MESSAGE(WARNING
       "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
@@ -211,6 +211,8 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       ENDIF()
     ELSEIF(IS_APPLE_OS AND CPUINFO_TARGET_PROCESSOR MATCHES "arm64.*")
       LIST(APPEND CPUINFO_SRCS src/arm/mach/init.c)
+    ELSEIF(DEFINED ZEPHYR_BASE)
+      LIST(APPEND CPUINFO_SRCS src/arm/zephyr/init.c)
     ENDIF()
     IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
       LIST(APPEND CPUINFO_SRCS
