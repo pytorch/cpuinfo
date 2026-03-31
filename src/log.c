@@ -34,7 +34,7 @@
 
 #define CPUINFO_LOG_STDERR STD_ERROR_HANDLE
 #define CPUINFO_LOG_STDOUT STD_OUTPUT_HANDLE
-#elif defined(__hexagon__)
+#elif defined(__hexagon__) || defined(__ZEPHYR__)
 #define CPUINFO_LOG_NEWLINE_LENGTH 1
 
 #define CPUINFO_LOG_STDERR 0
@@ -110,8 +110,10 @@ static void cpuinfo_vlog(
 		(prefix_length + format_length + CPUINFO_LOG_NEWLINE_LENGTH) * sizeof(char),
 		&bytes_written,
 		NULL);
-#elif defined(__hexagon__)
-	qurt_printf("%s", out_buffer);
+#elif defined(__hexagon__) || defined(__ZEPHYR__)
+	out_buffer[prefix_length + format_length] = '\n';
+	out_buffer[prefix_length + format_length + 1] = '\0';
+	printf("%s", out_buffer);
 #else
 	out_buffer[prefix_length + format_length] = '\n';
 
