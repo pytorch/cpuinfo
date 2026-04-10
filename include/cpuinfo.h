@@ -357,6 +357,10 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_willow_cove = 0x0010020D,
 	/** Intel Golden Cove microarchitecture (Sapphire Rapids). */
 	cpuinfo_uarch_golden_cove = 0x0010020E,
+	/** Intel Raptor Cove microarchitecture (Emerald Rapids). */
+	cpuinfo_uarch_raptor_cove = 0x0010020F,
+	/** Intel Redwood Cove microarchitecture (Granite Rapids). */
+	cpuinfo_uarch_redwood_cove = 0x00100210,
 
 	/** Pentium 4 with Willamette, Northwood, or Foster cores. */
 	cpuinfo_uarch_willamette = 0x00100300,
