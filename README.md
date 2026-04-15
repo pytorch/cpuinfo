@@ -155,17 +155,15 @@ executable(
 
 This project can be built using [Bazel](https://bazel.build/install). 
 
-You can also use this library as a dependency to your Bazel project. Add to your `MODULE.bazel` file:
+You can also use this library as a dependency to your Bazel project. Add to the `WORKSPACE` file:
 
 ```python
-# fetch cpuinfo from Bazel Central Registry: https://registry.bazel.build/modules/cpuinfo
-bazel_dep(name = "cpuinfo", version = "0.0.0-20250925-877328f")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-# Optional: Override it with some specific commit hash
-git_override(
-    module_name = "cpuinfo",
-    commit = "<replace_with_commit_hash>"
-    remote = "https://github.com/pytorch/cpuinfo.git",
+git_repository(
+    name = "org_pytorch_cpuinfo",
+    branch = "master",
+    remote = "https://github.com/Vertexwahn/cpuinfo.git",
 )
 ```
 
@@ -178,7 +176,7 @@ cc_binary(
         # ...
     ],
     deps = [
-        "@cpuinfo",
+        "@org_pytorch_cpuinfo//:cpuinfo",
     ],
 )
 ```

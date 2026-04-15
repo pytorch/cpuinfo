@@ -2,28 +2,11 @@
 # Licenced under Apache-2.0 License
 
 # cpuinfo, a library to detect information about the host CPU
-
-load("@rules_cc//cc:cc_library.bzl", "cc_library")
-load("@rules_license//rules:license.bzl", "license")
-
-package(
-    default_applicable_licenses = [":license"],
-    default_visibility = ["//visibility:public"],
-)
+package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
-exports_files([
-    "LICENSE",
-])
-
-license(
-    name = "license",
-    license_kinds = ["@rules_license//licenses/spdx:BSD-2-Clause"],
-    license_text = "LICENSE",
-)
-
-# cpuinfo, a library to detect information about the host CPU
+exports_files(["LICENSE"])
 
 C99OPTS = [
     "-std=gnu99",  # gnu99, not c99, because dprintf is used
@@ -247,52 +230,37 @@ cc_library(
 
 config_setting(
     name = "linux_x86_64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-    ],
+    values = {"cpu": "k8"},
 )
 
 config_setting(
     name = "linux_arm",
-    constraint_values = [
-        "@platforms//cpu:arm",
-        "@platforms//os:linux",
-    ],
+    values = {"cpu": "arm"},
 )
 
-alias(
+config_setting(
     name = "linux_armhf",
-    actual = ":linux_arm",
+    values = {"cpu": "armhf"},
 )
 
 config_setting(
     name = "linux_armv7a",
-    constraint_values = [
-        "@platforms//cpu:armv7",
-        "@platforms//os:linux",
-    ],
+    values = {"cpu": "armv7a"},
 )
 
-alias(
+config_setting(
     name = "linux_armeabi",
-    actual = ":linux_arm",
+    values = {"cpu": "armeabi"},
 )
 
 config_setting(
     name = "linux_aarch64",
-    constraint_values = [
-        "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
-    ],
+    values = {"cpu": "aarch64"},
 )
 
 config_setting(
     name = "linux_mips64",
-    constraint_values = [
-        "@platforms//os:linux",
-        "@platforms//cpu:mips64",
-    ],
+    values = {"cpu": "mips64"},
 )
 
 config_setting(
@@ -305,148 +273,136 @@ config_setting(
 
 config_setting(
     name = "linux_riscv32",
-    constraint_values = [
-        "@platforms//os:linux",
-        "@platforms//cpu:riscv32",
-    ],
+    values = {"cpu": "riscv32"},
 )
 
 config_setting(
     name = "linux_riscv64",
-    constraint_values = [
-        "@platforms//os:linux",
-        "@platforms//cpu:riscv64",
-    ],
+    values = {"cpu": "riscv64"},
 )
 
 config_setting(
     name = "linux_s390x",
-    constraint_values = [
-        "@platforms//os:linux",
-        "@platforms//cpu:s390x",
-    ],
+    values = {"cpu": "s390x"},
 )
 
-alias(
+config_setting(
     name = "macos_x86_64_legacy",
-    actual = ":macos_x86_64",
+    values = {
+        "apple_platform_type": "macos",
+        "cpu": "darwin",
+    },
 )
 
 config_setting(
     name = "macos_x86_64",
-    constraint_values = [
-        "@platforms//os:macos",
-        "@platforms//cpu:x86_64",
-    ],
+    values = {
+        "apple_platform_type": "macos",
+        "cpu": "darwin_x86_64",
+    },
 )
 
 config_setting(
     name = "windows_x86_64",
-    constraint_values = [
-        "@platforms//os:windows",
-        "@platforms//cpu:x86_64",
-    ],
+    values = {"cpu": "x64_windows"},
 )
 
 config_setting(
     name = "windows_arm64",
-    constraint_values = [
-        "@platforms//os:windows",
-        "@platforms//cpu:arm64",
-    ],
+    values = {"cpu": "arm64_windows"},
 )
 
 config_setting(
     name = "android_armv7",
-    constraint_values = [
-        "@platforms//os:android",
-        "@platforms//cpu:armv7",
-    ],
+    values = {
+        "crosstool_top": "//external:android/crosstool",
+        "cpu": "armeabi-v7a",
+    },
     visibility = ["//visibility:public"],
 )
 
 config_setting(
     name = "android_arm64",
-    constraint_values = [
-        "@platforms//os:android",
-        "@platforms//cpu:arm64",
-    ],
+    values = {
+        "crosstool_top": "//external:android/crosstool",
+        "cpu": "arm64-v8a",
+    },
     visibility = ["//visibility:public"],
 )
 
 config_setting(
     name = "android_riscv64",
-    constraint_values = [
-        "@platforms//os:android",
-        "@platforms//cpu:riscv64",
-    ],
+    values = {
+        "crosstool_top": "//external:android/crosstool",
+        "cpu": "riscv64",
+    },
     visibility = ["//visibility:public"],
 )
 
 config_setting(
     name = "android_x86",
-    constraint_values = [
-        "@platforms//os:android",
-        "@platforms//cpu:x86_32",
-    ],
+    values = {
+        "crosstool_top": "//external:android/crosstool",
+        "cpu": "x86",
+    },
     visibility = ["//visibility:public"],
 )
 
 config_setting(
     name = "android_x86_64",
-    constraint_values = [
-        "@platforms//os:android",
-        "@platforms//cpu:x86_64",
-    ],
+    values = {
+        "crosstool_top": "//external:android/crosstool",
+        "cpu": "x86_64",
+    },
     visibility = ["//visibility:public"],
 )
 
 config_setting(
     name = "ios_armv7",
-    constraint_values = [
-        "@platforms//cpu:armv7",
-        "@platforms//os:ios",
-    ],
+    values = {
+        "apple_platform_type": "ios",
+        "cpu": "ios_armv7",
+    },
 )
 
 config_setting(
     name = "ios_arm64",
-    constraint_values = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:ios",
-    ],
+    values = {
+        "apple_platform_type": "ios",
+        "cpu": "ios_arm64",
+    },
 )
 
 config_setting(
     name = "ios_arm64e",
-    constraint_values = [
-        "@platforms//cpu:arm64e",
-        "@platforms//os:ios",
-    ],
+    values = {
+        "apple_platform_type": "ios",
+        "cpu": "ios_arm64e",
+    },
 )
 
 config_setting(
     name = "macos_arm64",
-    constraint_values = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:macos",
-    ],
+    values = {
+        "apple_platform_type": "macos",
+        "cpu": "darwin_arm64",
+    },
 )
 
 config_setting(
     name = "ios_x86",
-    constraint_values = [
-        "@platforms//cpu:x86_32",
-        "@platforms//os:ios",
-    ],
+    values = {
+        "apple_platform_type": "ios",
+        "cpu": "ios_i386",
+    },
 )
 
 config_setting(
     name = "ios_x86_64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:ios",
-    ],
+    values = {
+        "apple_platform_type": "ios",
+        "cpu": "ios_x86_64",
+    },
 )
 
 config_setting(
@@ -459,67 +415,65 @@ config_setting(
 
 config_setting(
     name = "watchos_armv7k",
-    constraint_values = [
-        "@platforms//os:watchos",
-        "@platforms//cpu:armv7k",
-    ],
+    values = {
+        "apple_platform_type": "watchos",
+        "cpu": "watchos_armv7k",
+    },
 )
 
 config_setting(
     name = "watchos_arm64_32",
-    constraint_values = [
-        "@platforms//os:watchos",
-        "@platforms//cpu:arm64_32",
-    ],
+    values = {
+        "apple_platform_type": "watchos",
+        "cpu": "watchos_arm64_32",
+    },
 )
 
 config_setting(
     name = "watchos_x86",
-    constraint_values = [
-        "@platforms//os:watchos",
-        "@platforms//cpu:x86_32",
-    ],
+    values = {
+        "apple_platform_type": "watchos",
+        "cpu": "watchos_i386",
+    },
 )
 
 config_setting(
     name = "watchos_x86_64",
-    constraint_values = [
-        "@platforms//os:watchos",
-        "@platforms//cpu:x86_64",
-    ],
+    values = {
+        "apple_platform_type": "watchos",
+        "cpu": "watchos_x86_64",
+    },
 )
 
 config_setting(
     name = "tvos_arm64",
-    constraint_values = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:tvos",
-    ],
+    values = {
+        "apple_platform_type": "tvos",
+        "cpu": "tvos_arm64",
+    },
 )
 
 config_setting(
     name = "tvos_x86_64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:tvos",
-    ],
+    values = {
+        "apple_platform_type": "tvos",
+        "cpu": "tvos_x86_64",
+    },
 )
 
 config_setting(
     name = "emscripten_wasm",
-    constraint_values = [
-        "@platforms//os:emscripten",
-        "@platforms//cpu:wasm32",
-    ],
+    values = {
+        "cpu": "wasm",
+    },
 )
 
 config_setting(
     name = "emscripten_wasmsimd",
-    constraint_values = [
-        "@platforms//os:emscripten",
-        "@platforms//cpu:wasm32",
-    ],
-    features = ["simd"],
+    values = {
+        "cpu": "wasm",
+        "features": "wasm_simd",
+    },
 )
 
 config_setting(
@@ -531,8 +485,7 @@ config_setting(
 
 config_setting(
     name = "freebsd_x86_64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:freebsd",
-    ],
+    values = {
+        "cpu": "freebsd",
+    },
 )
