@@ -2232,6 +2232,12 @@ struct cpuinfo_riscv_isa {
 	bool c;
 	/* Vector Extension. */
 	bool v;
+
+	/* ISA Extensions */
+	/* Half-Precision Floating-Point Extension. */
+	bool zfh;
+	/* Half-Precision Floating-Point Vector Extension. */
+	bool zvfh;
 };
 
 extern struct cpuinfo_riscv_isa cpuinfo_isa;
@@ -2302,6 +2308,22 @@ static inline bool cpuinfo_has_riscv_c(void) {
 static inline bool cpuinfo_has_riscv_v(void) {
 #if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 	return cpuinfo_isa.v;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zfh(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zfh;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvfh(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvfh;
 #else
 	return false;
 #endif
