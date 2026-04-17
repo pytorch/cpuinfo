@@ -19,8 +19,8 @@ pub fn build(b: *std.Build) void {
         .linkage = if (os_tag == .macos and cpu_arch == .x86_64) .dynamic else .static,
     });
 
-    lib.addIncludePath(b.path("include"));
-    lib.addIncludePath(b.path("src"));
+    lib.root_module.addIncludePath(b.path("include"));
+    lib.root_module.addIncludePath(b.path("src"));
 
     var cflags: std.ArrayList([]const u8) = .empty;
 
@@ -157,14 +157,14 @@ pub fn build(b: *std.Build) void {
         "src/x86/freebsd/init.c",
     };
 
-    lib.addCSourceFiles(.{
+    lib.root_module.addCSourceFiles(.{
         .files = &COMMON_SRCS,
         .flags = cflags.items,
     });
 
     switch (os_tag) {
         .linux => {
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &LINUX_SRCS,
                 .flags = cflags.items,
             });
@@ -172,44 +172,44 @@ pub fn build(b: *std.Build) void {
             switch (cpu_arch) {
                 .x86_64 => {
                     // :linux_x86_64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &X86_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &LINUX_X86_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .arm, .thumb => {
                     // linux_arm* (arm, armhf, armv7a, armeabi, etc.)
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &ARM_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &LINUX_ARM32_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .aarch64 => {
                     // :linux_aarch64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &ARM_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &LINUX_ARM64_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .riscv64, .riscv32 => {
                     // :linux_riscv32 / :linux_riscv64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &RISCV_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &LINUX_RISCV_SRCS,
                         .flags = cflags.items,
                     });
@@ -230,22 +230,22 @@ pub fn build(b: *std.Build) void {
             switch (cpu_arch) {
                 .x86_64 => {
                     // :windows_x86_64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &X86_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &WINDOWS_X86_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .aarch64 => {
                     // :windows_arm64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &ARM_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &WINDOWS_ARM_SRCS,
                         .flags = cflags.items,
                     });
@@ -255,7 +255,7 @@ pub fn build(b: *std.Build) void {
         },
 
         .macos => {
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &MACH_SRCS,
                 .flags = cflags.items,
             });
@@ -263,18 +263,18 @@ pub fn build(b: *std.Build) void {
             switch (cpu_arch) {
                 .x86_64 => {
                     // :macos_x86_64 / :macos_x86_64_legacy
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &X86_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_X86_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .aarch64 => {
                     // :macos_arm64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_ARM_SRCS,
                         .flags = cflags.items,
                     });
@@ -284,7 +284,7 @@ pub fn build(b: *std.Build) void {
         },
 
         .ios => {
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &MACH_SRCS,
                 .flags = cflags.items,
             });
@@ -292,18 +292,18 @@ pub fn build(b: *std.Build) void {
             switch (cpu_arch) {
                 .x86_64, .x86 => {
                     // :ios_x86, :ios_x86_64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &X86_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_X86_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .arm, .aarch64 => {
                     // :ios_armv7, :ios_arm64, :ios_arm64e, :ios_sim_arm64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_ARM_SRCS,
                         .flags = cflags.items,
                     });
@@ -313,7 +313,7 @@ pub fn build(b: *std.Build) void {
         },
 
         .watchos => {
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &MACH_SRCS,
                 .flags = cflags.items,
             });
@@ -321,18 +321,18 @@ pub fn build(b: *std.Build) void {
             switch (cpu_arch) {
                 .x86_64, .x86 => {
                     // :watchos_x86, :watchos_x86_64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &X86_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_X86_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .arm, .aarch64 => {
                     // :watchos_armv7k, :watchos_arm64_32
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_ARM_SRCS,
                         .flags = cflags.items,
                     });
@@ -342,7 +342,7 @@ pub fn build(b: *std.Build) void {
         },
 
         .tvos => {
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &MACH_SRCS,
                 .flags = cflags.items,
             });
@@ -350,18 +350,18 @@ pub fn build(b: *std.Build) void {
             switch (cpu_arch) {
                 .x86_64 => {
                     // :tvos_x86_64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &X86_SRCS,
                         .flags = cflags.items,
                     });
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_X86_SRCS,
                         .flags = cflags.items,
                     });
                 },
                 .aarch64 => {
                     // :tvos_arm64
-                    lib.addCSourceFiles(.{
+                    lib.root_module.addCSourceFiles(.{
                         .files = &MACH_ARM_SRCS,
                         .flags = cflags.items,
                     });
@@ -373,15 +373,15 @@ pub fn build(b: *std.Build) void {
         .freebsd => {
             if (cpu_arch == .x86_64) {
                 // :freebsd_x86_64
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &X86_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &FREEBSD_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &FREEBSD_X86_SRCS,
                     .flags = cflags.items,
                 });
@@ -391,7 +391,7 @@ pub fn build(b: *std.Build) void {
         .emscripten => {
             // :emscripten_wasm / :emscripten_wasmsimd / :emscripten_asmjs
             // We just key off OS here; cpuinfo upstream selects via cpu+features.
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &EMSCRIPTEN_SRCS,
                 .flags = cflags.items,
             });
@@ -407,68 +407,68 @@ pub fn build(b: *std.Build) void {
         switch (cpu_arch) {
             .arm, .thumb => {
                 // :android_armv7
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &ARM_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_ARM32_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &ANDROID_ARM_SRCS,
                     .flags = cflags.items,
                 });
             },
             .aarch64 => {
                 // :android_arm64
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &ARM_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_ARM64_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &ANDROID_ARM_SRCS,
                     .flags = cflags.items,
                 });
             },
             .x86, .x86_64 => {
                 // :android_x86 / :android_x86_64
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &X86_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_X86_SRCS,
                     .flags = cflags.items,
                 });
             },
             .riscv64 => {
                 // :android_riscv64
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &RISCV_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_SRCS,
                     .flags = cflags.items,
                 });
-                lib.addCSourceFiles(.{
+                lib.root_module.addCSourceFiles(.{
                     .files = &LINUX_RISCV_SRCS,
                     .flags = cflags.items,
                 });
