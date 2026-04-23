@@ -40,6 +40,8 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 #elif defined(_WIN32)
 	InitOnceExecuteOnce(&init_guard, &cpuinfo_arm_windows_init, NULL, NULL);
+#elif defined(__ZEPHYR__)
+	pthread_once(&init_guard, &cpuinfo_zephyr_arm_init);
 #else
 	cpuinfo_log_error("operating system is not supported in cpuinfo");
 #endif
