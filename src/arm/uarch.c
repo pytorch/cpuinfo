@@ -141,6 +141,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD87: /* Cortex-A725 */
 					*uarch = cpuinfo_uarch_cortex_a725;
 					break;
+				case 0xD8F: /* Cortex-A320 */
+					*uarch = cpuinfo_uarch_cortex_a320;
+					break;
 				case 0xD8C:
 					*uarch = cpuinfo_uarch_lumex_c1_ultra;
 					break;
