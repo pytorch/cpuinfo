@@ -141,6 +141,9 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD87: /* Cortex-A725 */
 					*uarch = cpuinfo_uarch_cortex_a725;
 					break;
+				case 0xD8F: /* Cortex-A320 */
+					*uarch = cpuinfo_uarch_cortex_a320;
+					break;
 				case 0xD8C:
 					*uarch = cpuinfo_uarch_lumex_c1_ultra;
 					break;
@@ -432,6 +435,51 @@ void cpuinfo_arm_decode_vendor_uarch(
 						"unknown Samsung CPU variant 0x%01" PRIx32 " part 0x%03" PRIx32
 						" ignored",
 						midr_get_variant(midr),
+						midr_get_part(midr));
+			}
+			break;
+		case 'a':
+			*vendor = cpuinfo_vendor_apple;
+			switch (midr_get_part(midr)) {
+				case 0x022:
+				case 0x024:
+				case 0x028:
+					*uarch = cpuinfo_uarch_icestorm;
+					break;
+				case 0x023:
+				case 0x025:
+				case 0x029:
+					*uarch = cpuinfo_uarch_firestorm;
+					break;
+				case 0x032:
+				case 0x034:
+				case 0x038:
+					*uarch = cpuinfo_uarch_blizzard;
+					break;
+				case 0x033:
+				case 0x035:
+				case 0x039:
+					*uarch = cpuinfo_uarch_avalanche;
+					break;
+				case 0x042:
+				case 0x044:
+				case 0x048:
+					*uarch = cpuinfo_uarch_coll_sawtooth;
+					break;
+				case 0x043:
+				case 0x045:
+				case 0x049:
+					*uarch = cpuinfo_uarch_coll_everest;
+					break;
+				case 0x052:
+					*uarch = cpuinfo_uarch_donan_sawtooth;
+					break;
+				case 0x053:
+					*uarch = cpuinfo_uarch_donan_everest;
+					break;
+				default:
+					cpuinfo_log_warning(
+						"unknown Apple CPU part 0x%03" PRIx32 " ignored",
 						midr_get_part(midr));
 			}
 			break;
