@@ -461,6 +461,22 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0x039:
 					*uarch = cpuinfo_uarch_avalanche;
 					break;
+				case 0x042:
+				case 0x044:
+				case 0x048:
+					*uarch = cpuinfo_uarch_coll_sawtooth;
+					break;
+				case 0x043:
+				case 0x045:
+				case 0x049:
+					*uarch = cpuinfo_uarch_coll_everest;
+					break;
+				case 0x052:
+					*uarch = cpuinfo_uarch_donan_sawtooth;
+					break;
+				case 0x053:
+					*uarch = cpuinfo_uarch_donan_everest;
+					break;
 				default:
 					cpuinfo_log_warning(
 						"unknown Apple CPU part 0x%03" PRIx32 " ignored",
