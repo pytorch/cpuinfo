@@ -438,6 +438,35 @@ void cpuinfo_arm_decode_vendor_uarch(
 						midr_get_part(midr));
 			}
 			break;
+		case 'a':
+			*vendor = cpuinfo_vendor_apple;
+			switch (midr_get_part(midr)) {
+				case 0x022:
+				case 0x024:
+				case 0x028:
+					*uarch = cpuinfo_uarch_icestorm;
+					break;
+				case 0x023:
+				case 0x025:
+				case 0x029:
+					*uarch = cpuinfo_uarch_firestorm;
+					break;
+				case 0x032:
+				case 0x034:
+				case 0x038:
+					*uarch = cpuinfo_uarch_blizzard;
+					break;
+				case 0x033:
+				case 0x035:
+				case 0x039:
+					*uarch = cpuinfo_uarch_avalanche;
+					break;
+				default:
+					cpuinfo_log_warning(
+						"unknown Apple CPU part 0x%03" PRIx32 " ignored",
+						midr_get_part(midr));
+			}
+			break;
 #if CPUINFO_ARCH_ARM
 		case 'V':
 			*vendor = cpuinfo_vendor_marvell;
