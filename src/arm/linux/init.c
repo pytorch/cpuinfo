@@ -526,25 +526,29 @@ void cpuinfo_arm_linux_init(void) {
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			const uint32_t cluster_leader = arm_linux_processors[i].package_leader_id;
-			if (cluster_leader == i) {
-				/* Cluster leader: decode core vendor and uarch
-				 */
+			if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_ARM_LINUX_VALID_MIDR) || cluster_leader == i) {
+				/* Processor has its own MIDR or is cluster leader: decode core vendor and uarch */
 				cpuinfo_arm_decode_vendor_uarch(
-					arm_linux_processors[cluster_leader].midr,
+					arm_linux_processors[i].midr,
 #if CPUINFO_ARCH_ARM
-					!!(arm_linux_processors[cluster_leader].features &
+					!!(arm_linux_processors[i].features &
 					   CPUINFO_ARM_LINUX_FEATURE_VFPV4),
 #endif
-					&arm_linux_processors[cluster_leader].vendor,
-					&arm_linux_processors[cluster_leader].uarch);
+					&arm_linux_processors[i].vendor,
+					&arm_linux_processors[i].uarch);
 			} else {
-				/* Cluster non-leader: copy vendor, uarch, MIDR,
-				 * and frequency from cluster leader */
+				/* Cluster non-leader without valid MIDR: copy vendor, uarch, MIDR from cluster leader */
 				arm_linux_processors[i].flags |= arm_linux_processors[cluster_leader].flags &
-					(CPUINFO_ARM_LINUX_VALID_MIDR | CPUINFO_LINUX_FLAG_MAX_FREQUENCY);
+					CPUINFO_ARM_LINUX_VALID_MIDR;
 				arm_linux_processors[i].midr = arm_linux_processors[cluster_leader].midr;
 				arm_linux_processors[i].vendor = arm_linux_processors[cluster_leader].vendor;
 				arm_linux_processors[i].uarch = arm_linux_processors[cluster_leader].uarch;
+			}
+
+			if (cluster_leader != i) {
+				/* Cluster non-leader: copy frequency from cluster leader */
+				arm_linux_processors[i].flags |= arm_linux_processors[cluster_leader].flags &
+					CPUINFO_LINUX_FLAG_MAX_FREQUENCY;
 				arm_linux_processors[i].max_frequency =
 					arm_linux_processors[cluster_leader].max_frequency;
 			}
@@ -719,6 +723,7 @@ void cpuinfo_arm_linux_init(void) {
 				.vendor = arm_linux_processors[i].vendor,
 				.uarch = arm_linux_processors[i].uarch,
 				.midr = arm_linux_processors[i].midr,
+				.frequency = arm_linux_processors[i].max_frequency * 1000,
 			};
 		}
 
@@ -739,6 +744,7 @@ void cpuinfo_arm_linux_init(void) {
 		cores[i].vendor = arm_linux_processors[i].vendor;
 		cores[i].uarch = arm_linux_processors[i].uarch;
 		cores[i].midr = arm_linux_processors[i].midr;
+		cores[i].frequency = arm_linux_processors[i].max_frequency * 1000;
 		linux_cpu_to_core_map[arm_linux_processors[i].system_processor_id] = &cores[i];
 
 		if (linux_cpu_to_uarch_index_map != NULL) {
