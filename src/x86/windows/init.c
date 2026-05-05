@@ -667,5 +667,8 @@ cleanup:
 	if (l4 != NULL) {
 		HeapFree(heap, 0, l4);
 	}
+	if (processor_infos != NULL) {
+		HeapFree(heap, 0, processor_infos);
+	}
 	return TRUE;
 }
