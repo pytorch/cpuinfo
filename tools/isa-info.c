@@ -175,6 +175,11 @@ int main(int argc, char** argv) {
 	printf("\tARM SVE 2: %s\n", cpuinfo_has_arm_sve2() ? "yes" : "no");
 	printf("\tARM SME: %s\n", cpuinfo_has_arm_sme() ? "yes" : "no");
 	printf("\tARM SME 2: %s\n", cpuinfo_has_arm_sme2() ? "yes" : "no");
+	printf("\tARM SME 2P1: %s\n", cpuinfo_has_arm_sme2p1() ? "yes" : "no");
+	printf("\tARM SME I16I32: %s\n", cpuinfo_has_arm_sme_i16i32() ? "yes" : "no");
+	printf("\tARM SME BI32I32: %s\n", cpuinfo_has_arm_sme_bi32i32() ? "yes" : "no");
+	printf("\tARM SME B16B16: %s\n", cpuinfo_has_arm_sme_b16b16() ? "yes" : "no");
+	printf("\tARM SME F16F16: %s\n", cpuinfo_has_arm_sme_f16f16() ? "yes" : "no");
 
 	printf("ARM SVE Capabilities:\n");
 	printf("\tSVE max length: %d\n", cpuinfo_get_max_arm_sve_length());
@@ -194,7 +199,9 @@ int main(int argc, char** argv) {
 	printf("\tAtomics: %s\n", cpuinfo_has_riscv_a() ? "yes" : "no");
 	printf("\tSingle-Precision Floating-Point: %s\n", cpuinfo_has_riscv_f() ? "yes" : "no");
 	printf("\tDouble-Precision Floating-Point: %s\n", cpuinfo_has_riscv_d() ? "yes" : "no");
+	printf("\tHalf-Precision Floating-Point: %s\n", cpuinfo_has_riscv_zfh() ? "yes" : "no");
 	printf("\tCompressed: %s\n", cpuinfo_has_riscv_c() ? "yes" : "no");
 	printf("\tVector: %s\n", cpuinfo_has_riscv_v() ? "yes" : "no");
+	printf("\tVector Half-Precision Floating-Point: %s\n", cpuinfo_has_riscv_zvfh() ? "yes" : "no");
 #endif
 }
