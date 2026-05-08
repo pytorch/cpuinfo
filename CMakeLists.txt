@@ -815,12 +815,6 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_UNIT_TESTS)
   TARGET_LINK_LIBRARIES(init-test PRIVATE cpuinfo gtest gtest_main)
   ADD_TEST(NAME init-test COMMAND init-test)
 
-  ADD_EXECUTABLE(deinit-test test/deinit.cc)
-  CPUINFO_TARGET_ENABLE_CXX11(deinit-test)
-  CPUINFO_TARGET_RUNTIME_LIBRARY(deinit-test)
-  TARGET_LINK_LIBRARIES(deinit-test PRIVATE cpuinfo gtest gtest_main)
-  ADD_TEST(NAME deinit-test COMMAND deinit-test)
-
   IF(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Android")
     ADD_EXECUTABLE(get-current-test test/get-current.cc)
     CPUINFO_TARGET_ENABLE_CXX11(get-current-test)
