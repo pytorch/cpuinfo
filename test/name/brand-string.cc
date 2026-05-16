@@ -328,6 +328,7 @@ TEST(BRAND_STRING, amd) {
 		"Phenom II X6 1055T",
 		normalize_brand_string("AMD Phenom(tm) II X6 1055T Processor\0\0\0\0\0\0\0\0\0\0\0\0"));
 	EXPECT_EQ("Ryzen 5 1500X", normalize_brand_string("AMD Ryzen 5 1500X Quad-Core Processor          \0"));
+	EXPECT_EQ("Ryzen 5 PRO 6650U", normalize_brand_string("AMD Ryzen 5 PRO 6650U with Radeon Graphics     \0"));
 	EXPECT_EQ("Ryzen 7 1700X", normalize_brand_string("AMD Ryzen 7 1700X Eight-Core Processor         \0"));
 	EXPECT_EQ("Ryzen 7 1800X", normalize_brand_string("AMD Ryzen 7 1800X Eight-Core Processor         \0"));
 	EXPECT_EQ(
