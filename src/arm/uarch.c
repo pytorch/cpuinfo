@@ -479,8 +479,7 @@ void cpuinfo_arm_decode_vendor_uarch(
 					break;
 				default:
 					cpuinfo_log_warning(
-						"unknown Apple CPU part 0x%03" PRIx32 " ignored",
-						midr_get_part(midr));
+						"unknown Apple CPU part 0x%03" PRIx32 " ignored", midr_get_part(midr));
 			}
 			break;
 #if CPUINFO_ARCH_ARM
