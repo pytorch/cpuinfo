@@ -2,7 +2,6 @@
 
 import os
 import sys
-import string
 import argparse
 import subprocess
 import tempfile
