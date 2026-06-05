@@ -106,11 +106,11 @@ void CPUINFO_ABI cpuinfo_deinitialize(void) {
 #endif
 	/* Reset guards to allow re-initialization */
 #if defined(_WIN32) || defined(__CYGWIN__)
-	init_guard = INIT_ONCE_STATIC_INIT;
-	deinit_guard = INIT_ONCE_STATIC_INIT;
+	init_guard = (INIT_ONCE)INIT_ONCE_STATIC_INIT;
+	deinit_guard = (INIT_ONCE)INIT_ONCE_STATIC_INIT;
 #elif !defined(__EMSCRIPTEN__) || defined(__EMSCRIPTEN_PTHREADS__)
-	init_guard = PTHREAD_ONCE_INIT;
-	deinit_guard = PTHREAD_ONCE_INIT;
+	init_guard = (pthread_once_t)PTHREAD_ONCE_INIT;
+	deinit_guard = (pthread_once_t)PTHREAD_ONCE_INIT;
 #else
 	init_guard = false;
 	deinit_guard = false;
