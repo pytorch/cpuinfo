@@ -45,6 +45,9 @@ extern CPUINFO_INTERNAL struct cpuinfo_uarch_info cpuinfo_global_uarch;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_linux_cpu_max;
 extern CPUINFO_INTERNAL const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map;
 extern CPUINFO_INTERNAL const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map;
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+extern CPUINFO_INTERNAL const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map;
+#endif
 #endif
 
 CPUINFO_PRIVATE void cpuinfo_x86_mach_init(void);
@@ -61,6 +64,23 @@ CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_arm_linux_init(void);
 CPUINFO_PRIVATE void cpuinfo_riscv_linux_init(void);
 CPUINFO_PRIVATE void cpuinfo_emscripten_init(void);
+
+/* Platform-specific deinitialization functions.
+ * Each frees the globals allocated by its corresponding init function. */
+CPUINFO_PRIVATE void cpuinfo_x86_mach_deinit(void);
+CPUINFO_PRIVATE void cpuinfo_x86_linux_deinit(void);
+CPUINFO_PRIVATE void cpuinfo_x86_freebsd_deinit(void);
+#if defined(_WIN32) || defined(__CYGWIN__)
+#if CPUINFO_ARCH_ARM64
+CPUINFO_PRIVATE BOOL CALLBACK cpuinfo_arm_windows_deinit(PINIT_ONCE init_once, PVOID parameter, PVOID* context);
+#else
+CPUINFO_PRIVATE BOOL CALLBACK cpuinfo_x86_windows_deinit(PINIT_ONCE init_once, PVOID parameter, PVOID* context);
+#endif
+#endif
+CPUINFO_PRIVATE void cpuinfo_arm_mach_deinit(void);
+CPUINFO_PRIVATE void cpuinfo_arm_linux_deinit(void);
+CPUINFO_PRIVATE void cpuinfo_riscv_linux_deinit(void);
+CPUINFO_PRIVATE void cpuinfo_emscripten_deinit(void);
 
 CPUINFO_PRIVATE uint32_t cpuinfo_compute_max_cache_size(const struct cpuinfo_processor* processor);
 
