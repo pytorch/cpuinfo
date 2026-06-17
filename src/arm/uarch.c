@@ -11,6 +11,11 @@ void cpuinfo_arm_decode_vendor_uarch(
 #endif /* CPUINFO_ARCH_ARM */
 	enum cpuinfo_vendor vendor[RESTRICT_STATIC 1],
 	enum cpuinfo_uarch uarch[RESTRICT_STATIC 1]) {
+	/* Ensure the out-parameters are always initialized, including for
+	 * implementers that are not handled in the switch below. */
+	*vendor = cpuinfo_vendor_unknown;
+	*uarch = cpuinfo_uarch_unknown;
+
 	switch (midr_get_implementer(midr)) {
 		case 'A':
 			*vendor = cpuinfo_vendor_arm;
