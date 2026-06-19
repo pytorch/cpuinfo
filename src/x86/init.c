@@ -41,26 +41,8 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 		const bool amd_topology_extensions = !!(leaf0x80000001.ecx & UINT32_C(0x00400000));
 
 		cpuinfo_x86_detect_cache(
-			max_base_index,
-			max_extended_index,
-			amd_topology_extensions,
-			vendor,
-			&model_info,
-			&processor->cache,
-			&processor->tlb.itlb_4KB,
-			&processor->tlb.itlb_2MB,
-			&processor->tlb.itlb_4MB,
-			&processor->tlb.dtlb0_4KB,
-			&processor->tlb.dtlb0_2MB,
-			&processor->tlb.dtlb0_4MB,
-			&processor->tlb.dtlb_4KB,
-			&processor->tlb.dtlb_2MB,
-			&processor->tlb.dtlb_4MB,
-			&processor->tlb.dtlb_1GB,
-			&processor->tlb.stlb2_4KB,
-			&processor->tlb.stlb2_2MB,
-			&processor->tlb.stlb2_1GB,
-			&processor->topology.core_bits_length);
+			max_base_index, max_extended_index, amd_topology_extensions, vendor,
+			&model_info, &processor->cache, &processor->tlb, &processor->topology);
 
 		cpuinfo_x86_detect_topology(max_base_index, max_extended_index, leaf1, &processor->topology);
 
