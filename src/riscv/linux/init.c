@@ -1,3 +1,5 @@
+#include <ctype.h>
+#include <stdio.h>
 #include <string.h>
 
 #include <cpuinfo/internal-api.h>
@@ -7,6 +9,185 @@
 
 /* ISA structure to hold supported extensions. */
 struct cpuinfo_riscv_isa cpuinfo_isa = {0};
+
+/* Parse a uint32 from sysfs file content. */
+static bool uint32_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
+	(void)filename;
+	uint32_t* value_ptr = (uint32_t*)context;
+	if (text_start == text_end) {
+		return false;
+	}
+	uint32_t value = 0;
+	for (const char* p = text_start; p < text_end && *p >= '0' && *p <= '9'; p++) {
+		value = value * 10 + (*p - '0');
+	}
+	*value_ptr = value;
+	return value > 0;
+}
+
+/* Parse cache size with K/M suffix from sysfs (e.g. "32K", "1M"). */
+static bool cache_size_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
+	(void)filename;
+	uint32_t* size_ptr = (uint32_t*)context;
+	if (text_start == text_end) {
+		return false;
+	}
+	uint32_t value = 0;
+	const char* p = text_start;
+	while (p < text_end && *p >= '0' && *p <= '9') {
+		value = value * 10 + (*p - '0');
+		p++;
+	}
+	if (p == text_start || value == 0) {
+		return false;
+	}
+	uint32_t multiplier = 1024; /* Default unit is KiB */
+	if (p < text_end) {
+		if (toupper((unsigned char)*p) == 'M') {
+			multiplier = 1024 * 1024;
+		} else if (toupper((unsigned char)*p) == 'G') {
+			multiplier = 1024 * 1024 * 1024;
+		}
+	}
+	*size_ptr = value * multiplier;
+	return true;
+}
+
+/* State for matching a cache type string. */
+struct cache_type_match_state {
+	const char* expected;
+	bool matched;
+};
+
+/* Check if sysfs cache type content matches the expected type string. */
+static bool cache_type_parser(
+	const char* filename,
+	const char* text_start,
+	const char* text_end,
+	void* context) {
+	(void)filename;
+	struct cache_type_match_state* state = (struct cache_type_match_state*)context;
+	const size_t expected_len = strlen(state->expected);
+	const size_t text_len = (size_t)(text_end - text_start);
+	if (text_len < expected_len) {
+		state->matched = false;
+		return true;
+	}
+	for (size_t i = 0; i < expected_len; i++) {
+		if (tolower((unsigned char)text_start[i]) != tolower((unsigned char)state->expected[i])) {
+			state->matched = false;
+			return true;
+		}
+	}
+	state->matched = true;
+	return true;
+}
+
+#define CPUINFO_RISCV_CACHE_MAX_INDICES 8
+
+/*
+ * Find the sysfs cache index for a given cpu, level, and type string
+ * ("Instruction", "Data", "Unified"). For "Data", also accepts "Unified".
+ * Returns UINT32_MAX if not found.
+ */
+static uint32_t cpuinfo_riscv_find_cache_index(uint32_t cpu_id, uint32_t level, const char* type) {
+	char path[256];
+	for (uint32_t idx = 0; idx < CPUINFO_RISCV_CACHE_MAX_INDICES; idx++) {
+		/* Verify the index exists and matches the requested level. */
+		snprintf(path, sizeof(path),
+			"/sys/devices/system/cpu/cpu%u/cache/index%u/level", cpu_id, idx);
+		uint32_t actual_level = 0;
+		if (!cpuinfo_linux_parse_small_file(path, 16, uint32_parser, &actual_level)) {
+			break; /* No more indices. */
+		}
+		if (actual_level != level) {
+			continue;
+		}
+		/* Check the type. */
+		snprintf(path, sizeof(path),
+			"/sys/devices/system/cpu/cpu%u/cache/index%u/type", cpu_id, idx);
+		struct cache_type_match_state match = {.expected = type, .matched = false};
+		cpuinfo_linux_parse_small_file(path, 32, cache_type_parser, &match);
+		if (match.matched) {
+			return idx;
+		}
+		/* For "Data" caches also accept "Unified". */
+		if (strcmp(type, "Data") == 0) {
+			match.expected = "Unified";
+			match.matched = false;
+			cpuinfo_linux_parse_small_file(path, 32, cache_type_parser, &match);
+			if (match.matched) {
+				return idx;
+			}
+		}
+	}
+	return UINT32_MAX;
+}
+
+/*
+ * Read cache properties (size, associativity, sets, line_size, partitions)
+ * from sysfs for a given cpu and cache index.
+ * Returns true if at least the size was successfully read.
+ */
+static bool cpuinfo_riscv_read_cache_from_sysfs(
+	uint32_t cpu_id,
+	uint32_t cache_index,
+	struct cpuinfo_cache cache[restrict static 1]) {
+	char path[256];
+
+	snprintf(path, sizeof(path),
+		"/sys/devices/system/cpu/cpu%u/cache/index%u/size", cpu_id, cache_index);
+	uint32_t size = 0;
+	if (!cpuinfo_linux_parse_small_file(path, 32, cache_size_parser, &size) || size == 0) {
+		return false;
+	}
+	cache->size = size;
+
+	snprintf(path, sizeof(path),
+		"/sys/devices/system/cpu/cpu%u/cache/index%u/ways_of_associativity", cpu_id, cache_index);
+	uint32_t assoc = 0;
+	cpuinfo_linux_parse_small_file(path, 16, uint32_parser, &assoc);
+	cache->associativity = assoc;
+
+	snprintf(path, sizeof(path),
+		"/sys/devices/system/cpu/cpu%u/cache/index%u/number_of_sets", cpu_id, cache_index);
+	uint32_t sets = 0;
+	cpuinfo_linux_parse_small_file(path, 16, uint32_parser, &sets);
+	cache->sets = sets;
+
+	snprintf(path, sizeof(path),
+		"/sys/devices/system/cpu/cpu%u/cache/index%u/coherency_line_size", cpu_id, cache_index);
+	uint32_t line_size = 0;
+	cpuinfo_linux_parse_small_file(path, 16, uint32_parser, &line_size);
+	cache->line_size = line_size;
+
+	snprintf(path, sizeof(path),
+		"/sys/devices/system/cpu/cpu%u/cache/index%u/physical_line_partition", cpu_id, cache_index);
+	uint32_t partitions = 0;
+	if (!cpuinfo_linux_parse_small_file(path, 16, uint32_parser, &partitions) || partitions == 0) {
+		partitions = 1;
+	}
+	cache->partitions = partitions;
+
+	return true;
+}
+
+struct cpulist_info {
+	uint32_t min_cpu;
+	uint32_t count;
+	bool initialized;
+};
+
+/* Track min CPU id and total CPUs in a parsed cpulist range. */
+static bool cpulist_info_callback(uint32_t start, uint32_t end, void* context) {
+	struct cpulist_info* info = (struct cpulist_info*)context;
+	if (!info->initialized || start < info->min_cpu) {
+		info->min_cpu = start;
+		info->initialized = true;
+	}
+	info->count += end - start;
+	return true;
+}
 
 /* Helper function to bitmask flags and ensure operator precedence. */
 static inline bool bitmask_all(uint32_t flags, uint32_t mask) {
@@ -230,6 +411,12 @@ void cpuinfo_riscv_linux_init(void) {
 	struct cpuinfo_cluster* clusters = NULL;
 	struct cpuinfo_core* cores = NULL;
 	struct cpuinfo_uarch_info* uarchs = NULL;
+	struct cpuinfo_cache* l1i = NULL;
+	struct cpuinfo_cache* l1d = NULL;
+	struct cpuinfo_cache* l2 = NULL;
+	uint32_t* core_to_l2_index = NULL;
+	uint32_t* l2_shared_min_cpu = NULL;
+	uint32_t* l2_shared_count = NULL;
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
 	uint32_t* linux_cpu_to_uarch_index_map = NULL;
@@ -504,12 +691,70 @@ void cpuinfo_riscv_linux_init(void) {
 		goto cleanup;
 	}
 
+	l1i = calloc(valid_processors_count, sizeof(struct cpuinfo_cache));
+	if (l1i == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %zu L1I caches.",
+			valid_processors_count * sizeof(struct cpuinfo_cache),
+			valid_processors_count);
+		goto cleanup;
+	}
+
+	l1d = calloc(valid_processors_count, sizeof(struct cpuinfo_cache));
+	if (l1d == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %zu L1D caches.",
+			valid_processors_count * sizeof(struct cpuinfo_cache),
+			valid_processors_count);
+		goto cleanup;
+	}
+
+	l2 = calloc(valid_cores_count, sizeof(struct cpuinfo_cache));
+	if (l2 == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %zu L2 caches.",
+			valid_cores_count * sizeof(struct cpuinfo_cache),
+			valid_cores_count);
+		goto cleanup;
+	}
+
+	core_to_l2_index = malloc(valid_cores_count * sizeof(uint32_t));
+	if (core_to_l2_index == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %zu core-to-l2 entries.",
+			valid_cores_count * sizeof(uint32_t),
+			valid_cores_count);
+		goto cleanup;
+	}
+	for (size_t i = 0; i < valid_cores_count; i++) {
+		core_to_l2_index[i] = UINT32_MAX;
+	}
+
+	l2_shared_min_cpu = malloc(valid_cores_count * sizeof(uint32_t));
+	if (l2_shared_min_cpu == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %zu L2 shared min CPU entries.",
+			valid_cores_count * sizeof(uint32_t),
+			valid_cores_count);
+		goto cleanup;
+	}
+
+	l2_shared_count = malloc(valid_cores_count * sizeof(uint32_t));
+	if (l2_shared_count == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %zu L2 shared count entries.",
+			valid_cores_count * sizeof(uint32_t),
+			valid_cores_count);
+		goto cleanup;
+	}
+
 	/* Transfer contents of processor list to ABI structures. */
 	size_t valid_processors_index = 0;
 	size_t valid_cores_index = 0;
 	size_t valid_clusters_index = 0;
 	size_t valid_packages_index = 0;
 	size_t valid_uarchs_index = 0;
+	size_t valid_l2_count = 0;
 	last_uarch = cpuinfo_uarch_unknown;
 	for (size_t processor = 0; processor < max_processor_id; processor++) {
 		if (!bitmask_all(riscv_linux_processors[processor].flags, CPUINFO_LINUX_FLAG_VALID)) {
@@ -538,6 +783,25 @@ void cpuinfo_riscv_linux_init(void) {
 		/* Update uarch processor count. */
 		uarchs[valid_uarchs_index - 1].processor_count++;
 
+		/* Populate L1I and L1D caches for this logical processor from sysfs. */
+		{
+			const size_t pi = valid_processors_index - 1;
+			uint32_t l1i_idx = cpuinfo_riscv_find_cache_index(linux_id, 1, "Instruction");
+			if (l1i_idx != UINT32_MAX &&
+			    cpuinfo_riscv_read_cache_from_sysfs(linux_id, l1i_idx, &l1i[pi])) {
+				l1i[pi].processor_start = pi;
+				l1i[pi].processor_count = 1;
+				processors[pi].cache.l1i = &l1i[pi];
+			}
+			uint32_t l1d_idx = cpuinfo_riscv_find_cache_index(linux_id, 1, "Data");
+			if (l1d_idx != UINT32_MAX &&
+			    cpuinfo_riscv_read_cache_from_sysfs(linux_id, l1d_idx, &l1d[pi])) {
+				l1d[pi].processor_start = pi;
+				l1d[pi].processor_count = 1;
+				processors[pi].cache.l1d = &l1d[pi];
+			}
+		}
+
 		/* Copy cpuinfo_core information, if this is the leader. */
 		if (riscv_linux_processors[processor].core_leader_id == linux_id) {
 			memcpy(&cores[valid_cores_index++],
@@ -545,6 +809,54 @@ void cpuinfo_riscv_linux_init(void) {
 			       sizeof(struct cpuinfo_core));
 			/* Update uarch core count. */
 			uarchs[valid_uarchs_index - 1].core_count++;
+
+			/* Populate L2 cache for this core from sysfs. */
+			{
+				const size_t ci = valid_cores_index - 1;
+				uint32_t l2_idx = cpuinfo_riscv_find_cache_index(linux_id, 2, "Unified");
+				if (l2_idx == UINT32_MAX) {
+					l2_idx = cpuinfo_riscv_find_cache_index(linux_id, 2, "Data");
+				}
+				if (l2_idx != UINT32_MAX) {
+					char path[256];
+					snprintf(path, sizeof(path),
+						"/sys/devices/system/cpu/cpu%u/cache/index%u/shared_cpu_list",
+						linux_id, l2_idx);
+					struct cpulist_info shared_info = {
+						.min_cpu = linux_id,
+						.count = 0,
+						.initialized = false,
+					};
+					if (!cpuinfo_linux_parse_cpulist(path, cpulist_info_callback, &shared_info) ||
+					    shared_info.count == 0) {
+						shared_info.min_cpu = linux_id;
+						shared_info.count = 1;
+					}
+
+					uint32_t shared_l2_index = UINT32_MAX;
+					for (size_t j = 0; j < valid_l2_count; j++) {
+						if (l2_shared_min_cpu[j] == shared_info.min_cpu &&
+						    l2_shared_count[j] == shared_info.count) {
+							shared_l2_index = (uint32_t)j;
+							break;
+						}
+					}
+
+					if (shared_l2_index == UINT32_MAX &&
+					    cpuinfo_riscv_read_cache_from_sysfs(linux_id, l2_idx, &l2[valid_l2_count])) {
+						l2[valid_l2_count].processor_start = valid_processors_index - 1;
+						l2[valid_l2_count].processor_count = shared_info.count;
+						l2_shared_min_cpu[valid_l2_count] = shared_info.min_cpu;
+						l2_shared_count[valid_l2_count] = shared_info.count;
+						shared_l2_index = (uint32_t)valid_l2_count;
+						valid_l2_count++;
+					}
+
+					if (shared_l2_index != UINT32_MAX) {
+						core_to_l2_index[ci] = shared_l2_index;
+					}
+				}
+			}
 		}
 
 		/* Copy cpuinfo_cluster information, if this is the leader. */
@@ -565,6 +877,11 @@ void cpuinfo_riscv_linux_init(void) {
 		processors[valid_processors_index - 1].core = &cores[valid_cores_index - 1];
 		processors[valid_processors_index - 1].cluster = &clusters[valid_clusters_index - 1];
 		processors[valid_processors_index - 1].package = &packages[valid_packages_index - 1];
+		/* Set L2 cache pointer from the core-to-L2 mapping. */
+		if (core_to_l2_index[valid_cores_index - 1] != UINT32_MAX) {
+			processors[valid_processors_index - 1].cache.l2 =
+				&l2[core_to_l2_index[valid_cores_index - 1]];
+		}
 
 		cores[valid_cores_index - 1].cluster = &clusters[valid_clusters_index - 1];
 		cores[valid_cores_index - 1].package = &packages[valid_packages_index - 1];
@@ -587,6 +904,14 @@ void cpuinfo_riscv_linux_init(void) {
 	cpuinfo_packages_count = valid_packages_count;
 	cpuinfo_uarchs = uarchs;
 	cpuinfo_uarchs_count = valid_uarchs_count;
+	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
+	cpuinfo_cache_count[cpuinfo_cache_level_1i] = valid_processors_count;
+	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
+	cpuinfo_cache_count[cpuinfo_cache_level_1d] = valid_processors_count;
+	if (valid_l2_count > 0) {
+		cpuinfo_cache[cpuinfo_cache_level_2] = l2;
+		cpuinfo_cache_count[cpuinfo_cache_level_2] = valid_l2_count;
+	}
 
 	cpuinfo_linux_cpu_max = max_processor_id;
 	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
@@ -604,6 +929,14 @@ void cpuinfo_riscv_linux_init(void) {
 	clusters = NULL;
 	packages = NULL;
 	uarchs = NULL;
+	l1i = NULL;
+	l1d = NULL;
+	if (valid_l2_count > 0) {
+		l2 = NULL;
+	}
+	core_to_l2_index = NULL;
+	l2_shared_min_cpu = NULL;
+	l2_shared_count = NULL;
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
 	linux_cpu_to_uarch_index_map = NULL;
@@ -614,6 +947,12 @@ cleanup:
 	free(clusters);
 	free(packages);
 	free(uarchs);
+	free(l1i);
+	free(l1d);
+	free(l2);
+	free(core_to_l2_index);
+	free(l2_shared_min_cpu);
+	free(l2_shared_count);
 	free(linux_cpu_to_processor_map);
 	free(linux_cpu_to_core_map);
 	free(linux_cpu_to_uarch_index_map);
