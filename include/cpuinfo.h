@@ -224,6 +224,11 @@ enum cpuinfo_vendor {
 	cpuinfo_vendor_hygon = 16,
 	/** SiFive, Inc. Vendor of RISC-V processor microarchitectures. */
 	cpuinfo_vendor_sifive = 17,
+	/** T-Head Semiconductor Co., Ltd (Alibaba). Vendor of RISC-V processor
+	   microarchitectures. */
+	cpuinfo_vendor_thead = 18,
+	/** SpacemiT. Vendor of RISC-V processor microarchitectures. */
+	cpuinfo_vendor_spacemit = 19,
 
 	/* Active vendors of embedded CPUs */
 
@@ -666,6 +671,17 @@ enum cpuinfo_uarch {
 
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
+
+	/** SiFive 7-series (U74, U54, S7, S51). */
+	cpuinfo_uarch_sifive_7_series = 0x01100100,
+
+	/** T-Head C9xx series (C906, C910, C920). */
+	cpuinfo_uarch_thead_c9xx = 0x01200100,
+	/** T-Head C908. */
+	cpuinfo_uarch_thead_c908 = 0x01200101,
+
+	/** SpacemiT X60. */
+	cpuinfo_uarch_spacemit_x60 = 0x01400100,
 };
 
 struct cpuinfo_processor {
@@ -2240,8 +2256,45 @@ struct cpuinfo_riscv_isa {
 	/* ISA Extensions */
 	/* Half-Precision Floating-Point Extension. */
 	bool zfh;
+	/* Half-Precision Floating-Point Minimum Extension. */
+	bool zfhmin;
 	/* Half-Precision Floating-Point Vector Extension. */
 	bool zvfh;
+
+	/* Bit Manipulation Extensions */
+	bool zba;
+	bool zbb;
+	bool zbs;
+	bool zbc;
+
+	/* Scalar Crypto Extensions */
+	bool zbkb;
+	bool zbkc;
+	bool zbkx;
+	bool zknd;
+	bool zkne;
+	bool zknh;
+	bool zksed;
+	bool zksh;
+	bool zkt;
+
+	/* Vector Crypto Extensions */
+	bool zvbb;
+	bool zvbc;
+	bool zvkb;
+	bool zvkg;
+	bool zvkned;
+	bool zvknha;
+	bool zvknhb;
+	bool zvksed;
+	bool zvksh;
+	bool zvkt;
+
+	/* Cache Management Extension */
+	bool zicboz;
+
+	/* Non-Temporal Loads/Stores Hint Extension */
+	bool zihintntl;
 };
 
 extern struct cpuinfo_riscv_isa cpuinfo_isa;
@@ -2328,6 +2381,214 @@ static inline bool cpuinfo_has_riscv_zfh(void) {
 static inline bool cpuinfo_has_riscv_zvfh(void) {
 #if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 	return cpuinfo_isa.zvfh;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zfhmin(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zfhmin;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zba(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zba;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zbb(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zbb;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zbs(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zbs;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zbc(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zbc;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zbkb(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zbkb;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zbkc(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zbkc;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zbkx(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zbkx;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zknd(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zknd;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zkne(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zkne;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zknh(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zknh;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zksed(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zksed;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zksh(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zksh;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zkt(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zkt;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvbb(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvbb;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvbc(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvbc;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvkb(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvkb;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvkg(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvkg;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvkned(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvkned;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvknha(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvknha;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvknhb(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvknhb;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvksed(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvksed;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvksh(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvksh;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zvkt(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zvkt;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zicboz(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zicboz;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_riscv_zihintntl(void) {
+#if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+	return cpuinfo_isa.zihintntl;
 #else
 	return false;
 #endif

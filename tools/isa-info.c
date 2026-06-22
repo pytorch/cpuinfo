@@ -200,8 +200,38 @@ int main(int argc, char** argv) {
 	printf("\tSingle-Precision Floating-Point: %s\n", cpuinfo_has_riscv_f() ? "yes" : "no");
 	printf("\tDouble-Precision Floating-Point: %s\n", cpuinfo_has_riscv_d() ? "yes" : "no");
 	printf("\tHalf-Precision Floating-Point: %s\n", cpuinfo_has_riscv_zfh() ? "yes" : "no");
+	printf("\tHalf-Precision Floating-Point Minimum: %s\n", cpuinfo_has_riscv_zfhmin() ? "yes" : "no");
 	printf("\tCompressed: %s\n", cpuinfo_has_riscv_c() ? "yes" : "no");
 	printf("\tVector: %s\n", cpuinfo_has_riscv_v() ? "yes" : "no");
 	printf("\tVector Half-Precision Floating-Point: %s\n", cpuinfo_has_riscv_zvfh() ? "yes" : "no");
+	printf("Bit Manipulation:\n");
+	printf("\tZba (Address Generation): %s\n", cpuinfo_has_riscv_zba() ? "yes" : "no");
+	printf("\tZbb (Basic Bit Manipulation): %s\n", cpuinfo_has_riscv_zbb() ? "yes" : "no");
+	printf("\tZbs (Single-Bit): %s\n", cpuinfo_has_riscv_zbs() ? "yes" : "no");
+	printf("\tZbc (Carry-less Multiply): %s\n", cpuinfo_has_riscv_zbc() ? "yes" : "no");
+	printf("Scalar Crypto:\n");
+	printf("\tZbkb (Bit Manipulation for Crypto): %s\n", cpuinfo_has_riscv_zbkb() ? "yes" : "no");
+	printf("\tZbkc (Carry-less Multiply for Crypto): %s\n", cpuinfo_has_riscv_zbkc() ? "yes" : "no");
+	printf("\tZbkx (Crossbar Permutation): %s\n", cpuinfo_has_riscv_zbkx() ? "yes" : "no");
+	printf("\tZknd (AES Decrypt): %s\n", cpuinfo_has_riscv_zknd() ? "yes" : "no");
+	printf("\tZkne (AES Encrypt): %s\n", cpuinfo_has_riscv_zkne() ? "yes" : "no");
+	printf("\tZknh (SHA-2): %s\n", cpuinfo_has_riscv_zknh() ? "yes" : "no");
+	printf("\tZksed (SM4): %s\n", cpuinfo_has_riscv_zksed() ? "yes" : "no");
+	printf("\tZksh (SM3): %s\n", cpuinfo_has_riscv_zksh() ? "yes" : "no");
+	printf("\tZkt (Data Independent Execution Latency): %s\n", cpuinfo_has_riscv_zkt() ? "yes" : "no");
+	printf("Vector Crypto:\n");
+	printf("\tZvbb (Vector Bit Manipulation): %s\n", cpuinfo_has_riscv_zvbb() ? "yes" : "no");
+	printf("\tZvbc (Vector Carry-less Multiply): %s\n", cpuinfo_has_riscv_zvbc() ? "yes" : "no");
+	printf("\tZvkb (Vector Crypto Bit Manipulation): %s\n", cpuinfo_has_riscv_zvkb() ? "yes" : "no");
+	printf("\tZvkg (Vector GCM/GMAC): %s\n", cpuinfo_has_riscv_zvkg() ? "yes" : "no");
+	printf("\tZvkned (Vector AES): %s\n", cpuinfo_has_riscv_zvkned() ? "yes" : "no");
+	printf("\tZvknha (Vector SHA-2 256): %s\n", cpuinfo_has_riscv_zvknha() ? "yes" : "no");
+	printf("\tZvknhb (Vector SHA-2 512): %s\n", cpuinfo_has_riscv_zvknhb() ? "yes" : "no");
+	printf("\tZvksed (Vector SM4): %s\n", cpuinfo_has_riscv_zvksed() ? "yes" : "no");
+	printf("\tZvksh (Vector SM3): %s\n", cpuinfo_has_riscv_zvksh() ? "yes" : "no");
+	printf("\tZvkt (Vector Data Independent Execution Latency): %s\n", cpuinfo_has_riscv_zvkt() ? "yes" : "no");
+	printf("Other:\n");
+	printf("\tZicboz (Cache Block Zero): %s\n", cpuinfo_has_riscv_zicboz() ? "yes" : "no");
+	printf("\tZihintntl (Non-Temporal Locality Hints): %s\n", cpuinfo_has_riscv_zihintntl() ? "yes" : "no");
 #endif
 }
