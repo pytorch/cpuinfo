@@ -44,39 +44,39 @@ struct riscv_hwprobe {
 #define RISCV_HWPROBE_KEY_MARCHID 1
 #define RISCV_HWPROBE_KEY_MIMPID 2
 #define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
-#define RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
+#define RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1ULL << 0)
 #define RISCV_HWPROBE_KEY_IMA_EXT_0 4
-#define RISCV_HWPROBE_IMA_FD (1 << 0)
-#define RISCV_HWPROBE_IMA_C (1 << 1)
-#define RISCV_HWPROBE_IMA_V (1 << 2)
-#define RISCV_HWPROBE_EXT_ZBA (1 << 3)
-#define RISCV_HWPROBE_EXT_ZBB (1 << 4)
-#define RISCV_HWPROBE_EXT_ZBS (1 << 5)
-#define RISCV_HWPROBE_EXT_ZICBOZ (1 << 6)
-#define RISCV_HWPROBE_EXT_ZBC (1 << 7)
-#define RISCV_HWPROBE_EXT_ZBKB (1 << 8)
-#define RISCV_HWPROBE_EXT_ZBKC (1 << 9)
-#define RISCV_HWPROBE_EXT_ZBKX (1 << 10)
-#define RISCV_HWPROBE_EXT_ZKND (1 << 11)
-#define RISCV_HWPROBE_EXT_ZKNE (1 << 12)
-#define RISCV_HWPROBE_EXT_ZKNH (1 << 13)
-#define RISCV_HWPROBE_EXT_ZKSED (1 << 14)
-#define RISCV_HWPROBE_EXT_ZKSH (1 << 15)
-#define RISCV_HWPROBE_EXT_ZKT (1 << 16)
-#define RISCV_HWPROBE_EXT_ZVBB (1 << 17)
-#define RISCV_HWPROBE_EXT_ZVBC (1 << 18)
-#define RISCV_HWPROBE_EXT_ZVKB (1 << 19)
-#define RISCV_HWPROBE_EXT_ZVKG (1 << 20)
-#define RISCV_HWPROBE_EXT_ZVKNED (1 << 21)
-#define RISCV_HWPROBE_EXT_ZVKNHA (1 << 22)
-#define RISCV_HWPROBE_EXT_ZVKNHB (1 << 23)
-#define RISCV_HWPROBE_EXT_ZVKSED (1 << 24)
-#define RISCV_HWPROBE_EXT_ZVKSH (1 << 25)
-#define RISCV_HWPROBE_EXT_ZVKT (1 << 26)
-#define RISCV_HWPROBE_EXT_ZFH (1 << 27)
-#define RISCV_HWPROBE_EXT_ZFHMIN (1 << 28)
-#define RISCV_HWPROBE_EXT_ZIHINTNTL (1 << 29)
-#define RISCV_HWPROBE_EXT_ZVFH (1 << 30)
+#define RISCV_HWPROBE_IMA_FD (1ULL << 0)
+#define RISCV_HWPROBE_IMA_C (1ULL << 1)
+#define RISCV_HWPROBE_IMA_V (1ULL << 2)
+#define RISCV_HWPROBE_EXT_ZBA (1ULL << 3)
+#define RISCV_HWPROBE_EXT_ZBB (1ULL << 4)
+#define RISCV_HWPROBE_EXT_ZBS (1ULL << 5)
+#define RISCV_HWPROBE_EXT_ZICBOZ (1ULL << 6)
+#define RISCV_HWPROBE_EXT_ZBC (1ULL << 7)
+#define RISCV_HWPROBE_EXT_ZBKB (1ULL << 8)
+#define RISCV_HWPROBE_EXT_ZBKC (1ULL << 9)
+#define RISCV_HWPROBE_EXT_ZBKX (1ULL << 10)
+#define RISCV_HWPROBE_EXT_ZKND (1ULL << 11)
+#define RISCV_HWPROBE_EXT_ZKNE (1ULL << 12)
+#define RISCV_HWPROBE_EXT_ZKNH (1ULL << 13)
+#define RISCV_HWPROBE_EXT_ZKSED (1ULL << 14)
+#define RISCV_HWPROBE_EXT_ZKSH (1ULL << 15)
+#define RISCV_HWPROBE_EXT_ZKT (1ULL << 16)
+#define RISCV_HWPROBE_EXT_ZVBB (1ULL << 17)
+#define RISCV_HWPROBE_EXT_ZVBC (1ULL << 18)
+#define RISCV_HWPROBE_EXT_ZVKB (1ULL << 19)
+#define RISCV_HWPROBE_EXT_ZVKG (1ULL << 20)
+#define RISCV_HWPROBE_EXT_ZVKNED (1ULL << 21)
+#define RISCV_HWPROBE_EXT_ZVKNHA (1ULL << 22)
+#define RISCV_HWPROBE_EXT_ZVKNHB (1ULL << 23)
+#define RISCV_HWPROBE_EXT_ZVKSED (1ULL << 24)
+#define RISCV_HWPROBE_EXT_ZVKSH (1ULL << 25)
+#define RISCV_HWPROBE_EXT_ZVKT (1ULL << 26)
+#define RISCV_HWPROBE_EXT_ZFH (1ULL << 27)
+#define RISCV_HWPROBE_EXT_ZFHMIN (1ULL << 28)
+#define RISCV_HWPROBE_EXT_ZIHINTNTL (1ULL << 29)
+#define RISCV_HWPROBE_EXT_ZVFH (1ULL << 30)
 #define RISCV_HWPROBE_KEY_CPUPERF_0 5
 #define RISCV_HWPROBE_MISALIGNED_UNKNOWN (0 << 0)
 #define RISCV_HWPROBE_MISALIGNED_EMULATED (1 << 0)
@@ -153,9 +153,9 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	 * The syscall may not have populated all requested keys, loop through
 	 * the list and store the values that were discovered.
 	 */
-	uint32_t vendor_id = 0;
-	uint32_t arch_id = 0;
-	uint32_t imp_id = 0;
+	uint64_t vendor_id = 0;
+	uint64_t arch_id = 0;
+	uint64_t imp_id = 0;
 	uint64_t ima_ext_0 = 0;
 	for (size_t pair = 0; pair < pairs_count; pair++) {
 		switch (pairs[pair].key) {
@@ -183,8 +183,86 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZFH) {
 			isa->zfh = true;
 		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZFHMIN) {
+			isa->zfhmin = true;
+		}
 		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVFH) {
 			isa->zvfh = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZBA) {
+			isa->zba = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZBB) {
+			isa->zbb = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZBS) {
+			isa->zbs = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZBC) {
+			isa->zbc = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZBKB) {
+			isa->zbkb = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZBKC) {
+			isa->zbkc = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZBKX) {
+			isa->zbkx = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZKND) {
+			isa->zknd = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZKNE) {
+			isa->zkne = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZKNH) {
+			isa->zknh = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZKSED) {
+			isa->zksed = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZKSH) {
+			isa->zksh = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZKT) {
+			isa->zkt = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVBB) {
+			isa->zvbb = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVBC) {
+			isa->zvbc = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKB) {
+			isa->zvkb = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKG) {
+			isa->zvkg = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNED) {
+			isa->zvkned = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNHA) {
+			isa->zvknha = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNHB) {
+			isa->zvknhb = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKSED) {
+			isa->zvksed = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKSH) {
+			isa->zvksh = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZVKT) {
+			isa->zvkt = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZICBOZ) {
+			isa->zicboz = true;
+		}
+		if (ima_ext_0 & RISCV_HWPROBE_EXT_ZIHINTNTL) {
+			isa->zihintntl = true;
 		}
 	}
 
