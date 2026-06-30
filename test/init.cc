@@ -1557,8 +1557,8 @@ TEST(INIT_STRESS, concurrent_deinitialize_does_not_disturb_other_consumers) {
 	const auto holder = [&stop_holder]() {
 		cpuinfo_initialize();
 		while (!stop_holder.load(std::memory_order_relaxed)) {
-			(void) cpuinfo_get_processors();
-			(void) cpuinfo_get_processor(0);
+			(void)cpuinfo_get_processors();
+			(void)cpuinfo_get_processor(0);
 		}
 		cpuinfo_deinitialize();
 	};
@@ -1583,4 +1583,4 @@ TEST(INIT_STRESS, concurrent_deinitialize_does_not_disturb_other_consumers) {
 
 	// Reaching here without the process aborting means that lifecycle handling is correct
 }
-#endif  // CPUINFO_ENABLE_DEINIT
+#endif // CPUINFO_ENABLE_DEINIT
