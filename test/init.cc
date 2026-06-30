@@ -1,10 +1,16 @@
-#include <atomic>
-#include <thread>
-#include <vector>
-
 #include <gtest/gtest.h>
 
 #include <cpuinfo.h>
+
+#ifndef CPUINFO_ENABLE_DEINIT
+#define CPUINFO_ENABLE_DEINIT 0
+#endif
+
+#if CPUINFO_ENABLE_DEINIT
+#include <atomic>
+#include <thread>
+#include <vector>
+#endif
 
 TEST(PROCESSORS_COUNT, non_zero) {
 	ASSERT_TRUE(cpuinfo_initialize());
@@ -1524,6 +1530,7 @@ TEST(L4_CACHE, consistent_processors) {
 	cpuinfo_deinitialize();
 }
 
+#if CPUINFO_ENABLE_DEINIT
 TEST(INIT_REFCOUNT, deinitialize_balances_initialize) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	ASSERT_TRUE(cpuinfo_initialize());
@@ -1576,3 +1583,4 @@ TEST(INIT_STRESS, concurrent_deinitialize_does_not_disturb_other_consumers) {
 
 	// Reaching here without the process aborting means that lifecycle handling is correct
 }
+#endif  // CPUINFO_ENABLE_DEINIT
