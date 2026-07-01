@@ -2,6 +2,16 @@
 
 #include <cpuinfo.h>
 
+#ifndef CPUINFO_ENABLE_DEINIT
+#define CPUINFO_ENABLE_DEINIT 0
+#endif
+
+#if CPUINFO_ENABLE_DEINIT
+#include <atomic>
+#include <thread>
+#include <vector>
+#endif
+
 TEST(PROCESSORS_COUNT, non_zero) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	EXPECT_NE(0, cpuinfo_get_processors_count());
@@ -1519,3 +1529,58 @@ TEST(L4_CACHE, consistent_processors) {
 	}
 	cpuinfo_deinitialize();
 }
+
+#if CPUINFO_ENABLE_DEINIT
+TEST(INIT_REFCOUNT, deinitialize_balances_initialize) {
+	ASSERT_TRUE(cpuinfo_initialize());
+	ASSERT_TRUE(cpuinfo_initialize());
+
+	const uint32_t processors_count = cpuinfo_get_processors_count();
+	EXPECT_NE(0, processors_count);
+
+	cpuinfo_deinitialize();
+	EXPECT_EQ(processors_count, cpuinfo_get_processors_count());
+	EXPECT_TRUE(cpuinfo_get_processors());
+
+	cpuinfo_deinitialize();
+}
+
+TEST(INIT_STRESS, concurrent_deinitialize_does_not_disturb_other_consumers) {
+	constexpr int kChurnThreads = 10;
+	constexpr int kChurnIterations = 5000;
+
+	std::atomic<bool> stop_holder{false};
+
+	// Models a long lived consumer that keeps using cpuinfo for its whole lifetime
+	// If a concurrent deinitialize from another consumer (churn) frees the shared state
+	// then cpuinfo aborts the process, which fails the test
+	const auto holder = [&stop_holder]() {
+		cpuinfo_initialize();
+		while (!stop_holder.load(std::memory_order_relaxed)) {
+			(void)cpuinfo_get_processors();
+			(void)cpuinfo_get_processor(0);
+		}
+		cpuinfo_deinitialize();
+	};
+	const auto churn = [kChurnIterations]() {
+		for (int iteration = 0; iteration < kChurnIterations; iteration++) {
+			cpuinfo_initialize();
+			cpuinfo_deinitialize();
+		}
+	};
+
+	std::thread holder_thread(holder);
+	std::vector<std::thread> churn_threads;
+	churn_threads.reserve(kChurnThreads);
+	for (int t = 0; t < kChurnThreads; t++) {
+		churn_threads.emplace_back(churn);
+	}
+	for (std::thread& thread : churn_threads) {
+		thread.join();
+	}
+	stop_holder.store(true, std::memory_order_relaxed);
+	holder_thread.join();
+
+	// Reaching here without the process aborting means that lifecycle handling is correct
+}
+#endif // CPUINFO_ENABLE_DEINIT
