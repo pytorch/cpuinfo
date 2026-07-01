@@ -9,7 +9,7 @@
         {
             "name": "x64-uwp",
             "displayName": "x64(uwp)",
-            "generator": "Visual Studio 17 2022",
+            "generator": "Visual Studio 18 2026",
             "architecture": "x64",
             "binaryDir": "${sourceDir}/build/x64-uwp",
             "installDir": "${sourceDir}/install",
