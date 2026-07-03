@@ -805,6 +805,14 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(zenfone-2e-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(NAME zenfone-2e-test COMMAND zenfone-2e-test)
   ENDIF()
+
+  IF(CPUINFO_TARGET_PROCESSOR MATCHES "^(armv[5-8].*|aarch64|arm64.*)$")
+    ADD_EXECUTABLE(repro-cpuinfo-test test/mock/repro_cpuinfo.c)
+    TARGET_INCLUDE_DIRECTORIES(repro-cpuinfo-test BEFORE PRIVATE src)
+    TARGET_LINK_LIBRARIES(repro-cpuinfo-test PRIVATE cpuinfo_mock)
+    ADD_TEST(NAME repro-cpuinfo-test COMMAND repro-cpuinfo-test)
+    SET_TESTS_PROPERTIES(repro-cpuinfo-test PROPERTIES WILL_FAIL TRUE)
+  ENDIF()
 ENDIF()
 
 # ---[ cpuinfo unit tests
