@@ -811,7 +811,6 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_INCLUDE_DIRECTORIES(repro-cpuinfo-test BEFORE PRIVATE src)
     TARGET_LINK_LIBRARIES(repro-cpuinfo-test PRIVATE cpuinfo_mock)
     ADD_TEST(NAME repro-cpuinfo-test COMMAND repro-cpuinfo-test)
-    SET_TESTS_PROPERTIES(repro-cpuinfo-test PROPERTIES WILL_FAIL TRUE)
   ENDIF()
 ENDIF()
 
