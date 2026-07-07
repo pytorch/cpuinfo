@@ -618,36 +618,3 @@ cleanup:
 	free(linux_cpu_to_core_map);
 	free(linux_cpu_to_uarch_index_map);
 }
-
-void cpuinfo_riscv_linux_deinit(void) {
-	free(cpuinfo_processors);
-	cpuinfo_processors = NULL;
-	cpuinfo_processors_count = 0;
-
-	free(cpuinfo_cores);
-	cpuinfo_cores = NULL;
-	cpuinfo_cores_count = 0;
-
-	free(cpuinfo_clusters);
-	cpuinfo_clusters = NULL;
-	cpuinfo_clusters_count = 0;
-
-	free(cpuinfo_packages);
-	cpuinfo_packages = NULL;
-	cpuinfo_packages_count = 0;
-
-	free(cpuinfo_uarchs);
-	cpuinfo_uarchs = NULL;
-	cpuinfo_uarchs_count = 0;
-
-	free(cpuinfo_linux_cpu_to_processor_map);
-	cpuinfo_linux_cpu_to_processor_map = NULL;
-
-	free(cpuinfo_linux_cpu_to_core_map);
-	cpuinfo_linux_cpu_to_core_map = NULL;
-
-	free((void*)cpuinfo_linux_cpu_to_uarch_index_map);
-	cpuinfo_linux_cpu_to_uarch_index_map = NULL;
-
-	cpuinfo_linux_cpu_max = 0;
-}
