@@ -676,38 +676,3 @@ cleanup:
 	free(linux_cpu_to_processor_map);
 	free(linux_cpu_to_core_map);
 }
-
-void cpuinfo_x86_linux_deinit(void) {
-	free(cpuinfo_processors);
-	cpuinfo_processors = NULL;
-	cpuinfo_processors_count = 0;
-
-	free(cpuinfo_cores);
-	cpuinfo_cores = NULL;
-	cpuinfo_cores_count = 0;
-
-	free(cpuinfo_clusters);
-	cpuinfo_clusters = NULL;
-	cpuinfo_clusters_count = 0;
-
-	free(cpuinfo_packages);
-	cpuinfo_packages = NULL;
-	cpuinfo_packages_count = 0;
-
-	for (int lvl = 0; lvl < cpuinfo_cache_level_max; ++lvl) {
-		free(cpuinfo_cache[lvl]);
-		cpuinfo_cache[lvl] = NULL;
-		cpuinfo_cache_count[lvl] = 0;
-	}
-	cpuinfo_max_cache_size = 0;
-
-	free(cpuinfo_linux_cpu_to_processor_map);
-	cpuinfo_linux_cpu_to_processor_map = NULL;
-
-	free(cpuinfo_linux_cpu_to_core_map);
-	cpuinfo_linux_cpu_to_core_map = NULL;
-
-	cpuinfo_linux_cpu_max = 0;
-
-	cpuinfo_global_uarch = (struct cpuinfo_uarch_info){0};
-}
