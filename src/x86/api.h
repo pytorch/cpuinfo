@@ -33,6 +33,22 @@ struct cpuinfo_x86_caches {
 	uint32_t prefetch_size;
 };
 
+struct cpuinfo_x86_tlbs {
+	struct cpuinfo_tlb itlb_4KB;
+	struct cpuinfo_tlb itlb_2MB;
+	struct cpuinfo_tlb itlb_4MB;
+	struct cpuinfo_tlb dtlb0_4KB;
+	struct cpuinfo_tlb dtlb0_2MB;
+	struct cpuinfo_tlb dtlb0_4MB;
+	struct cpuinfo_tlb dtlb_4KB;
+	struct cpuinfo_tlb dtlb_2MB;
+	struct cpuinfo_tlb dtlb_4MB;
+	struct cpuinfo_tlb dtlb_1GB;
+	struct cpuinfo_tlb stlb2_4KB;
+	struct cpuinfo_tlb stlb2_2MB;
+	struct cpuinfo_tlb stlb2_1GB;
+};
+
 struct cpuinfo_x86_model_info {
 	uint32_t model;
 	uint32_t family;
@@ -61,21 +77,7 @@ struct cpuinfo_x86_processor {
 	int linux_id;
 #endif
 	struct cpuinfo_x86_caches cache;
-	struct {
-		struct cpuinfo_tlb itlb_4KB;
-		struct cpuinfo_tlb itlb_2MB;
-		struct cpuinfo_tlb itlb_4MB;
-		struct cpuinfo_tlb dtlb0_4KB;
-		struct cpuinfo_tlb dtlb0_2MB;
-		struct cpuinfo_tlb dtlb0_4MB;
-		struct cpuinfo_tlb dtlb_4KB;
-		struct cpuinfo_tlb dtlb_2MB;
-		struct cpuinfo_tlb dtlb_4MB;
-		struct cpuinfo_tlb dtlb_1GB;
-		struct cpuinfo_tlb stlb2_4KB;
-		struct cpuinfo_tlb stlb2_2MB;
-		struct cpuinfo_tlb stlb2_1GB;
-	} tlb;
+	struct cpuinfo_x86_tlbs tlb;
 	struct cpuinfo_x86_topology topology;
 	char brand_string[CPUINFO_PACKAGE_NAME_MAX];
 };
@@ -110,40 +112,15 @@ CPUINFO_INTERNAL void cpuinfo_x86_detect_cache(
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info* model_info,
 	struct cpuinfo_x86_caches* cache,
-	struct cpuinfo_tlb* itlb_4KB,
-	struct cpuinfo_tlb* itlb_2MB,
-	struct cpuinfo_tlb* itlb_4MB,
-	struct cpuinfo_tlb* dtlb0_4KB,
-	struct cpuinfo_tlb* dtlb0_2MB,
-	struct cpuinfo_tlb* dtlb0_4MB,
-	struct cpuinfo_tlb* dtlb_4KB,
-	struct cpuinfo_tlb* dtlb_2MB,
-	struct cpuinfo_tlb* dtlb_4MB,
-	struct cpuinfo_tlb* dtlb_1GB,
-	struct cpuinfo_tlb* stlb2_4KB,
-	struct cpuinfo_tlb* stlb2_2MB,
-	struct cpuinfo_tlb* stlb2_1GB,
-	uint32_t* log2_package_cores_max);
+	struct cpuinfo_x86_tlbs* tlb,
+	struct cpuinfo_x86_topology* topology);
 
 CPUINFO_INTERNAL void cpuinfo_x86_decode_cache_descriptor(
 	uint8_t descriptor,
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info* model_info,
 	struct cpuinfo_x86_caches* cache,
-	struct cpuinfo_tlb* itlb_4KB,
-	struct cpuinfo_tlb* itlb_2MB,
-	struct cpuinfo_tlb* itlb_4MB,
-	struct cpuinfo_tlb* dtlb0_4KB,
-	struct cpuinfo_tlb* dtlb0_2MB,
-	struct cpuinfo_tlb* dtlb0_4MB,
-	struct cpuinfo_tlb* dtlb_4KB,
-	struct cpuinfo_tlb* dtlb_2MB,
-	struct cpuinfo_tlb* dtlb_4MB,
-	struct cpuinfo_tlb* dtlb_1GB,
-	struct cpuinfo_tlb* stlb2_4KB,
-	struct cpuinfo_tlb* stlb2_2MB,
-	struct cpuinfo_tlb* stlb2_1GB,
-	uint32_t* prefetch_size);
+	struct cpuinfo_x86_tlbs* tlb);
 
 CPUINFO_INTERNAL bool cpuinfo_x86_decode_deterministic_cache_parameters(
 	struct cpuid_regs regs,
