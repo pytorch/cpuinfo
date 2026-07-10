@@ -26,8 +26,8 @@
 #endif
 
 #if CPUINFO_MOCK
-static uint32_t mock_hwcap = 0;
-void cpuinfo_set_hwcap(uint32_t hwcap) {
+static uint64_t mock_hwcap = 0;
+void cpuinfo_set_hwcap(uint64_t hwcap) {
 	mock_hwcap = hwcap;
 }
 
@@ -40,7 +40,7 @@ void cpuinfo_set_hwcap2(uint64_t hwcap2) {
 #if CPUINFO_ARCH_ARM
 typedef unsigned long (*getauxval_function_t)(unsigned long);
 
-bool cpuinfo_arm_linux_hwcap_from_getauxval(uint32_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
+bool cpuinfo_arm_linux_hwcap_from_getauxval(uint64_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
 #if CPUINFO_MOCK
 	*hwcap = mock_hwcap;
 	*hwcap2 = mock_hwcap2;
@@ -63,8 +63,8 @@ bool cpuinfo_arm_linux_hwcap_from_getauxval(uint32_t hwcap[restrict static 1], u
 		goto cleanup;
 	}
 
-	*hwcap = getauxval(AT_HWCAP);
-	*hwcap2 = getauxval(AT_HWCAP2);
+	*hwcap = (uint64_t)getauxval(AT_HWCAP);
+	*hwcap2 = (uint64_t)getauxval(AT_HWCAP2);
 
 cleanup:
 	if (libc != NULL) {
@@ -74,8 +74,8 @@ cleanup:
 	return getauxval != NULL;
 #elif defined(__GLIBC__) && defined(__GLIBC_MINOR__) && (__GLIBC__ > 2 || __GLIBC__ == 2 && __GLIBC_MINOR__ >= 16)
 	/* GNU/Linux: getauxval is supported since glibc-2.16 */
-	*hwcap = getauxval(AT_HWCAP);
-	*hwcap2 = getauxval(AT_HWCAP2);
+	*hwcap = (uint64_t)getauxval(AT_HWCAP);
+	*hwcap2 = (uint64_t)getauxval(AT_HWCAP2);
 	return true;
 #else
 	return false;
@@ -83,7 +83,7 @@ cleanup:
 }
 
 #ifdef __ANDROID__
-bool cpuinfo_arm_linux_hwcap_from_procfs(uint32_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
+bool cpuinfo_arm_linux_hwcap_from_procfs(uint64_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
 #if CPUINFO_MOCK
 	*hwcap = mock_hwcap;
 	*hwcap2 = mock_hwcap2;
@@ -110,7 +110,7 @@ bool cpuinfo_arm_linux_hwcap_from_procfs(uint32_t hwcap[restrict static 1], uint
 			if (bytes_read == sizeof(elf_auxv)) {
 				switch (elf_auxv.a_type) {
 					case AT_HWCAP:
-						hwcaps[0] = (uint32_t)elf_auxv.a_un.a_val;
+						hwcaps[0] = elf_auxv.a_un.a_val;
 						break;
 					case AT_HWCAP2:
 						hwcaps[1] = (uint64_t)elf_auxv.a_un.a_val;
@@ -141,12 +141,12 @@ cleanup:
 }
 #endif /* __ANDROID__ */
 #elif CPUINFO_ARCH_ARM64
-void cpuinfo_arm_linux_hwcap_from_getauxval(uint32_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
+void cpuinfo_arm_linux_hwcap_from_getauxval(uint64_t hwcap[restrict static 1], uint64_t hwcap2[restrict static 1]) {
 #if CPUINFO_MOCK
 	*hwcap = mock_hwcap;
 	*hwcap2 = mock_hwcap2;
 #else
-	*hwcap = (uint32_t)getauxval(AT_HWCAP);
+	*hwcap = (uint64_t)getauxval(AT_HWCAP);
 	*hwcap2 = (uint64_t)getauxval(AT_HWCAP2);
 	return;
 #endif

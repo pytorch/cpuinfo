@@ -582,6 +582,18 @@ TEST(ISA, crc32) {
 	ASSERT_TRUE(cpuinfo_has_arm_crc32());
 }
 
+TEST(ISA, fp8) {
+	ASSERT_FALSE(cpuinfo_has_arm_fp8());
+}
+
+TEST(ISA, f8dot) {
+	ASSERT_FALSE(cpuinfo_has_arm_f8dot());
+}
+
+TEST(ISA, f8mm) {
+	ASSERT_FALSE(cpuinfo_has_arm_f8mm());
+}
+
 TEST(L1I, count) {
 	ASSERT_EQ(9, cpuinfo_get_l1i_caches_count());
 }

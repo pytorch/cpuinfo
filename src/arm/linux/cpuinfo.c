@@ -237,6 +237,12 @@ static void parse_features(
 				} else if (memcmp(feature_start, "lrcpc", feature_length) == 0) {
 #if CPUINFO_ARCH_ARM64
 					processor->features |= CPUINFO_ARM_LINUX_FEATURE_LRCPC;
+				} else if (memcmp(feature_start, "f8cvt", feature_length) == 0) {
+					processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_FP8;
+				} else if (memcmp(feature_start, "f8dp4", feature_length) == 0) {
+					processor->features2 |= CPUINFO_ARM_LINUX_FEATURE2_F8DOT;
+				} else if (memcmp(feature_start, "f8mm8", feature_length) == 0) {
+					processor->features |= CPUINFO_ARM_LINUX_FEATURE_F8MM;
 #endif
 #if CPUINFO_ARCH_ARM
 				} else if (memcmp(feature_start, "thumb", feature_length) == 0) {

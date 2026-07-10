@@ -235,6 +235,15 @@ static void set_cpuinfo_isa_fields(void) {
 	// - sme_bi32i32
 
 	cpuinfo_isa.bf16 = IsProcessorFeaturePresent(PF_ARM_V86_BF16_INSTRUCTIONS_AVAILABLE) != 0;
+#if defined(PF_ARM_V87_FP8_INSTRUCTIONS_AVAILABLE)
+	cpuinfo_isa.fp8 = IsProcessorFeaturePresent(PF_ARM_V87_FP8_INSTRUCTIONS_AVAILABLE) != 0;
+#endif
+#if defined(PF_ARM_V87_FP8_DOT4_INSTRUCTIONS_AVAILABLE)
+	cpuinfo_isa.f8dot = IsProcessorFeaturePresent(PF_ARM_V87_FP8_DOT4_INSTRUCTIONS_AVAILABLE) != 0;
+#endif
+#if defined(PF_ARM_V87_FP8_F32MM_INSTRUCTIONS_AVAILABLE)
+	cpuinfo_isa.f8mm = IsProcessorFeaturePresent(PF_ARM_V87_FP8_F32MM_INSTRUCTIONS_AVAILABLE) != 0;
+#endif
 
 	// TODO: This is not available in the Windows SDK yet , so conservatively go with the lowest value (128 bits)
 	// https://developer.arm.com/documentation/101427/0102/Register-descriptions/Scalable-vector-extensions--SVE--registers/ZCR-EL1--SVE-Control-Register--EL1
