@@ -79,6 +79,7 @@ int main(int argc, char** argv) {
 	printf("\tAVXVNNI: %s\n", cpuinfo_has_x86_avxvnni() ? "yes" : "no");
 	printf("\tAVX_VNNI_INT8: %s\n", cpuinfo_has_x86_avx_vnni_int8() ? "yes" : "no");
 	printf("\tAVX_VNNI_INT16: %s\n", cpuinfo_has_x86_avx_vnni_int16() ? "yes" : "no");
+	printf("\tAVX_VNNI_FP16: %s\n", cpuinfo_has_x86_avx_vnni_fp16() ? "yes" : "no");
 	printf("\tAVX_NE_CONVERT: %s\n", cpuinfo_has_x86_avx_ne_convert() ? "yes" : "no");
 
 	printf("Multi-threading extensions:\n");

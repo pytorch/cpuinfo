@@ -588,6 +588,12 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	isa.avx_vnni_int16 = avx_regs && !!(structured_feature_info1.edx & UINT32_C(0x00000400));
 
 	/*
+	 * AVX_VNNI_FP16 instructions:
+	 * - AMD/Intel: eax[bit 1] in structured feature info (ecx = 1).
+	 */
+	isa.avx_vnni_fp16 = avx_regs && !!(structured_feature_info1.eax & UINT32_C(0x00000002));
+
+	/*
 	 * AVX_NE_CONVERT instructions:
 	 * - Intel: edx[bit 5] in structured feature info (ecx = 1).
 	 */

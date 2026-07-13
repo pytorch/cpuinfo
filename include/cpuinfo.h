@@ -893,6 +893,7 @@ struct cpuinfo_x86_isa {
 	bool amx_fp16;
 	bool avx_vnni_int8;
 	bool avx_vnni_int16;
+	bool avx_vnni_fp16;
 	bool avx_ne_convert;
 	bool hle;
 	bool rtm;
@@ -1481,6 +1482,17 @@ static inline bool cpuinfo_has_x86_avx_vnni_int8(void) {
 static inline bool cpuinfo_has_x86_avx_vnni_int16(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	return cpuinfo_isa.avx_vnni_int16;
+#else
+	return false;
+#endif
+}
+
+/*
+ * AMD/Intel AVX Vector Neural Network Instructions (VNNI) FP16
+ */
+static inline bool cpuinfo_has_x86_avx_vnni_fp16(void) {
+#if CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.avx_vnni_fp16;
 #else
 	return false;
 #endif
