@@ -48,6 +48,8 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 		(max_base_index >= 7) ? cpuidex(7, 1) : (struct cpuid_regs){0, 0, 0, 0};
 	const struct cpuid_regs structured_feature_info2 =
 		(max_base_index >= 7) ? cpuidex(0x24, 0) : (struct cpuid_regs){0, 0, 0, 0};
+	const struct cpuid_regs tmm_info1 =
+		(max_base_index >= 0x1E) ? cpuidex(0x1E, 1) : (struct cpuid_regs){0, 0, 0, 0};
 
 	const uint32_t processor_capacity_info_index = UINT32_C(0x80000008);
 	const struct cpuid_regs processor_capacity_info = (max_extended_index >= processor_capacity_info_index)
@@ -574,6 +576,12 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	 * - Intel: eax[bit 21] in structured feature info (ecx = 1).
 	 */
 	isa.amx_fp16 = avx512_regs && !!(structured_feature_info1.eax & UINT32_C(0x00200000));
+
+	/*
+	 * AMX_FP8 instructions:
+	 * - Intel: eax[bit 4] in TMM feature info (leaf 0x1E, ecx = 1).
+	 */
+	isa.amx_fp8 = avx512_regs && !!(tmm_info1.eax & UINT32_C(0x00000010));
 
 	/*
 	 * AVX_VNNI_INT8 instructions:
