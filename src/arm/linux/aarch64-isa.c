@@ -6,7 +6,7 @@
 #include <sys/prctl.h>
 
 void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
-	uint32_t features,
+	uint64_t features,
 	uint64_t features2,
 	uint32_t midr,
 	const struct cpuinfo_arm_chipset chipset[restrict static 1],
@@ -173,6 +173,15 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	}
 	if (features & CPUINFO_ARM_LINUX_FEATURE_ASIMDFHM) {
 		isa->fhm = true;
+	}
+	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_FP8) {
+		isa->fp8 = true;
+	}
+	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_F8DOT) {
+		isa->f8dot = true;
+	}
+	if (features & CPUINFO_ARM_LINUX_FEATURE_F8MM) {
+		isa->f8mm = true;
 	}
 
 #ifndef PR_SVE_GET_VL

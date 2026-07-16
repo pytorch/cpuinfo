@@ -170,6 +170,9 @@ int main(int argc, char** argv) {
 	printf("\tARM v8.2 Int8 matrix multiplication: %s\n", cpuinfo_has_arm_i8mm() ? "yes" : "no");
 	printf("\tARM v8.3 JS conversion: %s\n", cpuinfo_has_arm_jscvt() ? "yes" : "no");
 	printf("\tARM v8.3 complex: %s\n", cpuinfo_has_arm_fcma() ? "yes" : "no");
+	printf("\tARM v8.7 FP8: %s\n", cpuinfo_has_arm_fp8() ? "yes" : "no");
+	printf("\tARM v8.7 FP8 dot product: %s\n", cpuinfo_has_arm_f8dot() ? "yes" : "no");
+	printf("\tARM v8.7 FP8 matrix multiplication: %s\n", cpuinfo_has_arm_f8mm() ? "yes" : "no");
 
 	printf("SIMD extensions:\n");
 	printf("\tARM SVE: %s\n", cpuinfo_has_arm_sve() ? "yes" : "no");

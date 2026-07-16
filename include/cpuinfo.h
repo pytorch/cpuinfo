@@ -1771,6 +1771,9 @@ struct cpuinfo_arm_isa {
 	bool sme_bi32i32;
 	bool sme_b16b16;
 	bool sme_f16f16;
+	bool fp8;
+	bool f8dot;
+	bool f8mm;
 	uint32_t svelen;
 	uint32_t smelen;
 #endif
@@ -2076,6 +2079,30 @@ static inline bool cpuinfo_has_arm_fcma(void) {
 static inline bool cpuinfo_has_arm_i8mm(void) {
 #if CPUINFO_ARCH_ARM64
 	return cpuinfo_isa.i8mm;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_fp8(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.fp8;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_f8dot(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.f8dot;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_f8mm(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.f8mm;
 #else
 	return false;
 #endif

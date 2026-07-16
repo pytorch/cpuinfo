@@ -491,6 +491,9 @@ void cpuinfo_arm_mach_init(void) {
 	cpuinfo_isa.sme_bi32i32 = get_sys_info_by_name("hw.optional.arm.SME_BI32I32") != 0;
 	cpuinfo_isa.sme_b16b16 = get_sys_info_by_name("hw.optional.arm.FEAT_SME_B16B16") != 0;
 	cpuinfo_isa.sme_f16f16 = get_sys_info_by_name("hw.optional.arm.FEAT_SME_F16F16") != 0;
+	cpuinfo_isa.fp8 = get_sys_info_by_name("hw.optional.arm.FEAT_FP8") != 0;
+	cpuinfo_isa.f8dot = get_sys_info_by_name("hw.optional.arm.FEAT_FP8DOT4") != 0;
+	cpuinfo_isa.f8mm = get_sys_info_by_name("hw.optional.arm.FEAT_F8F32MM") != 0;
 
 	cpuinfo_isa.smelen = get_sys_info_by_name("hw.optional.arm.sme_max_svl_b");
 
