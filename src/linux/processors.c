@@ -94,7 +94,7 @@ static const uint32_t default_max_processors_count = CPU_SETSIZE;
 
 static bool uint32_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	if (text_start == text_end) {
-		cpuinfo_log_error("failed to parse file %s: file is empty", KERNEL_MAX_FILENAME);
+		cpuinfo_log_error("failed to parse file %s: file is empty", filename);
 		return false;
 	}
 
@@ -123,6 +123,20 @@ static bool uint32_parser(const char* filename, const char* text_start, const ch
 	uint32_t* kernel_max_ptr = (uint32_t*)context;
 	*kernel_max_ptr = kernel_max;
 	return true;
+}
+
+/*
+ * The kernel exposes a topology id as -1 when it has no topology information
+ * for the processor. That is a sentinel rather than a malformed file, so treat
+ * it as "value unavailable" instead of reporting a parse error for every
+ * processor. A topology id is never legitimately negative.
+ */
+static bool topology_id_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
+	if (text_start != text_end && *text_start == '-') {
+		cpuinfo_log_debug("file %s reports no topology information for this processor", filename);
+		return false;
+	}
+	return uint32_parser(filename, text_start, text_end, context);
 }
 
 uint32_t cpuinfo_linux_get_max_processors_count(void) {
@@ -240,7 +254,7 @@ bool cpuinfo_linux_get_processor_core_id(uint32_t processor, uint32_t core_id_pt
 	}
 
 	uint32_t core_id;
-	if (cpuinfo_linux_parse_small_file(core_id_filename, CORE_ID_FILESIZE, uint32_parser, &core_id)) {
+	if (cpuinfo_linux_parse_small_file(core_id_filename, CORE_ID_FILESIZE, topology_id_parser, &core_id)) {
 		cpuinfo_log_debug(
 			"parsed core id value of %" PRIu32 " for logical processor %" PRIu32 " from %s",
 			core_id,
@@ -265,7 +279,7 @@ bool cpuinfo_linux_get_processor_package_id(uint32_t processor, uint32_t package
 	}
 
 	uint32_t package_id;
-	if (cpuinfo_linux_parse_small_file(package_id_filename, PACKAGE_ID_FILESIZE, uint32_parser, &package_id)) {
+	if (cpuinfo_linux_parse_small_file(package_id_filename, PACKAGE_ID_FILESIZE, topology_id_parser, &package_id)) {
 		cpuinfo_log_debug(
 			"parsed package id value of %" PRIu32 " for logical processor %" PRIu32 " from %s",
 			package_id,
