@@ -33,6 +33,12 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 #else
 	cpuinfo_log_error("operating system is not supported in cpuinfo");
 #endif
+#elif CPUINFO_ARCH_PPC64
+#if defined(__linux__)
+	pthread_once(&init_guard, &cpuinfo_powerpc_linux_init);
+#else
+	cpuinfo_log_error("operating system is not supported in cpuinfo");
+#endif
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 #if defined(__linux__)
 	pthread_once(&init_guard, &cpuinfo_arm_linux_init);
