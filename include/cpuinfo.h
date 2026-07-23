@@ -645,6 +645,11 @@ enum cpuinfo_uarch {
 	/** Apple M4 processor (little cores). */
 	cpuinfo_uarch_donan_sawtooth = 0x00700309,
 
+	/** Apple M5 Pro / Max processor (super cores). */
+	cpuinfo_uarch_sotra_super = 0x0070030A,
+	/** Apple M5 Pro / Max processor (performance cores). */
+	cpuinfo_uarch_sotra_performance = 0x0070030B,
+
 	/** Cavium ThunderX. */
 	cpuinfo_uarch_thunderx = 0x00800100,
 	/** Cavium ThunderX2 (originally Broadcom Vulkan). */
