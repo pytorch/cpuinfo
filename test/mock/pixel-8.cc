@@ -590,8 +590,16 @@ TEST(ISA, f8dot) {
 	ASSERT_FALSE(cpuinfo_has_arm_f8dot());
 }
 
+TEST(ISA, neon_f8dot4) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_f8dot4());
+}
+
 TEST(ISA, f8mm) {
 	ASSERT_FALSE(cpuinfo_has_arm_f8mm());
+}
+
+TEST(ISA, neon_f8mm) {
+	ASSERT_FALSE(cpuinfo_has_arm_neon_f8mm());
 }
 
 TEST(L1I, count) {
