@@ -2092,7 +2092,11 @@ static inline bool cpuinfo_has_arm_fp8(void) {
 #endif
 }
 
-static inline bool cpuinfo_has_arm_f8dot(void) {
+/* For backward compatibility */
+#define cpuinfo_has_arm_f8dot cpuinfo_has_arm_neon_f8dot4
+#define cpuinfo_has_arm_f8mm cpuinfo_has_arm_neon_f8mm
+
+static inline bool cpuinfo_has_arm_neon_f8dot4(void) {
 #if CPUINFO_ARCH_ARM64
 	return cpuinfo_isa.f8dot;
 #else
@@ -2100,7 +2104,7 @@ static inline bool cpuinfo_has_arm_f8dot(void) {
 #endif
 }
 
-static inline bool cpuinfo_has_arm_f8mm(void) {
+static inline bool cpuinfo_has_arm_neon_f8mm(void) {
 #if CPUINFO_ARCH_ARM64
 	return cpuinfo_isa.f8mm;
 #else
