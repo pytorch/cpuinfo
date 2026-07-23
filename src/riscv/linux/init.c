@@ -41,7 +41,8 @@ static bool core_cpus_parser(
 	uint32_t processor,
 	uint32_t core_cpus_start,
 	uint32_t core_cpus_end,
-	struct cpuinfo_riscv_linux_processor* processors) {
+	void* context) {
+	struct cpuinfo_riscv_linux_processor* processors = (struct cpuinfo_riscv_linux_processor*)context;
 	uint32_t processor_start = UINT32_MAX;
 	uint32_t processor_count = 0;
 
@@ -97,7 +98,8 @@ static bool cluster_cpus_parser(
 	uint32_t processor,
 	uint32_t cluster_cpus_start,
 	uint32_t cluster_cpus_end,
-	struct cpuinfo_riscv_linux_processor* processors) {
+	void* context) {
+	struct cpuinfo_riscv_linux_processor* processors = (struct cpuinfo_riscv_linux_processor*)context;
 	uint32_t processor_start = UINT32_MAX;
 	uint32_t processor_count = 0;
 	uint32_t core_count = 0;
@@ -166,7 +168,8 @@ static bool package_cpus_parser(
 	uint32_t processor,
 	uint32_t package_cpus_start,
 	uint32_t package_cpus_end,
-	struct cpuinfo_riscv_linux_processor* processors) {
+	void* context) {
+	struct cpuinfo_riscv_linux_processor* processors = (struct cpuinfo_riscv_linux_processor*)context;
 	uint32_t processor_start = UINT32_MAX;
 	uint32_t processor_count = 0;
 	uint32_t cluster_count = 0;
@@ -301,7 +304,7 @@ void cpuinfo_riscv_linux_init(void) {
 		if (!cpuinfo_linux_detect_core_cpus(
 			    max_processor_id,
 			    processor,
-			    (cpuinfo_siblings_callback)core_cpus_parser,
+			    core_cpus_parser,
 			    riscv_linux_processors)) {
 			cpuinfo_log_error("failed to detect core cpus for processor %zu.", processor);
 			goto cleanup;
@@ -339,7 +342,7 @@ void cpuinfo_riscv_linux_init(void) {
 		if (!cpuinfo_linux_detect_cluster_cpus(
 			    max_processor_id,
 			    processor,
-			    (cpuinfo_siblings_callback)cluster_cpus_parser,
+			    cluster_cpus_parser,
 			    riscv_linux_processors)) {
 			cpuinfo_log_warning("failed to detect cluster cpus for processor %zu.", processor);
 			goto cleanup;
@@ -364,7 +367,7 @@ void cpuinfo_riscv_linux_init(void) {
 		if (!cpuinfo_linux_detect_package_cpus(
 			    max_processor_id,
 			    processor,
-			    (cpuinfo_siblings_callback)package_cpus_parser,
+			    package_cpus_parser,
 			    riscv_linux_processors)) {
 			cpuinfo_log_warning("failed to detect package cpus for processor %zu.", processor);
 			goto cleanup;
