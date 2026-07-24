@@ -72,10 +72,6 @@
 #ifndef CPUFAMILY_ARM_HIDRA
 #define CPUFAMILY_ARM_HIDRA 0x1d5a87e8
 #endif
-// M5 Pro / M5 Max
-#ifndef CPUFAMILY_ARM_SOTRA
-#define CPUFAMILY_ARM_SOTRA 0xf76c5b1a
-#endif
 // A19
 #ifndef CPUFAMILY_ARM_TILOS
 #define CPUFAMILY_ARM_TILOS 0x01d7a72b
@@ -188,12 +184,6 @@ static enum cpuinfo_uarch decode_uarch(uint32_t cpu_family, uint32_t core_index,
 		case CPUFAMILY_ARM_HIDRA: /* M5 */
 			/* 10-core: 4x Tilos Everest v4 + 6x Tilos Sawtooth v4 */
 			return core_index + 6 < core_count ? cpuinfo_uarch_tilos_everest : cpuinfo_uarch_tilos_sawtooth;
-		case CPUFAMILY_ARM_SOTRA: /* M5 Pro / M5 Max */
-			/* Pro 15-core: 5x Sotra Super + 10x Sotra Performance */
-			/* Max 18-core: 6x Sotra Super + 12x Sotra Performance */
-			return (core_count > 15 ? core_index + 12 : core_index + 10) < core_count
-				? cpuinfo_uarch_sotra_super
-				: cpuinfo_uarch_sotra_performance;
 
 		default:
 			/* Use hw.cpusubtype for detection */
@@ -271,9 +261,8 @@ static int decode_package_name_from_hw_machine(char* package_name) {
 			/* iPad 2 and up are supported */
 			case 2:
 				/*
-				 * iPad 2    [A5]: iPad2,1, iPad2,2, iPad2,3,
-				 * iPad2,4 iPad mini [A5]: iPad2,5, iPad2,6,
-				 * iPad2,7
+				 * iPad 2    [A5]: iPad2,1, iPad2,2, iPad2,3, iPad2,4
+				 * iPad mini [A5]: iPad2,5, iPad2,6, iPad2,7
 				 */
 				chip_model = major + 3;
 				break;
@@ -287,10 +276,9 @@ static int decode_package_name_from_hw_machine(char* package_name) {
 				break;
 			case 4:
 				/*
-				 * iPad Air         [A7]: iPad4,1, iPad4,2,
-				 * iPad4,3 iPad mini Retina [A7]: iPad4,4,
-				 * iPad4,5, iPad4,6 iPad mini 3      [A7]:
-				 * iPad4,7, iPad4,8, iPad4,9
+				 * iPad Air         [A7]: iPad4,1, iPad4,2, iPad4,3
+				 * iPad mini Retina [A7]: iPad4,4, iPad4,5, iPad4,6
+				 * iPad mini 3      [A7]: iPad4,7, iPad4,8, iPad4,9
 				 */
 				chip_model = major + 3;
 				break;
@@ -316,9 +304,77 @@ static int decode_package_name_from_hw_machine(char* package_name) {
 				 * iPad Pro 12.9" [A10X]: iPad7,1, iPad7,2
 				 * iPad Pro 10.5" [A10X]: iPad7,3, iPad7,4
 				 * iPad 6th Gen   [A10]:  iPad7,5, iPad7,6
+				 * iPad 7th Gen   [A10]:  iPad7,11, iPad7,12
 				 */
 				chip_model = major + 3;
 				suffix = minor <= 4 ? 'X' : '\0';
+				break;
+			case 8:
+				/*
+				 * iPad Pro 11"       [A12X]: iPad8,1, iPad8,2, iPad8,3, iPad8,4
+				 * iPad Pro 12.9"     [A12X]: iPad8,5, iPad8,6, iPad8,7, iPad8,8
+				 * iPad Pro 11" 2nd   [A12Z]: iPad8,9, iPad8,10
+				 * iPad Pro 12.9" 4th [A12Z]: iPad8,11, iPad8,12
+				 */
+				chip_model = 12;
+				suffix = minor <= 8 ? 'X' : 'Z';
+				break;
+			case 11:
+				/*
+				 * iPad mini 5th Gen [A12]: iPad11,1, iPad11,2
+				 * iPad Air 3rd Gen  [A12]: iPad11,3, iPad11,4
+				 * iPad 8th Gen      [A12]: iPad11,6, iPad11,7
+				 */
+				chip_model = 12;
+				break;
+			case 12:
+				/*
+				 * iPad 9th Gen [A13]: iPad12,1, iPad12,2
+				 */
+				chip_model = 13;
+				break;
+			case 13:
+				/*
+				 * iPad Air 4th Gen   [A14]: iPad13,1, iPad13,2
+				 * iPad Pro 11" 3rd   [M1]:  iPad13,4, iPad13,5, iPad13,6, iPad13,7
+				 * iPad Pro 12.9" 5th [M1]:  iPad13,8, iPad13,9, iPad13,10, iPad13,11
+				 * iPad Air 5th Gen   [M1]:  iPad13,16, iPad13,17
+				 * iPad 10th Gen      [A14]: iPad13,18, iPad13,19
+				 */
+				if (minor == 1 || minor == 2 || minor == 18 || minor == 19) {
+					chip_model = 14;
+				} else {
+					snprintf(package_name, CPUINFO_PACKAGE_NAME_MAX, "Apple M1");
+					return true;
+				}
+				break;
+			case 14:
+				/*
+				 * iPad mini 6th Gen  [A15]: iPad14,1, iPad14,2
+				 * iPad Pro 11" 4th   [M2]:  iPad14,3, iPad14,4
+				 * iPad Pro 12.9" 6th [M2]:  iPad14,5, iPad14,6
+				 * iPad Air 11" M2    [M2]:  iPad14,8, iPad14,9
+				 * iPad Air 13" M2    [M2]:  iPad14,10, iPad14,11
+				 */
+				if (minor == 1 || minor == 2) {
+					chip_model = 15;
+				} else {
+					snprintf(package_name, CPUINFO_PACKAGE_NAME_MAX, "Apple M2");
+					return true;
+				}
+				break;
+			case 16:
+				/*
+				 * iPad mini 7th Gen [A17]: iPad16,1, iPad16,2
+				 * iPad Pro 11" M4   [M4]:  iPad16,3, iPad16,4
+				 * iPad Pro 13" M4   [M4]:  iPad16,5, iPad16,6
+				 */
+				if (minor == 1 || minor == 2) {
+					chip_model = 17;
+				} else {
+					snprintf(package_name, CPUINFO_PACKAGE_NAME_MAX, "Apple M4");
+					return true;
+				}
 				break;
 			default:
 				cpuinfo_log_info("unknown iPad: %s", machine_name);
@@ -326,16 +382,55 @@ static int decode_package_name_from_hw_machine(char* package_name) {
 		}
 	} else if (strcmp(name, "iPod") == 0) {
 		switch (major) {
+			case 4:
+				/* iPod touch (4th Gen) [A4]: iPod4,1 */
+				chip_model = 4;
+				break;
 			case 5:
+				/* iPod touch (5th Gen) [A5]: iPod5,1 */
 				chip_model = 5;
 				break;
-				/* iPod touch (5th Gen) [A5]: iPod5,1 */
 			case 7:
 				/* iPod touch (6th Gen, 2015) [A8]: iPod7,1 */
 				chip_model = 8;
 				break;
+			case 9:
+				/* iPod touch (7th Gen, 2019) [A10]: iPod9,1 */
+				chip_model = 10;
+				break;
 			default:
 				cpuinfo_log_info("unknown iPod: %s", machine_name);
+				break;
+		}
+	} else if (strcmp(name, "AppleTV") == 0) {
+		switch (major) {
+			case 2:
+				/* Apple TV 2nd Gen [A4]: AppleTV2,1 */
+				chip_model = 4;
+				break;
+			case 3:
+				/* Apple TV 3rd Gen [A5]: AppleTV3,1, AppleTV3,2 */
+				chip_model = 5;
+				break;
+			case 5:
+				/* Apple TV HD [A8]: AppleTV5,3 */
+				chip_model = 8;
+				break;
+			case 6:
+				/* Apple TV 4K 1st Gen [A10X]: AppleTV6,2 */
+				chip_model = 10;
+				suffix = 'X';
+				break;
+			case 11:
+				/* Apple TV 4K 2nd Gen [A12]: AppleTV11,1 */
+				chip_model = 12;
+				break;
+			case 14:
+				/* Apple TV 4K 3rd Gen [A15]: AppleTV14,1 */
+				chip_model = 15;
+				break;
+			default:
+				cpuinfo_log_info("unknown AppleTV: %s", machine_name);
 				break;
 		}
 	} else {
