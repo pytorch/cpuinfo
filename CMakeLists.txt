@@ -108,7 +108,7 @@ IF(NOT CMAKE_SYSTEM_NAME)
       "Target operating system is not specified. "
       "cpuinfo will compile, but cpuinfo_initialize() will always fail.")
   SET(CPUINFO_SUPPORTED_PLATFORM FALSE)
-ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android|FreeBSD|Emscripten)$")
+ELSEIF(NOT CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS|Darwin|Linux|Android|FreeBSD|Emscripten|Generic)$")
   IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14" AND NOT IS_APPLE_OS)
     MESSAGE(WARNING
       "Target operating system \"${CMAKE_SYSTEM_NAME}\" is not supported in cpuinfo. "
@@ -211,6 +211,13 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       ENDIF()
     ELSEIF(IS_APPLE_OS AND CPUINFO_TARGET_PROCESSOR MATCHES "arm64.*")
       LIST(APPEND CPUINFO_SRCS src/arm/mach/init.c)
+    ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Generic" AND CPUINFO_TARGET_PROCESSOR MATCHES "^(aarch64|arm64.*)$")
+      # "Generic" is CMake's name for a target without an OS, which covers both
+      # an RTOS (Zephyr, FreeRTOS) and no OS at all.  Such a target runs at EL1
+      # and reads the AArch64 ID registers directly.  AArch64 only: the ID
+      # register layout below does not apply to AArch32.
+      LIST(APPEND CPUINFO_SRCS src/arm/baremetal/init.c)
+      SET(CPUINFO_BAREMETAL_INIT TRUE)
     ENDIF()
     IF(CMAKE_SYSTEM_NAME STREQUAL "Android")
       LIST(APPEND CPUINFO_SRCS
@@ -264,6 +271,12 @@ ADD_LIBRARY(cpuinfo_internals STATIC ${CPUINFO_SRCS})
 CPUINFO_TARGET_ENABLE_C99(cpuinfo)
 CPUINFO_TARGET_ENABLE_C99(cpuinfo_internals)
 CPUINFO_TARGET_RUNTIME_LIBRARY(cpuinfo)
+IF(CPUINFO_BAREMETAL_INIT)
+  # Selects the bare-metal init path and its non-POSIX init guard, so cpuinfo
+  # builds in configurations without pthreads.
+  TARGET_COMPILE_DEFINITIONS(cpuinfo PRIVATE CPUINFO_BAREMETAL=1)
+  TARGET_COMPILE_DEFINITIONS(cpuinfo_internals PRIVATE CPUINFO_BAREMETAL=1)
+ENDIF()
 IF(CMAKE_SYSTEM_NAME MATCHES "^(Windows|WindowsStore|CYGWIN|MSYS)$")
   # Target Windows 7+ API
   TARGET_COMPILE_DEFINITIONS(cpuinfo PRIVATE _WIN32_WINNT=0x0601 _CRT_SECURE_NO_WARNINGS)
