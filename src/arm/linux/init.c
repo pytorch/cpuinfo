@@ -806,22 +806,26 @@ void cpuinfo_arm_linux_init(void) {
 			 * between all cores
 			 */
 			shared_l3 = false;
-			if (temp_l2.size != 0) {
-				/* Check if L2 is per-core using sysfs */
-				uint32_t sysfs_l2_size = cpuinfo_linux_read_sysfs_cache_size(
-					arm_linux_processors[i].system_processor_id, 2);
-				bool l2_is_per_core = (sysfs_l2_size > 0) &&
-					cpuinfo_linux_is_l2_per_core(arm_linux_processors[i].system_processor_id);
-
-				if (l2_is_per_core) {
-					/* L2 is private to each core */
+			/* The population pass overrides the decoded L2 size with the
+			 * value from sysfs; mirror that here so the count matches. A
+			 * core whose decoded L2 is zero but which reports an L2 size
+			 * in sysfs would otherwise be skipped here yet allocated a
+			 * slot below, overflowing the l2 array. */
+			uint32_t sysfs_l2_size =
+				cpuinfo_linux_read_sysfs_cache_size(arm_linux_processors[i].system_processor_id, 2);
+			if (sysfs_l2_size > 0) {
+				temp_l2.size = sysfs_l2_size;
+			}
+			bool l2_is_per_core = (sysfs_l2_size > 0) &&
+				cpuinfo_linux_is_l2_per_core(arm_linux_processors[i].system_processor_id);
+			if (l2_is_per_core) {
+				/* L2 is private to each core */
+				l2_count += 1;
+			} else if (temp_l2.size != 0) {
+				/* Assume L2 is shared by cores in the same cluster */
+				if (arm_linux_processors[i].package_leader_id ==
+				    arm_linux_processors[i].system_processor_id) {
 					l2_count += 1;
-				} else {
-					/* Assume L2 is shared by cores in the same cluster */
-					if (arm_linux_processors[i].package_leader_id ==
-					    arm_linux_processors[i].system_processor_id) {
-						l2_count += 1;
-					}
 				}
 			}
 		}
