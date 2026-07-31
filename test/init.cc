@@ -2,6 +2,48 @@
 
 #include <cpuinfo.h>
 
+#include <atomic>
+#include <condition_variable>
+#include <cstddef>
+#include <mutex>
+#include <thread>
+#include <vector>
+
+namespace {
+
+class ThreadBarrier {
+       public:
+	explicit ThreadBarrier(size_t participant_count)
+		: participant_count_(participant_count), remaining_(participant_count), generation_(0) {}
+
+	void Wait() {
+		std::unique_lock<std::mutex> lock(mutex_);
+		const size_t generation = generation_;
+		if (--remaining_ == 0) {
+			generation_++;
+			remaining_ = participant_count_;
+			condition_.notify_all();
+			return;
+		}
+
+		condition_.wait(lock, [this, generation]() { return generation_ != generation; });
+	}
+
+       private:
+	const size_t participant_count_;
+	size_t remaining_;
+	size_t generation_;
+	std::mutex mutex_;
+	std::condition_variable condition_;
+};
+
+bool HasValidCpuinfoState() {
+	return cpuinfo_get_processors_count() != 0 && cpuinfo_get_processors() != nullptr &&
+		cpuinfo_get_processor(0) != nullptr;
+}
+
+} // namespace
+
 TEST(PROCESSORS_COUNT, non_zero) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	EXPECT_NE(0, cpuinfo_get_processors_count());
@@ -1517,5 +1559,168 @@ TEST(L4_CACHE, consistent_processors) {
 			EXPECT_EQ(cache, processor->cache.l4);
 		}
 	}
+	cpuinfo_deinitialize();
+}
+
+TEST(INIT_REFCOUNT, deinitialize_balances_initialize) {
+	ASSERT_TRUE(cpuinfo_initialize());
+	ASSERT_TRUE(cpuinfo_initialize());
+
+	const uint32_t processors_count = cpuinfo_get_processors_count();
+	EXPECT_NE(0, processors_count);
+
+	cpuinfo_deinitialize();
+	EXPECT_EQ(processors_count, cpuinfo_get_processors_count());
+	EXPECT_TRUE(cpuinfo_get_processors());
+
+	cpuinfo_deinitialize();
+}
+
+TEST(INIT_REFCOUNT, extra_deinitialize_does_not_underflow) {
+	cpuinfo_deinitialize();
+	cpuinfo_deinitialize();
+
+	ASSERT_TRUE(cpuinfo_initialize());
+	EXPECT_TRUE(HasValidCpuinfoState());
+	cpuinfo_deinitialize();
+	cpuinfo_deinitialize();
+
+	ASSERT_TRUE(cpuinfo_initialize());
+	EXPECT_TRUE(HasValidCpuinfoState());
+	cpuinfo_deinitialize();
+}
+
+TEST(INIT_REINITIALIZE, repeated_cycles_restore_valid_state) {
+	constexpr size_t kCycles = 25;
+
+	for (size_t cycle = 0; cycle < kCycles; cycle++) {
+		ASSERT_TRUE(cpuinfo_initialize());
+		EXPECT_TRUE(HasValidCpuinfoState());
+		cpuinfo_deinitialize();
+	}
+}
+
+TEST(INIT_CONCURRENCY, simultaneous_consumers_share_lifecycle) {
+	constexpr size_t kThreadCount = 12;
+	constexpr size_t kRounds = 25;
+
+	ThreadBarrier initialized_barrier(kThreadCount);
+	ThreadBarrier deinitialized_barrier(kThreadCount);
+	std::atomic<uint32_t> failures{0};
+
+	const auto consumer = [&]() {
+		for (size_t round = 0; round < kRounds; round++) {
+			const bool initialized = cpuinfo_initialize();
+			if (!initialized) {
+				failures.fetch_add(1, std::memory_order_relaxed);
+			}
+
+			initialized_barrier.Wait();
+			if (initialized && !HasValidCpuinfoState()) {
+				failures.fetch_add(1, std::memory_order_relaxed);
+			}
+			if (initialized) {
+				cpuinfo_deinitialize();
+			}
+			deinitialized_barrier.Wait();
+		}
+	};
+
+	std::vector<std::thread> consumers;
+	consumers.reserve(kThreadCount);
+	for (size_t thread = 0; thread < kThreadCount; thread++) {
+		consumers.emplace_back(consumer);
+	}
+	for (std::thread& consumer_thread : consumers) {
+		consumer_thread.join();
+	}
+
+	EXPECT_EQ(0u, failures.load(std::memory_order_relaxed));
+	ASSERT_TRUE(cpuinfo_initialize());
+	EXPECT_TRUE(HasValidCpuinfoState());
+	cpuinfo_deinitialize();
+}
+
+TEST(INIT_CONCURRENCY, long_lived_consumers_survive_concurrent_churn) {
+	constexpr size_t kHolderThreadCount = 4;
+	constexpr size_t kChurnThreadCount = 8;
+	constexpr size_t kChurnIterations = 2000;
+
+	std::atomic<bool> stop_holders{false};
+	std::atomic<size_t> holders_ready{0};
+	std::atomic<size_t> holder_references{0};
+	std::atomic<uint32_t> failures{0};
+
+	const auto holder = [&]() {
+		const bool initialized = cpuinfo_initialize();
+		if (initialized) {
+			holder_references.fetch_add(1, std::memory_order_relaxed);
+			if (!HasValidCpuinfoState()) {
+				failures.fetch_add(1, std::memory_order_relaxed);
+			}
+		} else {
+			failures.fetch_add(1, std::memory_order_relaxed);
+		}
+		holders_ready.fetch_add(1, std::memory_order_release);
+
+		if (!initialized) {
+			return;
+		}
+
+		while (!stop_holders.load(std::memory_order_acquire)) {
+			if (!HasValidCpuinfoState()) {
+				failures.fetch_add(1, std::memory_order_relaxed);
+				break;
+			}
+			std::this_thread::yield();
+		}
+
+		cpuinfo_deinitialize();
+	};
+	const auto churn = [&]() {
+		for (size_t iteration = 0; iteration < kChurnIterations; iteration++) {
+			if (!cpuinfo_initialize()) {
+				failures.fetch_add(1, std::memory_order_relaxed);
+				continue;
+			}
+			if (!HasValidCpuinfoState()) {
+				failures.fetch_add(1, std::memory_order_relaxed);
+			}
+			cpuinfo_deinitialize();
+		}
+	};
+
+	std::vector<std::thread> holder_threads;
+	holder_threads.reserve(kHolderThreadCount);
+	for (size_t thread = 0; thread < kHolderThreadCount; thread++) {
+		holder_threads.emplace_back(holder);
+	}
+	while (holders_ready.load(std::memory_order_acquire) != kHolderThreadCount) {
+		std::this_thread::yield();
+	}
+
+	std::vector<std::thread> churn_threads;
+	churn_threads.reserve(kChurnThreadCount);
+	for (size_t thread = 0; thread < kChurnThreadCount; thread++) {
+		churn_threads.emplace_back(churn);
+	}
+	for (std::thread& thread : churn_threads) {
+		thread.join();
+	}
+
+	EXPECT_EQ(kHolderThreadCount, holder_references.load(std::memory_order_relaxed));
+	EXPECT_EQ(0u, failures.load(std::memory_order_relaxed));
+	if (holder_references.load(std::memory_order_relaxed) != 0) {
+		EXPECT_TRUE(HasValidCpuinfoState());
+	}
+
+	stop_holders.store(true, std::memory_order_release);
+	for (std::thread& thread : holder_threads) {
+		thread.join();
+	}
+	EXPECT_EQ(0u, failures.load(std::memory_order_relaxed));
+
+	ASSERT_TRUE(cpuinfo_initialize());
+	EXPECT_TRUE(HasValidCpuinfoState());
 	cpuinfo_deinitialize();
 }
