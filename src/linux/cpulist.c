@@ -111,6 +111,15 @@ inline static bool parse_entry(
 	}
 
 	const char* number_start = number_end + 1;
+	if (number_start == entry_end) {
+		/* Nothing follows the '-' separator; ignore the entry */
+		cpuinfo_log_warning(
+			"missing end of range in the cpu list entry \"%.*s\": entry is ignored",
+			(int)entry_length,
+			entry_start);
+		return false;
+	}
+
 	number_end = parse_number(number_start, entry_end, &last_cpu);
 	if (number_end == number_start) {
 		/* Failed to parse the second number; ignore the entry */
