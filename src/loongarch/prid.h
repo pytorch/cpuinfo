@@ -37,29 +37,29 @@ enum prid_series {
 	prid_series_la664 = 0xd,	/* Loongson 64bit, 6-issue */
 };
 
-inline static uint32_t prid_set_companyID(uint32_t prid, uint32_t companyID) {
+static inline uint32_t prid_set_companyID(uint32_t prid, uint32_t companyID) {
 	return (prid & ~CPUINFO_LOONGARCH_PRID_COMPANY_MASK) |
 		((companyID << CPUINFO_LOONGARCH_PRID_COMPANY_OFFSET) & CPUINFO_LOONGARCH_PRID_COMPANY_MASK);
 }
 
-inline static uint32_t prid_set_seriesID(uint32_t prid, uint32_t seriesID) {
+static inline uint32_t prid_set_seriesID(uint32_t prid, uint32_t seriesID) {
 	return (prid & ~CPUINFO_LOONGARCH_PRID_SERIES_MASK) |
 		((seriesID << CPUINFO_LOONGARCH_PRID_SERIES_OFFSET) & CPUINFO_LOONGARCH_PRID_SERIES_MASK);
 }
 
-inline static uint32_t prid_set_productID(uint32_t prid, uint32_t productID) {
+static inline uint32_t prid_set_productID(uint32_t prid, uint32_t productID) {
 	return (prid & ~CPUINFO_LOONGARCH_PRID_PRODUCT_MASK) |
 		((productID << CPUINFO_LOONGARCH_PRID_PRODUCT_OFFSET) & CPUINFO_LOONGARCH_PRID_PRODUCT_MASK);
 }
 
-inline static uint32_t prid_get_companyID(uint32_t prid) {
+static inline uint32_t prid_get_companyID(uint32_t prid) {
 	return (prid & CPUINFO_LOONGARCH_PRID_COMPANY_MASK) >> CPUINFO_LOONGARCH_PRID_COMPANY_OFFSET;
 }
 
-inline static uint32_t prid_get_seriesID(uint32_t prid) {
+static inline uint32_t prid_get_seriesID(uint32_t prid) {
 	return (prid & CPUINFO_LOONGARCH_PRID_SERIES_MASK) >> CPUINFO_LOONGARCH_PRID_SERIES_OFFSET;
 }
 
-inline static uint32_t prid_get_productID(uint32_t prid) {
+static inline uint32_t prid_get_productID(uint32_t prid) {
 	return (prid & CPUINFO_LOONGARCH_PRID_PRODUCT_MASK) >> CPUINFO_LOONGARCH_PRID_PRODUCT_OFFSET;
 }

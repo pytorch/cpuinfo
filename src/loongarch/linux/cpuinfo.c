@@ -46,7 +46,7 @@ static uint32_t parse_processor_number(
 	uint32_t processor_number = 0;
 	for (const char* digit_ptr = processor_start; digit_ptr != processor_end; digit_ptr++) {
 		const uint32_t digit = (uint32_t) (*digit_ptr - '0');
-		if (digit > 10) {
+		if (digit >= 10) {
 			cpuinfo_log_warning("non-decimal suffix %.*s in /proc/cpuinfo processor number is ignored",
 				(int) (processor_end - digit_ptr), digit_ptr);
 			break;
@@ -148,7 +148,9 @@ static void parse_features(
 				break;
 			case 7:
 				if (memcmp(feature_start, "complex", feature_length) == 0) {
+#if CPUINFO_ARCH_LOONGARCH64
 					processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_COMPLEX;
+#endif
 				} else if (memcmp(feature_start, "lbt_x86", feature_length) == 0) {
 					#if CPUINFO_ARCH_LOONGARCH64
 						processor->features |= CPUINFO_LOONGARCH_LINUX_FEATURE_LBT_X86;
@@ -306,11 +308,11 @@ static void parse_cpu_revision(
 
 	digit_char = cpu_revision_start[3];
 	if ((uint32_t) (digit_char - '0') < 10) {
-		cpu_revision = (uint32_t) (digit_char - '0');
+		cpu_revision += (uint32_t) (digit_char - '0');
 	} else if ((uint32_t) (digit_char - 'A') < 6) {
-		cpu_revision = 10 + (uint32_t) (digit_char - 'A');
+		cpu_revision += 10 + (uint32_t) (digit_char - 'A');
 	} else if ((uint32_t) (digit_char - 'a') < 6) {
-		cpu_revision = 10 + (uint32_t) (digit_char - 'a');
+		cpu_revision += 10 + (uint32_t) (digit_char - 'a');
 	} else {
 		cpuinfo_log_warning("CPU revision %.*s in /proc/cpuinfo is ignored due to unexpected non-hex character '%c'",
 			(int) cpu_revision_length, cpu_revision_start, digit_char);
@@ -488,7 +490,7 @@ static bool parse_line(
 	switch (key_length) {
 		case 3:
 			if (strncasecmp(line_start, "isa", key_length) == 0) {
-				/* isa Revision is presently useless, don't parse */
+				/* isa is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}
@@ -552,8 +554,10 @@ static bool parse_line(
 			if (strncasecmp(line_start, "cpu family", key_length) == 0) {
 				/* cpu family is presently useless, don't parse */
 			} else if (strncasecmp(line_start, "model name", key_length) == 0) {
-				memcpy(processor->hardware_name, value_start, min(value_end - value_start, CPUINFO_HARDWARE_VALUE_MAX));
-				processor->hardware_name[min(value_end - value_start, CPUINFO_HARDWARE_VALUE_MAX)] = '\0';
+				const size_t copy_length =
+					min(value_end - value_start, CPUINFO_HARDWARE_VALUE_MAX - 1);
+				memcpy(processor->hardware_name, value_start, copy_length);
+				processor->hardware_name[copy_length] = '\0';
 				if (!(processor->flags & (CPUINFO_LOONGARCH_LINUX_VALID_COMPANYID | CPUINFO_LOONGARCH_LINUX_VALID_SERIESID)))
 					parse_model_name(value_start, value_end, processor);
 			} else {
@@ -588,7 +592,7 @@ static bool parse_line(
 			break;
 		case 18:
 			if (strncasecmp(line_start, "hardware watchpoint", key_length) == 0) {
-				/* Address sizes is presently useless, don't parse */
+				/* hardware watchpoint is presently useless, don't parse */
 			} else {
 				goto unknown;
 			}

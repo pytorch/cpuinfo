@@ -157,7 +157,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		cpuinfo_linux_get_max_present_processor(max_processors_count);
 	cpuinfo_log_debug("maximum present processors count: %"PRIu32, max_present_processors_count);
 
-	uint32_t valid_processor_mask = CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR;
+	uint32_t valid_processor_mask = 0;
 	uint32_t loongarch_linux_processors_count = max_processors_count;
 	if (max_present_processors_count != 0) {
 		loongarch_linux_processors_count = min(loongarch_linux_processors_count, max_present_processors_count);
@@ -222,22 +222,20 @@ void cpuinfo_loongarch_linux_init(void) {
 	}
 
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
-		if (bitmask_all(loongarch_linux_processors[i].flags, valid_processor_mask)) {
-			valid_processors += 1;
-			loongarch_linux_processors[i].system_processor_id = i;
+		loongarch_linux_processors[i].system_processor_id = i;
+		if (bitmask_all(loongarch_linux_processors[i].flags, valid_processor_mask) &&
+		    (loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR)) {
 			loongarch_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_VALID;
-			continue;
-		}
-		if (!(loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR)) {
+			valid_processors += 1;
+		} else if (bitmask_all(loongarch_linux_processors[i].flags, valid_processor_mask)) {
 			/*
-			 * Processor is in possible and present lists, but not reported in /proc/cpuinfo.
-			 * This is fairly common: high-index processors can be not reported if they are offline.
+			 * In possible + present lists, but not reported in /proc/cpuinfo.
 			 */
 			cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
-			continue;
+		} else if (loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR) {
+			/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore */
+			cpuinfo_log_warning("invalid processor %"PRIu32" reported in /proc/cpuinfo", i);
 		}
-		/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore */
-		cpuinfo_log_warning("invalid processor %"PRIu32" reported in /proc/cpuinfo", i);
 	}
 
 	/* Populate core information. */
@@ -259,7 +257,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		loongarch_linux_processors[i].flags |= CPUINFO_LINUX_FLAG_SMT_ID;
 	}
 
-	/* Not populate cluster information. Thought a package as a cluster. */
+	/* Do not populate cluster information separately; treat each package as a single cluster. */
 	uint32_t cluster_count;
 
 	/* Populate package information. */
@@ -342,7 +340,7 @@ void cpuinfo_loongarch_linux_init(void) {
 	packages = calloc(cluster_count, sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
 		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core packages",
-			cluster_count * sizeof(struct cpuinfo_package), package_count);
+			cluster_count * sizeof(struct cpuinfo_package), cluster_count);
 		goto cleanup;
 	}
 
@@ -401,8 +399,8 @@ void cpuinfo_loongarch_linux_init(void) {
 	// Shared in package.
 	l3 = calloc(package_count, sizeof(struct cpuinfo_cache));
 	if (l3 == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
-			valid_processors * sizeof(struct cpuinfo_cache), valid_processors);
+		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
+			package_count * sizeof(struct cpuinfo_cache), package_count);
 		goto cleanup;
 	}
 
@@ -482,7 +480,7 @@ void cpuinfo_loongarch_linux_init(void) {
 				.processor_count = 1,
 				.core_start = core_index,
 				.core_count = 1,
-				.cluster_id = 0, // Thought a package as a cluster
+				.cluster_id = 0, // Treat each package as a single cluster
 				.package = &packages[package_index],
 				.vendor = cur->vendor,
 				.uarch = cur->uarch,
@@ -548,6 +546,7 @@ void cpuinfo_loongarch_linux_init(void) {
 	processors = NULL;
 	cores = NULL;
 	clusters = NULL;
+	packages = NULL;
 	uarchs = NULL;
 	l1i = l1d = l2 = l3 = NULL;
 	linux_cpu_to_processor_map = NULL;
@@ -559,6 +558,7 @@ cleanup:
 	free(processors);
 	free(cores);
 	free(clusters);
+	free(packages);
 	free(uarchs);
 	free(l1i);
 	free(l1d);
