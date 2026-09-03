@@ -1,19 +1,18 @@
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <cpuinfo.h>
-#include <loongarch/linux/api.h>
-#include <loongarch/api.h>
-#include <loongarch/cpucfg.h>
-#include <loongarch/prid.h>
-#include <linux/api.h>
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
+#include <linux/api.h>
+#include <loongarch/api.h>
+#include <loongarch/cpucfg.h>
+#include <loongarch/linux/api.h>
+#include <loongarch/prid.h>
 
-
-struct cpuinfo_loongarch_isa cpuinfo_isa = { 0 };
+struct cpuinfo_loongarch_isa cpuinfo_isa = {0};
 
 static inline bool bitmask_all(uint32_t bitfield, uint32_t mask) {
 	return (bitfield & mask) == mask;
@@ -28,14 +27,16 @@ static inline int cmp(uint32_t a, uint32_t b) {
 }
 
 static int cmp_loongarch_linux_processor(const void* ptr_a, const void* ptr_b) {
-	const struct cpuinfo_loongarch_linux_processor* processor_a = (const struct cpuinfo_loongarch_linux_processor*) ptr_a;
-	const struct cpuinfo_loongarch_linux_processor* processor_b = (const struct cpuinfo_loongarch_linux_processor*) ptr_b;
+	const struct cpuinfo_loongarch_linux_processor* processor_a =
+		(const struct cpuinfo_loongarch_linux_processor*)ptr_a;
+	const struct cpuinfo_loongarch_linux_processor* processor_b =
+		(const struct cpuinfo_loongarch_linux_processor*)ptr_b;
 
 	/* Move usable processors towards the start of the array */
 	const bool usable_a = bitmask_all(processor_a->flags, CPUINFO_LINUX_FLAG_VALID);
 	const bool usable_b = bitmask_all(processor_b->flags, CPUINFO_LINUX_FLAG_VALID);
 	if (usable_a != usable_b) {
-		return (int) usable_b - (int) usable_a;
+		return (int)usable_b - (int)usable_a;
 	}
 
 	/* Compare based on processsor ID (i.e. processor 0 < processor 1) */
@@ -49,17 +50,14 @@ static inline bool is_cache_bit_set(enum cache_baseinfo_bit bit, uint32_t info) 
 	return !!((info >> bit) & 1);
 }
 
-static inline bool set_cpuinfo_cache_by_cpucfg(
-	enum cpucfg_regs reg,
-	struct cpuinfo_cache cache[restrict static 1])
-{
+static inline bool set_cpuinfo_cache_by_cpucfg(enum cpucfg_regs reg, struct cpuinfo_cache cache[restrict static 1]) {
 	uint32_t data;
 
 	if (!cpucfg(reg, &data)) {
 		return false;
 	}
 
-	*cache = (struct cpuinfo_cache) {
+	*cache = (struct cpuinfo_cache){
 		.associativity = ((data & CACHE_WAYS_MASK) >> CACHE_WAYS_OFFSET) + 1,
 		.sets = 1 << ((data & CACHE_SETS_MASK) >> CACHE_SETS_OFFSET),
 		.line_size = 1 << ((data & CACHE_LSIZE_MASK) >> CACHE_LSIZE_OFFSET),
@@ -69,10 +67,7 @@ static inline bool set_cpuinfo_cache_by_cpucfg(
 	return true;
 }
 
-static void try_set_cache_by_cpucfg(
-	struct cpuinfo_loongarch_linux_processor *processors,
-	uint32_t count)
-{
+static void try_set_cache_by_cpucfg(struct cpuinfo_loongarch_linux_processor* processors, uint32_t count) {
 	uint32_t info, flags = 0;
 	struct cpuinfo_cache l1i, l1d, l2, l3;
 
@@ -118,10 +113,7 @@ static void try_set_cache_by_cpucfg(
 	}
 }
 
-static void try_set_prid_by_cpucfg(
-	struct cpuinfo_loongarch_linux_processor *processors,
-	uint32_t count)
-{
+static void try_set_prid_by_cpucfg(struct cpuinfo_loongarch_linux_processor* processors, uint32_t count) {
 	uint32_t prid;
 	if (!cpucfg(CPUCFG_REG_PRID, &prid)) {
 		return;
@@ -148,14 +140,13 @@ void cpuinfo_loongarch_linux_init(void) {
 	uint32_t* linux_cpu_to_uarch_index_map = NULL;
 
 	const uint32_t max_processors_count = cpuinfo_linux_get_max_processors_count();
-	cpuinfo_log_debug("system maximum processors count: %"PRIu32, max_processors_count);
+	cpuinfo_log_debug("system maximum processors count: %" PRIu32, max_processors_count);
 
-	const uint32_t max_possible_processors_count = 1 +
-		cpuinfo_linux_get_max_possible_processor(max_processors_count);
-	cpuinfo_log_debug("maximum possible processors count: %"PRIu32, max_possible_processors_count);
-	const uint32_t max_present_processors_count = 1 +
-		cpuinfo_linux_get_max_present_processor(max_processors_count);
-	cpuinfo_log_debug("maximum present processors count: %"PRIu32, max_present_processors_count);
+	const uint32_t max_possible_processors_count =
+		1 + cpuinfo_linux_get_max_possible_processor(max_processors_count);
+	cpuinfo_log_debug("maximum possible processors count: %" PRIu32, max_possible_processors_count);
+	const uint32_t max_present_processors_count = 1 + cpuinfo_linux_get_max_present_processor(max_processors_count);
+	cpuinfo_log_debug("maximum present processors count: %" PRIu32, max_present_processors_count);
 
 	uint32_t valid_processor_mask = 0;
 	uint32_t loongarch_linux_processors_count = max_processors_count;
@@ -172,10 +163,11 @@ void cpuinfo_loongarch_linux_init(void) {
 		return;
 	}
 
-	loongarch_linux_processors = calloc(loongarch_linux_processors_count, sizeof(struct cpuinfo_loongarch_linux_processor));
+	loongarch_linux_processors =
+		calloc(loongarch_linux_processors_count, sizeof(struct cpuinfo_loongarch_linux_processor));
 	if (loongarch_linux_processors == NULL) {
 		cpuinfo_log_error(
-			"failed to allocate %zu bytes for descriptions of %"PRIu32" Loongarch logical processors",
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " Loongarch logical processors",
 			loongarch_linux_processors_count * sizeof(struct cpuinfo_loongarch_linux_processor),
 			loongarch_linux_processors_count);
 		return;
@@ -183,41 +175,40 @@ void cpuinfo_loongarch_linux_init(void) {
 
 	if (max_possible_processors_count) {
 		cpuinfo_linux_detect_possible_processors(
-			loongarch_linux_processors_count, &loongarch_linux_processors->flags,
+			loongarch_linux_processors_count,
+			&loongarch_linux_processors->flags,
 			sizeof(struct cpuinfo_loongarch_linux_processor),
 			CPUINFO_LINUX_FLAG_POSSIBLE);
 	}
 
 	if (max_present_processors_count) {
 		cpuinfo_linux_detect_present_processors(
-			loongarch_linux_processors_count, &loongarch_linux_processors->flags,
+			loongarch_linux_processors_count,
+			&loongarch_linux_processors->flags,
 			sizeof(struct cpuinfo_loongarch_linux_processor),
 			CPUINFO_LINUX_FLAG_PRESENT);
 	}
 
-	#if CPUINFO_ARCH_LOONGARCH64
+#if CPUINFO_ARCH_LOONGARCH64
 	/* Populate ISA structure with hwcap information. */
 	cpuinfo_loongarch64_linux_decode_isa_from_hwcap(&cpuinfo_isa);
 	if (cpuinfo_isa.cpucfg) {
 		try_set_prid_by_cpucfg(loongarch_linux_processors, loongarch_linux_processors_count);
 		try_set_cache_by_cpucfg(loongarch_linux_processors, loongarch_linux_processors_count);
 	}
-	#endif
+#endif
 
 	/* Populate processor information. */
 	uint32_t valid_processors = 0;
 
-	if (!cpuinfo_loongarch_linux_parse_proc_cpuinfo(
-			loongarch_linux_processors_count,
-			loongarch_linux_processors)) {
+	if (!cpuinfo_loongarch_linux_parse_proc_cpuinfo(loongarch_linux_processors_count, loongarch_linux_processors)) {
 		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
 		return;
 	}
 
-	if (!cpuinfo_loongarch_linux_parse_cpu_cache(
-			loongarch_linux_processors_count,
-			loongarch_linux_processors)) {
-		cpuinfo_log_error("failed to parse processor information from /sys/devices/system/cpu/cpuX/cache/indexY/*");
+	if (!cpuinfo_loongarch_linux_parse_cpu_cache(loongarch_linux_processors_count, loongarch_linux_processors)) {
+		cpuinfo_log_error(
+			"failed to parse processor information from /sys/devices/system/cpu/cpuX/cache/indexY/*");
 		return;
 	}
 
@@ -231,10 +222,11 @@ void cpuinfo_loongarch_linux_init(void) {
 			/*
 			 * In possible + present lists, but not reported in /proc/cpuinfo.
 			 */
-			cpuinfo_log_info("processor %"PRIu32" is not listed in /proc/cpuinfo", i);
+			cpuinfo_log_info("processor %" PRIu32 " is not listed in /proc/cpuinfo", i);
 		} else if (loongarch_linux_processors[i].flags & CPUINFO_LOONGARCH_LINUX_VALID_PROCESSOR) {
-			/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore */
-			cpuinfo_log_warning("invalid processor %"PRIu32" reported in /proc/cpuinfo", i);
+			/* Processor reported in /proc/cpuinfo, but not in possible and/or present lists: log and ignore
+			 */
+			cpuinfo_log_warning("invalid processor %" PRIu32 " reported in /proc/cpuinfo", i);
 		}
 	}
 
@@ -244,7 +236,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		if (!bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID))
 			continue;
 		if (!bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_CORE_ID)) {
-			cpuinfo_log_warning("Not set core id for processor %"PRIu32" from /proc/cpuinfo", i);
+			cpuinfo_log_warning("Not set core id for processor %" PRIu32 " from /proc/cpuinfo", i);
 			loongarch_linux_processors[i].core_id = last_core_id;
 		}
 		smt_id += 1;
@@ -266,10 +258,10 @@ void cpuinfo_loongarch_linux_init(void) {
 		if (!bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID))
 			continue;
 		if (!bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_PACKAGE_ID)) {
-			cpuinfo_log_warning("Not set package id for processor %"PRIu32" from /proc/cpuinfo", i);
+			cpuinfo_log_warning("Not set package id for processor %" PRIu32 " from /proc/cpuinfo", i);
 			loongarch_linux_processors[i].package_id = last_package_id;
 			if (package_leader_id == UINT32_MAX) {
-				cpuinfo_log_warning("Set default package leader id 0 for processor %"PRIu32, i);
+				cpuinfo_log_warning("Set default package leader id 0 for processor %" PRIu32, i);
 				package_leader_id = 0;
 			}
 		}
@@ -284,7 +276,9 @@ void cpuinfo_loongarch_linux_init(void) {
 
 	/* Initialize core vendor, uarch for every logical processor */
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
-		if (!bitmask_all(loongarch_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID | CPUINFO_LINUX_FLAG_PACKAGE_ID))
+		if (!bitmask_all(
+			    loongarch_linux_processors[i].flags,
+			    CPUINFO_LINUX_FLAG_VALID | CPUINFO_LINUX_FLAG_PACKAGE_ID))
 			continue;
 		const uint32_t package_leader = loongarch_linux_processors[i].package_leader_id;
 		if (package_leader == i) {
@@ -300,9 +294,10 @@ void cpuinfo_loongarch_linux_init(void) {
 		}
 	}
 
-	qsort(loongarch_linux_processors, loongarch_linux_processors_count,
-		sizeof(struct cpuinfo_loongarch_linux_processor), cmp_loongarch_linux_processor);
-
+	qsort(loongarch_linux_processors,
+	      loongarch_linux_processors_count,
+	      sizeof(struct cpuinfo_loongarch_linux_processor),
+	      cmp_loongarch_linux_processor);
 
 	uint32_t uarchs_count = 0;
 	enum cpuinfo_uarch last_uarch = cpuinfo_uarch_unknown;
@@ -318,89 +313,113 @@ void cpuinfo_loongarch_linux_init(void) {
 
 	processors = calloc(valid_processors, sizeof(struct cpuinfo_processor));
 	if (processors == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" logical processors",
-			valid_processors * sizeof(struct cpuinfo_processor), valid_processors);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " logical processors",
+			valid_processors * sizeof(struct cpuinfo_processor),
+			valid_processors);
 		goto cleanup;
 	}
 
 	cores = calloc(core_count, sizeof(struct cpuinfo_core));
 	if (cores == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" cores",
-			core_count * sizeof(struct cpuinfo_core), core_count);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " cores",
+			core_count * sizeof(struct cpuinfo_core),
+			core_count);
 		goto cleanup;
 	}
 
 	clusters = calloc(cluster_count, sizeof(struct cpuinfo_cluster));
 	if (clusters == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core clusters",
-			cluster_count * sizeof(struct cpuinfo_cluster), cluster_count);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " core clusters",
+			cluster_count * sizeof(struct cpuinfo_cluster),
+			cluster_count);
 		goto cleanup;
 	}
 
 	packages = calloc(cluster_count, sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" core packages",
-			cluster_count * sizeof(struct cpuinfo_package), cluster_count);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " core packages",
+			cluster_count * sizeof(struct cpuinfo_package),
+			cluster_count);
 		goto cleanup;
 	}
 
 	uarchs = calloc(uarchs_count, sizeof(struct cpuinfo_uarch_info));
 	if (uarchs == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" microarchitectures",
-			uarchs_count * sizeof(struct cpuinfo_uarch_info), uarchs_count);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " microarchitectures",
+			uarchs_count * sizeof(struct cpuinfo_uarch_info),
+			uarchs_count);
 		goto cleanup;
 	}
 
 	linux_cpu_to_processor_map = calloc(loongarch_linux_processors_count, sizeof(struct cpuinfo_processor*));
 	if (linux_cpu_to_processor_map == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" logical processor mapping entries",
-			loongarch_linux_processors_count * sizeof(struct cpuinfo_processor*), loongarch_linux_processors_count);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %" PRIu32 " logical processor mapping entries",
+			loongarch_linux_processors_count * sizeof(struct cpuinfo_processor*),
+			loongarch_linux_processors_count);
 		goto cleanup;
 	}
 
 	linux_cpu_to_core_map = calloc(loongarch_linux_processors_count, sizeof(struct cpuinfo_core*));
 	if (linux_cpu_to_core_map == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" core mapping entries",
-			loongarch_linux_processors_count * sizeof(struct cpuinfo_core*), loongarch_linux_processors_count);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for %" PRIu32 " core mapping entries",
+			loongarch_linux_processors_count * sizeof(struct cpuinfo_core*),
+			loongarch_linux_processors_count);
 		goto cleanup;
 	}
 
 	if (uarchs_count > 1) {
 		linux_cpu_to_uarch_index_map = calloc(loongarch_linux_processors_count, sizeof(uint32_t));
 		if (linux_cpu_to_uarch_index_map == NULL) {
-			cpuinfo_log_error("failed to allocate %zu bytes for %"PRIu32" uarch index mapping entries",
-				loongarch_linux_processors_count * sizeof(uint32_t), loongarch_linux_processors_count);
+			cpuinfo_log_error(
+				"failed to allocate %zu bytes for %" PRIu32 " uarch index mapping entries",
+				loongarch_linux_processors_count * sizeof(uint32_t),
+				loongarch_linux_processors_count);
 			goto cleanup;
 		}
 	}
 
 	l1i = calloc(valid_processors, sizeof(struct cpuinfo_cache));
 	if (l1i == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1I caches",
-			valid_processors * sizeof(struct cpuinfo_cache), valid_processors);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " L1I caches",
+			valid_processors * sizeof(struct cpuinfo_cache),
+			valid_processors);
 		goto cleanup;
 	}
 
 	l1d = calloc(valid_processors, sizeof(struct cpuinfo_cache));
 	if (l1d == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L1D caches",
-			valid_processors * sizeof(struct cpuinfo_cache), valid_processors);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " L1D caches",
+			valid_processors * sizeof(struct cpuinfo_cache),
+			valid_processors);
 		goto cleanup;
 	}
 
 	// Victim Cache is private. TODO dynamic detect
 	l2 = calloc(valid_processors, sizeof(struct cpuinfo_cache));
 	if (l2 == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L2 caches",
-			valid_processors * sizeof(struct cpuinfo_cache), valid_processors);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " L2 caches",
+			valid_processors * sizeof(struct cpuinfo_cache),
+			valid_processors);
 		goto cleanup;
 	}
 
 	// Shared in package.
 	l3 = calloc(package_count, sizeof(struct cpuinfo_cache));
 	if (l3 == NULL) {
-		cpuinfo_log_error("failed to allocate %zu bytes for descriptions of %"PRIu32" L3 caches",
-			package_count * sizeof(struct cpuinfo_cache), package_count);
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " L3 caches",
+			package_count * sizeof(struct cpuinfo_cache),
+			package_count);
 		goto cleanup;
 	}
 
@@ -412,7 +431,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		}
 		if (uarchs_index == 0 || loongarch_linux_processors[i].uarch != last_uarch) {
 			last_uarch = loongarch_linux_processors[i].uarch;
-			uarchs[uarchs_index] = (struct cpuinfo_uarch_info) {
+			uarchs[uarchs_index] = (struct cpuinfo_uarch_info){
 				.uarch = loongarch_linux_processors[i].uarch,
 				.prid = loongarch_linux_processors[i].prid,
 			};
@@ -423,10 +442,11 @@ void cpuinfo_loongarch_linux_init(void) {
 	}
 
 	/* Transfer contents of processor list to ABI structures. */
-	uint32_t processor_index = UINT32_MAX, core_index = UINT32_MAX, cluster_index = UINT32_MAX, package_index = UINT32_MAX;
+	uint32_t processor_index = UINT32_MAX, core_index = UINT32_MAX, cluster_index = UINT32_MAX,
+		 package_index = UINT32_MAX;
 	last_core_id = last_package_id = UINT32_MAX;
 	for (uint32_t i = 0; i < loongarch_linux_processors_count; i++) {
-		struct cpuinfo_loongarch_linux_processor *cur = &loongarch_linux_processors[i];
+		struct cpuinfo_loongarch_linux_processor* cur = &loongarch_linux_processors[i];
 
 		if (!bitmask_all(cur->flags, CPUINFO_LINUX_FLAG_VALID)) {
 			continue;
@@ -436,12 +456,12 @@ void cpuinfo_loongarch_linux_init(void) {
 		core_index += last_core_id != cur->core_id ? 1 : 0;
 		cluster_index += last_package_id != cur->package_id ? 1 : 0;
 		package_index += last_package_id != cur->package_id ? 1 : 0;
-		processors[processor_index] = (struct cpuinfo_processor) {
+		processors[processor_index] = (struct cpuinfo_processor){
 			.smt_id = cur->smt_id,
 			.core = &cores[core_index],
 			.cluster = &clusters[cluster_index],
 			.package = &packages[package_index],
-			.linux_id = (int) cur->system_processor_id,
+			.linux_id = (int)cur->system_processor_id,
 			.cache.l1i = &l1i[processor_index],
 			.cache.l1d = &l1d[processor_index],
 			.cache.l2 = &l2[processor_index],
@@ -450,7 +470,7 @@ void cpuinfo_loongarch_linux_init(void) {
 
 		memcpy(&l1i[processor_index], &cur->l1i, sizeof(struct cpuinfo_cache));
 		memcpy(&l1d[processor_index], &cur->l1d, sizeof(struct cpuinfo_cache));
-		memcpy(&l2[processor_index],  &cur->l2,  sizeof(struct cpuinfo_cache));
+		memcpy(&l2[processor_index], &cur->l2, sizeof(struct cpuinfo_cache));
 		l1i[processor_index].processor_start = processor_index;
 		l1i[processor_index].processor_count = 1;
 		l1d[processor_index].processor_start = processor_index;
@@ -459,7 +479,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		l2[processor_index].processor_count = 1;
 
 		if (cur->smt_id == 0) {
-			cores[core_index] = (struct cpuinfo_core) {
+			cores[core_index] = (struct cpuinfo_core){
 				.processor_start = processor_index,
 				.processor_count = 1,
 				.core_id = cur->core_id,
@@ -475,7 +495,7 @@ void cpuinfo_loongarch_linux_init(void) {
 		}
 
 		if (cur->package_leader_id == cur->system_processor_id) {
-			clusters[cluster_index] = (struct cpuinfo_cluster) {
+			clusters[cluster_index] = (struct cpuinfo_cluster){
 				.processor_start = processor_index,
 				.processor_count = 1,
 				.core_start = core_index,
@@ -486,7 +506,7 @@ void cpuinfo_loongarch_linux_init(void) {
 				.uarch = cur->uarch,
 				.prid = cur->prid,
 			};
-			packages[package_index] = (struct cpuinfo_package) {
+			packages[package_index] = (struct cpuinfo_package){
 				.processor_start = processor_index,
 				.processor_count = 1,
 				.core_start = core_index,
@@ -494,7 +514,7 @@ void cpuinfo_loongarch_linux_init(void) {
 				.cluster_start = cluster_index,
 				.cluster_count = 1,
 			};
-			memcpy(&l3[package_index],  &cur->l3,  sizeof(struct cpuinfo_cache));
+			memcpy(&l3[package_index], &cur->l3, sizeof(struct cpuinfo_cache));
 			l3[package_index].processor_start = processor_index;
 			l3[package_index].processor_count = 1;
 			last_package_id = cur->package_id;
@@ -521,8 +541,8 @@ void cpuinfo_loongarch_linux_init(void) {
 	cpuinfo_uarchs = uarchs;
 	cpuinfo_cache[cpuinfo_cache_level_1i] = l1i;
 	cpuinfo_cache[cpuinfo_cache_level_1d] = l1d;
-	cpuinfo_cache[cpuinfo_cache_level_2]  = l2;
-	cpuinfo_cache[cpuinfo_cache_level_3]  = l3;
+	cpuinfo_cache[cpuinfo_cache_level_2] = l2;
+	cpuinfo_cache[cpuinfo_cache_level_3] = l3;
 
 	cpuinfo_processors_count = valid_processors;
 	cpuinfo_cores_count = core_count;
@@ -531,8 +551,8 @@ void cpuinfo_loongarch_linux_init(void) {
 	cpuinfo_uarchs_count = uarchs_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = valid_processors;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = valid_processors;
-	cpuinfo_cache_count[cpuinfo_cache_level_2]  = valid_processors;
-	cpuinfo_cache_count[cpuinfo_cache_level_3]  = package_count;
+	cpuinfo_cache_count[cpuinfo_cache_level_2] = valid_processors;
+	cpuinfo_cache_count[cpuinfo_cache_level_3] = package_count;
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
 
 	cpuinfo_linux_cpu_max = loongarch_linux_processors_count;

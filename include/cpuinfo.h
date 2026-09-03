@@ -2458,7 +2458,7 @@ static inline bool cpuinfo_has_loongarch_ual(void) {
 
 static inline bool cpuinfo_has_loongarch_fpu(void) {
 #if CPUINFO_ARCH_LOONGARCH64
-		return cpuinfo_isa.fpu;
+	return cpuinfo_isa.fpu;
 #else
 	return false;
 #endif
@@ -2466,7 +2466,7 @@ static inline bool cpuinfo_has_loongarch_fpu(void) {
 
 static inline bool cpuinfo_has_loongarch_lsx(void) {
 #if CPUINFO_ARCH_LOONGARCH64
-		return cpuinfo_isa.lsx;
+	return cpuinfo_isa.lsx;
 #else
 	return false;
 #endif
@@ -2474,7 +2474,7 @@ static inline bool cpuinfo_has_loongarch_lsx(void) {
 
 static inline bool cpuinfo_has_loongarch_lasx(void) {
 #if CPUINFO_ARCH_LOONGARCH64
-		return cpuinfo_isa.lasx;
+	return cpuinfo_isa.lasx;
 #else
 	return false;
 #endif

@@ -14,7 +14,7 @@ enum cpucfg_regs {
 	CPUCFG_REG_CACHE_L3_IU,
 };
 
-static inline bool cpucfg(uint32_t reg, uint32_t *value) {
+static inline bool cpucfg(uint32_t reg, uint32_t* value) {
 #if defined(__GNUC__)
 	*value = __cpucfg(reg);
 	return true;
@@ -43,9 +43,9 @@ enum cache_baseinfo_bit {
 	L3_D_Inclusive,
 };
 
-#define CACHE_WAYS_OFFSET	0
-#define CACHE_SETS_OFFSET	16
-#define CACHE_LSIZE_OFFSET	24
-#define CACHE_WAYS_MASK		UINT32_C(0x0000FFFF)
-#define CACHE_SETS_MASK		UINT32_C(0x00FF0000)
-#define CACHE_LSIZE_MASK	UINT32_C(0x7F000000)
+#define CACHE_WAYS_OFFSET 0
+#define CACHE_SETS_OFFSET 16
+#define CACHE_LSIZE_OFFSET 24
+#define CACHE_WAYS_MASK UINT32_C(0x0000FFFF)
+#define CACHE_SETS_MASK UINT32_C(0x00FF0000)
+#define CACHE_LSIZE_MASK UINT32_C(0x7F000000)

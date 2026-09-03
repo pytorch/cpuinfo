@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <loongarch/linux/api.h>
 #include <cpuinfo/log.h>
 #include <linux/api.h>
+#include <loongarch/linux/api.h>
 
 #define BUFFER_SIZE 64
 #define STRINGIFY(token) #token
@@ -30,8 +30,7 @@ static bool parse_number(
 	const char* line_start,
 	const char* line_end,
 	uint32_t number_ptr[restrict static 1],
-	uint64_t line_number)
-{
+	uint64_t line_number) {
 	uint32_t number = 0;
 	const char* parsed = line_start;
 	if (line_number != 1) {
@@ -52,8 +51,7 @@ static bool parse_size(
 	const char* line_start,
 	const char* line_end,
 	uint32_t number_ptr[restrict static 1],
-	uint64_t line_number)
-{
+	uint64_t line_number) {
 	uint32_t number = 0;
 	const char* parsed = line_start;
 	if (line_number != 1) {
@@ -81,8 +79,7 @@ static bool parse_type(
 	const char* line_start,
 	const char* line_end,
 	enum cache_type type_ptr[restrict static 1],
-	uint64_t line_number)
-{
+	uint64_t line_number) {
 	size_t line_length = line_end - line_start;
 
 	if (line_number != 1) {
@@ -103,13 +100,9 @@ static bool parse_type(
 	return false;
 }
 
-static bool parse(
-	const char* suffix, uint32_t x, uint32_t y, void *data_ptr,
-	cpuinfo_line_callback parse_func)
-{
+static bool parse(const char* suffix, uint32_t x, uint32_t y, void* data_ptr, cpuinfo_line_callback parse_func) {
 	char filename[CACHE_INDEX_SIZE];
-	const int chars_formatted =
-		snprintf(filename, CACHE_INDEX_SIZE, CACHE_INDEX_FORMAT, x, y, suffix);
+	const int chars_formatted = snprintf(filename, CACHE_INDEX_SIZE, CACHE_INDEX_FORMAT, x, y, suffix);
 	if ((unsigned int)chars_formatted >= CACHE_INDEX_SIZE) {
 		cpuinfo_log_warning("failed to format filename for cache index %s", suffix);
 		return true;
@@ -122,30 +115,30 @@ static bool parse(
 }
 
 static bool cpuinfo_loongarch_linux_parse_cpuX_cache_indexY(
-	uint32_t x, uint32_t y,
-	struct cpuinfo_loongarch_linux_processor processors[restrict static 1])
-{
+	uint32_t x,
+	uint32_t y,
+	struct cpuinfo_loongarch_linux_processor processors[restrict static 1]) {
 	uint32_t sets, ways, level, line_size, size;
 	enum cache_type type = Unknown;
 	char filename[CACHE_INDEX_SIZE];
-	struct cpuinfo_cache *cache;
+	struct cpuinfo_cache* cache;
 
-	if (!parse(FILENAME_SETS, x, y, &sets, (cpuinfo_line_callback) parse_number)) {
+	if (!parse(FILENAME_SETS, x, y, &sets, (cpuinfo_line_callback)parse_number)) {
 		return false;
 	}
-	if (!parse(FILENAME_WAYS, x, y, &ways, (cpuinfo_line_callback) parse_number)) {
+	if (!parse(FILENAME_WAYS, x, y, &ways, (cpuinfo_line_callback)parse_number)) {
 		return false;
 	}
-	if (!parse(FILENAME_LSIZE, x, y, &line_size, (cpuinfo_line_callback) parse_number)) {
+	if (!parse(FILENAME_LSIZE, x, y, &line_size, (cpuinfo_line_callback)parse_number)) {
 		return false;
 	}
-	if (!parse(FILENAME_LEVEL, x, y, &level, (cpuinfo_line_callback) parse_number)) {
+	if (!parse(FILENAME_LEVEL, x, y, &level, (cpuinfo_line_callback)parse_number)) {
 		return false;
 	}
-	if (!parse(FILENAME_TYPE, x, y, &type, (cpuinfo_line_callback) parse_type)) {
+	if (!parse(FILENAME_TYPE, x, y, &type, (cpuinfo_line_callback)parse_type)) {
 		return false;
 	}
-	if (!parse(FILENAME_SIZE, x, y, &size, (cpuinfo_line_callback) parse_size)) {
+	if (!parse(FILENAME_SIZE, x, y, &size, (cpuinfo_line_callback)parse_size)) {
 		return false;
 	}
 
@@ -165,7 +158,7 @@ static bool cpuinfo_loongarch_linux_parse_cpuX_cache_indexY(
 		return false;
 	}
 
-	*cache = (struct cpuinfo_cache) {
+	*cache = (struct cpuinfo_cache){
 		.associativity = ways,
 		.sets = sets,
 		.line_size = line_size,
@@ -177,9 +170,7 @@ static bool cpuinfo_loongarch_linux_parse_cpuX_cache_indexY(
 
 bool cpuinfo_loongarch_linux_parse_cpu_cache(
 	uint32_t max_processors_count,
-	struct cpuinfo_loongarch_linux_processor processors[restrict static max_processors_count])
-{
-
+	struct cpuinfo_loongarch_linux_processor processors[restrict static max_processors_count]) {
 	for (uint32_t i = 0; i < max_processors_count; i++) {
 		// TODO dynamic detect
 		for (uint32_t j = 0; j < 4; j++) {
