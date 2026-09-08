@@ -943,7 +943,9 @@ void cpuinfo_arm_linux_init(void) {
 					.processor_count = arm_linux_processors[i].package_processor_count,
 				};
 			}
-			processors[i].cache.l2 = l2 + l2_index;
+			if (l2 != NULL && l2_index < l2_count) {
+				processors[i].cache.l2 = l2 + l2_index;
+			}
 		}
 	}
 
