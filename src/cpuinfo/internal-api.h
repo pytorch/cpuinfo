@@ -58,6 +58,7 @@ CPUINFO_PRIVATE BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVO
 #endif
 CPUINFO_PRIVATE void cpuinfo_arm_mach_init(void);
 CPUINFO_PRIVATE void cpuinfo_arm_linux_init(void);
+CPUINFO_PRIVATE void cpuinfo_arm_freebsd_init(void);
 CPUINFO_PRIVATE void cpuinfo_riscv_linux_init(void);
 CPUINFO_PRIVATE void cpuinfo_emscripten_init(void);
 
