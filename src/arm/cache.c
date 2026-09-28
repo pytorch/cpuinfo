@@ -1342,6 +1342,8 @@ void cpuinfo_arm_decode_cache(
 			 * size of 1MB or 2MB
 			 *  - Arm Neoverse V3/V3AE has a L2 cache of configurable
 			 * size of 1MB, 2MB, or 3MB
+			 * For all five architectures, the L2 cache is 8-way set
+			 * associative.
 			 * For all other
 			 * information, please refer to the technical manuals
 			 * linked above
