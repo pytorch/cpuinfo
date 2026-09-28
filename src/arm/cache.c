@@ -1310,7 +1310,8 @@ void cpuinfo_arm_decode_cache(
 		case cpuinfo_uarch_neoverse_n1:
 		case cpuinfo_uarch_neoverse_v1:
 		case cpuinfo_uarch_neoverse_n2:
-		case cpuinfo_uarch_neoverse_v2: {
+		case cpuinfo_uarch_neoverse_v2:
+		case cpuinfo_uarch_neoverse_v3: {
 			/*
 			 * The specifications here below are taken from the
 			 * Arm Core Technical Reference Manuals for
@@ -1322,27 +1323,37 @@ void cpuinfo_arm_decode_cache(
 			 * https://developer.arm.com/documentation/101427/0102/?lang=en
 			 *  - Neoverse V2:
 			 * https://developer.arm.com/documentation/102375/0002/?lang=en
+			 *  - Neoverse V3/V3AE:
+			 * https://support.arm.com/documentation/107734/0002/?lang=en
 			 *
-			 * All four Arm architectures have L1 memory system with
+			 * All five Arm architectures have L1 memory system with
 			 * instruction and data caches, both of fixed size of
 			 * 64KB. The instruction side memory system is 4-way set
 			 * associative with a cache line length of 64 bytes. The
 			 * data cache is also 4-way set associative with a cache
 			 * line length of 64 bytes.
 			 *
-			 * The L2 memory system differs across the four
+			 * The L2 memory system differs across the five
 			 * Architectures in the minimum length of the L2 cache.
 			 * Namely:
 			 *  - Arm Neoverse N1/N2/V1 have a L2 cache of
 			 * configurable size of 256KB, 512KB, or 1024KB
 			 *  - Arm Neoverse V2 has a L2 cache of configurable
-			 * size of 1MB or 2MB For all four architectures, the L2
-			 * cache is 8-way set associative For all other
+			 * size of 1MB or 2MB
+			 *  - Arm Neoverse V3/V3AE has a L2 cache of configurable
+			 * size of 1MB, 2MB, or 3MB
+			 * For all five architectures, the L2 cache is 8-way set
+			 * associative.
+			 * For all other
 			 * information, please refer to the technical manuals
 			 * linked above
 			 */
 			const uint32_t min_l2_size_KB =
-				(uarch == cpuinfo_uarch_neoverse_v2 || midr_is_ampere_altra(midr)) ? 1024 : 256;
+				(uarch == cpuinfo_uarch_neoverse_v2 ||
+				 uarch == cpuinfo_uarch_neoverse_v3 ||
+				 midr_is_ampere_altra(midr))
+				? 1024
+				: 256;
 			const uint32_t min_l3_size_KB = 0;
 
 			*l1i = (struct cpuinfo_cache){
@@ -1765,6 +1776,7 @@ uint32_t cpuinfo_arm_compute_max_cache_size(const struct cpuinfo_processor* proc
 		case cpuinfo_uarch_neoverse_v1:
 		case cpuinfo_uarch_neoverse_n2:
 		case cpuinfo_uarch_neoverse_v2:
+		case cpuinfo_uarch_neoverse_v3:
 		case cpuinfo_uarch_cortex_a75:
 		case cpuinfo_uarch_cortex_a76:
 		case cpuinfo_uarch_exynos_m4:
