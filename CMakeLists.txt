@@ -753,6 +753,13 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     TARGET_LINK_LIBRARIES(pixel-8-test PRIVATE cpuinfo_mock gtest)
     ADD_TEST(NAME pixel-8-test COMMAND pixel-8-test)
 
+    ADD_EXECUTABLE(arm-linux-topology-test test/mock/arm-linux-topology.cc)
+    CPUINFO_TARGET_ENABLE_CXX11(arm-linux-topology-test)
+    TARGET_LINK_LIBRARIES(arm-linux-topology-test PRIVATE cpuinfo_mock gtest)
+    FOREACH(topology pixel-8 pixel-9 pixel-10 galaxy-s23 missing-midr frequency-groups unknown-parts mixed-caches)
+      ADD_TEST(NAME arm-linux-topology-${topology}-test COMMAND arm-linux-topology-test ${topology})
+    ENDFOREACH()
+
     ADD_EXECUTABLE(xiaomi-mi-5c-test test/mock/xiaomi-mi-5c.cc)
     TARGET_INCLUDE_DIRECTORIES(xiaomi-mi-5c-test BEFORE PRIVATE test/mock)
     TARGET_LINK_LIBRARIES(xiaomi-mi-5c-test PRIVATE cpuinfo_mock gtest)
