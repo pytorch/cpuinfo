@@ -1768,10 +1768,12 @@ struct cpuinfo_arm_isa {
 	bool bf16;
 	bool sve;
 	bool sve2;
+	bool sve2p1;
 	bool i8mm;
 	bool sme;
 	bool sme2;
 	bool sme2p1;
+	bool sme_mop4;
 	bool sme_i16i32;
 	bool sme_bi32i32;
 	bool sme_b16b16;
@@ -2181,6 +2183,14 @@ static inline bool cpuinfo_has_arm_sve2(void) {
 #endif
 }
 
+static inline bool cpuinfo_has_arm_sve2p1(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sve2p1;
+#else
+	return false;
+#endif
+}
+
 // Function to get the max SVE vector length on ARM CPU's which support SVE.
 static inline uint32_t cpuinfo_get_max_arm_sve_length(void) {
 #if CPUINFO_ARCH_ARM64
@@ -2218,6 +2228,14 @@ static inline bool cpuinfo_has_arm_sme2(void) {
 static inline bool cpuinfo_has_arm_sme2p1(void) {
 #if CPUINFO_ARCH_ARM64
 	return cpuinfo_isa.sme2p1;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_arm_sme_mop4(void) {
+#if CPUINFO_ARCH_ARM64
+	return cpuinfo_isa.sme_mop4;
 #else
 	return false;
 #endif
