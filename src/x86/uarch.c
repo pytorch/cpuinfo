@@ -371,8 +371,6 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							return cpuinfo_uarch_zen;
 						case 0x3: // model 31h ->
 							  // Rome/Castle Peak
-						case 0x4: // model 47h -> Xbox
-							  // Series X
 						case 0x6: // model 60h ->
 							  // Renoir/Grey Hawk,
 							  // model 68h ->
@@ -382,7 +380,18 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x9: // model 90h -> Van
 							  // Gogh, model 98h ->
 							  // Mero
+						case 0xA: // model A0h ->
+							  // Mendocino
 							return cpuinfo_uarch_zen2;
+						case 0x4: // model 46h -> Sony
+							  // PlayStation 5 (Oberon),
+							  // model 47h -> AMD 4700S
+							  // (Cardinal)
+							return cpuinfo_uarch_oberon;
+						case 0x8: // model 84h -> Microsoft
+							  // Xbox Series X/S (Arden) /
+							  // AMD 4800S (ProjectX)
+							return cpuinfo_uarch_arden;
 					}
 					break;
 				case 0x19:

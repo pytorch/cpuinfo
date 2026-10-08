@@ -441,6 +441,10 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_zen5 = 0x0020010D,
 	/** AMD Zen 6 microarchitecture. */
 	cpuinfo_uarch_zen6 = 0x0020010E,
+	/** Sony PlayStation 5 (Oberon) microarchitecture (custom Zen 2 with 128-bit FPU). */
+	cpuinfo_uarch_oberon = 0x0020010F,
+	/** Microsoft Xbox Series X/S (Arden) microarchitecture (custom Zen 2 with 256-bit FPU). */
+	cpuinfo_uarch_arden = 0x00200110,
 
 	/** NSC Geode and AMD Geode GX and LX. */
 	cpuinfo_uarch_geode = 0x00200200,
