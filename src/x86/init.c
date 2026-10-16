@@ -29,10 +29,17 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 		processor->cpuid = leaf1.eax;
 
 		const struct cpuinfo_x86_model_info model_info = cpuinfo_x86_decode_model_info(leaf1.eax);
-		const uint32_t core_type =
-			max_base_index >= UINT32_C(0x1A) ? (cpuidex(UINT32_C(0x1A), 0).eax >> 24) : 0;
-		const enum cpuinfo_uarch uarch = processor->uarch =
-			cpuinfo_x86_decode_uarch(vendor, &model_info, core_type);
+		const bool is_hybrid = max_base_index >= 7 && (cpuidex(7, 0).edx & UINT32_C(0x00008000)) != 0;
+		enum cpuinfo_uarch uarch;
+		if (is_hybrid) {
+			uarch = processor->uarch = cpuinfo_x86_decode_uarch(vendor, &model_info, 0x40);
+			processor->e_uarch = cpuinfo_x86_decode_uarch(vendor, &model_info, 0x20);
+		} else {
+			const uint32_t core_type =
+				max_base_index >= UINT32_C(0x1A) ? (cpuidex(UINT32_C(0x1A), 0).eax >> 24) : 0;
+			uarch = processor->uarch = processor->e_uarch =
+				cpuinfo_x86_decode_uarch(vendor, &model_info, core_type);
+		}
 
 		cpuinfo_x86_clflush_size = ((leaf1.ebx >> 8) & UINT32_C(0x000000FF)) * 8;
 

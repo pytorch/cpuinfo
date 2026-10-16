@@ -34,12 +34,9 @@ extern CPUINFO_INTERNAL uint32_t cpuinfo_packages_count;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max];
 extern CPUINFO_INTERNAL uint32_t cpuinfo_max_cache_size;
 
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 extern CPUINFO_INTERNAL struct cpuinfo_uarch_info* cpuinfo_uarchs;
 extern CPUINFO_INTERNAL uint32_t cpuinfo_uarchs_count;
-#else
 extern CPUINFO_INTERNAL struct cpuinfo_uarch_info cpuinfo_global_uarch;
-#endif
 
 #ifdef __linux__
 extern CPUINFO_INTERNAL uint32_t cpuinfo_linux_cpu_max;
