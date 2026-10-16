@@ -86,7 +86,8 @@ CPUINFO_INTERNAL enum cpuinfo_vendor cpuinfo_x86_decode_vendor(uint32_t ebx, uin
 CPUINFO_INTERNAL struct cpuinfo_x86_model_info cpuinfo_x86_decode_model_info(uint32_t eax);
 CPUINFO_INTERNAL enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 	enum cpuinfo_vendor vendor,
-	const struct cpuinfo_x86_model_info* model_info);
+	const struct cpuinfo_x86_model_info* model_info,
+	uint32_t core_type);
 
 CPUINFO_INTERNAL struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	const struct cpuid_regs basic_info,

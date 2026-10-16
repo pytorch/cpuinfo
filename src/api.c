@@ -35,12 +35,9 @@ uint32_t cpuinfo_packages_count = 0;
 uint32_t cpuinfo_cache_count[cpuinfo_cache_level_max] = {0};
 uint32_t cpuinfo_max_cache_size = 0;
 
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 struct cpuinfo_uarch_info* cpuinfo_uarchs = NULL;
 uint32_t cpuinfo_uarchs_count = 0;
-#else
 struct cpuinfo_uarch_info cpuinfo_global_uarch = {cpuinfo_uarch_unknown};
-#endif
 
 #ifdef __linux__
 uint32_t cpuinfo_linux_cpu_max = 0;
@@ -83,11 +80,10 @@ const struct cpuinfo_uarch_info* cpuinfo_get_uarchs() {
 	if (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "uarchs");
 	}
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	return cpuinfo_uarchs;
-#else
+	if (cpuinfo_uarchs != NULL) {
+		return cpuinfo_uarchs;
+	}
 	return &cpuinfo_global_uarch;
-#endif
 }
 
 const struct cpuinfo_processor* cpuinfo_get_processor(uint32_t index) {
@@ -134,17 +130,17 @@ const struct cpuinfo_uarch_info* cpuinfo_get_uarch(uint32_t index) {
 	if (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "uarch");
 	}
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	if CPUINFO_UNLIKELY (index >= cpuinfo_uarchs_count) {
-		return NULL;
+	if (cpuinfo_uarchs != NULL) {
+		if CPUINFO_UNLIKELY (index >= cpuinfo_uarchs_count) {
+			return NULL;
+		}
+		return &cpuinfo_uarchs[index];
+	} else {
+		if CPUINFO_UNLIKELY (index != 0) {
+			return NULL;
+		}
+		return &cpuinfo_global_uarch;
 	}
-	return &cpuinfo_uarchs[index];
-#else
-	if CPUINFO_UNLIKELY (index != 0) {
-		return NULL;
-	}
-	return &cpuinfo_global_uarch;
-#endif
 }
 
 uint32_t cpuinfo_get_processors_count(void) {
@@ -179,11 +175,10 @@ uint32_t cpuinfo_get_uarchs_count(void) {
 	if (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "uarchs_count");
 	}
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
-	return cpuinfo_uarchs_count;
-#else
+	if (cpuinfo_uarchs != NULL) {
+		return cpuinfo_uarchs_count;
+	}
 	return 1;
-#endif
 }
 
 const struct cpuinfo_cache* CPUINFO_ABI cpuinfo_get_l1i_caches(void) {
