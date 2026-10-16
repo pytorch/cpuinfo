@@ -10,9 +10,12 @@
 
 struct cpuinfo_x86_linux_processor {
 	uint32_t apic_id;
+	uint32_t core_id;
 	uint32_t linux_id;
 	uint32_t flags;
 };
+
+extern CPUINFO_INTERNAL const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map;
 
 CPUINFO_INTERNAL bool cpuinfo_x86_linux_parse_proc_cpuinfo(
 	uint32_t max_processors_count,

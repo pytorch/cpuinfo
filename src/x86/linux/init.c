@@ -78,7 +78,10 @@ static void cpuinfo_x86_count_objects(
 				linux_processors[i].linux_id);
 
 			/* All bits of APIC ID except thread ID mask */
-			const uint32_t core_id = apic_id & core_apic_mask;
+			const uint32_t core_id = (processor->uarch != processor->e_uarch &&
+						  bitmask_all(linux_processors[i].flags, CPUINFO_LINUX_FLAG_CORE_ID))
+				? ((apic_id & package_apic_mask) | linux_processors[i].core_id)
+				: (apic_id & core_apic_mask);
 			if (core_id != last_core_id) {
 				last_core_id = core_id;
 				cores_count++;
@@ -152,6 +155,8 @@ void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_package* packages = NULL;
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
+	uint32_t* linux_cpu_to_uarch_index_map = NULL;
+	struct cpuinfo_uarch_info* uarchs = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
@@ -398,7 +403,11 @@ void cpuinfo_x86_linux_init(void) {
 			smt_id++;
 
 			/* All bits of APIC ID except thread ID mask */
-			const uint32_t apid_core_id = apic_id & core_apic_mask;
+			const uint32_t apid_core_id =
+				(x86_processor.uarch != x86_processor.e_uarch &&
+				 bitmask_all(x86_linux_processors[i].flags, CPUINFO_LINUX_FLAG_CORE_ID))
+				? ((apic_id & package_apic_mask) | x86_linux_processors[i].core_id)
+				: (apic_id & core_apic_mask);
 			if (apid_core_id != last_apic_core_id) {
 				core_index++;
 				core_id++;
@@ -617,6 +626,188 @@ void cpuinfo_x86_linux_init(void) {
 		}
 	}
 
+	uint32_t uarchs_count = 0;
+	if (x86_processor.uarch != x86_processor.e_uarch && cores_count > 1) {
+		uint32_t min_core_processors = UINT32_MAX;
+		uint32_t max_core_processors = 0;
+		uint32_t min_apic_delta = UINT32_MAX;
+		uint32_t max_apic_delta = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			if (cores[i].processor_count < min_core_processors) {
+				min_core_processors = cores[i].processor_count;
+			}
+			if (cores[i].processor_count > max_core_processors) {
+				max_core_processors = cores[i].processor_count;
+			}
+			const uint32_t apic_id = processors[cores[i].processor_start].apic_id;
+			uint32_t delta = UINT32_MAX;
+			if (i > 0 && cores[i - 1].package == cores[i].package) {
+				const uint32_t prev_apic = processors[cores[i - 1].processor_start].apic_id;
+				if (apic_id - prev_apic < delta) {
+					delta = apic_id - prev_apic;
+				}
+			}
+			if (i + 1 < cores_count && cores[i + 1].package == cores[i].package) {
+				const uint32_t next_apic = processors[cores[i + 1].processor_start].apic_id;
+				if (next_apic - apic_id < delta) {
+					delta = next_apic - apic_id;
+				}
+			}
+			if (delta < min_apic_delta) {
+				min_apic_delta = delta;
+			}
+			if (delta != UINT32_MAX && delta > max_apic_delta) {
+				max_apic_delta = delta;
+			}
+		}
+
+		for (uint32_t i = 0; i < cores_count; i++) {
+			if (max_core_processors > min_core_processors) {
+				cores[i].uarch = cores[i].processor_count == max_core_processors
+					? x86_processor.uarch
+					: x86_processor.e_uarch;
+			} else if (max_apic_delta > min_apic_delta) {
+				const uint32_t apic_id = processors[cores[i].processor_start].apic_id;
+				uint32_t delta = UINT32_MAX;
+				if (i > 0 && cores[i - 1].package == cores[i].package) {
+					const uint32_t prev_apic = processors[cores[i - 1].processor_start].apic_id;
+					if (apic_id - prev_apic < delta) {
+						delta = apic_id - prev_apic;
+					}
+				}
+				if (i + 1 < cores_count && cores[i + 1].package == cores[i].package) {
+					const uint32_t next_apic = processors[cores[i + 1].processor_start].apic_id;
+					if (next_apic - apic_id < delta) {
+						delta = next_apic - apic_id;
+					}
+				}
+				cores[i].uarch = delta > min_apic_delta ? x86_processor.uarch : x86_processor.e_uarch;
+			} else {
+				cores[i].uarch = i < cores_count / 2 ? x86_processor.uarch : x86_processor.e_uarch;
+			}
+		}
+
+		/* Rebuild clusters on package and microarchitecture boundaries */
+		uint32_t new_clusters_count = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			if (i == 0 || cores[i].package != cores[i - 1].package ||
+			    cores[i].uarch != cores[i - 1].uarch) {
+				new_clusters_count++;
+			}
+		}
+		struct cpuinfo_cluster* new_clusters = calloc(new_clusters_count, sizeof(struct cpuinfo_cluster));
+		if (new_clusters == NULL) {
+			cpuinfo_log_error(
+				"failed to allocate %zu bytes for descriptions of %" PRIu32 " core clusters",
+				new_clusters_count * sizeof(struct cpuinfo_cluster),
+				new_clusters_count);
+			goto cleanup;
+		}
+		free(clusters);
+		clusters = new_clusters;
+		clusters_count = new_clusters_count;
+		for (uint32_t i = 0; i < packages_count; i++) {
+			packages[i].cluster_start = 0;
+			packages[i].cluster_count = 0;
+		}
+		uint32_t cluster_idx = 0;
+		uint32_t cluster_id_in_package = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			if (i == 0 || cores[i].package != cores[i - 1].package ||
+			    cores[i].uarch != cores[i - 1].uarch) {
+				if (i != 0) {
+					if (cores[i].package != cores[i - 1].package) {
+						cluster_id_in_package = 0;
+					} else {
+						cluster_id_in_package++;
+					}
+					cluster_idx++;
+				}
+				struct cpuinfo_package* package = (struct cpuinfo_package*)cores[i].package;
+				if (package->cluster_count == 0) {
+					package->cluster_start = cluster_idx;
+				}
+				package->cluster_count++;
+
+				clusters[cluster_idx] = (struct cpuinfo_cluster){
+					.processor_start = cores[i].processor_start,
+					.processor_count = 0,
+					.core_start = i,
+					.core_count = 0,
+					.cluster_id = cluster_id_in_package,
+					.package = package,
+					.vendor = cores[i].vendor,
+					.uarch = cores[i].uarch,
+					.cpuid = cores[i].cpuid,
+					.frequency = cores[i].frequency,
+				};
+			}
+			cores[i].cluster = &clusters[cluster_idx];
+			clusters[cluster_idx].core_count++;
+			clusters[cluster_idx].processor_count += cores[i].processor_count;
+			for (uint32_t p = 0; p < cores[i].processor_count; p++) {
+				processors[cores[i].processor_start + p].cluster = &clusters[cluster_idx];
+			}
+		}
+
+		for (uint32_t i = 0; i < cores_count; i++) {
+			bool found = false;
+			for (uint32_t j = 0; j < i; j++) {
+				if (cores[j].uarch == cores[i].uarch) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				uarchs_count++;
+			}
+		}
+		uarchs = calloc(uarchs_count, sizeof(struct cpuinfo_uarch_info));
+		if (uarchs == NULL) {
+			cpuinfo_log_error(
+				"failed to allocate %zu bytes for descriptions of %" PRIu32 " microarchitectures",
+				uarchs_count * sizeof(struct cpuinfo_uarch_info),
+				uarchs_count);
+			goto cleanup;
+		}
+		linux_cpu_to_uarch_index_map = calloc(x86_linux_processors_count, sizeof(uint32_t));
+		if (linux_cpu_to_uarch_index_map == NULL) {
+			cpuinfo_log_error(
+				"failed to allocate %zu bytes for uarch mapping entries of %" PRIu32
+				" logical processors",
+				x86_linux_processors_count * sizeof(uint32_t),
+				x86_linux_processors_count);
+			goto cleanup;
+		}
+		uint32_t uarch_idx = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			uint32_t k;
+			for (k = 0; k < uarch_idx; k++) {
+				if (uarchs[k].uarch == cores[i].uarch) {
+					break;
+				}
+			}
+			if (k == uarch_idx) {
+				uarchs[uarch_idx] = (struct cpuinfo_uarch_info){
+					.uarch = cores[i].uarch,
+					.cpuid = cores[i].cpuid,
+					.processor_count = cores[i].processor_count,
+					.core_count = 1,
+				};
+				uarch_idx++;
+			} else {
+				uarchs[k].processor_count += cores[i].processor_count;
+				uarchs[k].core_count += 1;
+			}
+			for (uint32_t p = 0; p < cores[i].processor_count; p++) {
+				const uint32_t linux_id = processors[cores[i].processor_start + p].linux_id;
+				if (linux_id < x86_linux_processors_count) {
+					linux_cpu_to_uarch_index_map[linux_id] = k;
+				}
+			}
+		}
+	}
+
 	/* Commit changes */
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
@@ -639,6 +830,9 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_4] = l4_count;
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
 
+	cpuinfo_uarchs = uarchs;
+	cpuinfo_uarchs_count = uarchs_count;
+
 	cpuinfo_global_uarch = (struct cpuinfo_uarch_info){
 		.uarch = x86_processor.uarch,
 		.cpuid = x86_processor.cpuid,
@@ -649,6 +843,7 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_linux_cpu_max = x86_linux_processors_count;
 	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
 	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
+	cpuinfo_linux_cpu_to_uarch_index_map = linux_cpu_to_uarch_index_map;
 
 	__sync_synchronize();
 
@@ -658,9 +853,11 @@ void cpuinfo_x86_linux_init(void) {
 	cores = NULL;
 	clusters = NULL;
 	packages = NULL;
+	uarchs = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
+	linux_cpu_to_uarch_index_map = NULL;
 
 cleanup:
 	free(x86_linux_processors);
@@ -668,6 +865,7 @@ cleanup:
 	free(cores);
 	free(clusters);
 	free(packages);
+	free(uarchs);
 	free(l1i);
 	free(l1d);
 	free(l2);
@@ -675,4 +873,5 @@ cleanup:
 	free(l4);
 	free(linux_cpu_to_processor_map);
 	free(linux_cpu_to_core_map);
+	free(linux_cpu_to_uarch_index_map);
 }
