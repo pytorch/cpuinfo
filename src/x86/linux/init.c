@@ -155,7 +155,6 @@ void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_package* packages = NULL;
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
-	uint32_t* linux_cpu_to_uarch_index_map = NULL;
 	struct cpuinfo_uarch_info* uarchs = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
@@ -770,15 +769,6 @@ void cpuinfo_x86_linux_init(void) {
 				uarchs_count);
 			goto cleanup;
 		}
-		linux_cpu_to_uarch_index_map = calloc(x86_linux_processors_count, sizeof(uint32_t));
-		if (linux_cpu_to_uarch_index_map == NULL) {
-			cpuinfo_log_error(
-				"failed to allocate %zu bytes for uarch mapping entries of %" PRIu32
-				" logical processors",
-				x86_linux_processors_count * sizeof(uint32_t),
-				x86_linux_processors_count);
-			goto cleanup;
-		}
 		uint32_t uarch_idx = 0;
 		for (uint32_t i = 0; i < cores_count; i++) {
 			uint32_t k;
@@ -798,12 +788,6 @@ void cpuinfo_x86_linux_init(void) {
 			} else {
 				uarchs[k].processor_count += cores[i].processor_count;
 				uarchs[k].core_count += 1;
-			}
-			for (uint32_t p = 0; p < cores[i].processor_count; p++) {
-				const uint32_t linux_id = processors[cores[i].processor_start + p].linux_id;
-				if (linux_id < x86_linux_processors_count) {
-					linux_cpu_to_uarch_index_map[linux_id] = k;
-				}
 			}
 		}
 	}
@@ -843,7 +827,6 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_linux_cpu_max = x86_linux_processors_count;
 	cpuinfo_linux_cpu_to_processor_map = linux_cpu_to_processor_map;
 	cpuinfo_linux_cpu_to_core_map = linux_cpu_to_core_map;
-	cpuinfo_linux_cpu_to_uarch_index_map = linux_cpu_to_uarch_index_map;
 
 	__sync_synchronize();
 
@@ -857,7 +840,6 @@ void cpuinfo_x86_linux_init(void) {
 	l1i = l1d = l2 = l3 = l4 = NULL;
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
-	linux_cpu_to_uarch_index_map = NULL;
 
 cleanup:
 	free(x86_linux_processors);
@@ -873,5 +855,4 @@ cleanup:
 	free(l4);
 	free(linux_cpu_to_processor_map);
 	free(linux_cpu_to_core_map);
-	free(linux_cpu_to_uarch_index_map);
 }

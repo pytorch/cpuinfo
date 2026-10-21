@@ -3,6 +3,7 @@
 
 #include <cpuinfo.h>
 #include <cpuinfo/common.h>
+#include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 #include <cpuinfo/utils.h>
 #include <x86/api.h>
@@ -10,6 +11,15 @@
 
 struct cpuinfo_x86_isa cpuinfo_isa = {0};
 CPUINFO_INTERNAL uint32_t cpuinfo_x86_clflush_size = 0;
+
+/*
+ * Hybrid (P-core + E-core) state captured during initialization and used by
+ * cpuinfo_x86_get_current_uarch_index to resolve the calling core's
+ * microarchitecture from CPUID leaf 0x1A without any OS calls.
+ */
+static bool hybrid = false;
+static enum cpuinfo_uarch p_uarch = cpuinfo_uarch_unknown;
+static enum cpuinfo_uarch e_uarch = cpuinfo_uarch_unknown;
 
 void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 	const struct cpuid_regs leaf0 = cpuid(0);
@@ -29,7 +39,9 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 		processor->cpuid = leaf1.eax;
 
 		const struct cpuinfo_x86_model_info model_info = cpuinfo_x86_decode_model_info(leaf1.eax);
-		const bool is_hybrid = max_base_index >= 7 && (cpuidex(7, 0).edx & UINT32_C(0x00008000)) != 0;
+		/* Hybrid requires CPUID leaf 0x1A to tell P-cores from E-cores. */
+		const bool is_hybrid =
+			max_base_index >= UINT32_C(0x1A) && (cpuidex(7, 0).edx & UINT32_C(0x00008000)) != 0;
 		enum cpuinfo_uarch uarch;
 		if (is_hybrid) {
 			uarch = processor->uarch = cpuinfo_x86_decode_uarch(vendor, &model_info, 0x40);
@@ -40,6 +52,9 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 			uarch = processor->uarch = processor->e_uarch =
 				cpuinfo_x86_decode_uarch(vendor, &model_info, core_type);
 		}
+		hybrid = is_hybrid;
+		p_uarch = processor->uarch;
+		e_uarch = processor->e_uarch;
 
 		cpuinfo_x86_clflush_size = ((leaf1.ebx >> 8) & UINT32_C(0x000000FF)) * 8;
 
@@ -85,4 +100,26 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 		memcpy(processor->brand_string, brand_string, sizeof(brand_string));
 		cpuinfo_log_debug("raw CPUID brand string: \"%48s\"", processor->brand_string);
 	}
+}
+
+uint32_t cpuinfo_x86_get_current_uarch_index(uint32_t default_uarch_index) {
+	if (!hybrid || cpuinfo_uarchs == NULL) {
+		/* Special case: avoid CPUID on systems with only a single type of cores */
+		return default_uarch_index;
+	}
+
+	/*
+	 * CPUID leaf 0x1A EAX[31:24] reports the type of the core executing the
+	 * instruction: 0x20 = Intel Atom (E-core), 0x40 = Intel Core (P-core).
+	 * Unlike the OS-provided processor number, this needs no system call and
+	 * works in restricted environments (e.g. sandboxes) on any OS.
+	 */
+	const uint32_t core_type = cpuidex(UINT32_C(0x1A), 0).eax >> 24;
+	const enum cpuinfo_uarch uarch = core_type == UINT32_C(0x20) ? e_uarch : p_uarch;
+	for (uint32_t i = 0; i < cpuinfo_uarchs_count; i++) {
+		if (cpuinfo_uarchs[i].uarch == uarch) {
+			return i;
+		}
+	}
+	return default_uarch_index;
 }

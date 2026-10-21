@@ -10,6 +10,10 @@
 #include <cpuinfo/internal-api.h>
 #include <cpuinfo/log.h>
 
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+#include <x86/api.h>
+#endif
+
 #ifdef __linux__
 #include <linux/api.h>
 
@@ -43,7 +47,9 @@ struct cpuinfo_uarch_info cpuinfo_global_uarch = {cpuinfo_uarch_unknown};
 uint32_t cpuinfo_linux_cpu_max = 0;
 const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map = NULL;
 const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map = NULL;
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map = NULL;
+#endif
 #endif
 
 const struct cpuinfo_processor* cpuinfo_get_processors(void) {
@@ -347,8 +353,11 @@ uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index(void) {
 	if CPUINFO_UNLIKELY (!cpuinfo_is_initialized) {
 		cpuinfo_log_fatal("cpuinfo_get_%s called before cpuinfo is initialized", "current_uarch_index");
 	}
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64 || CPUINFO_ARCH_X86 || \
-	CPUINFO_ARCH_X86_64
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	/* Resolve the current core type with the CPUID instruction: no system
+	 * calls, so it works on every OS and inside sandboxes. */
+	return cpuinfo_x86_get_current_uarch_index(0);
+#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 #ifdef __linux__
 	if (cpuinfo_linux_cpu_to_uarch_index_map == NULL) {
 		/* Special case: avoid syscall on systems with only a single
@@ -383,8 +392,11 @@ uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index_with_default(uint32_t defau
 		cpuinfo_log_fatal(
 			"cpuinfo_get_%s called before cpuinfo is initialized", "current_uarch_index_with_default");
 	}
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64 || CPUINFO_ARCH_X86 || \
-	CPUINFO_ARCH_X86_64
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	/* Resolve the current core type with the CPUID instruction: no system
+	 * calls, so it works on every OS and inside sandboxes. */
+	return cpuinfo_x86_get_current_uarch_index(default_uarch_index);
+#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 #ifdef __linux__
 	if (cpuinfo_linux_cpu_to_uarch_index_map == NULL) {
 		/* Special case: avoid syscall on systems with only a single
