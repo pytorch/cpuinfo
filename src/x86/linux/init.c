@@ -206,8 +206,9 @@ void cpuinfo_x86_linux_init(void) {
 	}
 
 	if (!cpuinfo_x86_linux_parse_proc_cpuinfo(x86_linux_processors_count, x86_linux_processors)) {
-		cpuinfo_log_error("failed to parse processor information from /proc/cpuinfo");
-		return;
+		cpuinfo_log_warning("failed to parse processor information from /proc/cpuinfo");
+		valid_processor_mask = CPUINFO_LINUX_FLAG_PROC_CPUINFO;
+		x86_linux_processors[0].flags = CPUINFO_LINUX_FLAG_PROC_CPUINFO;
 	}
 
 	for (uint32_t i = 0; i < x86_linux_processors_count; i++) {
