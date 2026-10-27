@@ -37,7 +37,7 @@ static inline uint32_t low_index_from_kaffinity(KAFFINITY kaffinity) {
 static void cpuinfo_x86_count_caches(
 	uint32_t processors_count,
 	const struct cpuinfo_processor* processors,
-	const struct cpuinfo_x86_processor* x86_processor,
+	const struct cpuinfo_x86_processor* x86_processors,
 	uint32_t* l1i_count_ptr,
 	uint32_t* l1d_count_ptr,
 	uint32_t* l2_count_ptr,
@@ -46,42 +46,49 @@ static void cpuinfo_x86_count_caches(
 	uint32_t l1i_count = 0, l1d_count = 0, l2_count = 0, l3_count = 0, l4_count = 0;
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
+	uint32_t last_l1i_size = 0, last_l1d_size = 0;
+	uint32_t last_l2_size = 0, last_l3_size = 0, last_l4_size = 0;
 	for (uint32_t i = 0; i < processors_count; i++) {
 		const uint32_t apic_id = processors[i].apic_id;
 		cpuinfo_log_debug("APID ID %" PRIu32 ": logical processor %" PRIu32, apic_id, i);
 
-		if (x86_processor->cache.l1i.size != 0) {
-			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processor->cache.l1i.apic_bits);
-			if (l1i_id != last_l1i_id) {
+		if (x86_processors[i].cache.l1i.size != 0) {
+			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processors[i].cache.l1i.apic_bits);
+			if (l1i_id != last_l1i_id || x86_processors[i].cache.l1i.size != last_l1i_size) {
 				last_l1i_id = l1i_id;
+				last_l1i_size = x86_processors[i].cache.l1i.size;
 				l1i_count++;
 			}
 		}
-		if (x86_processor->cache.l1d.size != 0) {
-			const uint32_t l1d_id = apic_id & ~bit_mask(x86_processor->cache.l1d.apic_bits);
-			if (l1d_id != last_l1d_id) {
+		if (x86_processors[i].cache.l1d.size != 0) {
+			const uint32_t l1d_id = apic_id & ~bit_mask(x86_processors[i].cache.l1d.apic_bits);
+			if (l1d_id != last_l1d_id || x86_processors[i].cache.l1d.size != last_l1d_size) {
 				last_l1d_id = l1d_id;
+				last_l1d_size = x86_processors[i].cache.l1d.size;
 				l1d_count++;
 			}
 		}
-		if (x86_processor->cache.l2.size != 0) {
-			const uint32_t l2_id = apic_id & ~bit_mask(x86_processor->cache.l2.apic_bits);
-			if (l2_id != last_l2_id) {
+		if (x86_processors[i].cache.l2.size != 0) {
+			const uint32_t l2_id = apic_id & ~bit_mask(x86_processors[i].cache.l2.apic_bits);
+			if (l2_id != last_l2_id || x86_processors[i].cache.l2.size != last_l2_size) {
 				last_l2_id = l2_id;
+				last_l2_size = x86_processors[i].cache.l2.size;
 				l2_count++;
 			}
 		}
-		if (x86_processor->cache.l3.size != 0) {
-			const uint32_t l3_id = apic_id & ~bit_mask(x86_processor->cache.l3.apic_bits);
-			if (l3_id != last_l3_id) {
+		if (x86_processors[i].cache.l3.size != 0) {
+			const uint32_t l3_id = apic_id & ~bit_mask(x86_processors[i].cache.l3.apic_bits);
+			if (l3_id != last_l3_id || x86_processors[i].cache.l3.size != last_l3_size) {
 				last_l3_id = l3_id;
+				last_l3_size = x86_processors[i].cache.l3.size;
 				l3_count++;
 			}
 		}
-		if (x86_processor->cache.l4.size != 0) {
-			const uint32_t l4_id = apic_id & ~bit_mask(x86_processor->cache.l4.apic_bits);
-			if (l4_id != last_l4_id) {
+		if (x86_processors[i].cache.l4.size != 0) {
+			const uint32_t l4_id = apic_id & ~bit_mask(x86_processors[i].cache.l4.apic_bits);
+			if (l4_id != last_l4_id || x86_processors[i].cache.l4.size != last_l4_size) {
 				last_l4_id = l4_id;
+				last_l4_size = x86_processors[i].cache.l4.size;
 				l4_count++;
 			}
 		}
@@ -112,6 +119,8 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	struct cpuinfo_cache* l2 = NULL;
 	struct cpuinfo_cache* l3 = NULL;
 	struct cpuinfo_cache* l4 = NULL;
+	struct cpuinfo_x86_processor* x86_processors = NULL;
+	struct cpuinfo_uarch_info* uarchs = NULL;
 	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX processor_infos = NULL;
 
 	HANDLE heap = GetProcessHeap();
@@ -155,6 +164,15 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		cpuinfo_log_error(
 			"failed to allocate %zu bytes for descriptions of %" PRIu32 " logical processors",
 			processors_count * sizeof(struct cpuinfo_processor),
+			processors_count);
+		goto cleanup;
+	}
+
+	x86_processors = HeapAlloc(heap, HEAP_ZERO_MEMORY, processors_count * sizeof(struct cpuinfo_x86_processor));
+	if (x86_processors == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for internal descriptions of %" PRIu32 " logical processors",
+			processors_count * sizeof(struct cpuinfo_x86_processor),
 			processors_count);
 		goto cleanup;
 	}
@@ -320,15 +338,6 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		goto cleanup;
 	}
 
-	clusters = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_cluster));
-	if (clusters == NULL) {
-		cpuinfo_log_error(
-			"failed to allocate %zu bytes for descriptions of %" PRIu32 " core clusters",
-			packages_count * sizeof(struct cpuinfo_cluster),
-			packages_count);
-		goto cleanup;
-	}
-
 	packages = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
 		cpuinfo_log_error(
@@ -342,31 +351,36 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		const uint32_t processor_id = i - 1;
 		struct cpuinfo_processor* processor = processors + processor_id;
 
-		/* Adjust core and package pointers for all logical processors
-		 */
+		/* Adjust core and package pointers for all logical processors */
 		struct cpuinfo_core* core = (struct cpuinfo_core*)((uintptr_t)cores + (uintptr_t)processor->core);
 		processor->core = core;
-		struct cpuinfo_cluster* cluster =
-			(struct cpuinfo_cluster*)((uintptr_t)clusters + (uintptr_t)processor->cluster);
-		processor->cluster = cluster;
 		struct cpuinfo_package* package =
 			(struct cpuinfo_package*)((uintptr_t)packages + (uintptr_t)processor->package);
 		processor->package = package;
 
-		/* This can be overwritten by lower-index processors on the same
-		 * package */
+		/* This can be overwritten by lower-index processors on the same package */
 		package->processor_start = processor_id;
 		package->processor_count += 1;
 
-		/* This can be overwritten by lower-index processors on the same
-		 * cluster */
-		cluster->processor_start = processor_id;
-		cluster->processor_count += 1;
-
-		/* This can be overwritten by lower-index processors on the same
-		 * core*/
+		/* This can be overwritten by lower-index processors on the same core */
 		core->processor_start = processor_id;
 		core->processor_count += 1;
+	}
+
+	/* Query CPUID on each logical processor to detect heterogeneous uarch and caches */
+	HANDLE current_thread = GetCurrentThread();
+	for (uint32_t i = 0; i < processors_count; i++) {
+		GROUP_AFFINITY group_affinity, previous_affinity;
+		ZeroMemory(&group_affinity, sizeof(group_affinity));
+		group_affinity.Group = (WORD)processors[i].windows_group_id;
+		group_affinity.Mask = ((KAFFINITY)1) << processors[i].windows_processor_id;
+		if (SetThreadGroupAffinity(current_thread, &group_affinity, &previous_affinity)) {
+			Sleep(0);
+			cpuinfo_x86_init_processor(&x86_processors[i]);
+			SetThreadGroupAffinity(current_thread, &previous_affinity, NULL);
+		} else {
+			x86_processors[i] = x86_processor;
+		}
 	}
 
 	/* Set vendor/uarch/CPUID information for cores */
@@ -375,41 +389,121 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		struct cpuinfo_core* core = cores + global_core_id;
 		const struct cpuinfo_processor* processor = processors + core->processor_start;
 		struct cpuinfo_package* package = (struct cpuinfo_package*)processor->package;
-		struct cpuinfo_cluster* cluster = (struct cpuinfo_cluster*)processor->cluster;
 
-		core->cluster = cluster;
 		core->package = package;
 		core->core_id = core_bits_mask & (processor->apic_id >> x86_processor.topology.core_bits_offset);
-		core->vendor = x86_processor.vendor;
-		core->uarch = x86_processor.uarch;
-		core->cpuid = x86_processor.cpuid;
+		core->vendor = x86_processors[core->processor_start].vendor;
+		core->uarch = x86_processors[core->processor_start].uarch;
+		core->cpuid = x86_processors[core->processor_start].cpuid;
 
-		/* This can be overwritten by lower-index cores on the same
-		 * cluster/package
-		 */
-		cluster->core_start = global_core_id;
-		cluster->core_count += 1;
+		/* This can be overwritten by lower-index cores on the same package */
 		package->core_start = global_core_id;
 		package->core_count += 1;
 	}
 
 	for (uint32_t i = 0; i < packages_count; i++) {
-		struct cpuinfo_package* package = packages + i;
-		struct cpuinfo_cluster* cluster = clusters + i;
+		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, packages[i].name);
+	}
 
-		cluster->package = package;
-		cluster->vendor = cores[cluster->core_start].vendor;
-		cluster->uarch = cores[cluster->core_start].uarch;
-		cluster->cpuid = cores[cluster->core_start].cpuid;
-		package->cluster_start = i;
-		package->cluster_count = 1;
-		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, package->name);
+	/* Count and allocate clusters based on microarchitecture boundaries */
+	uint32_t clusters_count = 0;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		if (i == 0 || cores[i].package != cores[i - 1].package || cores[i].uarch != cores[i - 1].uarch ||
+		    cores[i].vendor != cores[i - 1].vendor || cores[i].cpuid != cores[i - 1].cpuid) {
+			clusters_count++;
+		}
+	}
+
+	clusters = HeapAlloc(heap, HEAP_ZERO_MEMORY, clusters_count * sizeof(struct cpuinfo_cluster));
+	if (clusters == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " core clusters",
+			clusters_count * sizeof(struct cpuinfo_cluster),
+			clusters_count);
+		goto cleanup;
+	}
+
+	uint32_t cluster_idx = 0;
+	uint32_t cluster_id_in_package = 0;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		if (i == 0 || cores[i].package != cores[i - 1].package || cores[i].uarch != cores[i - 1].uarch ||
+		    cores[i].vendor != cores[i - 1].vendor || cores[i].cpuid != cores[i - 1].cpuid) {
+			if (i != 0) {
+				if (cores[i].package != cores[i - 1].package) {
+					cluster_id_in_package = 0;
+				} else {
+					cluster_id_in_package++;
+				}
+				cluster_idx++;
+			}
+			struct cpuinfo_package* package = (struct cpuinfo_package*)cores[i].package;
+			if (package->cluster_count == 0) {
+				package->cluster_start = cluster_idx;
+			}
+			package->cluster_count++;
+
+			clusters[cluster_idx] = (struct cpuinfo_cluster){
+				.processor_start = cores[i].processor_start,
+				.processor_count = 0,
+				.core_start = i,
+				.core_count = 0,
+				.cluster_id = cluster_id_in_package,
+				.package = package,
+				.vendor = cores[i].vendor,
+				.uarch = cores[i].uarch,
+				.cpuid = cores[i].cpuid,
+				.frequency = cores[i].frequency,
+			};
+		}
+		cores[i].cluster = &clusters[cluster_idx];
+		clusters[cluster_idx].core_count++;
+		clusters[cluster_idx].processor_count += cores[i].processor_count;
+		for (uint32_t p = 0; p < cores[i].processor_count; p++) {
+			processors[cores[i].processor_start + p].cluster = &clusters[cluster_idx];
+		}
+	}
+
+	/* Count and store unique microarchitectures */
+	uint32_t nr_of_uarchs = 0;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		bool found = false;
+		for (uint32_t j = 0; j < i; j++) {
+			if (cores[j].uarch == cores[i].uarch) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			nr_of_uarchs++;
+		}
+	}
+	uarchs = HeapAlloc(heap, HEAP_ZERO_MEMORY, nr_of_uarchs * sizeof(struct cpuinfo_uarch_info));
+	if (uarchs != NULL) {
+		uint32_t uarch_idx = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			uint32_t k;
+			for (k = 0; k < uarch_idx; k++) {
+				if (uarchs[k].uarch == cores[i].uarch) {
+					break;
+				}
+			}
+			if (k == uarch_idx) {
+				uarchs[uarch_idx].uarch = cores[i].uarch;
+				uarchs[uarch_idx].cpuid = cores[i].cpuid;
+				uarchs[uarch_idx].core_count = 1;
+				uarchs[uarch_idx].processor_count = cores[i].processor_count;
+				uarch_idx++;
+			} else {
+				uarchs[k].core_count += 1;
+				uarchs[k].processor_count += cores[i].processor_count;
+			}
+		}
 	}
 
 	/* Count caches */
 	uint32_t l1i_count, l1d_count, l2_count, l3_count, l4_count;
 	cpuinfo_x86_count_caches(
-		processors_count, processors, &x86_processor, &l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
+		processors_count, processors, x86_processors, &l1i_count, &l1d_count, &l2_count, &l3_count, &l4_count);
 
 	/* Allocate cache descriptions */
 	if (l1i_count != 0) {
@@ -468,22 +562,24 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		 l4_index = UINT32_MAX;
 	uint32_t last_l1i_id = UINT32_MAX, last_l1d_id = UINT32_MAX;
 	uint32_t last_l2_id = UINT32_MAX, last_l3_id = UINT32_MAX, last_l4_id = UINT32_MAX;
+	uint32_t last_l1i_size = 0, last_l1d_size = 0;
+	uint32_t last_l2_size = 0, last_l3_size = 0, last_l4_size = 0;
 	for (uint32_t i = 0; i < processors_count; i++) {
 		const uint32_t apic_id = processors[i].apic_id;
 
-		if (x86_processor.cache.l1i.size != 0) {
-			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processor.cache.l1i.apic_bits);
-			processors[i].cache.l1i = &l1i[l1i_index];
-			if (l1i_id != last_l1i_id) {
+		if (x86_processors[i].cache.l1i.size != 0) {
+			const uint32_t l1i_id = apic_id & ~bit_mask(x86_processors[i].cache.l1i.apic_bits);
+			if (l1i_id != last_l1i_id || x86_processors[i].cache.l1i.size != last_l1i_size) {
 				/* new cache */
 				last_l1i_id = l1i_id;
+				last_l1i_size = x86_processors[i].cache.l1i.size;
 				l1i[++l1i_index] = (struct cpuinfo_cache){
-					.size = x86_processor.cache.l1i.size,
-					.associativity = x86_processor.cache.l1i.associativity,
-					.sets = x86_processor.cache.l1i.sets,
-					.partitions = x86_processor.cache.l1i.partitions,
-					.line_size = x86_processor.cache.l1i.line_size,
-					.flags = x86_processor.cache.l1i.flags,
+					.size = x86_processors[i].cache.l1i.size,
+					.associativity = x86_processors[i].cache.l1i.associativity,
+					.sets = x86_processors[i].cache.l1i.sets,
+					.partitions = x86_processors[i].cache.l1i.partitions,
+					.line_size = x86_processors[i].cache.l1i.line_size,
+					.flags = x86_processors[i].cache.l1i.flags,
 					.processor_start = i,
 					.processor_count = 1,
 				};
@@ -495,20 +591,21 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		} else {
 			/* reset cache id */
 			last_l1i_id = UINT32_MAX;
+			last_l1i_size = 0;
 		}
-		if (x86_processor.cache.l1d.size != 0) {
-			const uint32_t l1d_id = apic_id & ~bit_mask(x86_processor.cache.l1d.apic_bits);
-			processors[i].cache.l1d = &l1d[l1d_index];
-			if (l1d_id != last_l1d_id) {
+		if (x86_processors[i].cache.l1d.size != 0) {
+			const uint32_t l1d_id = apic_id & ~bit_mask(x86_processors[i].cache.l1d.apic_bits);
+			if (l1d_id != last_l1d_id || x86_processors[i].cache.l1d.size != last_l1d_size) {
 				/* new cache */
 				last_l1d_id = l1d_id;
+				last_l1d_size = x86_processors[i].cache.l1d.size;
 				l1d[++l1d_index] = (struct cpuinfo_cache){
-					.size = x86_processor.cache.l1d.size,
-					.associativity = x86_processor.cache.l1d.associativity,
-					.sets = x86_processor.cache.l1d.sets,
-					.partitions = x86_processor.cache.l1d.partitions,
-					.line_size = x86_processor.cache.l1d.line_size,
-					.flags = x86_processor.cache.l1d.flags,
+					.size = x86_processors[i].cache.l1d.size,
+					.associativity = x86_processors[i].cache.l1d.associativity,
+					.sets = x86_processors[i].cache.l1d.sets,
+					.partitions = x86_processors[i].cache.l1d.partitions,
+					.line_size = x86_processors[i].cache.l1d.line_size,
+					.flags = x86_processors[i].cache.l1d.flags,
 					.processor_start = i,
 					.processor_count = 1,
 				};
@@ -520,20 +617,21 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		} else {
 			/* reset cache id */
 			last_l1d_id = UINT32_MAX;
+			last_l1d_size = 0;
 		}
-		if (x86_processor.cache.l2.size != 0) {
-			const uint32_t l2_id = apic_id & ~bit_mask(x86_processor.cache.l2.apic_bits);
-			processors[i].cache.l2 = &l2[l2_index];
-			if (l2_id != last_l2_id) {
+		if (x86_processors[i].cache.l2.size != 0) {
+			const uint32_t l2_id = apic_id & ~bit_mask(x86_processors[i].cache.l2.apic_bits);
+			if (l2_id != last_l2_id || x86_processors[i].cache.l2.size != last_l2_size) {
 				/* new cache */
 				last_l2_id = l2_id;
+				last_l2_size = x86_processors[i].cache.l2.size;
 				l2[++l2_index] = (struct cpuinfo_cache){
-					.size = x86_processor.cache.l2.size,
-					.associativity = x86_processor.cache.l2.associativity,
-					.sets = x86_processor.cache.l2.sets,
-					.partitions = x86_processor.cache.l2.partitions,
-					.line_size = x86_processor.cache.l2.line_size,
-					.flags = x86_processor.cache.l2.flags,
+					.size = x86_processors[i].cache.l2.size,
+					.associativity = x86_processors[i].cache.l2.associativity,
+					.sets = x86_processors[i].cache.l2.sets,
+					.partitions = x86_processors[i].cache.l2.partitions,
+					.line_size = x86_processors[i].cache.l2.line_size,
+					.flags = x86_processors[i].cache.l2.flags,
 					.processor_start = i,
 					.processor_count = 1,
 				};
@@ -545,20 +643,21 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		} else {
 			/* reset cache id */
 			last_l2_id = UINT32_MAX;
+			last_l2_size = 0;
 		}
-		if (x86_processor.cache.l3.size != 0) {
-			const uint32_t l3_id = apic_id & ~bit_mask(x86_processor.cache.l3.apic_bits);
-			processors[i].cache.l3 = &l3[l3_index];
-			if (l3_id != last_l3_id) {
+		if (x86_processors[i].cache.l3.size != 0) {
+			const uint32_t l3_id = apic_id & ~bit_mask(x86_processors[i].cache.l3.apic_bits);
+			if (l3_id != last_l3_id || x86_processors[i].cache.l3.size != last_l3_size) {
 				/* new cache */
 				last_l3_id = l3_id;
+				last_l3_size = x86_processors[i].cache.l3.size;
 				l3[++l3_index] = (struct cpuinfo_cache){
-					.size = x86_processor.cache.l3.size,
-					.associativity = x86_processor.cache.l3.associativity,
-					.sets = x86_processor.cache.l3.sets,
-					.partitions = x86_processor.cache.l3.partitions,
-					.line_size = x86_processor.cache.l3.line_size,
-					.flags = x86_processor.cache.l3.flags,
+					.size = x86_processors[i].cache.l3.size,
+					.associativity = x86_processors[i].cache.l3.associativity,
+					.sets = x86_processors[i].cache.l3.sets,
+					.partitions = x86_processors[i].cache.l3.partitions,
+					.line_size = x86_processors[i].cache.l3.line_size,
+					.flags = x86_processors[i].cache.l3.flags,
 					.processor_start = i,
 					.processor_count = 1,
 				};
@@ -570,20 +669,21 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		} else {
 			/* reset cache id */
 			last_l3_id = UINT32_MAX;
+			last_l3_size = 0;
 		}
-		if (x86_processor.cache.l4.size != 0) {
-			const uint32_t l4_id = apic_id & ~bit_mask(x86_processor.cache.l4.apic_bits);
-			processors[i].cache.l4 = &l4[l4_index];
-			if (l4_id != last_l4_id) {
+		if (x86_processors[i].cache.l4.size != 0) {
+			const uint32_t l4_id = apic_id & ~bit_mask(x86_processors[i].cache.l4.apic_bits);
+			if (l4_id != last_l4_id || x86_processors[i].cache.l4.size != last_l4_size) {
 				/* new cache */
 				last_l4_id = l4_id;
+				last_l4_size = x86_processors[i].cache.l4.size;
 				l4[++l4_index] = (struct cpuinfo_cache){
-					.size = x86_processor.cache.l4.size,
-					.associativity = x86_processor.cache.l4.associativity,
-					.sets = x86_processor.cache.l4.sets,
-					.partitions = x86_processor.cache.l4.partitions,
-					.line_size = x86_processor.cache.l4.line_size,
-					.flags = x86_processor.cache.l4.flags,
+					.size = x86_processors[i].cache.l4.size,
+					.associativity = x86_processors[i].cache.l4.associativity,
+					.sets = x86_processors[i].cache.l4.sets,
+					.partitions = x86_processors[i].cache.l4.partitions,
+					.line_size = x86_processors[i].cache.l4.line_size,
+					.flags = x86_processors[i].cache.l4.flags,
 					.processor_start = i,
 					.processor_count = 1,
 				};
@@ -595,6 +695,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		} else {
 			/* reset cache id */
 			last_l4_id = UINT32_MAX;
+			last_l4_size = 0;
 		}
 	}
 
@@ -611,14 +712,25 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 
 	cpuinfo_processors_count = processors_count;
 	cpuinfo_cores_count = cores_count;
-	cpuinfo_clusters_count = packages_count;
+	cpuinfo_clusters_count = clusters_count;
 	cpuinfo_packages_count = packages_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_2] = l2_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_3] = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4] = l4_count;
-	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
+	uint32_t max_cache_size = 0;
+	for (uint32_t i = 0; i < processors_count; i++) {
+		const uint32_t processor_max_cache_size = cpuinfo_compute_max_cache_size(&processors[i]);
+		if (processor_max_cache_size > max_cache_size) {
+			max_cache_size = processor_max_cache_size;
+		}
+	}
+	cpuinfo_max_cache_size = max_cache_size;
+
+	cpuinfo_uarchs = uarchs;
+	cpuinfo_uarchs_count = nr_of_uarchs;
+	uarchs = NULL;
 
 	cpuinfo_global_uarch = (struct cpuinfo_uarch_info){
 		.uarch = x86_processor.uarch,
@@ -638,6 +750,12 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	l1i = l1d = l2 = l3 = l4 = NULL;
 
 cleanup:
+	if (x86_processors != NULL) {
+		HeapFree(heap, 0, x86_processors);
+	}
+	if (uarchs != NULL) {
+		HeapFree(heap, 0, uarchs);
+	}
 	if (processors != NULL) {
 		HeapFree(heap, 0, processors);
 	}

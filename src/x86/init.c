@@ -29,7 +29,10 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 		processor->cpuid = leaf1.eax;
 
 		const struct cpuinfo_x86_model_info model_info = cpuinfo_x86_decode_model_info(leaf1.eax);
-		const enum cpuinfo_uarch uarch = processor->uarch = cpuinfo_x86_decode_uarch(vendor, &model_info);
+		const uint32_t core_type =
+			max_base_index >= UINT32_C(0x1A) ? (cpuidex(UINT32_C(0x1A), 0).eax >> 24) : 0;
+		const enum cpuinfo_uarch uarch = processor->uarch =
+			cpuinfo_x86_decode_uarch(vendor, &model_info, core_type);
 
 		cpuinfo_x86_clflush_size = ((leaf1.ebx >> 8) & UINT32_C(0x000000FF)) * 8;
 
