@@ -155,6 +155,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Zen 5";
 		case cpuinfo_uarch_zen6:
 			return "Zen 6";
+		case cpuinfo_uarch_oberon:
+			return "Oberon";
+		case cpuinfo_uarch_arden:
+			return "Arden";
 		case cpuinfo_uarch_geode:
 			return "Geode";
 		case cpuinfo_uarch_bobcat:
