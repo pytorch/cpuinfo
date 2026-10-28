@@ -321,6 +321,12 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 										 : cpuinfo_uarch_coyote_cove;
 					}
 					break;
+				case 0x13:
+					switch (model_info->model) {
+						case 0x01: // Diamond Rapids
+							return cpuinfo_uarch_panther_cove;
+					}
+					break;
 			}
 			break;
 
