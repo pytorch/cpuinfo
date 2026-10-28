@@ -147,6 +147,27 @@ static void cpuinfo_x86_count_objects(
 	*l4_count_ptr = l4_count;
 }
 
+struct pmu_cpus_context {
+	uint32_t max_processors_count;
+	const struct cpuinfo_core** linux_cpu_to_core_map;
+	enum cpuinfo_uarch uarch;
+	bool conflict;
+};
+
+static bool mark_pmu_cpus(uint32_t cpu_start, uint32_t cpu_end, void* context) {
+	struct pmu_cpus_context* ctx = (struct pmu_cpus_context*)context;
+	for (uint32_t cpu = cpu_start; cpu < cpu_end && cpu < ctx->max_processors_count; cpu++) {
+		struct cpuinfo_core* core = (struct cpuinfo_core*)ctx->linux_cpu_to_core_map[cpu];
+		if (core != NULL) {
+			if (core->uarch != cpuinfo_uarch_unknown && core->uarch != ctx->uarch) {
+				ctx->conflict = true;
+			}
+			core->uarch = ctx->uarch;
+		}
+	}
+	return true;
+}
+
 void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_x86_linux_processor* x86_linux_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
@@ -626,63 +647,40 @@ void cpuinfo_x86_linux_init(void) {
 	}
 
 	uint32_t uarchs_count = 0;
-	if (x86_processor.uarch != x86_processor.e_uarch && cores_count > 1) {
-		uint32_t min_core_processors = UINT32_MAX;
-		uint32_t max_core_processors = 0;
-		uint32_t min_apic_delta = UINT32_MAX;
-		uint32_t max_apic_delta = 0;
-		for (uint32_t i = 0; i < cores_count; i++) {
-			if (cores[i].processor_count < min_core_processors) {
-				min_core_processors = cores[i].processor_count;
+	if (x86_processor.uarch != x86_processor.e_uarch && cores_count > 0) {
+		if (x86_processor.uarch != cpuinfo_uarch_unknown && x86_processor.e_uarch != cpuinfo_uarch_unknown) {
+			for (uint32_t i = 0; i < cores_count; i++) {
+				cores[i].uarch = cpuinfo_uarch_unknown;
 			}
-			if (cores[i].processor_count > max_core_processors) {
-				max_core_processors = cores[i].processor_count;
-			}
-			const uint32_t apic_id = processors[cores[i].processor_start].apic_id;
-			uint32_t delta = UINT32_MAX;
-			if (i > 0 && cores[i - 1].package == cores[i].package) {
-				const uint32_t prev_apic = processors[cores[i - 1].processor_start].apic_id;
-				if (apic_id - prev_apic < delta) {
-					delta = apic_id - prev_apic;
-				}
-			}
-			if (i + 1 < cores_count && cores[i + 1].package == cores[i].package) {
-				const uint32_t next_apic = processors[cores[i + 1].processor_start].apic_id;
-				if (next_apic - apic_id < delta) {
-					delta = next_apic - apic_id;
-				}
-			}
-			if (delta < min_apic_delta) {
-				min_apic_delta = delta;
-			}
-			if (delta != UINT32_MAX && delta > max_apic_delta) {
-				max_apic_delta = delta;
-			}
-		}
+			struct pmu_cpus_context core_ctx = {
+				.max_processors_count = x86_linux_processors_count,
+				.linux_cpu_to_core_map = linux_cpu_to_core_map,
+				.uarch = x86_processor.uarch,
+				.conflict = false,
+			};
+			struct pmu_cpus_context atom_ctx = {
+				.max_processors_count = x86_linux_processors_count,
+				.linux_cpu_to_core_map = linux_cpu_to_core_map,
+				.uarch = x86_processor.e_uarch,
+				.conflict = false,
+			};
+			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_core/cpus", mark_pmu_cpus, &core_ctx);
+			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_atom/cpus", mark_pmu_cpus, &atom_ctx);
+			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_lowpower/cpus", mark_pmu_cpus, &atom_ctx);
 
-		for (uint32_t i = 0; i < cores_count; i++) {
-			if (max_core_processors > min_core_processors) {
-				cores[i].uarch = cores[i].processor_count == max_core_processors
-					? x86_processor.uarch
-					: x86_processor.e_uarch;
-			} else if (max_apic_delta > min_apic_delta) {
-				const uint32_t apic_id = processors[cores[i].processor_start].apic_id;
-				uint32_t delta = UINT32_MAX;
-				if (i > 0 && cores[i - 1].package == cores[i].package) {
-					const uint32_t prev_apic = processors[cores[i - 1].processor_start].apic_id;
-					if (apic_id - prev_apic < delta) {
-						delta = apic_id - prev_apic;
+			bool valid_pmu_uarchs = !core_ctx.conflict && !atom_ctx.conflict;
+			if (valid_pmu_uarchs) {
+				for (uint32_t i = 0; i < cores_count; i++) {
+					if (cores[i].uarch == cpuinfo_uarch_unknown) {
+						valid_pmu_uarchs = false;
+						break;
 					}
 				}
-				if (i + 1 < cores_count && cores[i + 1].package == cores[i].package) {
-					const uint32_t next_apic = processors[cores[i + 1].processor_start].apic_id;
-					if (next_apic - apic_id < delta) {
-						delta = next_apic - apic_id;
-					}
+			}
+			if (!valid_pmu_uarchs) {
+				for (uint32_t i = 0; i < cores_count; i++) {
+					cores[i].uarch = x86_processor.uarch;
 				}
-				cores[i].uarch = delta > min_apic_delta ? x86_processor.uarch : x86_processor.e_uarch;
-			} else {
-				cores[i].uarch = i < cores_count / 2 ? x86_processor.uarch : x86_processor.e_uarch;
 			}
 		}
 
@@ -818,7 +816,7 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_uarchs_count = uarchs_count;
 
 	cpuinfo_global_uarch = (struct cpuinfo_uarch_info){
-		.uarch = x86_processor.uarch,
+		.uarch = uarchs_count == 1 ? uarchs[0].uarch : x86_processor.uarch,
 		.cpuid = x86_processor.cpuid,
 		.processor_count = processors_count,
 		.core_count = cores_count,

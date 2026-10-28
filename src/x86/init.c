@@ -103,9 +103,9 @@ void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor) {
 }
 
 uint32_t cpuinfo_x86_get_current_uarch_index(uint32_t default_uarch_index) {
-	if (!hybrid || cpuinfo_uarchs == NULL) {
+	if (!hybrid || cpuinfo_uarchs == NULL || cpuinfo_uarchs_count <= 1) {
 		/* Special case: avoid CPUID on systems with only a single type of cores */
-		return default_uarch_index;
+		return 0;
 	}
 
 	/*

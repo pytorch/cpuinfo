@@ -395,6 +395,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_darkmont = 0x00100409,
 	/** Intel Skymont microarchitecture (Arrow Lake, Lunar Lake). */
 	cpuinfo_uarch_skymont = 0x0010040A,
+	/** Intel Arctic Wolf microarchitecture (Nova Lake). */
+	cpuinfo_uarch_arctic_wolf = 0x0010040B,
 
 	/** Intel Knights Ferry HPC boards. */
 	cpuinfo_uarch_knights_ferry = 0x00100500,

@@ -86,8 +86,8 @@ CPUINFO_INTERNAL void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* p
 /*
  * Returns the index in cpuinfo_uarchs of the microarchitecture of the core
  * executing the calling thread, using only the CPUID instruction (leaf 0x1A
- * core type) on hybrid processors. Returns default_uarch_index on
- * non-hybrid processors or if the core type can not be resolved.
+ * core type) on multi-uarch hybrid processors. Returns 0 on single-uarch
+ * systems, or default_uarch_index if the core type can not be resolved.
  */
 CPUINFO_INTERNAL uint32_t cpuinfo_x86_get_current_uarch_index(uint32_t default_uarch_index);
 

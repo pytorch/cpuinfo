@@ -374,17 +374,6 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		core->processor_count += 1;
 	}
 
-	uint32_t min_core_processors = UINT32_MAX;
-	uint32_t max_core_processors = 0;
-	for (uint32_t i = 0; i < cores_count; i++) {
-		if (cores[i].processor_count < min_core_processors) {
-			min_core_processors = cores[i].processor_count;
-		}
-		if (cores[i].processor_count > max_core_processors) {
-			max_core_processors = cores[i].processor_count;
-		}
-	}
-
 	/* Set vendor/uarch/CPUID information for cores */
 	for (uint32_t i = cores_count; i != 0; i--) {
 		const uint32_t global_core_id = i - 1;
@@ -395,18 +384,10 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		core->package = package;
 		core->core_id = core_bits_mask & (processor->apic_id >> x86_processor.topology.core_bits_offset);
 		core->vendor = x86_processor.vendor;
-		if (x86_processor.uarch != x86_processor.e_uarch) {
-			if (max_efficiency_class > min_efficiency_class) {
-				core->uarch = core_efficiency_classes[global_core_id] == max_efficiency_class
-					? x86_processor.uarch
-					: x86_processor.e_uarch;
-			} else if (max_core_processors > min_core_processors) {
-				core->uarch = core->processor_count == max_core_processors ? x86_processor.uarch
-											   : x86_processor.e_uarch;
-			} else {
-				core->uarch =
-					global_core_id < cores_count / 2 ? x86_processor.uarch : x86_processor.e_uarch;
-			}
+		if (x86_processor.uarch != x86_processor.e_uarch && max_efficiency_class > min_efficiency_class) {
+			core->uarch = core_efficiency_classes[global_core_id] == max_efficiency_class
+				? x86_processor.uarch
+				: x86_processor.e_uarch;
 		} else {
 			core->uarch = x86_processor.uarch;
 		}

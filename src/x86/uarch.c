@@ -191,12 +191,12 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 							return cpuinfo_uarch_raptor_cove;
 						case 0xAA: // Meteor Lake-L
 						case 0xAC: // Meteor Lake
+						case 0xB5: // Arrow Lake-U
 							return core_type == 0x20 ? cpuinfo_uarch_crestmont
 										 : cpuinfo_uarch_redwood_cove;
 						case 0xAD: // Granite Rapids
 						case 0xAE: // Granite Rapids-D
 							return cpuinfo_uarch_redwood_cove;
-						case 0xB5: // Arrow Lake-U
 						case 0xBD: // Lunar Lake
 						case 0xC5: // Arrow Lake-H
 						case 0xC6: // Arrow Lake-S
@@ -304,7 +304,7 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 					switch (model_info->model) {
 						case 0x01: // Nova Lake
 						case 0x03: // Nova Lake-L
-							return core_type == 0x20 ? cpuinfo_uarch_darkmont
+							return core_type == 0x20 ? cpuinfo_uarch_arctic_wolf
 										 : cpuinfo_uarch_coyote_cove;
 					}
 					break;
