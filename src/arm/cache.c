@@ -1444,6 +1444,34 @@ void cpuinfo_arm_decode_cache(
 				*l2 = (struct cpuinfo_cache){.size = 1024 * 1024, .associativity = 8, .line_size = 128};
 			}
 			break;
+		case cpuinfo_uarch_oryon:
+		case cpuinfo_uarch_oryon_v3: {
+			/*
+			 *  +--------------------------+-------+-----------+-----------+-----------+
+			 *  | Processor model          | Cores | L1D cache | L1I cache | L2 cache  |
+			 *  +--------------------------+-------+-----------+-----------+-----------+
+			 *  | Snapdragon X Elite       | 4+4+4 |    96K    |   192K    | 12M/clust |
+			 *  | Snapdragon 8 Elite       |  2+6  |  96K/64K  | 192K/128K |  12M+12M  |
+			 *  | Snapdragon 8 Elite Gen 5 |  2+6  |  96K/64K  | 192K/128K |  12M+12M  |
+			 *  +--------------------------+-------+-----------+-----------+-----------+
+			 *
+			 * - Prime cores: 192 KB 6-way L1I, 96 KB 6-way L1D.
+			 * - Performance cores (Oryon variant 0x4, Oryon V3 variant 0x2): 128 KB L1I, 64 KB L1D.
+			 * - Shared L2 cache: 12 MB 12-way per cluster.
+			 */
+			const uint32_t variant = midr_get_variant(midr);
+			const bool is_oryon_perf = uarch == cpuinfo_uarch_oryon && variant == 4;
+			const bool is_oryon_v3_perf = uarch == cpuinfo_uarch_oryon_v3 && variant == 2;
+			if (is_oryon_perf || is_oryon_v3_perf) {
+				*l1i = (struct cpuinfo_cache){.size = 128 * 1024, .associativity = 4, .line_size = 64};
+				*l1d = (struct cpuinfo_cache){.size = 64 * 1024, .associativity = 4, .line_size = 64};
+			} else {
+				*l1i = (struct cpuinfo_cache){.size = 192 * 1024, .associativity = 6, .line_size = 64};
+				*l1d = (struct cpuinfo_cache){.size = 96 * 1024, .associativity = 6, .line_size = 64};
+			}
+			*l2 = (struct cpuinfo_cache){.size = 12 * 1024 * 1024, .associativity = 12, .line_size = 64};
+			break;
+		}
 		case cpuinfo_uarch_denver:
 		case cpuinfo_uarch_denver2:
 			/*
@@ -1662,6 +1690,8 @@ uint32_t cpuinfo_arm_compute_max_cache_size(const struct cpuinfo_processor* proc
 		case cpuinfo_uarch_scorpion:
 		case cpuinfo_uarch_krait:
 		case cpuinfo_uarch_kryo:
+		case cpuinfo_uarch_oryon:
+		case cpuinfo_uarch_oryon_v3:
 		case cpuinfo_uarch_exynos_m1:
 		case cpuinfo_uarch_exynos_m2:
 		case cpuinfo_uarch_exynos_m3:

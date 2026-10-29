@@ -93,6 +93,30 @@ static uint32_t cpuinfo_linux_read_sysfs_cache_size(uint32_t cpu_id, uint32_t ca
 	return size;
 }
 
+/* Read cache ways of associativity from sysfs */
+static uint32_t cpuinfo_linux_read_sysfs_cache_ways(uint32_t cpu_id, uint32_t cache_level) {
+	char path[256];
+
+	/* Verify the index corresponds to the requested cache level */
+	snprintf(path, sizeof(path), "/sys/devices/system/cpu/cpu%u/cache/index%u/level", cpu_id, cache_level);
+	uint32_t actual_level = 0;
+	if (!cpuinfo_linux_parse_small_file(path, 16, uint32_parser, &actual_level) || actual_level != cache_level) {
+		return 0;
+	}
+
+	snprintf(
+		path,
+		sizeof(path),
+		"/sys/devices/system/cpu/cpu%u/cache/index%u/ways_of_associativity",
+		cpu_id,
+		cache_level);
+	uint32_t ways = 0;
+	if (!cpuinfo_linux_parse_small_file(path, 32, uint32_parser, &ways)) {
+		return 0;
+	}
+	return ways;
+}
+
 /* Check if L2 cache is per-core by reading sysfs shared_cpu_list */
 static bool cpuinfo_linux_is_l2_per_core(uint32_t cpu_id) {
 	char path[256];
@@ -874,6 +898,11 @@ void cpuinfo_arm_linux_init(void) {
 			cpuinfo_linux_read_sysfs_cache_size(arm_linux_processors[i].system_processor_id, 2);
 		if (sysfs_l2_size > 0) {
 			temp_l2.size = sysfs_l2_size;
+			uint32_t sysfs_l2_ways =
+				cpuinfo_linux_read_sysfs_cache_ways(arm_linux_processors[i].system_processor_id, 2);
+			if (sysfs_l2_ways > 0) {
+				temp_l2.associativity = sysfs_l2_ways;
+			}
 			/* Recalculate sets to maintain consistency: size = associativity * sets * partitions *
 			 * line_size */
 			if (temp_l2.associativity > 0 && temp_l2.line_size > 0 && temp_l2.partitions > 0) {
