@@ -518,7 +518,19 @@ void cpuinfo_arm_linux_init(void) {
 
 	cpuinfo_arm_linux_count_cluster_processors(arm_linux_processors_count, arm_linux_processors);
 
-	const uint32_t cluster_count = cpuinfo_arm_linux_detect_cluster_midr(
+	/* Older /proc/cpuinfo formats report a single MIDR after all processor
+	 * entries. That MIDR cannot reliably be attributed to the last processor;
+	 * keep using the cluster MIDR inference for those formats. */
+	uint32_t processors_with_midr = 0;
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (bitmask_all(
+			    arm_linux_processors[i].flags,
+			    CPUINFO_LINUX_FLAG_VALID | CPUINFO_ARM_LINUX_VALID_IMPLEMENTER |
+				    CPUINFO_ARM_LINUX_VALID_PART)) {
+			processors_with_midr++;
+		}
+	}
+	cpuinfo_arm_linux_detect_cluster_midr(
 		&chipset, arm_linux_processors_count, valid_processors, arm_linux_processors);
 
 	/* Initialize core vendor, uarch, MIDR, and frequency for every logical
@@ -526,25 +538,30 @@ void cpuinfo_arm_linux_init(void) {
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
 			const uint32_t cluster_leader = arm_linux_processors[i].package_leader_id;
-			if (cluster_leader == i) {
-				/* Cluster leader: decode core vendor and uarch
-				 */
-				cpuinfo_arm_decode_vendor_uarch(
-					arm_linux_processors[cluster_leader].midr,
-#if CPUINFO_ARCH_ARM
-					!!(arm_linux_processors[cluster_leader].features &
-					   CPUINFO_ARM_LINUX_FEATURE_VFPV4),
-#endif
-					&arm_linux_processors[cluster_leader].vendor,
-					&arm_linux_processors[cluster_leader].uarch);
-			} else {
-				/* Cluster non-leader: copy vendor, uarch, MIDR,
-				 * and frequency from cluster leader */
-				arm_linux_processors[i].flags |= arm_linux_processors[cluster_leader].flags &
-					(CPUINFO_ARM_LINUX_VALID_MIDR | CPUINFO_LINUX_FLAG_MAX_FREQUENCY);
+			if (!(arm_linux_processors[i].flags & CPUINFO_ARM_LINUX_VALID_ARCHITECTURE)) {
+				arm_linux_processors[i].architecture_version =
+					arm_linux_processors[cluster_leader].architecture_version;
+			}
+			/* A kernel topology group can contain different core types.
+			 * Use the leader only when this processor's identity is missing. */
+			if (processors_with_midr <= 1 ||
+			    !bitmask_all(
+				    arm_linux_processors[i].flags,
+				    CPUINFO_ARM_LINUX_VALID_IMPLEMENTER | CPUINFO_ARM_LINUX_VALID_PART)) {
+				arm_linux_processors[i].flags |=
+					arm_linux_processors[cluster_leader].flags & CPUINFO_ARM_LINUX_VALID_MIDR;
 				arm_linux_processors[i].midr = arm_linux_processors[cluster_leader].midr;
-				arm_linux_processors[i].vendor = arm_linux_processors[cluster_leader].vendor;
-				arm_linux_processors[i].uarch = arm_linux_processors[cluster_leader].uarch;
+			}
+			cpuinfo_arm_decode_vendor_uarch(
+				arm_linux_processors[i].midr,
+#if CPUINFO_ARCH_ARM
+				!!(arm_linux_processors[i].features & CPUINFO_ARM_LINUX_FEATURE_VFPV4),
+#endif
+				&arm_linux_processors[i].vendor,
+				&arm_linux_processors[i].uarch);
+			if (!(arm_linux_processors[i].flags & CPUINFO_LINUX_FLAG_MAX_FREQUENCY)) {
+				arm_linux_processors[i].flags |=
+					arm_linux_processors[cluster_leader].flags & CPUINFO_LINUX_FLAG_MAX_FREQUENCY;
 				arm_linux_processors[i].max_frequency =
 					arm_linux_processors[cluster_leader].max_frequency;
 			}
@@ -565,6 +582,30 @@ void cpuinfo_arm_linux_init(void) {
 	      arm_linux_processors_count,
 	      sizeof(struct cpuinfo_arm_linux_processor),
 	      cmp_arm_linux_processor);
+
+	/* Public clusters describe contiguous, homogeneous groups. Sorting a
+	 * heterogeneous kernel group can move its leader behind its other cores.
+	 * Rebuild the groups and choose their first sorted processor as leader
+	 * before publishing any cluster or cache pointers. */
+	uint32_t cluster_count = 0;
+	const uint32_t core_type_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
+	for (uint32_t start = 0; start < valid_processors;) {
+		uint32_t end = start + 1;
+		while (end < valid_processors &&
+		       arm_linux_processors[end].package_leader_id == arm_linux_processors[start].package_leader_id &&
+		       arm_linux_processors[end].uarch == arm_linux_processors[start].uarch &&
+		       (arm_linux_processors[end].midr & core_type_mask) ==
+			       (arm_linux_processors[start].midr & core_type_mask) &&
+		       arm_linux_processors[end].max_frequency == arm_linux_processors[start].max_frequency) {
+			end++;
+		}
+		for (uint32_t i = start; i < end; i++) {
+			arm_linux_processors[i].package_leader_id = arm_linux_processors[start].system_processor_id;
+			arm_linux_processors[i].package_processor_count = end - start;
+		}
+		cluster_count++;
+		start = end;
+	}
 
 	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
 		if (bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
@@ -793,13 +834,12 @@ void cpuinfo_arm_linux_init(void) {
 			if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 				if (cluster_id == 0) {
 					big_l3_size = temp_l3.size;
-					l3_count = 1;
 				} else if (temp_l3.size != big_l3_size) {
 					/* If some cores have different L3 size,
 					 * L3 is not shared between all cores */
 					shared_l3 = false;
-					l3_count += 1;
 				}
+				l3_count += 1;
 			}
 		} else {
 			/* If some cores don't have L3 cache, L3 is not shared
@@ -827,6 +867,9 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
+	if (shared_l3 && l3_count != 0) {
+		l3_count = 1;
+	}
 	if (l2_count != 0) {
 		l2 = calloc(l2_count, sizeof(struct cpuinfo_cache));
 		if (l2 == NULL) {
@@ -906,7 +949,8 @@ void cpuinfo_arm_linux_init(void) {
 				.processor_count = 1,
 			};
 			processors[i].cache.l2 = l2 + l2_index;
-			if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
+			if (temp_l3.size != 0 &&
+			    arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 				l3_index += 1;
 				if (l3_index < l3_count) {
 					l3[l3_index] = (struct cpuinfo_cache){
@@ -923,9 +967,9 @@ void cpuinfo_arm_linux_init(void) {
 					};
 				}
 			}
-			if (shared_l3) {
+			if (temp_l3.size != 0 && shared_l3) {
 				processors[i].cache.l3 = l3;
-			} else if (l3_index < l3_count) {
+			} else if (temp_l3.size != 0 && l3_index < l3_count) {
 				processors[i].cache.l3 = l3 + l3_index;
 			}
 		} else if (temp_l2.size != 0) {
