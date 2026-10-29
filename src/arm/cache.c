@@ -1349,8 +1349,7 @@ void cpuinfo_arm_decode_cache(
 			 * linked above
 			 */
 			const uint32_t min_l2_size_KB =
-				(uarch == cpuinfo_uarch_neoverse_v2 ||
-				 uarch == cpuinfo_uarch_neoverse_v3 ||
+				(uarch == cpuinfo_uarch_neoverse_v2 || uarch == cpuinfo_uarch_neoverse_v3 ||
 				 midr_is_ampere_altra(midr))
 				? 1024
 				: 256;

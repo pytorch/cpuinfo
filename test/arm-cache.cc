@@ -2167,17 +2167,7 @@ TEST(ARM, neoverse_v3_and_v3ae) {
 		struct cpuinfo_cache l2 = {0};
 		struct cpuinfo_cache l3 = {0};
 
-		cpuinfo_arm_decode_cache(
-			cpuinfo_uarch_neoverse_v3,
-			4,
-			midr,
-			&chipset,
-			0,
-			4,
-			&l1i,
-			&l1d,
-			&l2,
-			&l3);
+		cpuinfo_arm_decode_cache(cpuinfo_uarch_neoverse_v3, 4, midr, &chipset, 0, 4, &l1i, &l1d, &l2, &l3);
 
 		EXPECT_EQ(64 * 1024, l1i.size);
 		EXPECT_EQ(4, l1i.associativity);
