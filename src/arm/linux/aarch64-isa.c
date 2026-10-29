@@ -144,6 +144,9 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SVE2) {
 		isa->sve2 = true;
 	}
+	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SVE2P1) {
+		isa->sve2p1 = true;
+	}
 	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SME) {
 		isa->sme = true;
 	}
@@ -152,6 +155,9 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	}
 	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SME2P1) {
 		isa->sme2p1 = true;
+	}
+	if (features & CPUINFO_ARM_LINUX_FEATURE_SME_MOP4) {
+		isa->sme_mop4 = true;
 	}
 	if (features2 & CPUINFO_ARM_LINUX_FEATURE2_SME_I16I32) {
 		isa->sme_i16i32 = true;

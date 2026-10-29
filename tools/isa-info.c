@@ -177,9 +177,11 @@ int main(int argc, char** argv) {
 	printf("SIMD extensions:\n");
 	printf("\tARM SVE: %s\n", cpuinfo_has_arm_sve() ? "yes" : "no");
 	printf("\tARM SVE 2: %s\n", cpuinfo_has_arm_sve2() ? "yes" : "no");
+	printf("\tARM SVE 2.1: %s\n", cpuinfo_has_arm_sve2p1() ? "yes" : "no");
 	printf("\tARM SME: %s\n", cpuinfo_has_arm_sme() ? "yes" : "no");
 	printf("\tARM SME 2: %s\n", cpuinfo_has_arm_sme2() ? "yes" : "no");
 	printf("\tARM SME 2P1: %s\n", cpuinfo_has_arm_sme2p1() ? "yes" : "no");
+	printf("\tARM SME MOP4: %s\n", cpuinfo_has_arm_sme_mop4() ? "yes" : "no");
 	printf("\tARM SME I16I32: %s\n", cpuinfo_has_arm_sme_i16i32() ? "yes" : "no");
 	printf("\tARM SME BI32I32: %s\n", cpuinfo_has_arm_sme_bi32i32() ? "yes" : "no");
 	printf("\tARM SME B16B16: %s\n", cpuinfo_has_arm_sme_b16b16() ? "yes" : "no");

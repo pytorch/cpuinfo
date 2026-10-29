@@ -582,6 +582,14 @@ TEST(ISA, crc32) {
 	ASSERT_TRUE(cpuinfo_has_arm_crc32());
 }
 
+TEST(ISA, sve2p1) {
+	ASSERT_FALSE(cpuinfo_has_arm_sve2p1());
+}
+
+TEST(ISA, sme_mop4) {
+	ASSERT_FALSE(cpuinfo_has_arm_sme_mop4());
+}
+
 TEST(ISA, fp8) {
 	ASSERT_FALSE(cpuinfo_has_arm_fp8());
 }
