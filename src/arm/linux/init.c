@@ -122,7 +122,8 @@ static bool cluster_siblings_parser(
 	uint32_t processor,
 	uint32_t siblings_start,
 	uint32_t siblings_end,
-	struct cpuinfo_arm_linux_processor* processors) {
+	void* context) {
+	struct cpuinfo_arm_linux_processor* processors = (struct cpuinfo_arm_linux_processor*)context;
 	processors[processor].flags |= CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER;
 	uint32_t package_leader_id = processors[processor].package_leader_id;
 
@@ -442,7 +443,7 @@ void cpuinfo_arm_linux_init(void) {
 			if (cpuinfo_linux_detect_cluster_cpus(
 				    arm_linux_processors_count,
 				    i,
-				    (cpuinfo_siblings_callback)cluster_siblings_parser,
+				    cluster_siblings_parser,
 				    arm_linux_processors)) {
 				detected_cluster_cpus_list_node = true;
 				continue;
@@ -458,7 +459,7 @@ void cpuinfo_arm_linux_init(void) {
 			cpuinfo_linux_detect_core_siblings(
 				arm_linux_processors_count,
 				i,
-				(cpuinfo_siblings_callback)cluster_siblings_parser,
+				cluster_siblings_parser,
 				arm_linux_processors);
 		}
 
@@ -466,7 +467,7 @@ void cpuinfo_arm_linux_init(void) {
 			cpuinfo_linux_detect_cluster_cpus(
 				arm_linux_processors_count,
 				i,
-				(cpuinfo_siblings_callback)cluster_siblings_parser,
+				cluster_siblings_parser,
 				arm_linux_processors);
 		}
 	}
