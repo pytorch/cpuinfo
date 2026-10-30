@@ -675,6 +675,12 @@ enum cpuinfo_uarch {
 
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
+
+	/** HiSilicon HIP09 (MIDR part 0xD02, as named in the arm64 kernel). */
+	cpuinfo_uarch_hip09 = 0x00C00200,
+
+	/** HiSilicon HIP12 (MIDR part 0xD06, as named in the arm64 kernel). */
+	cpuinfo_uarch_hip12 = 0x00C00300,
 };
 
 struct cpuinfo_processor {

@@ -231,6 +231,12 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD01: /* Kunpeng 920 series */
 					*uarch = cpuinfo_uarch_taishan_v110;
 					break;
+				case 0xD02: /* HIP09 */
+					*uarch = cpuinfo_uarch_hip09;
+					break;
+				case 0xD06: /* HIP12 */
+					*uarch = cpuinfo_uarch_hip12;
+					break;
 #endif /* CPUINFO_ARCH_ARM64 */
 				case 0xD40: /* Kirin 980 Big/Medium cores ->
 					       Cortex-A76 */
