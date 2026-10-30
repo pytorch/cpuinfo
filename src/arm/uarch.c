@@ -140,6 +140,10 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD82: /* Cortex-X4 */
 					*uarch = cpuinfo_uarch_cortex_x4;
 					break;
+				case 0xD83: /* Neoverse V3AE */
+				case 0xD84: /* Neoverse V3 */
+					*uarch = cpuinfo_uarch_neoverse_v3;
+					break;
 				case 0xD85: /* Cortex-X925 */
 					*uarch = cpuinfo_uarch_cortex_x925;
 					break;

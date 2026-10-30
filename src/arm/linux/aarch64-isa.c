@@ -46,6 +46,7 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 	 * - Neoverse V1 cores
 	 * - Neoverse N2 cores
 	 * - Neoverse V2 cores
+	 * - Neoverse V3 and V3AE cores
 	 */
 	if (chipset->series == cpuinfo_arm_chipset_series_samsung_exynos && chipset->model == 9810) {
 		/* Exynos 9810 reports that it supports FP16 compute, but in
@@ -65,6 +66,8 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 			case UINT32_C(0x4100D400): /* Neoverse V1 */
 			case UINT32_C(0x4100D490): /* Neoverse N2 */
 			case UINT32_C(0x4100D4F0): /* Neoverse V2 */
+			case UINT32_C(0x4100D830): /* Neoverse V3AE */
+			case UINT32_C(0x4100D840): /* Neoverse V3 */
 			case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
 			case UINT32_C(0x51008020): /* Kryo 385 Gold (Cortex-A75) */
 			case UINT32_C(0x51008030): /* Kryo 385 Silver (Cortex-A55) */
@@ -110,6 +113,8 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		case UINT32_C(0x4100D490): /* Neoverse N2 */
 		case UINT32_C(0x4100D4A0): /* Neoverse E1 */
 		case UINT32_C(0x4100D4F0): /* Neoverse V2 */
+		case UINT32_C(0x4100D830): /* Neoverse V3AE */
+		case UINT32_C(0x4100D840): /* Neoverse V3 */
 		case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
 		case UINT32_C(0x51008040): /* Kryo 485 Gold (Cortex-A76) */
 		case UINT32_C(0x51008050): /* Kryo 485 Silver (Cortex-A55) */
