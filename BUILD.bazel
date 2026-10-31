@@ -65,6 +65,11 @@ RISCV_SRCS = [
 ]
 
 # Platform-specific sources and headers
+POWERPC_SRCS = [
+    "src/powerpc/cache.c",
+    "src/powerpc/uarch.c",
+]
+
 LINUX_SRCS = [
     "src/linux/cpulist.c",
     "src/linux/multiline.c",
@@ -105,6 +110,13 @@ LINUX_ARM_SRCS = [
 LINUX_ARM32_SRCS = LINUX_ARM_SRCS + ["src/arm/linux/aarch32-isa.c"]
 
 LINUX_ARM64_SRCS = LINUX_ARM_SRCS + ["src/arm/linux/aarch64-isa.c"]
+
+LINUX_POWERPC_SRCS = [
+    "src/powerpc/linux/cache.c",
+    "src/powerpc/linux/cpuinfo.c",
+    "src/powerpc/linux/init.c",
+    "src/powerpc/linux/ppc64-isa.c",
+]
 
 LINUX_RISCV_SRCS = [
     "src/riscv/linux/init.c",
@@ -151,7 +163,7 @@ cc_library(
         ":linux_armeabi": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM32_SRCS,
         ":linux_aarch64": COMMON_SRCS + ARM_SRCS + LINUX_SRCS + LINUX_ARM64_SRCS,
         ":linux_mips64": COMMON_SRCS + LINUX_SRCS,
-        ":linux_ppc64le": COMMON_SRCS + LINUX_SRCS,
+        ":linux_ppc64le": COMMON_SRCS + POWERPC_SRCS + LINUX_SRCS + LINUX_POWERPC_SRCS,
         ":linux_riscv32": COMMON_SRCS + RISCV_SRCS + LINUX_SRCS + LINUX_RISCV_SRCS,
         ":linux_riscv64": COMMON_SRCS + RISCV_SRCS + LINUX_SRCS + LINUX_RISCV_SRCS,
         ":linux_s390x": COMMON_SRCS + LINUX_SRCS,
@@ -217,6 +229,8 @@ cc_library(
         "src/arm/linux/cp.h",
         "src/arm/api.h",
         "src/arm/midr.h",
+        "src/powerpc/api.h",
+        "src/powerpc/linux/api.h",
         "src/riscv/api.h",
         "src/riscv/linux/api.h",
     ],

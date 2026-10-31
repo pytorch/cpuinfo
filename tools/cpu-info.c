@@ -363,6 +363,14 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Dhyana";
 		case cpuinfo_uarch_taishan_v110:
 			return "TaiShan v110";
+		case cpuinfo_uarch_power8:
+			return "POWER8";
+		case cpuinfo_uarch_power9:
+			return "POWER9";
+		case cpuinfo_uarch_power10:
+			return "Power10";
+		case cpuinfo_uarch_power11:
+			return "Power11";
 		default:
 			return NULL;
 	}

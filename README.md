@@ -246,7 +246,7 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
   - [x] x86-64
   - [x] 32-bit ARM (ARMv5T and later)
   - [x] ARM64
-  - [ ] PowerPC64
+  - [x] PowerPC64 (little-endian, POWER8 and later)
 - [x] iOS
   - [x] x86 (iPhone simulator)
   - [x] x86-64 (iPhone simulator)
@@ -304,7 +304,8 @@ LDFLAGS+= $(pkg-config --libs libcpuinfo)
   - [x] Using chipset name (ARM)
   - [x] Using `sysctlbyname` (Mach)
   - [x] Using sysfs `typology` directories (ARM/Linux)
-  - [ ] Using sysfs `cache` directories (Linux)
+  - [x] Using sysfs `cache` directories (PowerPC64/Linux)
+  - [x] Using microarchitecture heuristics (PowerPC64)
   - [x] Using `GetLogicalProcessorInformationEx` on ARM64 Windows
 - TLB detection
   - [x] Using CPUID leaf 0x00000002 (x86/x86-64)

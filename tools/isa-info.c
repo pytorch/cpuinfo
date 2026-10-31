@@ -210,4 +210,25 @@ int main(int argc, char** argv) {
 	printf("\tVector: %s\n", cpuinfo_has_riscv_v() ? "yes" : "no");
 	printf("\tVector Half-Precision Floating-Point: %s\n", cpuinfo_has_riscv_zvfh() ? "yes" : "no");
 #endif
+#if CPUINFO_ARCH_PPC64
+	printf("Instruction set architecture:\n");
+	printf("\tPower ISA 2.06: %s\n", cpuinfo_has_powerpc_isa_v2_06() ? "yes" : "no");
+	printf("\tPower ISA 2.07: %s\n", cpuinfo_has_powerpc_isa_v2_07() ? "yes" : "no");
+	printf("\tPower ISA 3.0: %s\n", cpuinfo_has_powerpc_isa_v3_00() ? "yes" : "no");
+	printf("\tPower ISA 3.1: %s\n", cpuinfo_has_powerpc_isa_v3_1() ? "yes" : "no");
+
+	printf("SIMD extensions:\n");
+	printf("\tAltiVec (VMX): %s\n", cpuinfo_has_powerpc_altivec() ? "yes" : "no");
+	printf("\tVSX: %s\n", cpuinfo_has_powerpc_vsx() ? "yes" : "no");
+	printf("\tMMA: %s\n", cpuinfo_has_powerpc_mma() ? "yes" : "no");
+
+	printf("Other extensions:\n");
+	printf("\tDecimal Floating-Point: %s\n", cpuinfo_has_powerpc_dfp() ? "yes" : "no");
+	printf("\tIEEE 128-bit Floating-Point: %s\n", cpuinfo_has_powerpc_ieee128() ? "yes" : "no");
+	printf("\tTransactional Memory: %s\n", cpuinfo_has_powerpc_htm() ? "yes" : "no");
+	printf("\tDARN: %s\n", cpuinfo_has_powerpc_darn() ? "yes" : "no");
+
+	printf("Cryptography extensions:\n");
+	printf("\tVector Crypto: %s\n", cpuinfo_has_powerpc_vec_crypto() ? "yes" : "no");
+#endif
 }

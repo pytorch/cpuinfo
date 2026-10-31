@@ -677,6 +677,15 @@ enum cpuinfo_uarch {
 
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
+
+	/** IBM POWER8. */
+	cpuinfo_uarch_power8 = 0x00D00100,
+	/** IBM POWER9. */
+	cpuinfo_uarch_power9 = 0x00D00200,
+	/** IBM Power10. */
+	cpuinfo_uarch_power10 = 0x00D00300,
+	/** IBM Power11. */
+	cpuinfo_uarch_power11 = 0x00D00400,
 };
 
 struct cpuinfo_processor {
@@ -747,6 +756,9 @@ struct cpuinfo_core {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) for this core */
 	uint32_t midr;
+#elif CPUINFO_ARCH_PPC64
+	/** Value of Processor Version Register (PVR) for this core */
+	uint32_t pvr;
 #endif
 	/** Clock rate (non-Turbo) of the core, in Hz */
 	uint64_t frequency;
@@ -775,6 +787,9 @@ struct cpuinfo_cluster {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) of the cores in the cluster */
 	uint32_t midr;
+#elif CPUINFO_ARCH_PPC64
+	/** Value of Processor Version Register (PVR) of the cores in the cluster */
+	uint32_t pvr;
 #endif
 	/** Clock rate (non-Turbo) of the cores in the cluster, in Hz */
 	uint64_t frequency;
@@ -808,6 +823,9 @@ struct cpuinfo_uarch_info {
 #elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64
 	/** Value of Main ID Register (MIDR) for the microarchitecture */
 	uint32_t midr;
+#elif CPUINFO_ARCH_PPC64
+	/** Value of Processor Version Register (PVR) for the microarchitecture */
+	uint32_t pvr;
 #endif
 	/** Number of logical processors with the microarchitecture */
 	uint32_t processor_count;
@@ -2397,6 +2415,122 @@ static inline bool cpuinfo_has_riscv_zfh(void) {
 static inline bool cpuinfo_has_riscv_zvfh(void) {
 #if CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
 	return cpuinfo_isa.zvfh;
+#else
+	return false;
+#endif
+}
+
+#if CPUINFO_ARCH_PPC64
+/* This structure is not a part of stable API. Use cpuinfo_has_powerpc_* functions instead. */
+struct cpuinfo_powerpc_isa {
+	bool altivec;
+	bool vsx;
+	bool dfp;
+	bool isa_v2_06;
+	bool isa_v2_07;
+	bool isa_v3_00;
+	bool isa_v3_1;
+	bool htm;
+	bool vec_crypto;
+	bool ieee128;
+	bool darn;
+	bool mma;
+};
+
+extern struct cpuinfo_powerpc_isa cpuinfo_isa;
+#endif
+
+static inline bool cpuinfo_has_powerpc_altivec(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.altivec;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_vsx(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.vsx;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_dfp(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.dfp;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_isa_v2_06(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.isa_v2_06;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_isa_v2_07(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.isa_v2_07;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_isa_v3_00(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.isa_v3_00;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_isa_v3_1(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.isa_v3_1;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_htm(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.htm;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_vec_crypto(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.vec_crypto;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_ieee128(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.ieee128;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_darn(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.darn;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_powerpc_mma(void) {
+#if CPUINFO_ARCH_PPC64
+	return cpuinfo_isa.mma;
 #else
 	return false;
 #endif
