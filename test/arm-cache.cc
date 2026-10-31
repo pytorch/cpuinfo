@@ -989,6 +989,163 @@ TEST(QUALCOMM, snapdragon_845) {
 	EXPECT_EQ(2 * 1024 * 1024, little_l3.size);
 }
 
+TEST(QUALCOMM, snapdragon_x_elite) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_unknown,
+	};
+
+	struct cpuinfo_cache l1i = {0};
+	struct cpuinfo_cache l1d = {0};
+	struct cpuinfo_cache l2 = {0};
+	struct cpuinfo_cache l3 = {0};
+	cpuinfo_arm_decode_cache(cpuinfo_uarch_oryon, 4, UINT32_C(0x511F0011), &chipset, 0, 8, &l1i, &l1d, &l2, &l3);
+
+	EXPECT_EQ(192 * 1024, l1i.size);
+	EXPECT_EQ(6, l1i.associativity);
+	EXPECT_EQ(512, l1i.sets);
+	EXPECT_EQ(64, l1i.line_size);
+
+	EXPECT_EQ(96 * 1024, l1d.size);
+	EXPECT_EQ(6, l1d.associativity);
+	EXPECT_EQ(256, l1d.sets);
+	EXPECT_EQ(64, l1d.line_size);
+
+	EXPECT_EQ(12 * 1024 * 1024, l2.size);
+	EXPECT_EQ(12, l2.associativity);
+	EXPECT_EQ(16384, l2.sets);
+	EXPECT_EQ(64, l2.line_size);
+
+	EXPECT_EQ(0, l3.size);
+}
+
+TEST(QUALCOMM, snapdragon_8_elite) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_sm,
+		.model = 8750,
+	};
+
+	struct cpuinfo_cache prime_l1i = {0};
+	struct cpuinfo_cache prime_l1d = {0};
+	struct cpuinfo_cache prime_l2 = {0};
+	struct cpuinfo_cache prime_l3 = {0};
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_oryon,
+		2,
+		UINT32_C(0x513F0014),
+		&chipset,
+		0,
+		8,
+		&prime_l1i,
+		&prime_l1d,
+		&prime_l2,
+		&prime_l3);
+
+	struct cpuinfo_cache perf_l1i = {0};
+	struct cpuinfo_cache perf_l1d = {0};
+	struct cpuinfo_cache perf_l2 = {0};
+	struct cpuinfo_cache perf_l3 = {0};
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_oryon, 6, UINT32_C(0x514F0014), &chipset, 1, 8, &perf_l1i, &perf_l1d, &perf_l2, &perf_l3);
+
+	EXPECT_EQ(192 * 1024, prime_l1i.size);
+	EXPECT_EQ(6, prime_l1i.associativity);
+	EXPECT_EQ(512, prime_l1i.sets);
+	EXPECT_EQ(64, prime_l1i.line_size);
+	EXPECT_EQ(96 * 1024, prime_l1d.size);
+	EXPECT_EQ(6, prime_l1d.associativity);
+	EXPECT_EQ(256, prime_l1d.sets);
+	EXPECT_EQ(64, prime_l1d.line_size);
+	EXPECT_EQ(12 * 1024 * 1024, prime_l2.size);
+	EXPECT_EQ(12, prime_l2.associativity);
+	EXPECT_EQ(16384, prime_l2.sets);
+	EXPECT_EQ(64, prime_l2.line_size);
+	EXPECT_EQ(0, prime_l3.size);
+
+	EXPECT_EQ(128 * 1024, perf_l1i.size);
+	EXPECT_EQ(4, perf_l1i.associativity);
+	EXPECT_EQ(512, perf_l1i.sets);
+	EXPECT_EQ(64, perf_l1i.line_size);
+	EXPECT_EQ(64 * 1024, perf_l1d.size);
+	EXPECT_EQ(4, perf_l1d.associativity);
+	EXPECT_EQ(256, perf_l1d.sets);
+	EXPECT_EQ(64, perf_l1d.line_size);
+	EXPECT_EQ(12 * 1024 * 1024, perf_l2.size);
+	EXPECT_EQ(12, perf_l2.associativity);
+	EXPECT_EQ(16384, perf_l2.sets);
+	EXPECT_EQ(64, perf_l2.line_size);
+	EXPECT_EQ(0, perf_l3.size);
+}
+
+TEST(QUALCOMM, snapdragon_8_elite_gen_5) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_qualcomm,
+		.series = cpuinfo_arm_chipset_series_qualcomm_sm,
+		.model = 8850,
+	};
+
+	struct cpuinfo_cache prime_l1i = {0};
+	struct cpuinfo_cache prime_l1d = {0};
+	struct cpuinfo_cache prime_l2 = {0};
+	struct cpuinfo_cache prime_l3 = {0};
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_oryon_v3,
+		2,
+		UINT32_C(0x513F0021),
+		&chipset,
+		0,
+		8,
+		&prime_l1i,
+		&prime_l1d,
+		&prime_l2,
+		&prime_l3);
+
+	struct cpuinfo_cache perf_l1i = {0};
+	struct cpuinfo_cache perf_l1d = {0};
+	struct cpuinfo_cache perf_l2 = {0};
+	struct cpuinfo_cache perf_l3 = {0};
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_oryon_v3,
+		6,
+		UINT32_C(0x512F0021),
+		&chipset,
+		1,
+		8,
+		&perf_l1i,
+		&perf_l1d,
+		&perf_l2,
+		&perf_l3);
+
+	EXPECT_EQ(192 * 1024, prime_l1i.size);
+	EXPECT_EQ(6, prime_l1i.associativity);
+	EXPECT_EQ(512, prime_l1i.sets);
+	EXPECT_EQ(64, prime_l1i.line_size);
+	EXPECT_EQ(96 * 1024, prime_l1d.size);
+	EXPECT_EQ(6, prime_l1d.associativity);
+	EXPECT_EQ(256, prime_l1d.sets);
+	EXPECT_EQ(64, prime_l1d.line_size);
+	EXPECT_EQ(12 * 1024 * 1024, prime_l2.size);
+	EXPECT_EQ(12, prime_l2.associativity);
+	EXPECT_EQ(16384, prime_l2.sets);
+	EXPECT_EQ(64, prime_l2.line_size);
+	EXPECT_EQ(0, prime_l3.size);
+
+	EXPECT_EQ(128 * 1024, perf_l1i.size);
+	EXPECT_EQ(4, perf_l1i.associativity);
+	EXPECT_EQ(512, perf_l1i.sets);
+	EXPECT_EQ(64, perf_l1i.line_size);
+	EXPECT_EQ(64 * 1024, perf_l1d.size);
+	EXPECT_EQ(4, perf_l1d.associativity);
+	EXPECT_EQ(256, perf_l1d.sets);
+	EXPECT_EQ(64, perf_l1d.line_size);
+	EXPECT_EQ(12 * 1024 * 1024, perf_l2.size);
+	EXPECT_EQ(12, perf_l2.associativity);
+	EXPECT_EQ(16384, perf_l2.sets);
+	EXPECT_EQ(64, perf_l2.line_size);
+	EXPECT_EQ(0, perf_l3.size);
+}
+
 TEST(SAMSUNG, exynos_7885) {
 	const struct cpuinfo_arm_chipset chipset = {
 		.vendor = cpuinfo_arm_chipset_vendor_samsung,
