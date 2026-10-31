@@ -57,6 +57,8 @@ struct cpuinfo_x86_processor {
 	uint32_t cpuid;
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
+	enum cpuinfo_uarch e_uarch;
+	enum cpuinfo_uarch lp_e_uarch;
 #ifdef __linux__
 	int linux_id;
 #endif
@@ -82,11 +84,20 @@ struct cpuinfo_x86_processor {
 
 CPUINFO_INTERNAL void cpuinfo_x86_init_processor(struct cpuinfo_x86_processor* processor);
 
+/*
+ * Returns the index in cpuinfo_uarchs of the microarchitecture of the core
+ * executing the calling thread, using only the CPUID instruction (leaf 0x1A
+ * core type) on multi-uarch hybrid processors. Returns 0 on single-uarch
+ * systems, or default_uarch_index if the core type can not be resolved.
+ */
+CPUINFO_INTERNAL uint32_t cpuinfo_x86_get_current_uarch_index(uint32_t default_uarch_index);
+
 CPUINFO_INTERNAL enum cpuinfo_vendor cpuinfo_x86_decode_vendor(uint32_t ebx, uint32_t ecx, uint32_t edx);
 CPUINFO_INTERNAL struct cpuinfo_x86_model_info cpuinfo_x86_decode_model_info(uint32_t eax);
 CPUINFO_INTERNAL enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 	enum cpuinfo_vendor vendor,
-	const struct cpuinfo_x86_model_info* model_info);
+	const struct cpuinfo_x86_model_info* model_info,
+	uint32_t core_type);
 
 CPUINFO_INTERNAL struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	const struct cpuid_regs basic_info,

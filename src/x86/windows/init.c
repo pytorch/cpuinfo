@@ -112,6 +112,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	struct cpuinfo_cache* l2 = NULL;
 	struct cpuinfo_cache* l3 = NULL;
 	struct cpuinfo_cache* l4 = NULL;
+	struct cpuinfo_uarch_info* uarchs = NULL;
 	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX processor_infos = NULL;
 
 	HANDLE heap = GetProcessHeap();
@@ -320,13 +321,33 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		goto cleanup;
 	}
 
-	clusters = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_cluster));
-	if (clusters == NULL) {
-		cpuinfo_log_error(
-			"failed to allocate %zu bytes for descriptions of %" PRIu32 " core clusters",
-			packages_count * sizeof(struct cpuinfo_cluster),
-			packages_count);
-		goto cleanup;
+	uint8_t* core_efficiency_classes = (uint8_t*)CPUINFO_ALLOCA(cores_count * sizeof(uint8_t));
+	uint8_t min_efficiency_class = UINT8_MAX;
+	uint8_t max_efficiency_class = 0;
+	{
+		uint32_t core_id = 0;
+		for (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX core_info = processor_infos; core_info < cores_info_end;
+		     core_info = (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX)((uintptr_t)core_info + core_info->Size)) {
+			if (core_info->Relationship != RelationProcessorCore) {
+				continue;
+			}
+			const uint8_t efficiency_class = ((const uint8_t*)&core_info->Processor.Flags)[1];
+			core_efficiency_classes[core_id++] = efficiency_class;
+			if (efficiency_class < min_efficiency_class) {
+				min_efficiency_class = efficiency_class;
+			}
+			if (efficiency_class > max_efficiency_class) {
+				max_efficiency_class = efficiency_class;
+			}
+		}
+	}
+	bool has_mid_efficiency_class = false;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		if (core_efficiency_classes[i] > min_efficiency_class &&
+		    core_efficiency_classes[i] < max_efficiency_class) {
+			has_mid_efficiency_class = true;
+			break;
+		}
 	}
 
 	packages = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_package));
@@ -346,9 +367,6 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		 */
 		struct cpuinfo_core* core = (struct cpuinfo_core*)((uintptr_t)cores + (uintptr_t)processor->core);
 		processor->core = core;
-		struct cpuinfo_cluster* cluster =
-			(struct cpuinfo_cluster*)((uintptr_t)clusters + (uintptr_t)processor->cluster);
-		processor->cluster = cluster;
 		struct cpuinfo_package* package =
 			(struct cpuinfo_package*)((uintptr_t)packages + (uintptr_t)processor->package);
 		processor->package = package;
@@ -357,11 +375,6 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		 * package */
 		package->processor_start = processor_id;
 		package->processor_count += 1;
-
-		/* This can be overwritten by lower-index processors on the same
-		 * cluster */
-		cluster->processor_start = processor_id;
-		cluster->processor_count += 1;
 
 		/* This can be overwritten by lower-index processors on the same
 		 * core*/
@@ -375,35 +388,140 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		struct cpuinfo_core* core = cores + global_core_id;
 		const struct cpuinfo_processor* processor = processors + core->processor_start;
 		struct cpuinfo_package* package = (struct cpuinfo_package*)processor->package;
-		struct cpuinfo_cluster* cluster = (struct cpuinfo_cluster*)processor->cluster;
 
-		core->cluster = cluster;
 		core->package = package;
 		core->core_id = core_bits_mask & (processor->apic_id >> x86_processor.topology.core_bits_offset);
 		core->vendor = x86_processor.vendor;
-		core->uarch = x86_processor.uarch;
+		if (x86_processor.uarch != x86_processor.e_uarch && max_efficiency_class > min_efficiency_class) {
+			const uint8_t efficiency_class = core_efficiency_classes[global_core_id];
+			if (efficiency_class == max_efficiency_class) {
+				core->uarch = x86_processor.uarch;
+			} else if (has_mid_efficiency_class && efficiency_class == min_efficiency_class) {
+				core->uarch = x86_processor.lp_e_uarch;
+			} else {
+				core->uarch = x86_processor.e_uarch;
+			}
+		} else {
+			core->uarch = x86_processor.uarch;
+		}
 		core->cpuid = x86_processor.cpuid;
 
 		/* This can be overwritten by lower-index cores on the same
-		 * cluster/package
+		 * package
 		 */
-		cluster->core_start = global_core_id;
-		cluster->core_count += 1;
 		package->core_start = global_core_id;
 		package->core_count += 1;
 	}
 
+	for (uint32_t i = 0; i < cores_count; i++) {
+		cores[i].core_id = i - cores[i].package->core_start;
+	}
+
 	for (uint32_t i = 0; i < packages_count; i++) {
 		struct cpuinfo_package* package = packages + i;
-		struct cpuinfo_cluster* cluster = clusters + i;
-
-		cluster->package = package;
-		cluster->vendor = cores[cluster->core_start].vendor;
-		cluster->uarch = cores[cluster->core_start].uarch;
-		cluster->cpuid = cores[cluster->core_start].cpuid;
-		package->cluster_start = i;
-		package->cluster_count = 1;
 		cpuinfo_x86_format_package_name(x86_processor.vendor, brand_string, package->name);
+	}
+
+	/* Count and allocate clusters based on package and microarchitecture boundaries */
+	uint32_t clusters_count = 0;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		if (i == 0 || cores[i].package != cores[i - 1].package || cores[i].uarch != cores[i - 1].uarch) {
+			clusters_count++;
+		}
+	}
+
+	clusters = HeapAlloc(heap, HEAP_ZERO_MEMORY, clusters_count * sizeof(struct cpuinfo_cluster));
+	if (clusters == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " core clusters",
+			clusters_count * sizeof(struct cpuinfo_cluster),
+			clusters_count);
+		goto cleanup;
+	}
+
+	uint32_t cluster_idx = 0;
+	uint32_t cluster_id_in_package = 0;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		if (i == 0 || cores[i].package != cores[i - 1].package || cores[i].uarch != cores[i - 1].uarch) {
+			if (i != 0) {
+				if (cores[i].package != cores[i - 1].package) {
+					cluster_id_in_package = 0;
+				} else {
+					cluster_id_in_package++;
+				}
+				cluster_idx++;
+			}
+			struct cpuinfo_package* package = (struct cpuinfo_package*)cores[i].package;
+			if (package->cluster_count == 0) {
+				package->cluster_start = cluster_idx;
+			}
+			package->cluster_count++;
+
+			clusters[cluster_idx] = (struct cpuinfo_cluster){
+				.processor_start = cores[i].processor_start,
+				.processor_count = 0,
+				.core_start = i,
+				.core_count = 0,
+				.cluster_id = cluster_id_in_package,
+				.package = package,
+				.vendor = cores[i].vendor,
+				.uarch = cores[i].uarch,
+				.cpuid = cores[i].cpuid,
+				.frequency = cores[i].frequency,
+			};
+		}
+		cores[i].cluster = &clusters[cluster_idx];
+		clusters[cluster_idx].core_count++;
+		clusters[cluster_idx].processor_count += cores[i].processor_count;
+		for (uint32_t p = 0; p < cores[i].processor_count; p++) {
+			processors[cores[i].processor_start + p].cluster = &clusters[cluster_idx];
+		}
+	}
+
+	/* Count and store unique microarchitectures */
+	uint32_t uarchs_count = 0;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		bool found = false;
+		for (uint32_t j = 0; j < i; j++) {
+			if (cores[j].uarch == cores[i].uarch) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			uarchs_count++;
+		}
+	}
+	uarchs = HeapAlloc(heap, HEAP_ZERO_MEMORY, uarchs_count * sizeof(struct cpuinfo_uarch_info));
+	if (uarchs == NULL) {
+		cpuinfo_log_error(
+			"failed to allocate %zu bytes for descriptions of %" PRIu32 " microarchitectures",
+			uarchs_count * sizeof(struct cpuinfo_uarch_info),
+			uarchs_count);
+		goto cleanup;
+	}
+	{
+		uint32_t uarch_idx = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			uint32_t k;
+			for (k = 0; k < uarch_idx; k++) {
+				if (uarchs[k].uarch == cores[i].uarch) {
+					break;
+				}
+			}
+			if (k == uarch_idx) {
+				uarchs[uarch_idx] = (struct cpuinfo_uarch_info){
+					.uarch = cores[i].uarch,
+					.cpuid = cores[i].cpuid,
+					.processor_count = cores[i].processor_count,
+					.core_count = 1,
+				};
+				uarch_idx++;
+			} else {
+				uarchs[k].processor_count += cores[i].processor_count;
+				uarchs[k].core_count += 1;
+			}
+		}
 	}
 
 	/* Count caches */
@@ -611,7 +729,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 
 	cpuinfo_processors_count = processors_count;
 	cpuinfo_cores_count = cores_count;
-	cpuinfo_clusters_count = packages_count;
+	cpuinfo_clusters_count = clusters_count;
 	cpuinfo_packages_count = packages_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1i] = l1i_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_1d] = l1d_count;
@@ -619,6 +737,9 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	cpuinfo_cache_count[cpuinfo_cache_level_3] = l3_count;
 	cpuinfo_cache_count[cpuinfo_cache_level_4] = l4_count;
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
+
+	cpuinfo_uarchs = uarchs;
+	cpuinfo_uarchs_count = uarchs_count;
 
 	cpuinfo_global_uarch = (struct cpuinfo_uarch_info){
 		.uarch = x86_processor.uarch,
@@ -635,6 +756,7 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	cores = NULL;
 	clusters = NULL;
 	packages = NULL;
+	uarchs = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
 
 cleanup:
@@ -649,6 +771,9 @@ cleanup:
 	}
 	if (packages != NULL) {
 		HeapFree(heap, 0, packages);
+	}
+	if (uarchs != NULL) {
+		HeapFree(heap, 0, uarchs);
 	}
 	if (l1i != NULL) {
 		HeapFree(heap, 0, l1i);
