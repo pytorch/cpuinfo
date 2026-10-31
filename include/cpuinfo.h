@@ -903,6 +903,8 @@ struct cpuinfo_x86_isa {
 	bool amx_int8;
 	bool amx_fp16;
 	bool amx_fp8;
+	bool amx_tf32;
+	bool amx_avx512;
 	bool avx_vnni_int8;
 	bool avx_vnni_int16;
 	bool avx_ne_convert;
@@ -1477,6 +1479,22 @@ static inline bool cpuinfo_has_x86_amx_fp16(void) {
 static inline bool cpuinfo_has_x86_amx_fp8(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	return cpuinfo_isa.amx_fp8;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_amx_tf32(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.amx_tf32;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_amx_avx512(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.amx_avx512;
 #else
 	return false;
 #endif

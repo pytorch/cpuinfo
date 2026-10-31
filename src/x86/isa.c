@@ -584,6 +584,18 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	isa.amx_fp8 = avx512_regs && !!(tmm_info1.eax & UINT32_C(0x00000010));
 
 	/*
+	 * AMX_TF32 instructions:
+	 * - Intel: eax[bit 6] in TMM feature info (leaf 0x1E, ecx = 1).
+	 */
+	isa.amx_tf32 = avx512_regs && !!(tmm_info1.eax & UINT32_C(0x00000040));
+
+	/*
+	 * AMX_AVX512 instructions:
+	 * - Intel: eax[bit 7] in TMM feature info (leaf 0x1E, ecx = 1).
+	 */
+	isa.amx_avx512 = avx512_regs && !!(tmm_info1.eax & UINT32_C(0x00000080));
+
+	/*
 	 * AVX_VNNI_INT8 instructions:
 	 * - Intel: edx[bit 4] in structured feature info (ecx = 1).
 	 */
