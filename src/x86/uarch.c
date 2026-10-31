@@ -6,7 +6,9 @@
 enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info* model_info,
-	uint32_t core_type) {
+	uint32_t leaf1a_eax) {
+	const uint32_t core_type = leaf1a_eax > UINT32_C(0xFF) ? (leaf1a_eax >> 24) : leaf1a_eax;
+	const uint32_t native_model_id = leaf1a_eax > UINT32_C(0xFF) ? (leaf1a_eax & UINT32_C(0x00FFFFFF)) : 0;
 	switch (vendor) {
 		case cpuinfo_vendor_intel:
 			switch (model_info->family) {
@@ -197,8 +199,19 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0xAD: // Granite Rapids
 						case 0xAE: // Granite Rapids-D
 							return cpuinfo_uarch_redwood_cove;
-						case 0xBD: // Lunar Lake
 						case 0xC5: // Arrow Lake-H
+							if (core_type == 0x20) {
+								/*
+								 * Arrow Lake-H has both Skymont E-cores
+								 * (CPUID.1AH.EAX[23:0] == 0x3, cpu_atom) and
+								 * Crestmont Low-Power Island E-cores
+								 * (CPUID.1AH.EAX[23:0] == 0x2, cpu_lowpower).
+								 */
+								return native_model_id == 0x02 ? cpuinfo_uarch_crestmont
+											       : cpuinfo_uarch_skymont;
+							}
+							return cpuinfo_uarch_lion_cove;
+						case 0xBD: // Lunar Lake
 						case 0xC6: // Arrow Lake-S
 							return core_type == 0x20 ? cpuinfo_uarch_skymont
 										 : cpuinfo_uarch_lion_cove;

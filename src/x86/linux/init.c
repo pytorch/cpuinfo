@@ -664,11 +664,17 @@ void cpuinfo_x86_linux_init(void) {
 				.uarch = x86_processor.e_uarch,
 				.conflict = false,
 			};
+			struct pmu_cpus_context lowpower_ctx = {
+				.max_processors_count = x86_linux_processors_count,
+				.linux_cpu_to_core_map = linux_cpu_to_core_map,
+				.uarch = x86_processor.lp_e_uarch,
+				.conflict = false,
+			};
 			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_core/cpus", mark_pmu_cpus, &core_ctx);
 			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_atom/cpus", mark_pmu_cpus, &atom_ctx);
-			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_lowpower/cpus", mark_pmu_cpus, &atom_ctx);
+			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_lowpower/cpus", mark_pmu_cpus, &lowpower_ctx);
 
-			bool valid_pmu_uarchs = !core_ctx.conflict && !atom_ctx.conflict;
+			bool valid_pmu_uarchs = !core_ctx.conflict && !atom_ctx.conflict && !lowpower_ctx.conflict;
 			if (valid_pmu_uarchs) {
 				for (uint32_t i = 0; i < cores_count; i++) {
 					if (cores[i].uarch == cpuinfo_uarch_unknown) {

@@ -58,6 +58,7 @@ struct cpuinfo_x86_processor {
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
 	enum cpuinfo_uarch e_uarch;
+	enum cpuinfo_uarch lp_e_uarch;
 #ifdef __linux__
 	int linux_id;
 #endif

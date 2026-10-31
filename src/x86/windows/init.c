@@ -341,6 +341,14 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 			}
 		}
 	}
+	bool has_mid_efficiency_class = false;
+	for (uint32_t i = 0; i < cores_count; i++) {
+		if (core_efficiency_classes[i] > min_efficiency_class &&
+		    core_efficiency_classes[i] < max_efficiency_class) {
+			has_mid_efficiency_class = true;
+			break;
+		}
+	}
 
 	packages = HeapAlloc(heap, HEAP_ZERO_MEMORY, packages_count * sizeof(struct cpuinfo_package));
 	if (packages == NULL) {
@@ -385,9 +393,14 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		core->core_id = core_bits_mask & (processor->apic_id >> x86_processor.topology.core_bits_offset);
 		core->vendor = x86_processor.vendor;
 		if (x86_processor.uarch != x86_processor.e_uarch && max_efficiency_class > min_efficiency_class) {
-			core->uarch = core_efficiency_classes[global_core_id] == max_efficiency_class
-				? x86_processor.uarch
-				: x86_processor.e_uarch;
+			const uint8_t efficiency_class = core_efficiency_classes[global_core_id];
+			if (efficiency_class == max_efficiency_class) {
+				core->uarch = x86_processor.uarch;
+			} else if (has_mid_efficiency_class && efficiency_class == min_efficiency_class) {
+				core->uarch = x86_processor.lp_e_uarch;
+			} else {
+				core->uarch = x86_processor.e_uarch;
+			}
 		} else {
 			core->uarch = x86_processor.uarch;
 		}
