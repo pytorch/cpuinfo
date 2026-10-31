@@ -48,6 +48,13 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 		(max_base_index >= 7) ? cpuidex(7, 1) : (struct cpuid_regs){0, 0, 0, 0};
 	const struct cpuid_regs structured_feature_info2 =
 		(max_base_index >= 7) ? cpuidex(0x24, 0) : (struct cpuid_regs){0, 0, 0, 0};
+	const struct cpuid_regs avx10_info1 = ((max_base_index >= 0x24) && (structured_feature_info2.eax >= 1))
+		? cpuidex(0x24, 1)
+		: (struct cpuid_regs){0, 0, 0, 0};
+	const struct cpuid_regs tile_info0 =
+		(max_base_index >= 0x1D) ? cpuidex(0x1D, 0) : (struct cpuid_regs){0, 0, 0, 0};
+	const struct cpuid_regs tile_palette2_info =
+		(tile_info0.eax >= 2) ? cpuidex(0x1D, 2) : (struct cpuid_regs){0, 0, 0, 0};
 	const struct cpuid_regs tmm_info1 =
 		(max_base_index >= 0x1E) ? cpuidex(0x1E, 1) : (struct cpuid_regs){0, 0, 0, 0};
 
@@ -56,7 +63,7 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 		? cpuid(processor_capacity_info_index)
 		: (struct cpuid_regs){0, 0, 0, 0};
 
-	bool avx_regs = false, avx512_regs = false, mpx_regs = false;
+	bool avx_regs = false, avx512_regs = false, mpx_regs = false, ace_regs = false;
 	/*
 	 * OSXSAVE: Operating system enabled XSAVE instructions for application
 	 * use:
@@ -113,6 +120,21 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 		const uint64_t mpx_regs_mask = UINT64_C(0x0000000000000018);
 		if ((xcr0_valid_bits & mpx_regs_mask) == mpx_regs_mask) {
 			mpx_regs = (xfeature_enabled_mask & mpx_regs_mask) == mpx_regs_mask;
+		}
+
+		/*
+		 * ACE registers (AI Compute Extensions Specification v1.15,
+		 * Sections 3.2 & 15.4.1):
+		 * - Intel, AMD: XFEATURE_ENABLED_MASK[bit 17] (0x00020000) for
+		 * 64-byte TILECFG register
+		 * - Intel, AMD: XFEATURE_ENABLED_MASK[bit 18] (0x00040000) for
+		 * 8192-byte TILEDATA registers (tmm0-tmm7)
+		 * - Intel, AMD: XFEATURE_ENABLED_MASK[bit 20] (0x00100000) for
+		 * 128-byte SCALEDATA block scale register (bsr)
+		 */
+		const uint64_t ace_regs_mask = UINT64_C(0x0000000000160000);
+		if ((xcr0_valid_bits & ace_regs_mask) == ace_regs_mask) {
+			ace_regs = (xfeature_enabled_mask & ace_regs_mask) == ace_regs_mask;
 		}
 	}
 
@@ -582,6 +604,25 @@ struct cpuinfo_x86_isa cpuinfo_x86_detect_isa(
 	 * - Intel: eax[bit 4] in TMM feature info (leaf 0x1E, ecx = 1).
 	 */
 	isa.amx_fp8 = avx512_regs && !!(tmm_info1.eax & UINT32_C(0x00000010));
+
+	/*
+	 * ACE v1 instructions (AI Compute Extensions Specification v1.15,
+	 * Sections 3.1, 3.2 & Appendix A):
+	 * - CR4.OSXSAVE = 1, XCR0[7:5,2:1] = 0b11111 (avx512_regs), and
+	 *   XCR0[20,18:17] = 0b111 (ace_regs)
+	 * - (AVX10.1 and AVX10_V1_AUX) or AVX10.2, where AVX10_V1_AUX is
+	 *   ecx[bit 2] in AVX10 subleaf 1 (leaf 0x24, ecx = 1)
+	 * - AVX10_V2_AUX: ecx[bit 3] in AVX10 subleaf 1 (leaf 0x24, ecx = 1)
+	 * - ACE: ecx[bit 11] in structured feature info (leaf 0x07, ecx = 1)
+	 * - MAX_PALETTE >= 2: eax >= 2 in tile info (leaf 0x1D, ecx = 0)
+	 * - ACE_VSN >= 1: eax[bits 0-7] >= 1 in tile palette 2 info (leaf 0x1D,
+	 *   ecx = 2)
+	 */
+	const bool avx10_v1_aux = !!(avx10_info1.ecx & UINT32_C(0x00000004));
+	const bool avx10_v2_aux = !!(avx10_info1.ecx & UINT32_C(0x00000008));
+	isa.ace_v1 = avx512_regs && ace_regs && ((isa.avx10_1 && avx10_v1_aux) || isa.avx10_2) && avx10_v2_aux &&
+		!!(structured_feature_info1.ecx & UINT32_C(0x00000800)) &&
+		((tile_palette2_info.eax & UINT32_C(0x000000FF)) >= 1);
 
 	/*
 	 * AVX_VNNI_INT8 instructions:

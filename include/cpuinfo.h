@@ -901,6 +901,7 @@ struct cpuinfo_x86_isa {
 	bool amx_int8;
 	bool amx_fp16;
 	bool amx_fp8;
+	bool ace_v1;
 	bool avx_vnni_int8;
 	bool avx_vnni_int16;
 	bool avx_ne_convert;
@@ -1475,6 +1476,19 @@ static inline bool cpuinfo_has_x86_amx_fp16(void) {
 static inline bool cpuinfo_has_x86_amx_fp8(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	return cpuinfo_isa.amx_fp8;
+#else
+	return false;
+#endif
+}
+
+/*
+ * x86 AI Compute Extensions (ACE v1)
+ * Reference: AI Compute Extensions (ACE) Specification v1.15, Section 3.2:
+ *   https://x86ecosystem.org/wp-content/uploads/2026/06/ACE_v1_Specification_public_1_15.pdf
+ */
+static inline bool cpuinfo_has_x86_ace(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.ace_v1;
 #else
 	return false;
 #endif
