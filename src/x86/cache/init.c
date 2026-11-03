@@ -25,20 +25,9 @@ void cpuinfo_x86_detect_cache(
 	enum cpuinfo_vendor vendor,
 	const struct cpuinfo_x86_model_info* model_info,
 	struct cpuinfo_x86_caches* cache,
-	struct cpuinfo_tlb* itlb_4KB,
-	struct cpuinfo_tlb* itlb_2MB,
-	struct cpuinfo_tlb* itlb_4MB,
-	struct cpuinfo_tlb* dtlb0_4KB,
-	struct cpuinfo_tlb* dtlb0_2MB,
-	struct cpuinfo_tlb* dtlb0_4MB,
-	struct cpuinfo_tlb* dtlb_4KB,
-	struct cpuinfo_tlb* dtlb_2MB,
-	struct cpuinfo_tlb* dtlb_4MB,
-	struct cpuinfo_tlb* dtlb_1GB,
-	struct cpuinfo_tlb* stlb2_4KB,
-	struct cpuinfo_tlb* stlb2_2MB,
-	struct cpuinfo_tlb* stlb2_1GB,
-	uint32_t* log2_package_cores_max) {
+	struct cpuinfo_x86_tlbs* tlb,
+	struct cpuinfo_x86_topology* topology)
+{
 	if (max_base_index >= 2) {
 		union cpuinfo_x86_cache_descriptors descriptors;
 		descriptors.regs = cpuid(2);
@@ -49,24 +38,7 @@ void cpuinfo_x86_detect_cache(
 				const uint8_t descriptor = descriptors.as_bytes[i];
 				if (descriptor != 0) {
 					cpuinfo_x86_decode_cache_descriptor(
-						descriptor,
-						vendor,
-						model_info,
-						cache,
-						itlb_4KB,
-						itlb_2MB,
-						itlb_4MB,
-						dtlb0_4KB,
-						dtlb0_2MB,
-						dtlb0_4MB,
-						dtlb_4KB,
-						dtlb_2MB,
-						dtlb_4MB,
-						dtlb_1GB,
-						stlb2_4KB,
-						stlb2_2MB,
-						stlb2_1GB,
-						&cache->prefetch_size);
+						descriptor, vendor, model_info, cache, tlb);
 				}
 			}
 			if (--iterations != 0) {
@@ -83,7 +55,7 @@ void cpuinfo_x86_detect_cache(
 				leaf4 = cpuidex(4, input_ecx++);
 			} while (cpuinfo_x86_decode_deterministic_cache_parameters(leaf4, cache, &package_cores_max));
 			if (package_cores_max != 0) {
-				*log2_package_cores_max = bit_length(package_cores_max);
+				topology->core_bits_length = bit_length(package_cores_max);
 			}
 		}
 	}
