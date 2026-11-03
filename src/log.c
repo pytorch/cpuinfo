@@ -39,6 +39,12 @@
 
 #define CPUINFO_LOG_STDERR 0
 #define CPUINFO_LOG_STDOUT 0
+#elif defined(CPUINFO_BAREMETAL)
+/* No file descriptors: output goes through printf(), see below. */
+#define CPUINFO_LOG_NEWLINE_LENGTH 1
+
+#define CPUINFO_LOG_STDERR 0
+#define CPUINFO_LOG_STDOUT 0
 #else
 #define CPUINFO_LOG_NEWLINE_LENGTH 1
 
@@ -112,6 +118,10 @@ static void cpuinfo_vlog(
 		NULL);
 #elif defined(__hexagon__)
 	qurt_printf("%s", out_buffer);
+#elif defined(CPUINFO_BAREMETAL)
+	out_buffer[prefix_length + format_length] = '\n';
+	out_buffer[prefix_length + format_length + 1] = '\0';
+	printf("%s", out_buffer);
 #else
 	out_buffer[prefix_length + format_length] = '\n';
 

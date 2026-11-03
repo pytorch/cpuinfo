@@ -1,5 +1,7 @@
 #if defined(_WIN32) || defined(__CYGWIN__)
 #include <windows.h>
+#elif defined(CPUINFO_BAREMETAL)
+/* No threading library assumed, see the init guard below. */
 #elif !defined(__EMSCRIPTEN__) || defined(__EMSCRIPTEN_PTHREADS__)
 #include <pthread.h>
 #endif
@@ -14,6 +16,13 @@
 
 #if defined(_WIN32) || defined(__CYGWIN__)
 static INIT_ONCE init_guard = INIT_ONCE_STATIC_INIT;
+#elif defined(CPUINFO_BAREMETAL)
+/*
+ * Bare-metal targets need not have POSIX threads: initialization happens
+ * before secondary cores are released, so a plain flag is enough and this
+ * keeps cpuinfo usable in configurations built without pthreads.
+ */
+static bool init_guard = false;
 #elif !defined(__EMSCRIPTEN__) || defined(__EMSCRIPTEN_PTHREADS__)
 static pthread_once_t init_guard = PTHREAD_ONCE_INIT;
 #else
@@ -40,6 +49,11 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 	pthread_once(&init_guard, &cpuinfo_arm_mach_init);
 #elif defined(_WIN32)
 	InitOnceExecuteOnce(&init_guard, &cpuinfo_arm_windows_init, NULL, NULL);
+#elif defined(CPUINFO_BAREMETAL)
+	if (!init_guard) {
+		cpuinfo_arm_baremetal_init();
+		init_guard = true;
+	}
 #else
 	cpuinfo_log_error("operating system is not supported in cpuinfo");
 #endif
