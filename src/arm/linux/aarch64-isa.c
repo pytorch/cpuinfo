@@ -228,4 +228,23 @@ void cpuinfo_arm64_linux_decode_isa_from_proc_cpuinfo(
 		// Mask out the SME vector length bits
 		isa->smelen = ret & PR_SME_VL_LEN_MASK;
 	}
+
+	/*
+	 * The kernel can report SME sub-features (SME2 and others) while SME
+	 * itself is off: HWCAP2_SME is clear and PR_SME_GET_VL fails, yet
+	 * HWCAP2_SME2 is set (e.g. Android emulator on an Apple M-series host).
+	 * With SME off, every SME instruction raises SIGILL, so report SME
+	 * features only when base SME is enabled.
+	 */
+	if (!isa->sme || isa->smelen == 0) {
+		isa->sme = false;
+		isa->sme2 = false;
+		isa->sme2p1 = false;
+		isa->sme_mop4 = false;
+		isa->sme_i16i32 = false;
+		isa->sme_bi32i32 = false;
+		isa->sme_b16b16 = false;
+		isa->sme_f16f16 = false;
+		isa->smelen = 0;
+	}
 }
