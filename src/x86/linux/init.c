@@ -516,7 +516,6 @@ void cpuinfo_x86_linux_init(void) {
 
 			if (x86_processor.cache.l1i.size != 0) {
 				const uint32_t l1i_id = apic_id & ~bit_mask(x86_processor.cache.l1i.apic_bits);
-				processors[i].cache.l1i = &l1i[l1i_index];
 				if (l1i_id != last_l1i_id) {
 					/* new cache */
 					last_l1i_id = l1i_id;
@@ -542,7 +541,6 @@ void cpuinfo_x86_linux_init(void) {
 			}
 			if (x86_processor.cache.l1d.size != 0) {
 				const uint32_t l1d_id = apic_id & ~bit_mask(x86_processor.cache.l1d.apic_bits);
-				processors[i].cache.l1d = &l1d[l1d_index];
 				if (l1d_id != last_l1d_id) {
 					/* new cache */
 					last_l1d_id = l1d_id;
@@ -568,7 +566,6 @@ void cpuinfo_x86_linux_init(void) {
 			}
 			if (x86_processor.cache.l2.size != 0) {
 				const uint32_t l2_id = apic_id & ~bit_mask(x86_processor.cache.l2.apic_bits);
-				processors[i].cache.l2 = &l2[l2_index];
 				if (l2_id != last_l2_id) {
 					/* new cache */
 					last_l2_id = l2_id;
@@ -594,7 +591,6 @@ void cpuinfo_x86_linux_init(void) {
 			}
 			if (x86_processor.cache.l3.size != 0) {
 				const uint32_t l3_id = apic_id & ~bit_mask(x86_processor.cache.l3.apic_bits);
-				processors[i].cache.l3 = &l3[l3_index];
 				if (l3_id != last_l3_id) {
 					/* new cache */
 					last_l3_id = l3_id;
@@ -620,7 +616,6 @@ void cpuinfo_x86_linux_init(void) {
 			}
 			if (x86_processor.cache.l4.size != 0) {
 				const uint32_t l4_id = apic_id & ~bit_mask(x86_processor.cache.l4.apic_bits);
-				processors[i].cache.l4 = &l4[l4_index];
 				if (l4_id != last_l4_id) {
 					/* new cache */
 					last_l4_id = l4_id;
