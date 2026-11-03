@@ -78,7 +78,10 @@ static void cpuinfo_x86_count_objects(
 				linux_processors[i].linux_id);
 
 			/* All bits of APIC ID except thread ID mask */
-			const uint32_t core_id = apic_id & core_apic_mask;
+			const uint32_t core_id = (processor->uarch != processor->e_uarch &&
+						  bitmask_all(linux_processors[i].flags, CPUINFO_LINUX_FLAG_CORE_ID))
+				? ((apic_id & package_apic_mask) | linux_processors[i].core_id)
+				: (apic_id & core_apic_mask);
 			if (core_id != last_core_id) {
 				last_core_id = core_id;
 				cores_count++;
@@ -144,6 +147,27 @@ static void cpuinfo_x86_count_objects(
 	*l4_count_ptr = l4_count;
 }
 
+struct pmu_cpus_context {
+	uint32_t max_processors_count;
+	const struct cpuinfo_core** linux_cpu_to_core_map;
+	enum cpuinfo_uarch uarch;
+	bool conflict;
+};
+
+static bool mark_pmu_cpus(uint32_t cpu_start, uint32_t cpu_end, void* context) {
+	struct pmu_cpus_context* ctx = (struct pmu_cpus_context*)context;
+	for (uint32_t cpu = cpu_start; cpu < cpu_end && cpu < ctx->max_processors_count; cpu++) {
+		struct cpuinfo_core* core = (struct cpuinfo_core*)ctx->linux_cpu_to_core_map[cpu];
+		if (core != NULL) {
+			if (core->uarch != cpuinfo_uarch_unknown && core->uarch != ctx->uarch) {
+				ctx->conflict = true;
+			}
+			core->uarch = ctx->uarch;
+		}
+	}
+	return true;
+}
+
 void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_x86_linux_processor* x86_linux_processors = NULL;
 	struct cpuinfo_processor* processors = NULL;
@@ -152,6 +176,7 @@ void cpuinfo_x86_linux_init(void) {
 	struct cpuinfo_package* packages = NULL;
 	const struct cpuinfo_processor** linux_cpu_to_processor_map = NULL;
 	const struct cpuinfo_core** linux_cpu_to_core_map = NULL;
+	struct cpuinfo_uarch_info* uarchs = NULL;
 	struct cpuinfo_cache* l1i = NULL;
 	struct cpuinfo_cache* l1d = NULL;
 	struct cpuinfo_cache* l2 = NULL;
@@ -399,7 +424,11 @@ void cpuinfo_x86_linux_init(void) {
 			smt_id++;
 
 			/* All bits of APIC ID except thread ID mask */
-			const uint32_t apid_core_id = apic_id & core_apic_mask;
+			const uint32_t apid_core_id =
+				(x86_processor.uarch != x86_processor.e_uarch &&
+				 bitmask_all(x86_linux_processors[i].flags, CPUINFO_LINUX_FLAG_CORE_ID))
+				? ((apic_id & package_apic_mask) | x86_linux_processors[i].core_id)
+				: (apic_id & core_apic_mask);
 			if (apid_core_id != last_apic_core_id) {
 				core_index++;
 				core_id++;
@@ -618,6 +647,156 @@ void cpuinfo_x86_linux_init(void) {
 		}
 	}
 
+	uint32_t uarchs_count = 0;
+	if (x86_processor.uarch != x86_processor.e_uarch && cores_count > 0) {
+		if (x86_processor.uarch != cpuinfo_uarch_unknown && x86_processor.e_uarch != cpuinfo_uarch_unknown) {
+			for (uint32_t i = 0; i < cores_count; i++) {
+				cores[i].uarch = cpuinfo_uarch_unknown;
+			}
+			struct pmu_cpus_context core_ctx = {
+				.max_processors_count = x86_linux_processors_count,
+				.linux_cpu_to_core_map = linux_cpu_to_core_map,
+				.uarch = x86_processor.uarch,
+				.conflict = false,
+			};
+			struct pmu_cpus_context atom_ctx = {
+				.max_processors_count = x86_linux_processors_count,
+				.linux_cpu_to_core_map = linux_cpu_to_core_map,
+				.uarch = x86_processor.e_uarch,
+				.conflict = false,
+			};
+			struct pmu_cpus_context lowpower_ctx = {
+				.max_processors_count = x86_linux_processors_count,
+				.linux_cpu_to_core_map = linux_cpu_to_core_map,
+				.uarch = x86_processor.lp_e_uarch,
+				.conflict = false,
+			};
+			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_core/cpus", mark_pmu_cpus, &core_ctx);
+			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_atom/cpus", mark_pmu_cpus, &atom_ctx);
+			cpuinfo_linux_parse_cpulist("/sys/devices/cpu_lowpower/cpus", mark_pmu_cpus, &lowpower_ctx);
+
+			bool valid_pmu_uarchs = !core_ctx.conflict && !atom_ctx.conflict && !lowpower_ctx.conflict;
+			if (valid_pmu_uarchs) {
+				for (uint32_t i = 0; i < cores_count; i++) {
+					if (cores[i].uarch == cpuinfo_uarch_unknown) {
+						valid_pmu_uarchs = false;
+						break;
+					}
+				}
+			}
+			if (!valid_pmu_uarchs) {
+				for (uint32_t i = 0; i < cores_count; i++) {
+					cores[i].uarch = x86_processor.uarch;
+				}
+			}
+		}
+
+		/* Rebuild clusters on package and microarchitecture boundaries */
+		uint32_t new_clusters_count = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			if (i == 0 || cores[i].package != cores[i - 1].package ||
+			    cores[i].uarch != cores[i - 1].uarch) {
+				new_clusters_count++;
+			}
+		}
+		struct cpuinfo_cluster* new_clusters = calloc(new_clusters_count, sizeof(struct cpuinfo_cluster));
+		if (new_clusters == NULL) {
+			cpuinfo_log_error(
+				"failed to allocate %zu bytes for descriptions of %" PRIu32 " core clusters",
+				new_clusters_count * sizeof(struct cpuinfo_cluster),
+				new_clusters_count);
+			goto cleanup;
+		}
+		free(clusters);
+		clusters = new_clusters;
+		clusters_count = new_clusters_count;
+		for (uint32_t i = 0; i < packages_count; i++) {
+			packages[i].cluster_start = 0;
+			packages[i].cluster_count = 0;
+		}
+		uint32_t cluster_idx = 0;
+		uint32_t cluster_id_in_package = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			if (i == 0 || cores[i].package != cores[i - 1].package ||
+			    cores[i].uarch != cores[i - 1].uarch) {
+				if (i != 0) {
+					if (cores[i].package != cores[i - 1].package) {
+						cluster_id_in_package = 0;
+					} else {
+						cluster_id_in_package++;
+					}
+					cluster_idx++;
+				}
+				struct cpuinfo_package* package = (struct cpuinfo_package*)cores[i].package;
+				if (package->cluster_count == 0) {
+					package->cluster_start = cluster_idx;
+				}
+				package->cluster_count++;
+
+				clusters[cluster_idx] = (struct cpuinfo_cluster){
+					.processor_start = cores[i].processor_start,
+					.processor_count = 0,
+					.core_start = i,
+					.core_count = 0,
+					.cluster_id = cluster_id_in_package,
+					.package = package,
+					.vendor = cores[i].vendor,
+					.uarch = cores[i].uarch,
+					.cpuid = cores[i].cpuid,
+					.frequency = cores[i].frequency,
+				};
+			}
+			cores[i].cluster = &clusters[cluster_idx];
+			clusters[cluster_idx].core_count++;
+			clusters[cluster_idx].processor_count += cores[i].processor_count;
+			for (uint32_t p = 0; p < cores[i].processor_count; p++) {
+				processors[cores[i].processor_start + p].cluster = &clusters[cluster_idx];
+			}
+		}
+
+		for (uint32_t i = 0; i < cores_count; i++) {
+			bool found = false;
+			for (uint32_t j = 0; j < i; j++) {
+				if (cores[j].uarch == cores[i].uarch) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				uarchs_count++;
+			}
+		}
+		uarchs = calloc(uarchs_count, sizeof(struct cpuinfo_uarch_info));
+		if (uarchs == NULL) {
+			cpuinfo_log_error(
+				"failed to allocate %zu bytes for descriptions of %" PRIu32 " microarchitectures",
+				uarchs_count * sizeof(struct cpuinfo_uarch_info),
+				uarchs_count);
+			goto cleanup;
+		}
+		uint32_t uarch_idx = 0;
+		for (uint32_t i = 0; i < cores_count; i++) {
+			uint32_t k;
+			for (k = 0; k < uarch_idx; k++) {
+				if (uarchs[k].uarch == cores[i].uarch) {
+					break;
+				}
+			}
+			if (k == uarch_idx) {
+				uarchs[uarch_idx] = (struct cpuinfo_uarch_info){
+					.uarch = cores[i].uarch,
+					.cpuid = cores[i].cpuid,
+					.processor_count = cores[i].processor_count,
+					.core_count = 1,
+				};
+				uarch_idx++;
+			} else {
+				uarchs[k].processor_count += cores[i].processor_count;
+				uarchs[k].core_count += 1;
+			}
+		}
+	}
+
 	/* Commit changes */
 	cpuinfo_processors = processors;
 	cpuinfo_cores = cores;
@@ -640,8 +819,11 @@ void cpuinfo_x86_linux_init(void) {
 	cpuinfo_cache_count[cpuinfo_cache_level_4] = l4_count;
 	cpuinfo_max_cache_size = cpuinfo_compute_max_cache_size(&processors[0]);
 
+	cpuinfo_uarchs = uarchs;
+	cpuinfo_uarchs_count = uarchs_count;
+
 	cpuinfo_global_uarch = (struct cpuinfo_uarch_info){
-		.uarch = x86_processor.uarch,
+		.uarch = uarchs_count == 1 ? uarchs[0].uarch : x86_processor.uarch,
 		.cpuid = x86_processor.cpuid,
 		.processor_count = processors_count,
 		.core_count = cores_count,
@@ -659,6 +841,7 @@ void cpuinfo_x86_linux_init(void) {
 	cores = NULL;
 	clusters = NULL;
 	packages = NULL;
+	uarchs = NULL;
 	l1i = l1d = l2 = l3 = l4 = NULL;
 	linux_cpu_to_processor_map = NULL;
 	linux_cpu_to_core_map = NULL;
@@ -669,6 +852,7 @@ cleanup:
 	free(cores);
 	free(clusters);
 	free(packages);
+	free(uarchs);
 	free(l1i);
 	free(l1d);
 	free(l2);

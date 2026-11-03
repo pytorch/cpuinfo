@@ -69,6 +69,30 @@ static void parse_apic_id(
 	processor->flags |= CPUINFO_LINUX_FLAG_APIC_ID;
 }
 
+static void parse_core_id(
+	const char* core_start,
+	const char* core_end,
+	struct cpuinfo_x86_linux_processor processor[restrict static 1]) {
+	uint32_t core_id = 0;
+	for (const char* digit_ptr = core_start; digit_ptr != core_end; digit_ptr++) {
+		const uint32_t digit = *digit_ptr - '0';
+		if (digit >= 10) {
+			cpuinfo_log_warning(
+				"Core ID %.*s in /proc/cpuinfo is ignored due to unexpected non-digit character '%c' at offset %zu",
+				(int)(core_end - core_start),
+				core_start,
+				*digit_ptr,
+				(size_t)(digit_ptr - core_start));
+			return;
+		}
+
+		core_id = core_id * 10 + digit;
+	}
+
+	processor->core_id = core_id;
+	processor->flags |= CPUINFO_LINUX_FLAG_CORE_ID;
+}
+
 struct proc_cpuinfo_parser_state {
 	uint32_t processor_index;
 	uint32_t max_processors_count;
@@ -156,6 +180,13 @@ static bool parse_line(const char* line_start, const char* line_end, void* conte
 		case 6:
 			if (memcmp(line_start, "apicid", key_length) == 0) {
 				parse_apic_id(value_start, value_end, processor);
+			} else {
+				goto unknown;
+			}
+			break;
+		case 7:
+			if (memcmp(line_start, "core id", key_length) == 0) {
+				parse_core_id(value_start, value_end, processor);
 			} else {
 				goto unknown;
 			}

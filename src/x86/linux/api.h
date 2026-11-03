@@ -10,6 +10,7 @@
 
 struct cpuinfo_x86_linux_processor {
 	uint32_t apic_id;
+	uint32_t core_id;
 	uint32_t linux_id;
 	uint32_t flags;
 };

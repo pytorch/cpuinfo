@@ -5,7 +5,10 @@
 
 enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 	enum cpuinfo_vendor vendor,
-	const struct cpuinfo_x86_model_info* model_info) {
+	const struct cpuinfo_x86_model_info* model_info,
+	uint32_t leaf1a_eax) {
+	const uint32_t core_type = leaf1a_eax > UINT32_C(0xFF) ? (leaf1a_eax >> 24) : leaf1a_eax;
+	const uint32_t native_model_id = leaf1a_eax > UINT32_C(0xFF) ? (leaf1a_eax & UINT32_C(0x00FFFFFF)) : 0;
 	switch (vendor) {
 		case cpuinfo_vendor_intel:
 			switch (model_info->family) {
@@ -166,17 +169,57 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x6C: // Ice Lake-SP
 						case 0x7D: // Ice Lake-Y
 						case 0x7E: // Ice Lake-U
+						case 0xA7: // Rocket Lake
 							return cpuinfo_uarch_sunny_cove;
+						case 0x8A: // Lakefield
+							return core_type == 0x20 ? cpuinfo_uarch_tremont
+										 : cpuinfo_uarch_sunny_cove;
 
 						case 0x8C: // Tiger U
 						case 0x8D: // Tiger H
 							return cpuinfo_uarch_willow_cove;
 						case 0x8F: // Sapphire Rapids
 							return cpuinfo_uarch_golden_cove;
+						case 0x97: // Alder Lake-S/HX
+						case 0x9A: // Alder Lake-P/U
+							return core_type == 0x20 ? cpuinfo_uarch_gracemont
+										 : cpuinfo_uarch_golden_cove;
+						case 0xB7: // Raptor Lake-S/HX
+						case 0xBA: // Raptor Lake-P/U
+						case 0xBF: // Raptor Lake-S
+							return core_type == 0x20 ? cpuinfo_uarch_gracemont
+										 : cpuinfo_uarch_raptor_cove;
 						case 0xCF: // Emerald Rapids
 							return cpuinfo_uarch_raptor_cove;
+						case 0xAA: // Meteor Lake-L
+						case 0xAC: // Meteor Lake
+						case 0xB5: // Arrow Lake-U
+							return core_type == 0x20 ? cpuinfo_uarch_crestmont
+										 : cpuinfo_uarch_redwood_cove;
 						case 0xAD: // Granite Rapids
+						case 0xAE: // Granite Rapids-D
 							return cpuinfo_uarch_redwood_cove;
+						case 0xC5: // Arrow Lake-H
+							if (core_type == 0x20) {
+								/*
+								 * Arrow Lake-H has both Skymont E-cores
+								 * (CPUID.1AH.EAX[23:0] == 0x3, cpu_atom) and
+								 * Crestmont Low-Power Island E-cores
+								 * (CPUID.1AH.EAX[23:0] == 0x2, cpu_lowpower).
+								 */
+								return native_model_id == 0x02 ? cpuinfo_uarch_crestmont
+											       : cpuinfo_uarch_skymont;
+							}
+							return cpuinfo_uarch_lion_cove;
+						case 0xBD: // Lunar Lake
+						case 0xC6: // Arrow Lake-S
+							return core_type == 0x20 ? cpuinfo_uarch_skymont
+										 : cpuinfo_uarch_lion_cove;
+						case 0xCC: // Panther Lake-L
+						case 0xD5: // Wildcat Lake-L
+						case 0xE5: // Panther Lake-R
+							return core_type == 0x20 ? cpuinfo_uarch_darkmont
+										 : cpuinfo_uarch_cougar_cove;
 						/* Low-power cores */
 						case 0x1C: // Diamondville,
 							   // Silverthorne,
@@ -195,13 +238,13 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 						case 0x5D: // SoFIA
 							return cpuinfo_uarch_silvermont;
 						case 0x86: // Jasper Lake
-						case 0x8A: // Lakefield
 						case 0x96: // Elkhart Lake
 						case 0x9C: // Jacobsville
 							return cpuinfo_uarch_tremont;
 						case 0xBE: // Alder Lake-N
 							return cpuinfo_uarch_gracemont;
 						case 0xAF: // Sierra Forest
+						case 0xB6: // Grand Ridge
 							return cpuinfo_uarch_crestmont;
 						case 0xDD: // Clearwater Forest
 							return cpuinfo_uarch_darkmont;
@@ -272,8 +315,10 @@ enum cpuinfo_uarch cpuinfo_x86_decode_uarch(
 					break;
 				case 0x12:
 					switch (model_info->model) {
-						case 0x01: // Nova Lake P-core (Coyote Cove)
-							return cpuinfo_uarch_coyote_cove;
+						case 0x01: // Nova Lake
+						case 0x03: // Nova Lake-L
+							return core_type == 0x20 ? cpuinfo_uarch_arctic_wolf
+										 : cpuinfo_uarch_coyote_cove;
 					}
 					break;
 			}
