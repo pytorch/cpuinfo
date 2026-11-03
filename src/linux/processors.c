@@ -401,10 +401,11 @@ struct siblings_context {
 	void* callback_context;
 };
 
-static bool siblings_parser(uint32_t sibling_list_start, uint32_t sibling_list_end, struct siblings_context* context) {
-	const char* group_name = context->group_name;
-	const uint32_t max_processors_count = context->max_processors_count;
-	const uint32_t processor = context->processor;
+static bool siblings_parser(uint32_t sibling_list_start, uint32_t sibling_list_end, void* context) {
+	struct siblings_context* siblings_context = (struct siblings_context*)context;
+	const char* group_name = siblings_context->group_name;
+	const uint32_t max_processors_count = siblings_context->max_processors_count;
+	const uint32_t processor = siblings_context->processor;
 
 	if (sibling_list_end > max_processors_count) {
 		cpuinfo_log_warning(
@@ -416,7 +417,7 @@ static bool siblings_parser(uint32_t sibling_list_start, uint32_t sibling_list_e
 		sibling_list_end = max_processors_count;
 	}
 
-	return context->callback(processor, sibling_list_start, sibling_list_end, context->callback_context);
+	return siblings_context->callback(processor, sibling_list_start, sibling_list_end, siblings_context->callback_context);
 }
 
 bool cpuinfo_linux_detect_core_cpus(
@@ -440,7 +441,7 @@ bool cpuinfo_linux_detect_core_cpus(
 		.callback_context = context,
 	};
 	if (cpuinfo_linux_parse_cpulist(
-		    core_cpus_filename, (cpuinfo_cpulist_callback)siblings_parser, &siblings_context)) {
+		    core_cpus_filename, siblings_parser, &siblings_context)) {
 		return true;
 	} else {
 		cpuinfo_log_info(
@@ -472,7 +473,7 @@ bool cpuinfo_linux_detect_core_siblings(
 		.callback_context = context,
 	};
 	if (cpuinfo_linux_parse_cpulist(
-		    core_siblings_filename, (cpuinfo_cpulist_callback)siblings_parser, &siblings_context)) {
+		    core_siblings_filename, siblings_parser, &siblings_context)) {
 		return true;
 	} else {
 		cpuinfo_log_info(
@@ -504,7 +505,7 @@ bool cpuinfo_linux_detect_thread_siblings(
 		.callback_context = context,
 	};
 	if (cpuinfo_linux_parse_cpulist(
-		    thread_siblings_filename, (cpuinfo_cpulist_callback)siblings_parser, &siblings_context)) {
+		    thread_siblings_filename, siblings_parser, &siblings_context)) {
 		return true;
 	} else {
 		cpuinfo_log_info(
@@ -536,7 +537,7 @@ bool cpuinfo_linux_detect_cluster_cpus(
 		.callback_context = context,
 	};
 	if (cpuinfo_linux_parse_cpulist(
-		    cluster_cpus_filename, (cpuinfo_cpulist_callback)siblings_parser, &siblings_context)) {
+		    cluster_cpus_filename, siblings_parser, &siblings_context)) {
 		return true;
 	} else {
 		cpuinfo_log_info(
@@ -568,7 +569,7 @@ bool cpuinfo_linux_detect_package_cpus(
 		.callback_context = context,
 	};
 	if (cpuinfo_linux_parse_cpulist(
-		    package_cpus_filename, (cpuinfo_cpulist_callback)siblings_parser, &siblings_context)) {
+		    package_cpus_filename, siblings_parser, &siblings_context)) {
 		return true;
 	} else {
 		cpuinfo_log_info(
