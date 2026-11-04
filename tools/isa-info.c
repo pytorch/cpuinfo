@@ -77,6 +77,8 @@ int main(int argc, char** argv) {
 	printf("\tAMX_INT8: %s\n", cpuinfo_has_x86_amx_int8() ? "yes" : "no");
 	printf("\tAMX_FP16: %s\n", cpuinfo_has_x86_amx_fp16() ? "yes" : "no");
 	printf("\tAMX_FP8: %s\n", cpuinfo_has_x86_amx_fp8() ? "yes" : "no");
+	printf("\tAMX_TF32: %s\n", cpuinfo_has_x86_amx_tf32() ? "yes" : "no");
+	printf("\tAMX_AVX512: %s\n", cpuinfo_has_x86_amx_avx512() ? "yes" : "no");
 	printf("\tAVXVNNI: %s\n", cpuinfo_has_x86_avxvnni() ? "yes" : "no");
 	printf("\tAVX_VNNI_INT8: %s\n", cpuinfo_has_x86_avx_vnni_int8() ? "yes" : "no");
 	printf("\tAVX_VNNI_INT16: %s\n", cpuinfo_has_x86_avx_vnni_int16() ? "yes" : "no");
