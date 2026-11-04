@@ -685,6 +685,11 @@ enum cpuinfo_uarch {
 
 	/** HiSilicon TaiShan v110 (Huawei Kunpeng 920 series processors). */
 	cpuinfo_uarch_taishan_v110 = 0x00C00100,
+
+	/** SiFive X280. */
+	cpuinfo_uarch_sifive_x280 = 0x01200100,
+	/** SiFive X390. */
+	cpuinfo_uarch_sifive_x390 = 0x01200101,
 };
 
 struct cpuinfo_processor {
