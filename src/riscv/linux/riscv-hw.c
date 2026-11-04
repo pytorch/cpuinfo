@@ -187,6 +187,10 @@ void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 			isa->zvfh = true;
 		}
 	}
+	if (*uarch == cpuinfo_uarch_sifive_x280 || *uarch == cpuinfo_uarch_sifive_x390) {
+		isa->zfh = true;
+		isa->zvfh = true;
+	}
 
 cleanup:
 	CPU_FREE(cpu_set);

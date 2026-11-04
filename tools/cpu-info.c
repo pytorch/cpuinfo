@@ -41,6 +41,8 @@ static const char* vendor_to_string(enum cpuinfo_vendor vendor) {
 			return "Broadcom";
 		case cpuinfo_vendor_apm:
 			return "Applied Micro";
+		case cpuinfo_vendor_sifive:
+			return "SiFive";
 		default:
 			return NULL;
 	}
@@ -371,6 +373,10 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Dhyana";
 		case cpuinfo_uarch_taishan_v110:
 			return "TaiShan v110";
+		case cpuinfo_uarch_sifive_x280:
+			return "X280";
+		case cpuinfo_uarch_sifive_x390:
+			return "X390";
 		default:
 			return NULL;
 	}
