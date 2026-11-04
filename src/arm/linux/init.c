@@ -46,7 +46,7 @@ static bool cache_size_parser(const char* filename, const char* text_start, cons
 		return false;
 	}
 	uint32_t multiplier = 1024;
-	if (p < text_end && toupper(*p) == 'M') {
+	if (p < text_end && toupper((unsigned char)*p) == 'M') {
 		multiplier = 1024 * 1024;
 	}
 	*size_ptr = value * multiplier;
