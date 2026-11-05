@@ -223,7 +223,8 @@ IF(CPUINFO_SUPPORTED_PLATFORM)
       LIST(APPEND CPUINFO_SRCS
         src/riscv/linux/init.c
 	src/riscv/linux/riscv-hw.c
-	src/riscv/linux/riscv-isa.c)
+	src/riscv/linux/riscv-isa.c
+	src/riscv/linux/cache.c)
     ENDIF()
   ENDIF()
 
