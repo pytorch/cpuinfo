@@ -52,11 +52,13 @@ bool CPUINFO_ABI cpuinfo_initialize(void) {
 #elif CPUINFO_ARCH_ASMJS || CPUINFO_ARCH_WASM || CPUINFO_ARCH_WASMSIMD
 #if defined(__EMSCRIPTEN_PTHREADS__)
 	pthread_once(&init_guard, &cpuinfo_emscripten_init);
-#else
+#elif defined(__EMSCRIPTEN__)
 	if (!init_guard) {
 		cpuinfo_emscripten_init();
 	}
 	init_guard = true;
+#else
+	cpuinfo_log_error("operating system is not supported in cpuinfo");
 #endif
 #else
 	cpuinfo_log_error("processor architecture is not supported in cpuinfo");
