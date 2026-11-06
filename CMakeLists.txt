@@ -756,7 +756,7 @@ IF(CPUINFO_SUPPORTED_PLATFORM AND CPUINFO_BUILD_MOCK_TESTS)
     ADD_EXECUTABLE(arm-linux-topology-test test/mock/arm-linux-topology.cc)
     CPUINFO_TARGET_ENABLE_CXX11(arm-linux-topology-test)
     TARGET_LINK_LIBRARIES(arm-linux-topology-test PRIVATE cpuinfo_mock gtest)
-    FOREACH(topology pixel-8 pixel-9 pixel-10 galaxy-s23 missing-midr frequency-groups unknown-parts mixed-caches)
+    FOREACH(topology pixel-8 pixel-9 pixel-10 galaxy-s23 missing-midr sysfs-l2-missing-arch frequency-groups unknown-parts mixed-caches)
       ADD_TEST(NAME arm-linux-topology-${topology}-test COMMAND arm-linux-topology-test ${topology})
     ENDFOREACH()
 
