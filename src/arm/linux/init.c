@@ -973,17 +973,19 @@ void cpuinfo_arm_linux_init(void) {
 			 * it is shared between all cores.
 			 */
 			l2_index += 1;
-			l2[l2_index] = (struct cpuinfo_cache){
-				.size = temp_l2.size,
-				.associativity = temp_l2.associativity,
-				.sets = temp_l2.sets,
-				.partitions = 1,
-				.line_size = temp_l2.line_size,
-				.flags = temp_l2.flags,
-				.processor_start = i,
-				.processor_count = 1,
-			};
-			processors[i].cache.l2 = l2 + l2_index;
+			if (l2_index < l2_count) {
+				l2[l2_index] = (struct cpuinfo_cache){
+					.size = temp_l2.size,
+					.associativity = temp_l2.associativity,
+					.sets = temp_l2.sets,
+					.partitions = 1,
+					.line_size = temp_l2.line_size,
+					.flags = temp_l2.flags,
+					.processor_start = i,
+					.processor_count = 1,
+				};
+				processors[i].cache.l2 = l2 + l2_index;
+			}
 			if (temp_l3.size != 0 &&
 			    arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 				l3_index += 1;
@@ -1011,18 +1013,22 @@ void cpuinfo_arm_linux_init(void) {
 			/* Assume L2 is shared by cores in the same cluster */
 			if (arm_linux_processors[i].package_leader_id == arm_linux_processors[i].system_processor_id) {
 				l2_index += 1;
-				l2[l2_index] = (struct cpuinfo_cache){
-					.size = temp_l2.size,
-					.associativity = temp_l2.associativity,
-					.sets = temp_l2.sets,
-					.partitions = 1,
-					.line_size = temp_l2.line_size,
-					.flags = temp_l2.flags,
-					.processor_start = i,
-					.processor_count = arm_linux_processors[i].package_processor_count,
-				};
+				if (l2_index < l2_count) {
+					l2[l2_index] = (struct cpuinfo_cache){
+						.size = temp_l2.size,
+						.associativity = temp_l2.associativity,
+						.sets = temp_l2.sets,
+						.partitions = 1,
+						.line_size = temp_l2.line_size,
+						.flags = temp_l2.flags,
+						.processor_start = i,
+						.processor_count = arm_linux_processors[i].package_processor_count,
+					};
+				}
 			}
-			processors[i].cache.l2 = l2 + l2_index;
+			if (l2_index < l2_count) {
+				processors[i].cache.l2 = l2 + l2_index;
+			}
 		}
 	}
 
