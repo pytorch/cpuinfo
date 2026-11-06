@@ -21,6 +21,8 @@ static std::vector<uint32_t> expected_linux_ids;
 static std::vector<uint32_t> expected_cluster_sizes;
 static uint32_t expected_uarchs;
 static uint32_t missing_midr = UINT32_MAX;
+static uint32_t missing_arch = UINT32_MAX;
+static bool sysfs_l2_per_core;
 static bool mixed_caches;
 
 template <class T>
@@ -44,7 +46,12 @@ TEST_F(ARM_LINUX_TOPOLOGY, per_cpu_identity_and_order) {
 		ASSERT_EQ(linux_id, processor->linux_id);
 		ASSERT_EQ(cpuinfo_get_core(i), processor->core);
 		EXPECT_EQ(input[linux_id].uarch, processor->core->uarch);
-		EXPECT_EQ(UINT32_C(0x410F0001) | (input[linux_id].part << 4), processor->core->midr);
+		// The architecture nibble comes from the "CPU architecture" line, which
+		// the sysfs-l2-missing-arch topology intentionally omits.
+		const uint32_t architecture_nibble = linux_id == missing_arch ? 0 : 0xF;
+		EXPECT_EQ(
+			UINT32_C(0x41000001) | (architecture_nibble << 16) | (input[linux_id].part << 4),
+			processor->core->midr);
 		EXPECT_EQ(cpuinfo_vendor_arm, processor->core->vendor);
 	}
 }
@@ -167,6 +174,20 @@ int main(int argc, char** argv) {
 		if (mode == "missing-midr") {
 			missing_midr = 1;
 		}
+	} else if (mode == "sysfs-l2-missing-arch") {
+		// A CPU that reports a per-core L2 in sysfs but no "CPU architecture"
+		// in /proc/cpuinfo, and has no cluster sibling to inherit one from.
+		// The cache decoder then reports no L2 for it, while the population
+		// pass still writes an entry for it from sysfs: the L2 array must be
+		// sized for every entry that is written.
+		input = {
+			{0xD87, cpuinfo_uarch_cortex_a725, 3052000, 0},
+			{0xFFF, cpuinfo_uarch_unknown, 3052000, 1}};
+		expected_linux_ids = {1, 0};
+		expected_cluster_sizes = {1, 1};
+		expected_uarchs = 2;
+		missing_arch = 1;
+		sysfs_l2_per_core = true;
 	} else if (mode == "galaxy-s23") {
 		// A715 and A710 share the middle kernel topology group, matching
 		// Snapdragon 8 Gen 2 hardware. Both have the same core score and
@@ -227,12 +248,16 @@ int main(int argc, char** argv) {
 	for (uint32_t i = 0; i < input.size(); i++) {
 		proc_cpuinfo += "processor\t: " + std::to_string(i) + "\n";
 		if (i != missing_midr) {
-			char identity[160];
+			char identity[192];
 			std::snprintf(
 				identity,
 				sizeof(identity),
-				"CPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x0\n"
-				"CPU part\t: 0x%x\nCPU revision\t: 1\n",
+				"CPU implementer\t: 0x41\n"
+				"%s"
+				"CPU variant\t: 0x0\n"
+				"CPU part\t: 0x%x\n"
+				"CPU revision\t: 1\n",
+				i == missing_arch ? "" : "CPU architecture: 8\n",
 				input[i].part);
 			proc_cpuinfo += identity;
 		}
@@ -248,6 +273,16 @@ int main(int argc, char** argv) {
 			prefix + "/topology/cluster_cpus_list",
 			std::to_string(start) + "-" + std::to_string(end) + "\n");
 		add_file(prefix + "/cpufreq/cpuinfo_max_freq", std::to_string(input[i].frequency) + "\n");
+		if (sysfs_l2_per_core) {
+			// Every CPU advertises a per-core L2 in sysfs. CPU 1 additionally
+			// has no architecture/identity data in /proc/cpuinfo, so the cache
+			// decoder returns no L2 for it: the counting pass and the
+			// population pass must still agree on the array size.
+			const std::string cache = prefix + "/cache/index2/";
+			add_file(cache + "level", "2\n");
+			add_file(cache + "size", "256K\n");
+			add_file(cache + "shared_cpu_list", std::to_string(i) + "\n");
+		}
 	}
 	add_file("/proc/cpuinfo", proc_cpuinfo);
 	add_file("/sys/devices/system/cpu/kernel_max", std::to_string(input.size() - 1) + "\n");
