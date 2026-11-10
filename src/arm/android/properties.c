@@ -48,13 +48,19 @@ void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties prop
 		cpuinfo_android_property_get("ro.board.platform", properties->ro_board_platform);
 	cpuinfo_log_debug("read ro.board.platform = \"%.*s\"", ro_board_platform_length, properties->ro_board_platform);
 
+	const int ro_arch_length = cpuinfo_android_property_get("ro.arch", properties->ro_arch);
+	cpuinfo_log_debug("read ro.arch = \"%.*s\"", ro_arch_length, properties->ro_arch);
+
+#ifndef CPUINFO_AVOID_SELINUX_VIOLATIONS
+	/*
+	 * The following properties are not defined by the Android platform sepolicy, so reading them triggers
+	 * SELinux denials on devices whose vendor policy does not label them. Define
+	 * CPUINFO_AVOID_SELINUX_VIOLATIONS to skip them at the cost of less precise chipset detection.
+	 */
 	const int ro_mediatek_platform_length =
 		cpuinfo_android_property_get("ro.mediatek.platform", properties->ro_mediatek_platform);
 	cpuinfo_log_debug(
 		"read ro.mediatek.platform = \"%.*s\"", ro_mediatek_platform_length, properties->ro_mediatek_platform);
-
-	const int ro_arch_length = cpuinfo_android_property_get("ro.arch", properties->ro_arch);
-	cpuinfo_log_debug("read ro.arch = \"%.*s\"", ro_arch_length, properties->ro_arch);
 
 	const int ro_chipname_length = cpuinfo_android_property_get("ro.chipname", properties->ro_chipname);
 	cpuinfo_log_debug("read ro.chipname = \"%.*s\"", ro_chipname_length, properties->ro_chipname);
@@ -63,6 +69,11 @@ void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties prop
 		cpuinfo_android_property_get("ro.hardware.chipname", properties->ro_hardware_chipname);
 	cpuinfo_log_debug(
 		"read ro.hardware.chipname = \"%.*s\"", ro_hardware_chipname_length, properties->ro_hardware_chipname);
+#else
+	properties->ro_mediatek_platform[0] = '\0';
+	properties->ro_chipname[0] = '\0';
+	properties->ro_hardware_chipname[0] = '\0';
+#endif /* CPUINFO_AVOID_SELINUX_VIOLATIONS */
 
 	const int ro_soc_model_length = cpuinfo_android_property_get("ro.soc.model", properties->ro_soc_model);
 	cpuinfo_log_debug("read ro.soc.model = \"%.*s\"", ro_soc_model_length, properties->ro_soc_model);
