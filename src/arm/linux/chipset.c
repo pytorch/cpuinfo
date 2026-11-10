@@ -3282,6 +3282,34 @@ struct cpuinfo_arm_chipset cpuinfo_arm_android_decode_chipset_from_ro_board_plat
 	}
 #endif
 
+	/* Check Google Tensor signatures (zuma, zumapro, gs201, gs101) */
+	if (strncmp(platform, "zuma", 4) == 0) {
+		cpuinfo_log_debug(
+			"matched Google Tensor signature in ro.board.platform string \"%.*s\"",
+			(int)platform_length,
+			platform);
+		chipset.vendor = cpuinfo_arm_chipset_vendor_google;
+		chipset.series = cpuinfo_arm_chipset_series_google_tensor;
+		chipset.model = 0;
+		if (platform_length >= 7 && strncmp(platform, "zumapro", 7) == 0) {
+			strncpy(chipset.suffix, "G4", 2);
+		} else {
+			strncpy(chipset.suffix, "G3", 2);
+		}
+		return chipset;
+	} else if (platform_length == 5 && strncmp(platform, "gs201", 5) == 0) {
+		chipset.vendor = cpuinfo_arm_chipset_vendor_google;
+		chipset.series = cpuinfo_arm_chipset_series_google_tensor;
+		chipset.model = 0;
+		strncpy(chipset.suffix, "G2", 2);
+		return chipset;
+	} else if (platform_length == 5 && strncmp(platform, "gs101", 5) == 0) {
+		chipset.vendor = cpuinfo_arm_chipset_vendor_google;
+		chipset.series = cpuinfo_arm_chipset_series_google_tensor;
+		chipset.model = 0;
+		return chipset;
+	}
+
 	/*
 	 * Compare to tabulated ro.board.platform values for Amlogic
 	 * chipsets/devices which can't be otherwise detected. The tabulated
