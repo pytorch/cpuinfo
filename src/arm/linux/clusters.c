@@ -70,19 +70,23 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 	uint32_t max_processors,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]) {
 	uint32_t cluster_processors[3];
+	uint32_t expected_clusters;
 	switch (usable_processors) {
 		case 10:
 			cluster_processors[0] = 4;
 			cluster_processors[1] = 4;
 			cluster_processors[2] = 2;
+			expected_clusters = 3;
 			break;
 		case 8:
 			cluster_processors[0] = 4;
 			cluster_processors[1] = 4;
+			expected_clusters = 2;
 			break;
 		case 6:
 			cluster_processors[0] = 4;
 			cluster_processors[1] = 2;
+			expected_clusters = 2;
 			break;
 #if defined(__ANDROID__) && CPUINFO_ARCH_ARM
 		case 5:
@@ -93,6 +97,7 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 			 */
 			cluster_processors[0] = 4;
 			cluster_processors[1] = 1;
+			expected_clusters = 2;
 			break;
 #endif
 		default:
@@ -115,6 +120,28 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 			if (expected_cluster_processors == 0) {
 				/* Expect this processor to start a new cluster
 				 */
+
+				if (cluster == expected_clusters) {
+					/*
+					 * More processors carry the VALID flag
+					 * than the usable_processors this
+					 * heuristic was tabulated for, so the
+					 * cluster table is exhausted. Happens
+					 * when a processor is in the possible
+					 * and present lists but missing from
+					 * /proc/cpuinfo.
+					 */
+					cpuinfo_log_debug(
+						"heuristic detection of core clusters failed: "
+						"processor %" PRIu32 " would start cluster #%" PRIu32
+						", but only %" PRIu32 " clusters are expected for %" PRIu32
+						" usable processors",
+						i,
+						cluster,
+						expected_clusters,
+						usable_processors);
+					return false;
+				}
 
 				expected_cluster_exists = !!(processors[i].flags & CPUINFO_LINUX_FLAG_PACKAGE_CLUSTER);
 				if (expected_cluster_exists) {
@@ -350,6 +377,9 @@ bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
 				 */
 
 				cluster_start = i;
+				/* This pass walks the same processors in the
+				 * same order as the verification pass above, so
+				 * cluster stays below expected_clusters. */
 				expected_cluster_processors = cluster_processors[cluster++];
 			} else {
 				/* Expect this processor to belong to the same
