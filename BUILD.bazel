@@ -188,7 +188,10 @@ cc_library(
         "-Iexternal/cpuinfo/include",
         "-Iexternal/cpuinfo/src",
         "-DCPUINFO_LOG_LEVEL=2",
-    ],
+    ] + select({
+        ":avoid_selinux_violations": ["-DCPUINFO_AVOID_SELINUX_VIOLATIONS=1"],
+        "//conditions:default": [],
+    }),
     includes = [
         "include",
         "src",
@@ -244,6 +247,13 @@ cc_library(
 )
 
 ############################# Build configurations #############################
+
+# Skip reading non-standard Android properties that trigger SELinux denials.
+# Enable with --define=cpuinfo_avoid_selinux_violations=true
+config_setting(
+    name = "avoid_selinux_violations",
+    define_values = {"cpuinfo_avoid_selinux_violations": "true"},
+)
 
 config_setting(
     name = "linux_x86_64",

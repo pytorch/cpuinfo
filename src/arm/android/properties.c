@@ -11,6 +11,10 @@
 #include <cpuinfo/log.h>
 #include <linux/api.h>
 
+#ifndef CPUINFO_AVOID_SELINUX_VIOLATIONS
+#define CPUINFO_AVOID_SELINUX_VIOLATIONS 0
+#endif
+
 #if CPUINFO_MOCK
 #include <cpuinfo-mock.h>
 
@@ -51,11 +55,11 @@ void cpuinfo_arm_android_parse_properties(struct cpuinfo_android_properties prop
 	const int ro_arch_length = cpuinfo_android_property_get("ro.arch", properties->ro_arch);
 	cpuinfo_log_debug("read ro.arch = \"%.*s\"", ro_arch_length, properties->ro_arch);
 
-#ifndef CPUINFO_AVOID_SELINUX_VIOLATIONS
+#if !CPUINFO_AVOID_SELINUX_VIOLATIONS
 	/*
 	 * The following properties are not defined by the Android platform sepolicy, so reading them triggers
 	 * SELinux denials on devices whose vendor policy does not label them. Define
-	 * CPUINFO_AVOID_SELINUX_VIOLATIONS to skip them at the cost of less precise chipset detection.
+	 * CPUINFO_AVOID_SELINUX_VIOLATIONS=1 to skip them at the cost of less precise chipset detection.
 	 */
 	const int ro_mediatek_platform_length =
 		cpuinfo_android_property_get("ro.mediatek.platform", properties->ro_mediatek_platform);
