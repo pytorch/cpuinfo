@@ -911,6 +911,7 @@ struct cpuinfo_x86_isa {
 	bool amx_int8;
 	bool amx_fp16;
 	bool amx_fp8;
+	bool ace;
 	bool avx_vnni_int8;
 	bool avx_vnni_int16;
 	bool avx_ne_convert;
@@ -944,7 +945,7 @@ struct cpuinfo_x86_isa {
 	bool rdseed;
 	bool sha;
 	bool rng;
-	bool ace;
+	bool padlock_ace;
 	bool ace2;
 	bool phe;
 	bool pmm;
@@ -1485,6 +1486,14 @@ static inline bool cpuinfo_has_x86_amx_fp16(void) {
 static inline bool cpuinfo_has_x86_amx_fp8(void) {
 #if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
 	return cpuinfo_isa.amx_fp8;
+#else
+	return false;
+#endif
+}
+
+static inline bool cpuinfo_has_x86_ace(void) {
+#if CPUINFO_ARCH_X86 || CPUINFO_ARCH_X86_64
+	return cpuinfo_isa.ace;
 #else
 	return false;
 #endif
