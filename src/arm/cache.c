@@ -1307,6 +1307,146 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		}
+		case cpuinfo_uarch_cortex_x1:
+		case cpuinfo_uarch_cortex_x2:
+		case cpuinfo_uarch_cortex_x3:
+		case cpuinfo_uarch_cortex_x4:
+		case cpuinfo_uarch_cortex_x925: {
+			/*
+			 * Arm Cortex-X series Core Technical Reference Manuals:
+			 * - L1 instruction cache: 64 KB, 4-way set associative, 64-byte line
+			 * - L1 data cache: 64 KB, 4-way set associative, 64-byte line
+			 * - L2 unified cache: configurable 512 KB to 2 MB (1 MB default), 8-way set associative,
+			 * 64-byte line
+			 */
+			uint32_t l2_size = 1024 * 1024;
+			uint32_t l3_size = 0;
+			if (chipset->series == cpuinfo_arm_chipset_series_google_tensor) {
+				if (strncmp(chipset->suffix, "G3", 2) == 0 || strncmp(chipset->suffix, "G4", 2) == 0) {
+					l3_size = 4 * 1024 * 1024;
+				}
+			}
+			*l1i = (struct cpuinfo_cache){
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l1d = (struct cpuinfo_cache){
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l2 = (struct cpuinfo_cache){
+				.size = l2_size,
+				.associativity = 8,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_UNIFIED,
+			};
+			if (l3_size != 0) {
+				*l3 = (struct cpuinfo_cache){
+					.size = l3_size,
+					.associativity = 16,
+					.line_size = 64,
+					.flags = CPUINFO_CACHE_UNIFIED,
+				};
+			}
+			break;
+		}
+		case cpuinfo_uarch_cortex_a78:
+		case cpuinfo_uarch_cortex_a710:
+		case cpuinfo_uarch_cortex_a715:
+		case cpuinfo_uarch_cortex_a720:
+		case cpuinfo_uarch_cortex_a725: {
+			/*
+			 * Arm Cortex-A78/A710/A715/A720/A725 Core Technical Reference Manuals:
+			 * - L1 instruction cache: 64 KB, 4-way set associative, 64-byte line
+			 * - L1 data cache: 64 KB, 4-way set associative, 64-byte line
+			 * - L2 unified cache: configurable 128 KB, 256 KB or 512 KB, 8-way set associative, 64-byte
+			 * line
+			 */
+			uint32_t l2_size = 512 * 1024;
+			uint32_t l3_size = 0;
+			if (chipset->series == cpuinfo_arm_chipset_series_google_tensor) {
+				if (strncmp(chipset->suffix, "G3", 2) == 0) {
+					l2_size = 256 * 1024;
+					l3_size = 4 * 1024 * 1024;
+				} else if (strncmp(chipset->suffix, "G4", 2) == 0) {
+					l2_size = 512 * 1024;
+					l3_size = 4 * 1024 * 1024;
+				}
+			}
+			*l1i = (struct cpuinfo_cache){
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l1d = (struct cpuinfo_cache){
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l2 = (struct cpuinfo_cache){
+				.size = l2_size,
+				.associativity = 8,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_UNIFIED,
+			};
+			if (l3_size != 0) {
+				*l3 = (struct cpuinfo_cache){
+					.size = l3_size,
+					.associativity = 16,
+					.line_size = 64,
+					.flags = CPUINFO_CACHE_UNIFIED,
+				};
+			}
+			break;
+		}
+		case cpuinfo_uarch_cortex_a510:
+		case cpuinfo_uarch_cortex_a520:
+		case cpuinfo_uarch_cortex_a320: {
+			/*
+			 * Arm Cortex-A510/A520/A320 Core Technical Reference Manuals:
+			 * - L1 instruction cache: 32 KB or 64 KB, 4-way set associative, 64-byte line
+			 * - L1 data cache: 32 KB or 64 KB, 4-way set associative, 64-byte line
+			 * - L2 unified cache: configurable 128 KB to 512 KB, 8-way set associative, 64-byte line
+			 */
+			uint32_t l2_size = 256 * 1024;
+			uint32_t l3_size = 0;
+			if (chipset->series == cpuinfo_arm_chipset_series_google_tensor) {
+				if (strncmp(chipset->suffix, "G3", 2) == 0) {
+					l2_size = 128 * 1024;
+					l3_size = 4 * 1024 * 1024;
+				} else if (strncmp(chipset->suffix, "G4", 2) == 0) {
+					l2_size = 256 * 1024;
+					l3_size = 4 * 1024 * 1024;
+				}
+			}
+			*l1i = (struct cpuinfo_cache){
+				.size = 32 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l1d = (struct cpuinfo_cache){
+				.size = 32 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l2 = (struct cpuinfo_cache){
+				.size = l2_size,
+				.associativity = 8,
+				.line_size = 64,
+				.flags = CPUINFO_CACHE_UNIFIED,
+			};
+			if (l3_size != 0) {
+				*l3 = (struct cpuinfo_cache){
+					.size = l3_size,
+					.associativity = 16,
+					.line_size = 64,
+					.flags = CPUINFO_CACHE_UNIFIED,
+				};
+			}
+			break;
+		}
 		case cpuinfo_uarch_neoverse_n1:
 		case cpuinfo_uarch_neoverse_v1:
 		case cpuinfo_uarch_neoverse_n2:
@@ -1801,6 +1941,9 @@ uint32_t cpuinfo_arm_compute_max_cache_size(const struct cpuinfo_processor* proc
 			 */
 			return 8 * 1024 * 1024;
 		case cpuinfo_uarch_cortex_a55:
+		case cpuinfo_uarch_cortex_a510:
+		case cpuinfo_uarch_cortex_a520:
+		case cpuinfo_uarch_cortex_a320:
 		case cpuinfo_uarch_neoverse_n1:
 		case cpuinfo_uarch_neoverse_v1:
 		case cpuinfo_uarch_neoverse_n2:
@@ -1808,6 +1951,17 @@ uint32_t cpuinfo_arm_compute_max_cache_size(const struct cpuinfo_processor* proc
 		case cpuinfo_uarch_neoverse_v3:
 		case cpuinfo_uarch_cortex_a75:
 		case cpuinfo_uarch_cortex_a76:
+		case cpuinfo_uarch_cortex_a77:
+		case cpuinfo_uarch_cortex_a78:
+		case cpuinfo_uarch_cortex_a710:
+		case cpuinfo_uarch_cortex_a715:
+		case cpuinfo_uarch_cortex_a720:
+		case cpuinfo_uarch_cortex_a725:
+		case cpuinfo_uarch_cortex_x1:
+		case cpuinfo_uarch_cortex_x2:
+		case cpuinfo_uarch_cortex_x3:
+		case cpuinfo_uarch_cortex_x4:
+		case cpuinfo_uarch_cortex_x925:
 		case cpuinfo_uarch_exynos_m4:
 		default:
 			/*

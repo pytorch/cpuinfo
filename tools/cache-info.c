@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -54,6 +55,45 @@ void report_cache(uint32_t count, const struct cpuinfo_cache* cache, uint32_t le
 	}
 }
 
+static bool cache_equals(const struct cpuinfo_cache* a, const struct cpuinfo_cache* b) {
+	if (a == b) {
+		return true;
+	}
+	if (a == NULL || b == NULL) {
+		return false;
+	}
+	return a->size == b->size && a->associativity == b->associativity && a->sets == b->sets &&
+		a->partitions == b->partitions && a->line_size == b->line_size && a->flags == b->flags &&
+		a->processor_count == b->processor_count;
+}
+
+static void report_caches_at_level(
+	uint32_t count,
+	const struct cpuinfo_cache* (*get_cache)(uint32_t),
+	uint32_t level,
+	const char* nonunified_type) {
+	bool visited[256] = {false};
+	for (uint32_t i = 0; i < count; i++) {
+		if (i < 256 && visited[i]) {
+			continue;
+		}
+		const struct cpuinfo_cache* cache = get_cache(i);
+		if (cache == NULL) {
+			continue;
+		}
+		uint32_t matching_count = 1;
+		for (uint32_t j = i + 1; j < count; j++) {
+			if (cache_equals(cache, get_cache(j))) {
+				matching_count++;
+				if (j < 256) {
+					visited[j] = true;
+				}
+			}
+		}
+		report_cache(matching_count, cache, level, nonunified_type);
+	}
+}
+
 int main(int argc, char** argv) {
 	if (!cpuinfo_initialize()) {
 		fprintf(stderr, "failed to initialize CPU information\n");
@@ -62,18 +102,18 @@ int main(int argc, char** argv) {
 	printf("Max cache size (upper bound): %" PRIu32 " bytes\n", cpuinfo_get_max_cache_size());
 
 	if (cpuinfo_get_l1i_caches_count() != 0 && (cpuinfo_get_l1i_cache(0)->flags & CPUINFO_CACHE_UNIFIED) == 0) {
-		report_cache(cpuinfo_get_l1i_caches_count(), cpuinfo_get_l1i_cache(0), 1, "instruction");
+		report_caches_at_level(cpuinfo_get_l1i_caches_count(), cpuinfo_get_l1i_cache, 1, "instruction");
 	}
 	if (cpuinfo_get_l1d_caches_count() != 0) {
-		report_cache(cpuinfo_get_l1d_caches_count(), cpuinfo_get_l1d_cache(0), 1, "data");
+		report_caches_at_level(cpuinfo_get_l1d_caches_count(), cpuinfo_get_l1d_cache, 1, "data");
 	}
 	if (cpuinfo_get_l2_caches_count() != 0) {
-		report_cache(cpuinfo_get_l2_caches_count(), cpuinfo_get_l2_cache(0), 2, "data");
+		report_caches_at_level(cpuinfo_get_l2_caches_count(), cpuinfo_get_l2_cache, 2, "data");
 	}
 	if (cpuinfo_get_l3_caches_count() != 0) {
-		report_cache(cpuinfo_get_l3_caches_count(), cpuinfo_get_l3_cache(0), 3, "data");
+		report_caches_at_level(cpuinfo_get_l3_caches_count(), cpuinfo_get_l3_cache, 3, "data");
 	}
 	if (cpuinfo_get_l4_caches_count() != 0) {
-		report_cache(cpuinfo_get_l4_caches_count(), cpuinfo_get_l4_cache(0), 4, "data");
+		report_caches_at_level(cpuinfo_get_l4_caches_count(), cpuinfo_get_l4_cache, 4, "data");
 	}
 }

@@ -2339,3 +2339,78 @@ TEST(ARM, neoverse_v3_and_v3ae) {
 		EXPECT_EQ(0, l3.size);
 	}
 }
+
+TEST(GOOGLE, tensor_g3) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_google,
+		.series = cpuinfo_arm_chipset_series_google_tensor,
+		.suffix = "G3",
+	};
+
+	struct cpuinfo_cache l1i = {0};
+	struct cpuinfo_cache l1d = {0};
+	struct cpuinfo_cache l2 = {0};
+	struct cpuinfo_cache l3 = {0};
+
+	/* Cortex-X3 (Prime) */
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_x3, 1, UINT32_C(0x411FD4E0), &chipset, 0, 8, &l1i, &l1d, &l2, &l3);
+	EXPECT_EQ(64 * 1024, l1i.size);
+	EXPECT_EQ(4, l1i.associativity);
+	EXPECT_EQ(64, l1i.line_size);
+	EXPECT_EQ(64 * 1024, l1d.size);
+	EXPECT_EQ(4, l1d.associativity);
+	EXPECT_EQ(64, l1d.line_size);
+	EXPECT_EQ(1024 * 1024, l2.size);
+	EXPECT_EQ(8, l2.associativity);
+	EXPECT_EQ(64, l2.line_size);
+	EXPECT_EQ(CPUINFO_CACHE_UNIFIED, l2.flags);
+	EXPECT_EQ(4096 * 1024, l3.size);
+	EXPECT_EQ(16, l3.associativity);
+	EXPECT_EQ(64, l3.line_size);
+	EXPECT_EQ(CPUINFO_CACHE_UNIFIED, l3.flags);
+
+	/* Cortex-A715 (Mid) */
+	l1i = (struct cpuinfo_cache){0};
+	l1d = (struct cpuinfo_cache){0};
+	l2 = (struct cpuinfo_cache){0};
+	l3 = (struct cpuinfo_cache){0};
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a715, 4, UINT32_C(0x411FD4D0), &chipset, 1, 8, &l1i, &l1d, &l2, &l3);
+	EXPECT_EQ(64 * 1024, l1i.size);
+	EXPECT_EQ(4, l1i.associativity);
+	EXPECT_EQ(64, l1i.line_size);
+	EXPECT_EQ(64 * 1024, l1d.size);
+	EXPECT_EQ(4, l1d.associativity);
+	EXPECT_EQ(64, l1d.line_size);
+	EXPECT_EQ(256 * 1024, l2.size);
+	EXPECT_EQ(8, l2.associativity);
+	EXPECT_EQ(64, l2.line_size);
+	EXPECT_EQ(CPUINFO_CACHE_UNIFIED, l2.flags);
+	EXPECT_EQ(4096 * 1024, l3.size);
+	EXPECT_EQ(16, l3.associativity);
+	EXPECT_EQ(64, l3.line_size);
+	EXPECT_EQ(CPUINFO_CACHE_UNIFIED, l3.flags);
+
+	/* Cortex-A510 (Little) */
+	l1i = (struct cpuinfo_cache){0};
+	l1d = (struct cpuinfo_cache){0};
+	l2 = (struct cpuinfo_cache){0};
+	l3 = (struct cpuinfo_cache){0};
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_cortex_a510, 4, UINT32_C(0x411FD461), &chipset, 2, 8, &l1i, &l1d, &l2, &l3);
+	EXPECT_EQ(32 * 1024, l1i.size);
+	EXPECT_EQ(4, l1i.associativity);
+	EXPECT_EQ(64, l1i.line_size);
+	EXPECT_EQ(32 * 1024, l1d.size);
+	EXPECT_EQ(4, l1d.associativity);
+	EXPECT_EQ(64, l1d.line_size);
+	EXPECT_EQ(128 * 1024, l2.size);
+	EXPECT_EQ(8, l2.associativity);
+	EXPECT_EQ(64, l2.line_size);
+	EXPECT_EQ(CPUINFO_CACHE_UNIFIED, l2.flags);
+	EXPECT_EQ(4096 * 1024, l3.size);
+	EXPECT_EQ(16, l3.associativity);
+	EXPECT_EQ(64, l3.line_size);
+	EXPECT_EQ(CPUINFO_CACHE_UNIFIED, l3.flags);
+}
