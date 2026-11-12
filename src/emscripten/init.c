@@ -286,3 +286,35 @@ cleanup:
 	free(l1d);
 	free(l2);
 }
+
+void cpuinfo_emscripten_deinit(void) {
+	free(cpuinfo_processors);
+	cpuinfo_processors = NULL;
+	cpuinfo_processors_count = 0;
+
+	free(cpuinfo_cores);
+	cpuinfo_cores = NULL;
+	cpuinfo_cores_count = 0;
+
+	free(cpuinfo_clusters);
+	cpuinfo_clusters = NULL;
+	cpuinfo_clusters_count = 0;
+
+	/* cpuinfo_packages points to static storage (&static_package) — do not free */
+	cpuinfo_packages = NULL;
+	cpuinfo_packages_count = 0;
+
+	/* L1i, L1d, L2 are dynamically allocated; L3 may point to static
+	 * storage (&static_x86_l3) so only free levels that were calloc'd */
+	free(cpuinfo_cache[cpuinfo_cache_level_1i]);
+	free(cpuinfo_cache[cpuinfo_cache_level_1d]);
+	free(cpuinfo_cache[cpuinfo_cache_level_2]);
+	/* cpuinfo_cache[cpuinfo_cache_level_3] may be &static_x86_l3 — do not free */
+	for (int lvl = 0; lvl < cpuinfo_cache_level_max; ++lvl) {
+		cpuinfo_cache[lvl] = NULL;
+		cpuinfo_cache_count[lvl] = 0;
+	}
+	cpuinfo_max_cache_size = 0;
+
+	cpuinfo_global_uarch = (struct cpuinfo_uarch_info){0};
+}
