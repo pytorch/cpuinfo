@@ -12,6 +12,14 @@ static inline uint32_t max(uint32_t a, uint32_t b) {
 	return a > b ? a : b;
 }
 
+static inline uint32_t min(uint32_t a, uint32_t b) {
+	return a < b ? a : b;
+}
+
+static inline uint32_t divide_round_up(uint32_t n, uint32_t q) {
+	return n / q + (n % q != 0);
+}
+
 static inline uint32_t bit_mask(uint32_t bits) {
 	return (UINT32_C(1) << bits) - UINT32_C(1);
 }
@@ -136,7 +144,7 @@ void cpuinfo_x86_mach_init(void) {
 				"Mach kernel did not report number of threads sharing L1 cache; assume %" PRIu32,
 				threads_per_l1);
 		}
-		l1_count = mach_topology.threads / threads_per_l1;
+		l1_count = divide_round_up(mach_topology.threads, threads_per_l1);
 		cpuinfo_log_debug("detected %" PRIu32 " L1 caches", l1_count);
 	}
 
@@ -157,7 +165,7 @@ void cpuinfo_x86_mach_init(void) {
 				"Mach kernel did not report number of threads sharing L2 cache; assume %" PRIu32,
 				threads_per_l2);
 		}
-		l2_count = mach_topology.threads / threads_per_l2;
+		l2_count = divide_round_up(mach_topology.threads, threads_per_l2);
 		cpuinfo_log_debug("detected %" PRIu32 " L2 caches", l2_count);
 	}
 
@@ -175,7 +183,7 @@ void cpuinfo_x86_mach_init(void) {
 				"Mach kernel did not report number of threads sharing L3 cache; assume %" PRIu32,
 				threads_per_l3);
 		}
-		l3_count = mach_topology.threads / threads_per_l3;
+		l3_count = divide_round_up(mach_topology.threads, threads_per_l3);
 		cpuinfo_log_debug("detected %" PRIu32 " L3 caches", l3_count);
 	}
 
@@ -194,7 +202,7 @@ void cpuinfo_x86_mach_init(void) {
 				"Mach kernel did not report number of threads sharing L4 cache; assume %" PRIu32,
 				threads_per_l4);
 		}
-		l4_count = mach_topology.threads / threads_per_l4;
+		l4_count = divide_round_up(mach_topology.threads, threads_per_l4);
 		cpuinfo_log_debug("detected %" PRIu32 " L4 caches", l4_count);
 	}
 
@@ -216,7 +224,7 @@ void cpuinfo_x86_mach_init(void) {
 				.line_size = x86_processor.cache.l1i.line_size,
 				.flags = x86_processor.cache.l1i.flags,
 				.processor_start = c * threads_per_l1,
-				.processor_count = threads_per_l1,
+				.processor_count = min(threads_per_l1, mach_topology.threads - c * threads_per_l1),
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -242,7 +250,7 @@ void cpuinfo_x86_mach_init(void) {
 				.line_size = x86_processor.cache.l1d.line_size,
 				.flags = x86_processor.cache.l1d.flags,
 				.processor_start = c * threads_per_l1,
-				.processor_count = threads_per_l1,
+				.processor_count = min(threads_per_l1, mach_topology.threads - c * threads_per_l1),
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -268,7 +276,7 @@ void cpuinfo_x86_mach_init(void) {
 				.line_size = x86_processor.cache.l2.line_size,
 				.flags = x86_processor.cache.l2.flags,
 				.processor_start = c * threads_per_l2,
-				.processor_count = threads_per_l2,
+				.processor_count = min(threads_per_l2, mach_topology.threads - c * threads_per_l2),
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -294,7 +302,7 @@ void cpuinfo_x86_mach_init(void) {
 				.line_size = x86_processor.cache.l3.line_size,
 				.flags = x86_processor.cache.l3.flags,
 				.processor_start = c * threads_per_l3,
-				.processor_count = threads_per_l3,
+				.processor_count = min(threads_per_l3, mach_topology.threads - c * threads_per_l3),
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {
@@ -320,7 +328,7 @@ void cpuinfo_x86_mach_init(void) {
 				.line_size = x86_processor.cache.l4.line_size,
 				.flags = x86_processor.cache.l4.flags,
 				.processor_start = c * threads_per_l4,
-				.processor_count = threads_per_l4,
+				.processor_count = min(threads_per_l4, mach_topology.threads - c * threads_per_l4),
 			};
 		}
 		for (uint32_t t = 0; t < mach_topology.threads; t++) {

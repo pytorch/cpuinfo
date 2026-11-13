@@ -180,6 +180,30 @@ TEST(PROCESSOR, consistent_l4) {
 	cpuinfo_deinitialize();
 }
 
+TEST(PROCESSOR, cache_within_bounds) {
+	ASSERT_TRUE(cpuinfo_initialize());
+	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
+		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
+		ASSERT_TRUE(processor);
+
+		const auto check = [i](const char* level,
+				       const cpuinfo_cache* cache,
+				       const cpuinfo_cache* caches,
+				       uint32_t count) {
+			if (cache != nullptr) {
+				EXPECT_GE(cache, caches) << level << " cache of processor " << i;
+				EXPECT_LT(cache, caches + count) << level << " cache of processor " << i;
+			}
+		};
+		check("L1I", processor->cache.l1i, cpuinfo_get_l1i_caches(), cpuinfo_get_l1i_caches_count());
+		check("L1D", processor->cache.l1d, cpuinfo_get_l1d_caches(), cpuinfo_get_l1d_caches_count());
+		check("L2", processor->cache.l2, cpuinfo_get_l2_caches(), cpuinfo_get_l2_caches_count());
+		check("L3", processor->cache.l3, cpuinfo_get_l3_caches(), cpuinfo_get_l3_caches_count());
+		check("L4", processor->cache.l4, cpuinfo_get_l4_caches(), cpuinfo_get_l4_caches_count());
+	}
+	cpuinfo_deinitialize();
+}
+
 TEST(CORES_COUNT, within_bounds) {
 	ASSERT_TRUE(cpuinfo_initialize());
 	EXPECT_NE(0, cpuinfo_get_cores_count());
