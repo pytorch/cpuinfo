@@ -181,6 +181,8 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100D440): /* Cortex-X1 */
 		case UINT32_C(0x4100D480): /* Cortex-X2 */
 		case UINT32_C(0x4100D4E0): /* Cortex-X3 */
+		case UINT32_C(0x4100D8C0): /* Lumex-C1-Ultra */
+		case UINT32_C(0x4100D960): /* Lumex-C2-Ultra */
 			/* These cores are in big role w.r.t
 			 * Cortex-A75/-A76/-A77/-A78/-A710/-A715
 			 */
@@ -195,6 +197,7 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100D4B0): /* Cortex-A78C */
 		case UINT32_C(0x4100D470): /* Cortex-A710 */
 		case UINT32_C(0x4100D4D0): /* Cortex-A715 */
+		case UINT32_C(0x4100D900): /* Lumex-C1-Premium */
 		case UINT32_C(0x4800D400): /* Cortex-A76 (HiSilicon) */
 		case UINT32_C(0x4E000030): /* Denver 2 */
 		case UINT32_C(0x51002050): /* Kryo Gold */
@@ -212,6 +215,7 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 			/* These cores are always in big role */
 			return 5;
 		case UINT32_C(0x4100D070): /* Cortex-A57 */
+		case UINT32_C(0x4100D8B0): /* Lumex-C1-Pro */
 			/* Cortex-A57 can be in LITTLE role w.r.t. Denver 2, or
 			 * in big role w.r.t. Cortex-A53 */
 			return 4;
@@ -223,6 +227,7 @@ inline static uint32_t midr_score_core(uint32_t midr) {
 		case UINT32_C(0x4100D460): /* Cortex-A510 */
 #if CPUINFO_ARCH_ARM64
 		case UINT32_C(0x4100D800): /* Cortex-A520 */
+		case UINT32_C(0x4100D8A0): /* Lumex-C1-Nano */
 #endif /* CPUINFO_ARCH_ARM64 */
 			/* Cortex-A53 is usually in LITTLE role, but can be in
 			 * big role w.r.t. Cortex-A35 */

@@ -560,6 +560,8 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_lumex_c1_pro = 0x00300602,
 	/** ARM Lumex-C1-Nano. */
 	cpuinfo_uarch_lumex_c1_nano = 0x00300603,
+	/** ARM Lumex-C2-Ultra. */
+	cpuinfo_uarch_lumex_c2_ultra = 0x00300604,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,
