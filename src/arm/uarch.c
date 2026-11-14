@@ -150,20 +150,23 @@ void cpuinfo_arm_decode_vendor_uarch(
 				case 0xD87: /* Cortex-A725 */
 					*uarch = cpuinfo_uarch_cortex_a725;
 					break;
-				case 0xD8A:
+				case 0xD8A: /* Lumex-C1-Nano */
 					*uarch = cpuinfo_uarch_lumex_c1_nano;
 					break;
-				case 0xD8B:
+				case 0xD8B: /* Lumex-C1-Pro */
 					*uarch = cpuinfo_uarch_lumex_c1_pro;
 					break;
-				case 0xD8C:
+				case 0xD8C: /* Lumex-C1-Ultra */
 					*uarch = cpuinfo_uarch_lumex_c1_ultra;
 					break;
 				case 0xD8F: /* Cortex-A320 */
 					*uarch = cpuinfo_uarch_cortex_a320;
 					break;
-				case 0xD90:
+				case 0xD90: /* Lumex-C1-Premium */
 					*uarch = cpuinfo_uarch_lumex_c1_premium;
+					break;
+				case 0xD96: /* Lumex-C2-Ultra */
+					*uarch = cpuinfo_uarch_lumex_c2_ultra;
 					break;
 				default:
 					switch (midr_get_part(midr) >> 8) {

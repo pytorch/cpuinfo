@@ -255,6 +255,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Lumex-C1-Pro";
 		case cpuinfo_uarch_lumex_c1_nano:
 			return "Lumex-C1-Nano";
+		case cpuinfo_uarch_lumex_c2_ultra:
+			return "Lumex-C2-Ultra";
 		case cpuinfo_uarch_neoverse_n1:
 			return "Neoverse N1";
 		case cpuinfo_uarch_neoverse_e1:
