@@ -151,7 +151,7 @@ bool cpuinfo_x86_decode_cache_properties(struct cpuid_regs regs, struct cpuinfo_
 
 	const uint32_t level = (regs.eax >> 5) & UINT32_C(0x7);
 	const uint32_t cores = 1 + ((regs.eax >> 14) & UINT32_C(0x00000FFF));
-	const uint32_t apic_bits = bit_length(cores);
+	const uint32_t apic_bits = bit_length(cores - 1);
 
 	const uint32_t sets = 1 + regs.ecx;
 	const uint32_t line_size = 1 + (regs.ebx & UINT32_C(0x00000FFF));
