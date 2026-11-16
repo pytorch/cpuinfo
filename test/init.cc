@@ -140,11 +140,15 @@ TEST(PROCESSOR, consistent_l1d) {
 
 TEST(PROCESSOR, consistent_l2) {
 	ASSERT_TRUE(cpuinfo_initialize());
+	const struct cpuinfo_cache* l2_caches = cpuinfo_get_l2_caches();
+	const uint32_t l2_count = cpuinfo_get_l2_caches_count();
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
 		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
 		ASSERT_TRUE(processor);
 		const cpuinfo_cache* l2 = processor->cache.l2;
 		if (l2 != nullptr) {
+			EXPECT_GE(l2, l2_caches);
+			EXPECT_LT(l2, l2_caches + l2_count);
 			EXPECT_GE(i, l2->processor_start);
 			EXPECT_LT(i, l2->processor_start + l2->processor_count);
 		}
@@ -154,11 +158,15 @@ TEST(PROCESSOR, consistent_l2) {
 
 TEST(PROCESSOR, consistent_l3) {
 	ASSERT_TRUE(cpuinfo_initialize());
+	const struct cpuinfo_cache* l3_caches = cpuinfo_get_l3_caches();
+	const uint32_t l3_count = cpuinfo_get_l3_caches_count();
 	for (uint32_t i = 0; i < cpuinfo_get_processors_count(); i++) {
 		const cpuinfo_processor* processor = cpuinfo_get_processor(i);
 		ASSERT_TRUE(processor);
 		const cpuinfo_cache* l3 = processor->cache.l3;
 		if (l3 != nullptr) {
+			EXPECT_GE(l3, l3_caches);
+			EXPECT_LT(l3, l3_caches + l3_count);
 			EXPECT_GE(i, l3->processor_start);
 			EXPECT_LT(i, l3->processor_start + l3->processor_count);
 		}
