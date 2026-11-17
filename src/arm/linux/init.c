@@ -604,6 +604,34 @@ void cpuinfo_arm_linux_init(void) {
 		}
 	}
 
+	/* Cores of one type in one kernel topology group can report slightly
+	 * different maximum frequencies: e.g. on NVIDIA Grace the CPPC limits of
+	 * the 72 Neoverse V2 cores range from 3411 to 3456 MHz. Treat frequencies
+	 * within ~5% of the highest frequency of the same core type in the group
+	 * as equal, so that such per-core variation neither reorders processors
+	 * nor splits them into clusters. The margin matches capacity_greater() in
+	 * the Linux scheduler. */
+	const uint32_t core_type_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
+	for (uint32_t i = 0; i < arm_linux_processors_count; i++) {
+		if (!bitmask_all(arm_linux_processors[i].flags, CPUINFO_LINUX_FLAG_VALID)) {
+			continue;
+		}
+		uint32_t group_max_frequency = arm_linux_processors[i].max_frequency;
+		for (uint32_t j = 0; j < arm_linux_processors_count; j++) {
+			if (bitmask_all(arm_linux_processors[j].flags, CPUINFO_LINUX_FLAG_VALID) &&
+			    arm_linux_processors[j].package_leader_id == arm_linux_processors[i].package_leader_id &&
+			    arm_linux_processors[j].uarch == arm_linux_processors[i].uarch &&
+			    (arm_linux_processors[j].midr & core_type_mask) ==
+				    (arm_linux_processors[i].midr & core_type_mask) &&
+			    arm_linux_processors[j].max_frequency > group_max_frequency) {
+				group_max_frequency = arm_linux_processors[j].max_frequency;
+			}
+		}
+		if ((uint64_t)group_max_frequency * 1024 <= (uint64_t)arm_linux_processors[i].max_frequency * 1078) {
+			arm_linux_processors[i].max_frequency = group_max_frequency;
+		}
+	}
+
 	qsort(arm_linux_processors,
 	      arm_linux_processors_count,
 	      sizeof(struct cpuinfo_arm_linux_processor),
@@ -614,7 +642,6 @@ void cpuinfo_arm_linux_init(void) {
 	 * Rebuild the groups and choose their first sorted processor as leader
 	 * before publishing any cluster or cache pointers. */
 	uint32_t cluster_count = 0;
-	const uint32_t core_type_mask = CPUINFO_ARM_MIDR_IMPLEMENTER_MASK | CPUINFO_ARM_MIDR_PART_MASK;
 	for (uint32_t start = 0; start < valid_processors;) {
 		uint32_t end = start + 1;
 		while (end < valid_processors &&
