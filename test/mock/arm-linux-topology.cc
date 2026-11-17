@@ -193,6 +193,22 @@ int main(int argc, char** argv) {
 		expected_linux_ids = {2, 3, 0, 1};
 		expected_cluster_sizes = {2, 2};
 		expected_uarchs = 1;
+	} else if (mode == "frequency-binning") {
+		// NVIDIA Grace: one kernel topology group of Neoverse V2 cores whose
+		// CPPC maximum frequencies differ by about 1%. The frequencies below
+		// are the values reported for CPUs 0-7 of a Grace CPU.
+		input = {
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3429000, 0},
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3438000, 0},
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3447000, 0},
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3438000, 0},
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3438000, 0},
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3429000, 0},
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3411000, 0},
+			{0xD4F, cpuinfo_uarch_neoverse_v2, 3420000, 0}};
+		expected_linux_ids = {0, 1, 2, 3, 4, 5, 6, 7};
+		expected_cluster_sizes = {8};
+		expected_uarchs = 1;
 	} else if (mode == "unknown-parts") {
 		input = {
 			{0xFFE, cpuinfo_uarch_unknown, 1000000, 0},
