@@ -409,20 +409,18 @@ void cpuinfo_riscv_linux_init(void) {
 			continue;
 		}
 		if (cpuinfo_riscv_linux_parse_cache_from_sysfs(
-				processor,
-				&cpu_caches[processor].l1i,
-				&cpu_caches[processor].l1d,
-				&cpu_caches[processor].l2,
-				&cpu_caches[processor].l3)) {
+			    processor,
+			    &cpu_caches[processor].l1i,
+			    &cpu_caches[processor].l1d,
+			    &cpu_caches[processor].l2,
+			    &cpu_caches[processor].l3)) {
 			cpu_caches[processor].has_caches = true;
 		}
 		if (cpu_caches[processor].l2.size != 0) {
-			cpuinfo_riscv_linux_get_cache_sharing(
-				processor, 2, &cpu_caches[processor].l2_sharing);
+			cpuinfo_riscv_linux_get_cache_sharing(processor, 2, &cpu_caches[processor].l2_sharing);
 		}
 		if (cpu_caches[processor].l3.size != 0) {
-			cpuinfo_riscv_linux_get_cache_sharing(
-				processor, 3, &cpu_caches[processor].l3_sharing);
+			cpuinfo_riscv_linux_get_cache_sharing(processor, 3, &cpu_caches[processor].l3_sharing);
 		}
 	}
 
@@ -570,8 +568,8 @@ void cpuinfo_riscv_linux_init(void) {
 	l2_group_cpu_counts = calloc(valid_processors_count, sizeof(uint32_t));
 	l3_group_min_cpus = calloc(valid_processors_count, sizeof(uint32_t));
 	l3_group_cpu_counts = calloc(valid_processors_count, sizeof(uint32_t));
-	if (l2_group_min_cpus == NULL || l2_group_cpu_counts == NULL ||
-	    l3_group_min_cpus == NULL || l3_group_cpu_counts == NULL) {
+	if (l2_group_min_cpus == NULL || l2_group_cpu_counts == NULL || l3_group_min_cpus == NULL ||
+	    l3_group_cpu_counts == NULL) {
 		cpuinfo_log_error("failed to allocate cache group arrays");
 		goto cleanup;
 	}
@@ -595,8 +593,7 @@ void cpuinfo_riscv_linux_init(void) {
 			uint32_t cpu_count = cpu_caches[linux_id].l2_sharing.cpu_count;
 			bool seen = false;
 			for (uint32_t j = 0; j < l2_count; j++) {
-				if (l2_group_min_cpus[j] == min_cpu &&
-				    l2_group_cpu_counts[j] == cpu_count) {
+				if (l2_group_min_cpus[j] == min_cpu && l2_group_cpu_counts[j] == cpu_count) {
 					cpu_caches[linux_id].l2_group_index = j;
 					seen = true;
 					break;
@@ -614,8 +611,7 @@ void cpuinfo_riscv_linux_init(void) {
 			uint32_t cpu_count = cpu_caches[linux_id].l3_sharing.cpu_count;
 			bool seen = false;
 			for (uint32_t j = 0; j < l3_count; j++) {
-				if (l3_group_min_cpus[j] == min_cpu &&
-				    l3_group_cpu_counts[j] == cpu_count) {
+				if (l3_group_min_cpus[j] == min_cpu && l3_group_cpu_counts[j] == cpu_count) {
 					cpu_caches[linux_id].l3_group_index = j;
 					seen = true;
 					break;

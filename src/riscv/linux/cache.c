@@ -9,11 +9,7 @@
 #include <linux/api.h>
 #include <riscv/linux/api.h>
 
-static bool uint32_parser(
-	const char* filename,
-	const char* text_start,
-	const char* text_end,
-	void* context) {
+static bool uint32_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	uint32_t* value_ptr = (uint32_t*)context;
 	if (text_start == text_end) {
 		return false;
@@ -30,11 +26,7 @@ static bool uint32_parser(
 	return true;
 }
 
-static bool cache_size_parser(
-	const char* filename,
-	const char* text_start,
-	const char* text_end,
-	void* context) {
+static bool cache_size_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	uint32_t* size_ptr = (uint32_t*)context;
 	if (text_start == text_end) {
 		return false;
@@ -67,11 +59,7 @@ struct cache_type_context {
 	bool is_unified;
 };
 
-static bool cache_type_parser(
-	const char* filename,
-	const char* text_start,
-	const char* text_end,
-	void* context) {
+static bool cache_type_parser(const char* filename, const char* text_start, const char* text_end, void* context) {
 	struct cache_type_context* type = (struct cache_type_context*)context;
 	if (text_end - text_start >= 11 && memcmp(text_start, "Instruction", 11) == 0) {
 		type->is_instruction = true;
@@ -88,10 +76,7 @@ static bool cache_type_parser(
  * Type must be "Instruction", "Data", or "Unified" (exact match).
  * Returns the sysfs index, or UINT32_MAX if not found.
  */
-static uint32_t find_cache_index(
-	uint32_t cpu_id,
-	uint32_t level,
-	const char* type) {
+static uint32_t find_cache_index(uint32_t cpu_id, uint32_t level, const char* type) {
 	char path[256];
 	for (uint32_t idx = 0; idx < 8; idx++) {
 		snprintf(
@@ -120,8 +105,7 @@ static uint32_t find_cache_index(
 		}
 
 		if ((strcmp(type, "Instruction") == 0 && ctx.is_instruction) ||
-		    (strcmp(type, "Data") == 0 && ctx.is_data) ||
-		    (strcmp(type, "Unified") == 0 && ctx.is_unified)) {
+		    (strcmp(type, "Data") == 0 && ctx.is_data) || (strcmp(type, "Unified") == 0 && ctx.is_unified)) {
 			return idx;
 		}
 	}
@@ -194,12 +178,8 @@ static bool read_cache_properties(
 	return true;
 }
 
-static bool sharing_info_callback(
-	uint32_t range_start,
-	uint32_t range_end,
-	void* context) {
-	struct cpuinfo_riscv_cache_sharing_info* info =
-		(struct cpuinfo_riscv_cache_sharing_info*)context;
+static bool sharing_info_callback(uint32_t range_start, uint32_t range_end, void* context) {
+	struct cpuinfo_riscv_cache_sharing_info* info = (struct cpuinfo_riscv_cache_sharing_info*)context;
 	if (range_start < info->min_cpu) {
 		info->min_cpu = range_start;
 	}
@@ -292,8 +272,7 @@ bool cpuinfo_riscv_linux_get_cache_sharing(
 		.min_cpu = UINT32_MAX,
 		.cpu_count = 0,
 	};
-	if (cpuinfo_linux_parse_cpulist(path, sharing_info_callback, &info) &&
-	    info.cpu_count > 0) {
+	if (cpuinfo_linux_parse_cpulist(path, sharing_info_callback, &info) && info.cpu_count > 0) {
 		sharing->min_cpu = info.min_cpu;
 		sharing->cpu_count = info.cpu_count;
 	}
