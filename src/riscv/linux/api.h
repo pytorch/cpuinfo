@@ -69,5 +69,33 @@ CPUINFO_INTERNAL void cpuinfo_riscv_linux_decode_vendor_uarch_from_hwprobe(
 	enum cpuinfo_uarch uarch[restrict static 1],
 	struct cpuinfo_riscv_isa isa[restrict static 1]);
 
+/**
+ * Reads sysfs cache topology for a given CPU and populates cache structures.
+ * Returns true if any cache information was found.
+ */
+CPUINFO_INTERNAL bool cpuinfo_riscv_linux_parse_cache_from_sysfs(
+	uint32_t cpu_id,
+	struct cpuinfo_cache l1i[restrict static 1],
+	struct cpuinfo_cache l1d[restrict static 1],
+	struct cpuinfo_cache l2[restrict static 1],
+	struct cpuinfo_cache l3[restrict static 1]);
+
+/**
+ * Information about cache sharing topology for a given cache level.
+ */
+struct cpuinfo_riscv_cache_sharing_info {
+	uint32_t min_cpu;
+	uint32_t cpu_count;
+};
+
+/**
+ * Gets cache sharing information for the cache at the given level.
+ * Returns true if the cache level exists for the given CPU.
+ */
+CPUINFO_INTERNAL bool cpuinfo_riscv_linux_get_cache_sharing(
+	uint32_t cpu_id,
+	uint32_t cache_level,
+	struct cpuinfo_riscv_cache_sharing_info sharing[restrict static 1]);
+
 /* Used to determine which uarch is associated with the current thread. */
 extern CPUINFO_INTERNAL const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map;

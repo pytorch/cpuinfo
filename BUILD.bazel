@@ -110,6 +110,7 @@ LINUX_RISCV_SRCS = [
     "src/riscv/linux/init.c",
     "src/riscv/linux/riscv-isa.c",
     "src/riscv/linux/riscv-hw.c",
+    "src/riscv/linux/cache.c",
 ]
 
 ANDROID_ARM_SRCS = [
