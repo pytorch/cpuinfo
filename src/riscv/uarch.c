@@ -18,8 +18,9 @@
  */
 #define THEAD_MARCHID_C908 UINT64_C(0x8d143000)
 
-/* SpacemiT X60 (Veyron V1) marchid. */
-#define SPACEMIT_MARCHID_X60 UINT64_C(0x8000000000010000)
+/* SpacemiT X60 (Veyron V1) marchid values reported by K1 and V100. */
+#define SPACEMIT_MARCHID_X60_K1 UINT64_C(0x8000000058000001)
+#define SPACEMIT_MARCHID_X60_V100 UINT64_C(0x8000000058000002)
 
 void cpuinfo_riscv_decode_vendor_uarch(
 	uint64_t vendor_id,
@@ -62,7 +63,8 @@ void cpuinfo_riscv_decode_vendor_uarch(
 		case cpuinfo_riscv_chipset_vendor_spacemit:
 			*vendor = cpuinfo_vendor_spacemit;
 			switch (arch_id) {
-				case SPACEMIT_MARCHID_X60:
+				case SPACEMIT_MARCHID_X60_K1:
+				case SPACEMIT_MARCHID_X60_V100:
 					*uarch = cpuinfo_uarch_spacemit_x60;
 					break;
 				default:

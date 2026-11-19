@@ -10,7 +10,7 @@ enum cpuinfo_riscv_chipset_vendor {
 	cpuinfo_riscv_chipset_vendor_unknown = 0,
 	cpuinfo_riscv_chipset_vendor_sifive = 0x489,
 	cpuinfo_riscv_chipset_vendor_thead = 0x5b7,
-	cpuinfo_riscv_chipset_vendor_spacemit = 0x61f,
+	cpuinfo_riscv_chipset_vendor_spacemit = 0x710,
 	cpuinfo_riscv_chipset_vendor_max,
 };
 
