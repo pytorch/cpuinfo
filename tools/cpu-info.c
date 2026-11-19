@@ -281,6 +281,8 @@ static const char* uarch_to_string(enum cpuinfo_uarch uarch) {
 			return "Oryon";
 		case cpuinfo_uarch_oryon_v3:
 			return "Oryon V3";
+		case cpuinfo_uarch_oryon_v4:
+			return "Oryon V4";
 		case cpuinfo_uarch_denver:
 			return "Denver";
 		case cpuinfo_uarch_denver2:
