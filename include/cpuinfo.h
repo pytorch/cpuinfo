@@ -562,6 +562,12 @@ enum cpuinfo_uarch {
 	cpuinfo_uarch_lumex_c1_pro = 0x00300602,
 	/** ARM Lumex-C1-Nano. */
 	cpuinfo_uarch_lumex_c1_nano = 0x00300603,
+	/**
+	 * ARM C2-Ultra (MIDR part 0xD96; Arm C2-Ultra Core TRM 109736, LLVM
+	 * Host.cpp). Named with the lumex_ prefix for consistency with
+	 * cpuinfo_uarch_lumex_c1_*.
+	 */
+	cpuinfo_uarch_lumex_c2_ultra = 0x00300604,
 
 	/** Qualcomm Scorpion. */
 	cpuinfo_uarch_scorpion = 0x00400100,

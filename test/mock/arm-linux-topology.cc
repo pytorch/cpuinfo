@@ -184,6 +184,25 @@ int main(int argc, char** argv) {
 		expected_linux_ids = {7, 3, 4, 5, 6, 0, 1, 2};
 		expected_cluster_sizes = {1, 2, 2, 3};
 		expected_uarchs = 4;
+	} else if (mode == "exynos-9975") {
+		// Synthetic non-monotonic frequencies verify midr_score_core() keeps
+		// both Lumex-C2-Ultra clusters grouped ahead of Lumex-C1-Pro clusters
+		// even when one C2-Ultra core has a lower max frequency than a C1-Pro
+		// cluster.
+		input = {
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 2000000, 0},
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 2000000, 0},
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 2000000, 0},
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 2000000, 0},
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 3000000, 1},
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 3000000, 1},
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 3000000, 1},
+			{0xD8B, cpuinfo_uarch_lumex_c1_pro, 3000000, 1},
+			{0xD96, cpuinfo_uarch_lumex_c2_ultra, 2500000, 2},
+			{0xD96, cpuinfo_uarch_lumex_c2_ultra, 3500000, 3}};
+		expected_linux_ids = {9, 8, 4, 5, 6, 7, 0, 1, 2, 3};
+		expected_cluster_sizes = {1, 1, 4, 4};
+		expected_uarchs = 2;
 	} else if (mode == "frequency-groups") {
 		input = {
 			{0xD05, cpuinfo_uarch_cortex_a55r0, 1000000, 0},

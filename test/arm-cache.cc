@@ -2339,3 +2339,32 @@ TEST(ARM, neoverse_v3_and_v3ae) {
 		EXPECT_EQ(0, l3.size);
 	}
 }
+
+TEST(ARM, lumex_c2_ultra) {
+	const struct cpuinfo_arm_chipset chipset = {
+		.vendor = cpuinfo_arm_chipset_vendor_unknown,
+		.series = cpuinfo_arm_chipset_series_unknown,
+	};
+
+	struct cpuinfo_cache l1i = {0};
+	struct cpuinfo_cache l1d = {0};
+	struct cpuinfo_cache l2 = {0};
+	struct cpuinfo_cache l3 = {0};
+
+	cpuinfo_arm_decode_cache(
+		cpuinfo_uarch_lumex_c2_ultra, 1, UINT32_C(0x410FD961), &chipset, 0, 8, &l1i, &l1d, &l2, &l3);
+
+	EXPECT_EQ(64 * 1024, l1i.size);
+	EXPECT_EQ(4, l1i.associativity);
+	EXPECT_EQ(256, l1i.sets);
+	EXPECT_EQ(64, l1i.line_size);
+	EXPECT_EQ(128 * 1024, l1d.size);
+	EXPECT_EQ(4, l1d.associativity);
+	EXPECT_EQ(512, l1d.sets);
+	EXPECT_EQ(64, l1d.line_size);
+	EXPECT_EQ(2 * 1024 * 1024, l2.size);
+	EXPECT_EQ(8, l2.associativity);
+	EXPECT_EQ(4096, l2.sets);
+	EXPECT_EQ(64, l2.line_size);
+	EXPECT_EQ(0, l3.size);
+}

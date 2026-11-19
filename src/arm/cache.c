@@ -1378,6 +1378,32 @@ void cpuinfo_arm_decode_cache(
 			};
 			break;
 		}
+		case cpuinfo_uarch_lumex_c2_ultra: {
+			/*
+			 * Arm C2-Ultra Core Technical Reference Manual
+			 * (https://developer.arm.com/documentation/109736/latest):
+			 * - L1 instruction cache: 64 KB, 4-way set associative, 64-byte line.
+			 * - L1 data cache: 128 KB, 4-way set associative, 64-byte line.
+			 * - Private unified L2 cache: configurable 2 MB (8-way) or 3 MB
+			 *   (12-way), 64-byte line. Default to the 2 MB minimum configuration.
+			 */
+			*l1i = (struct cpuinfo_cache){
+				.size = 64 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l1d = (struct cpuinfo_cache){
+				.size = 128 * 1024,
+				.associativity = 4,
+				.line_size = 64,
+			};
+			*l2 = (struct cpuinfo_cache){
+				.size = 2 * 1024 * 1024,
+				.associativity = 8,
+				.line_size = 64,
+			};
+			break;
+		}
 #if CPUINFO_ARCH_ARM && !defined(__ARM_ARCH_8A__)
 		case cpuinfo_uarch_scorpion:
 			/*
