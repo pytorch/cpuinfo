@@ -62,6 +62,15 @@ def main(args):
                     "riscv/linux/init.c",
                     "riscv/linux/riscv-isa.c",
                 ]
+        if build.target.is_ppc64:
+            sources += ["powerpc/uarch.c", "powerpc/cache.c"]
+            if build.target.is_linux:
+                sources += [
+                    "powerpc/linux/init.c",
+                    "powerpc/linux/cpuinfo.c",
+                    "powerpc/linux/cache.c",
+                    "powerpc/linux/ppc64-isa.c",
+                ]
 
         if build.target.is_macos:
             sources += ["mach/topology.c"]

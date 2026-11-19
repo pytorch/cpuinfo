@@ -47,7 +47,7 @@ struct cpuinfo_uarch_info cpuinfo_global_uarch = {cpuinfo_uarch_unknown};
 uint32_t cpuinfo_linux_cpu_max = 0;
 const struct cpuinfo_processor** cpuinfo_linux_cpu_to_processor_map = NULL;
 const struct cpuinfo_core** cpuinfo_linux_cpu_to_core_map = NULL;
-#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+#if CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64 || CPUINFO_ARCH_PPC64
 const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map = NULL;
 #endif
 #endif
@@ -357,7 +357,7 @@ uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index(void) {
 	/* Resolve the current core type with the CPUID instruction: no system
 	 * calls, so it works on every OS and inside sandboxes. */
 	return cpuinfo_x86_get_current_uarch_index(0);
-#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64 || CPUINFO_ARCH_PPC64
 #ifdef __linux__
 	if (cpuinfo_linux_cpu_to_uarch_index_map == NULL) {
 		/* Special case: avoid syscall on systems with only a single
@@ -396,7 +396,7 @@ uint32_t CPUINFO_ABI cpuinfo_get_current_uarch_index_with_default(uint32_t defau
 	/* Resolve the current core type with the CPUID instruction: no system
 	 * calls, so it works on every OS and inside sandboxes. */
 	return cpuinfo_x86_get_current_uarch_index(default_uarch_index);
-#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64
+#elif CPUINFO_ARCH_ARM || CPUINFO_ARCH_ARM64 || CPUINFO_ARCH_RISCV32 || CPUINFO_ARCH_RISCV64 || CPUINFO_ARCH_PPC64
 #ifdef __linux__
 	if (cpuinfo_linux_cpu_to_uarch_index_map == NULL) {
 		/* Special case: avoid syscall on systems with only a single
