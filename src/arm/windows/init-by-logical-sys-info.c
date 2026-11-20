@@ -372,6 +372,40 @@ clean_up:
 	return result;
 }
 
+BOOL CALLBACK cpuinfo_arm_windows_deinit(PINIT_ONCE init_once, PVOID parameter, PVOID* context) {
+	HANDLE heap = GetProcessHeap();
+
+	HeapFree(heap, 0, cpuinfo_processors);
+	cpuinfo_processors = NULL;
+	cpuinfo_processors_count = 0;
+
+	HeapFree(heap, 0, cpuinfo_packages);
+	cpuinfo_packages = NULL;
+	cpuinfo_packages_count = 0;
+
+	HeapFree(heap, 0, cpuinfo_clusters);
+	cpuinfo_clusters = NULL;
+	cpuinfo_clusters_count = 0;
+
+	HeapFree(heap, 0, cpuinfo_cores);
+	cpuinfo_cores = NULL;
+	cpuinfo_cores_count = 0;
+
+	HeapFree(heap, 0, cpuinfo_uarchs);
+	cpuinfo_uarchs = NULL;
+	cpuinfo_uarchs_count = 0;
+
+	/* Caches are allocated as a single contiguous block starting at l1i */
+	HeapFree(heap, 0, cpuinfo_cache[cpuinfo_cache_level_1i]);
+	for (int lvl = 0; lvl < cpuinfo_cache_level_max; ++lvl) {
+		cpuinfo_cache[lvl] = NULL;
+		cpuinfo_cache_count[lvl] = 0;
+	}
+	cpuinfo_max_cache_size = 0;
+
+	return TRUE;
+}
+
 static uint32_t count_logical_processors(const uint32_t max_group_count, uint32_t* global_proc_index_per_group) {
 	uint32_t nr_of_processors = 0;
 

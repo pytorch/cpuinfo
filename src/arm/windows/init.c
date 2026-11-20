@@ -25,11 +25,17 @@ BOOL CALLBACK cpuinfo_arm_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 	set_cpuinfo_isa_fields();
 
 	chip_info = get_system_info_from_registry();
+	const bool chip_info_from_registry = chip_info != NULL;
 	if (chip_info == NULL) {
 		chip_info = &woa_chip_unknown;
 	}
 
 	cpuinfo_is_initialized = cpu_info_init_by_logical_sys_info(chip_info, chip_info->uarchs[0].vendor);
+
+	if (chip_info_from_registry) {
+		HeapFree(GetProcessHeap(), 0, chip_info->chip_name_string);
+		HeapFree(GetProcessHeap(), 0, chip_info);
+	}
 
 	return true;
 }
@@ -177,6 +183,7 @@ static struct woa_chip_info* get_system_info_from_registry(void) {
 	uint64_t midr_qword = (uint32_t)read_registry_qword(cpu0_subkey, chip_midr_value);
 	if (midr_qword == 0) {
 		cpuinfo_log_error("Registry read error for MIDR value");
+		HeapFree(GetProcessHeap(), 0, text_buffer);
 		return NULL;
 	}
 	// MIDR is only 32 bits, so we need to cast it to uint32_t
@@ -187,6 +194,7 @@ static struct woa_chip_info* get_system_info_from_registry(void) {
 	uint64_t frequency_mhz = read_registry_dword(cpu0_subkey, chip_mhz_value);
 	if (frequency_mhz == 0) {
 		cpuinfo_log_error("Registry read error for frequency value");
+		HeapFree(GetProcessHeap(), 0, text_buffer);
 		return NULL;
 	}
 	// Convert MHz to Hz
@@ -196,11 +204,13 @@ static struct woa_chip_info* get_system_info_from_registry(void) {
 	chip_info = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(struct woa_chip_info));
 	if (chip_info == NULL) {
 		cpuinfo_log_error("Heap allocation error for chip_info");
+		HeapFree(GetProcessHeap(), 0, text_buffer);
 		return NULL;
 	}
 
 	// set chip_info fields
 	chip_info->chip_name_string = wcsndup(text_buffer, CPUINFO_PACKAGE_NAME_MAX - 1);
+	HeapFree(GetProcessHeap(), 0, text_buffer);
 	chip_info->uarchs[0] = get_core_info_from_midr(midr_value, frequency_hz);
 
 	cpuinfo_log_debug("detected chip model name: %ls", chip_info->chip_name_string);

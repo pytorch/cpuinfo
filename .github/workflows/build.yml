@@ -24,6 +24,8 @@ jobs:
       - name: Configure and build
         run: scripts/local-build.sh
         working-directory: ${{ github.workspace }}
+      - name: Run tests
+        run: ctest --test-dir build/local --output-on-failure
   cmake-darwin:
     runs-on: macos-latest
     timeout-minutes: 40
@@ -34,6 +36,8 @@ jobs:
       - name: Configure and build
         run: scripts/local-build.sh
         working-directory: ${{ github.workspace }}
+      - name: Run tests
+        run: ctest --test-dir build/local --output-on-failure
   cmake-windows:
     runs-on: windows-latest
     timeout-minutes: 40
@@ -45,6 +49,8 @@ jobs:
         run: scripts/local-build.sh
         shell: bash  # Specify bash so we can reuse the build script on Windows (runs on Git bash)
         working-directory: ${{ github.workspace }}
+      - name: Run tests
+        run: ctest --test-dir build/local --output-on-failure
   cmake-uwp:
     runs-on: windows-latest
     timeout-minutes: 40
