@@ -97,6 +97,8 @@ static void store_cache_info_per_processor(
 	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX info,
 	struct cpuinfo_cache* current_cache);
 
+static uint32_t remove_inactive_processors(struct cpuinfo_processor* processors, const uint32_t nr_of_processors);
+
 static bool connect_packages_cores_clusters_by_processors(
 	struct cpuinfo_processor* processors,
 	const uint32_t nr_of_processors,
@@ -251,6 +253,13 @@ bool cpu_info_init_by_logical_sys_info(const struct woa_chip_info* chip_info, co
 		cpuinfo_log_error("error in reading core information");
 		goto clean_up;
 	}
+
+	nr_of_processors = remove_inactive_processors(processors, nr_of_processors);
+	if (!nr_of_processors) {
+		cpuinfo_log_error("no active processors detected");
+		goto clean_up;
+	}
+	cpuinfo_log_debug("detected %" PRIu32 " active processor(s)", nr_of_processors);
 
 	/* 5. Now that we read out everything from the system we can, fill the
 	 * package, cluster and core structures respectively.
@@ -796,6 +805,44 @@ static void store_cache_info_per_processor(
 			processors[processor_global_index].cache.l3 = current_cache;
 			break;
 	}
+}
+
+/* Processors are indexed by maximum processor counts, but Windows only
+ * describes active processors, so entries for inactive processors are never
+ * filled. Move the filled entries to the front, keeping their order, so
+ * processor ranges have no gaps. Returns the number of active processors.
+ */
+static uint32_t remove_inactive_processors(struct cpuinfo_processor* processors, const uint32_t nr_of_processors) {
+	uint32_t nr_of_active_processors = 0;
+	for (uint32_t i = 0; i < nr_of_processors; i++) {
+		if (processors[i].core == NULL) {
+			continue;
+		}
+
+		/* Entries before the first inactive processor stay in place. */
+		if (nr_of_active_processors == i) {
+			nr_of_active_processors++;
+			continue;
+		}
+
+		/* Cache ranges were recorded with the original indexes. */
+		const struct cpuinfo_cache* processor_caches[] = {
+			processors[i].cache.l1i,
+			processors[i].cache.l1d,
+			processors[i].cache.l2,
+			processors[i].cache.l3,
+			processors[i].cache.l4,
+		};
+		for (uint32_t j = 0; j < CPUINFO_COUNT_OF(processor_caches); j++) {
+			struct cpuinfo_cache* cache = (struct cpuinfo_cache*)processor_caches[j];
+			if (cache != NULL && cache->processor_start == i) {
+				cache->processor_start = nr_of_active_processors;
+			}
+		}
+
+		processors[nr_of_active_processors++] = processors[i];
+	}
+	return nr_of_active_processors;
 }
 
 static bool connect_packages_cores_clusters_by_processors(

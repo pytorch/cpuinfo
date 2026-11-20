@@ -160,6 +160,11 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 		goto cleanup;
 	}
 
+	/* Only active processors are described below, so entries for the rest
+	 * stay unfilled. */
+	bool* processor_is_active = (bool*)CPUINFO_ALLOCA(processors_count * sizeof(bool));
+	ZeroMemory(processor_is_active, processors_count * sizeof(bool));
+
 	DWORD cores_info_size = 0;
 	if (GetLogicalProcessorInformationEx(RelationProcessorCore, NULL, &cores_info_size) == FALSE) {
 		const DWORD last_error = GetLastError();
@@ -305,12 +310,34 @@ BOOL CALLBACK cpuinfo_x86_windows_init(PINIT_ONCE init_once, PVOID parameter, PV
 				 * the core are reported in APIC order) */
 				processors[processor_id].smt_id = smt_id++;
 				processors[processor_id].core = (const struct cpuinfo_core*)NULL + core_id;
+				processor_is_active[processor_id] = true;
 
 				/* Reset the lowest bit in affinity mask */
 				group_processors_mask &= (group_processors_mask - 1);
 			}
 		}
 	}
+
+	/* Processors are indexed by maximum processor counts, so move the
+	 * active ones to the front, keeping their order, so processor ranges
+	 * have no gaps. */
+	uint32_t active_processors_count = 0;
+	for (uint32_t i = 0; i < processors_count; i++) {
+		if (!processor_is_active[i]) {
+			continue;
+		}
+		/* Entries before the first inactive processor stay in place. */
+		if (active_processors_count != i) {
+			processors[active_processors_count] = processors[i];
+		}
+		active_processors_count++;
+	}
+	processors_count = active_processors_count;
+	if (processors_count == 0) {
+		cpuinfo_log_error("no active processors detected");
+		goto cleanup;
+	}
+	cpuinfo_log_debug("detected %" PRIu32 " active processors", processors_count);
 
 	cores = HeapAlloc(heap, HEAP_ZERO_MEMORY, cores_count * sizeof(struct cpuinfo_core));
 	if (cores == NULL) {
